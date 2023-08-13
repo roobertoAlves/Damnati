@@ -19,13 +19,23 @@ public class WeaponItem : Item
     [Header("Attack Animations")]
     [Space(15)]
 
-    public string SS_Heavy_Slash_1;
-    public string SS_Heavy_Slash_2;
-    public string SS_Light_Slash_1;
-    public string SS_Light_Slash_2;
-    public string TH_Light_Slash_1;
-    public string TH_Light_Slash_2;
+    public string SS_Heavy_Slash_01;
+    public string SS_Heavy_Slash_02;
+    public string SS_Heavy_Slash_03;
 
+    public string SS_Light_Slash_01;
+    public string SS_Light_Slash_02;
+    public string SS_Light_Slash_03;
+    public string SS_Light_Slash_04;
+
+    public string TH_Light_Slash_01;
+    public string TH_Light_Slash_02;
+    public string TH_Light_Slash_03;
+
+    public string TH_Heavy_Slash_01;
+    public string TH_Heavy_Slash_02;
+    public string TH_Heavy_Slash_03;
+    
     [Header("Stamina Costs")]
     [Space(15)]
 

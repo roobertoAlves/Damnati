@@ -262,6 +262,11 @@ Transform:
   m_Father: {fileID: 4002679386375968612}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &348940159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1173625292717111848, guid: efccc6a5865043a43a266396057730d2, type: 3}
+  m_PrefabInstance: {fileID: 1173625291658079866}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &522750929
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +500,7 @@ GameObject:
   - component: {fileID: 637889202}
   m_Layer: 0
   m_Name: Weapon
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -722,6 +727,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76321bb84ffbbc458556013d2be65cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &887686082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1173625293066438424, guid: efccc6a5865043a43a266396057730d2, type: 3}
+  m_PrefabInstance: {fileID: 1173625291658079866}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &904073052
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,6 +902,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c10deeb08dd9447afc4e33e816bc67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1358954896 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1173625292738099239, guid: efccc6a5865043a43a266396057730d2, type: 3}
+  m_PrefabInstance: {fileID: 1173625291658079866}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1400375460
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +960,11 @@ MonoBehaviour:
   _pivotSpeed: 0.03
   _minimumPivot: -35
   _maximumPivot: 35
+--- !u!1 &1407403167 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1173625292693192986, guid: efccc6a5865043a43a266396057730d2, type: 3}
+  m_PrefabInstance: {fileID: 1173625291658079866}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1426090547
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,6 +997,11 @@ Transform:
   m_Father: {fileID: 971376635}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &1488550690 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1173625292893772651, guid: efccc6a5865043a43a266396057730d2, type: 3}
+  m_PrefabInstance: {fileID: 1173625291658079866}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1504156499 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1173625292604192041, guid: efccc6a5865043a43a266396057730d2, type: 3}
@@ -1102,7 +1127,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 1000
-  field of view: 43
+  field of view: 56
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1128,13 +1153,18 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018926975}
   m_LocalRotation: {x: 0.10765237, y: 0, z: 0, w: 0.9941886}
-  m_LocalPosition: {x: 0.069, y: 5.891, z: -0.657}
+  m_LocalPosition: {x: 0.135, y: 5.912, z: -0.657}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1794364}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 12.36, y: 0, z: 0}
+--- !u!1 &2038872048 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1173625291694370511, guid: efccc6a5865043a43a266396057730d2, type: 3}
+  m_PrefabInstance: {fileID: 1173625291658079866}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &59869403702917598
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,6 +1593,18 @@ PrefabInstance:
       value: Player UI
       objectReference: {fileID: 0}
     - target: {fileID: 1173625292904634980, guid: efccc6a5865043a43a266396057730d2, type: 3}
+      propertyPath: _hudWindow
+      value: 
+      objectReference: {fileID: 1358954896}
+    - target: {fileID: 1173625292904634980, guid: efccc6a5865043a43a266396057730d2, type: 3}
+      propertyPath: _pauseWindow
+      value: 
+      objectReference: {fileID: 887686082}
+    - target: {fileID: 1173625292904634980, guid: efccc6a5865043a43a266396057730d2, type: 3}
+      propertyPath: _inventoryWindow
+      value: 
+      objectReference: {fileID: 887686082}
+    - target: {fileID: 1173625292904634980, guid: efccc6a5865043a43a266396057730d2, type: 3}
       propertyPath: _playerInventory
       value: 
       objectReference: {fileID: 5079598194609435853}
@@ -1570,6 +1612,22 @@ PrefabInstance:
       propertyPath: _equipmentWindowUI
       value: 
       objectReference: {fileID: 578555850}
+    - target: {fileID: 1173625292904634980, guid: efccc6a5865043a43a266396057730d2, type: 3}
+      propertyPath: _equipmentScreenWindow
+      value: 
+      objectReference: {fileID: 2038872048}
+    - target: {fileID: 1173625292904634980, guid: efccc6a5865043a43a266396057730d2, type: 3}
+      propertyPath: _weaponInventoryWindow
+      value: 
+      objectReference: {fileID: 1407403167}
+    - target: {fileID: 1173625292904634980, guid: efccc6a5865043a43a266396057730d2, type: 3}
+      propertyPath: _weaponInventorySlotPrefab
+      value: 
+      objectReference: {fileID: 348940159}
+    - target: {fileID: 1173625292904634980, guid: efccc6a5865043a43a266396057730d2, type: 3}
+      propertyPath: _weaponInventorySlotsParent
+      value: 
+      objectReference: {fileID: 1488550690}
     - target: {fileID: 1173625292904634983, guid: efccc6a5865043a43a266396057730d2, type: 3}
       propertyPath: m_Camera
       value: 
@@ -2679,7 +2737,8 @@ Animator:
     'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
     'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
     'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'TH_Sword_Heavy_Slash_01'\n\tFrom
-    animation clip 'TH_Sword_Heavy_Slash_02'\n\tFrom animation clip 'TH_Sword_Light_Slash_03'"
+    animation clip 'TH_Sword_Heavy_Slash_02'\n\tFrom animation clip 'TH_Sword_Light_Slash_03'\n\tFrom
+    animation clip 'TH_Sword_Idle'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -2839,7 +2898,7 @@ MonoBehaviour:
   _weaponSlot: {fileID: 0}
   rightHandWeapon: {fileID: 0}
   leftHandWeapon: {fileID: 0}
-  unarmedWeapon: {fileID: 0}
+  unarmedWeapon: {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
   weaponsInRightHandSlots:
   - {fileID: 0}
   weaponsInLeftHandSlot:

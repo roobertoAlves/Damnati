@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     [Header("UI Window")]
     [Space(15)]
     [SerializeField] private GameObject _hudWindow;
-    [SerializeField] private GameObject _pauseWindow;
+    [SerializeField] private GameObject _inventoryWindow;
     [SerializeField] private GameObject _weaponInventoryWindow;
     [SerializeField] private GameObject _equipmentScreenWindow;
 
@@ -70,11 +70,11 @@ public class UIManager : MonoBehaviour
     }
     public void OpenPauseWindow()
     {
-        _pauseWindow.SetActive(true);
+        _inventoryWindow.SetActive(true);
     }
     public void ClosePauseWindow()
     {
-        _pauseWindow.SetActive(false);
+        _inventoryWindow.SetActive(false);
     }
 
     public void CloseAllInventoryWindows()

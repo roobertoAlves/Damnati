@@ -24,13 +24,13 @@ public class PlayerAttacker : MonoBehaviour
         _weaponSlotManager.attackingWeapon = weapon;
         if(_playerManager.TwoHandFlag)
         {
-            _animator.PlayTargetAnimation(weapon.TH_Light_Slash_1, true);
-            LastAttack = weapon.TH_Light_Slash_1;
+            _animator.PlayTargetAnimation(weapon.TH_Light_Slash_01, true);
+            LastAttack = weapon.TH_Light_Slash_01;
         }
         else
         {
-            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_1, true);
-            _lastAttack = weapon.SS_Light_Slash_1;
+            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_01, true);
+            _lastAttack = weapon.SS_Light_Slash_01;
         }
     }
     public void HandleHeavyAttack(WeaponItem weapon)
@@ -38,24 +38,56 @@ public class PlayerAttacker : MonoBehaviour
         _weaponSlotManager.attackingWeapon = weapon;
         if(_playerManager.TwoHandFlag)
         {
-
+            _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_01, true);
+            _lastAttack = weapon.TH_Heavy_Slash_01;
         }
         else
         {
-            _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_1, true);
-            _lastAttack = weapon.SS_Heavy_Slash_1;
+            _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_01, true);
+            _lastAttack = weapon.SS_Heavy_Slash_01;
         }
     }
 
     public void HandleWeaponCombo(WeaponItem weapon)
     {
-        if(_lastAttack == weapon.SS_Light_Slash_1)
+        if(_lastAttack == weapon.SS_Light_Slash_01)
         {
-            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_2, true);
+            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_02, true);
         }
-        else if(_lastAttack == weapon.TH_Light_Slash_1)
+        else if(_lastAttack == weapon.SS_Light_Slash_02)
         {
-            _animator.PlayTargetAnimation(weapon.TH_Light_Slash_2, true);
+            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_03, true);
+        }
+        else if(_lastAttack == weapon.SS_Light_Slash_03)
+        {
+            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_04, true);
+        }
+
+        else if(_lastAttack == weapon.SS_Heavy_Slash_01)
+        {
+            _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_02, true);
+        }
+        else if(_lastAttack == weapon.SS_Heavy_Slash_02)
+        {
+            _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_03, true);
+        }
+
+        else if(_lastAttack == weapon.TH_Light_Slash_01)
+        {
+            _animator.PlayTargetAnimation(weapon.TH_Light_Slash_02, true);
+        }
+        else if(_lastAttack == weapon.TH_Light_Slash_02)
+        {
+            _animator.PlayTargetAnimation(weapon.TH_Light_Slash_03, true);
+        }
+
+        else if(_lastAttack == weapon.TH_Heavy_Slash_01)
+        {
+            _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_02, true);
+        }
+        else if(_lastAttack == weapon.TH_Heavy_Slash_02)
+        {
+            _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_03, true);
         }
     }
 }

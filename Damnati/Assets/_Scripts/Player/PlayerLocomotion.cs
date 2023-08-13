@@ -140,7 +140,6 @@ public class PlayerLocomotion : MonoBehaviour
             HandleRotation(delta);
         }
     }
-
     public void HandleDodge(float delta)
     {
         if(_animatorHandler.Anim.GetBool("IsInteracting"))
@@ -155,7 +154,7 @@ public class PlayerLocomotion : MonoBehaviour
 
             if(_inputHandler.MoveAmount > 0)
             {
-                _animatorHandler.PlayTargetAnimation("Rolling", true);
+                _animatorHandler.PlayTargetAnimation("Roll", true);
                 _movDirection.y = 0;
                 Quaternion rollRotation = Quaternion.LookRotation(_movDirection);
                 _myTransform.rotation = rollRotation;
@@ -166,7 +165,6 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
     }
-
     public void HandleGravity(float delta, Vector3 _movDirection)
     {
         if (!_animatorHandler.HasAnimator)
@@ -228,7 +226,7 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 if(_playerManager.IsInteracting == false)
                 {
-                    _animatorHandler.PlayTargetAnimation("Falling", true);
+                    _animatorHandler.PlayTargetAnimation("Fall", true);
                 }
 
                 Vector3 vel = _rb.velocity;
@@ -251,7 +249,6 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
     }
-
     public void HandleAttack(float delta)
     {
         if (!_animatorHandler.HasAnimator)
@@ -284,7 +281,6 @@ public class PlayerLocomotion : MonoBehaviour
             _playerAttack.HandleHeavyAttack(_playerInventory.rightHandWeapon);
         }
     }
-
     public void HandleTwoWeapon(float delta)
     {
         if(_inputHandler.THEquipFlag)
