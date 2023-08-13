@@ -6,6 +6,7 @@ public class PlayerStats : CharacterStats
 {
     private AnimatorHandler _playerAnimator;
     private PlayerManager _playerManager;
+    private InputHandler _inputHandler;
     
     [Header("Health Parameters")]
     [Space(15)]
@@ -17,10 +18,22 @@ public class PlayerStats : CharacterStats
     [SerializeField] private float _staminaRegenerationAmount = 1;
     [SerializeField] private float _staminaRegenerationTimer = 0;
     [SerializeField] private StaminaBar _staminaBar;
+
+    [Header("Rage Parameters")]
+    [Space(15)]
+
+    [SerializeField] private RageBar _rageBar;
+    [SerializeField] private int _rageLevel = 10;
+    [SerializeField] private float _maxRage;
+    [SerializeField] private float _currentRage;
+    [SerializeField] private float _rageRegenerationTimer = 0;
+    [SerializeField] private float _rageRegenerationLAAmount = 3;
+    [SerializeField] private float _rageRegenerationHAAmount = 5;
     private void Awake() 
     {
         _playerAnimator = GetComponent<AnimatorHandler>();    
         _playerManager = GetComponent<PlayerManager>();
+        _inputHandler = FindObjectOfType<InputHandler>();
     }
     private void Start() 
     {
@@ -31,8 +44,14 @@ public class PlayerStats : CharacterStats
         MaxStamina = SetMaxStaminaFromHealthLevel();
         CurrentStamina = MaxStamina;
         _staminaBar.SetMaxStamina(MaxStamina);
+
+        _maxRage = SetMaxRageFromRageLevel();
+        _currentRage = _maxRage;
+        _rageBar.SetMaxRage(_maxRage);
     }
 
+
+    #region Set Stats from Level
     private int SetMaxHealthFromHealthLevel()
     {
         MaxHealth = HealthLevel * 10;
@@ -43,6 +62,14 @@ public class PlayerStats : CharacterStats
         MaxStamina = StaminaLevel * 10;
         return MaxStamina;
     }
+
+    private float SetMaxRageFromRageLevel()
+    {
+        _maxRage = _rageLevel * 10;
+        return _maxRage;
+    }
+
+    #endregion
 
     public void TakeDamage(int damage)
     { 
@@ -84,6 +111,35 @@ public class PlayerStats : CharacterStats
             {
                 CurrentStamina += _staminaRegenerationAmount * Time.deltaTime;
                 _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina));
+            }
+        }
+    }
+
+    public void RageDrain(int drain)
+    {
+        _currentRage = _currentRage - drain;
+        _rageBar.SetCurrentRage(_currentRage);
+    }
+
+    public void RegenerateRage()
+    {
+        if(_playerManager.IsInRage)
+        {
+            _rageRegenerationTimer = 0;
+        }
+        else
+        {
+            _rageRegenerationTimer += Time.deltaTime;
+
+            if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.LBAttackFlag && _playerManager.IsHitEnemy)
+            {
+                _currentRage += _rageRegenerationLAAmount * Time.deltaTime;
+                _rageBar.SetCurrentRage(Mathf.RoundToInt(_currentRage));
+            }
+            else if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.RBAttackFlag && _playerManager.IsHitEnemy)
+            {
+                _currentRage += _rageRegenerationHAAmount * Time.deltaTime;
+                _rageBar.SetCurrentRage(Mathf.RoundToInt(_currentRage));
             }
         }
     }

@@ -30,6 +30,8 @@ public class PlayerManager : MonoBehaviour
     private bool _isUsingRightHand;
     private bool _isInvulnerable;
     private bool _isSprinting;
+    private bool _isHitEnemy;
+    private bool _isInRage;
 
     #endregion
 
@@ -48,11 +50,14 @@ public class PlayerManager : MonoBehaviour
     public bool IsUsingLeftHand { get { return _isUsingLeftHand; } set { _isUsingLeftHand = value; }}
     public bool IsUsingRightHand { get { return _isUsingRightHand; } set { _isUsingRightHand = value; }}
     public bool IsInvulnerable { get { return _isInvulnerable; } set { _isInvulnerable = value; }}
-    
+    public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
+    public bool IsInRage { get { return _isInRage; } set { _isInRage = value; }}
+   
     #endregion  
 
     private void Awake() 
     {
+        _cameraHandler = GetComponent<CameraHandler>();
         _animatorHandler = GetComponent<AnimatorHandler>();
         _playerLocomotion = GetComponent<PlayerLocomotion>();
         _interactableUI = FindObjectOfType<InteractableUI>();
@@ -76,6 +81,11 @@ public class PlayerManager : MonoBehaviour
         _playerLocomotion.HandleTwoWeapon(delta);
         CheckForInteractableObject();
         _playerStats.RegenerateStamina();
+
+        if(_isHitEnemy && !_isInRage)
+        {
+            _playerStats.RegenerateRage();
+        }
     }
 
     private void LateUpdate() 

@@ -127,15 +127,30 @@ public class WeaponSlotManager : MonoBehaviour
     #endregion
 
 
-    #region Stamina Drain
+    #region Stamina & Rage Drain
     public void DrainsStaminaLightAttack()
     {
         _playerStats.StaminaDrain(Mathf.RoundToInt(attackingWeapon.baseStamina * attackingWeapon.lightAttackMultiplier));
     }
-
     public void DrainsStaminaHeavyAttack()
     {
         _playerStats.StaminaDrain(Mathf.RoundToInt(attackingWeapon.baseStamina * attackingWeapon.heavyAttackMultiplier));
+    }
+
+
+    public void DrainRageLightAttack()
+    {
+        if(_playerManager.IsInRage)
+        {
+            _playerStats.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageLightAttackMultiplier));
+        }
+    }
+    public void DrainRageHeavyAttack()
+    {
+        if(_playerManager.IsInRage)
+        {
+             _playerStats.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageHeavyAttackMultiplier));
+        }
     }
 
     #endregion
