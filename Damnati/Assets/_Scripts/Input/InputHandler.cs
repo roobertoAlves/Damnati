@@ -38,6 +38,8 @@ public class InputHandler : MonoBehaviour
 
     public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; }}
     public float VerticalMovement { get { return _verticalMovement; } set { _verticalMovement = value; }}
+    public float HorizontalCameraMovement { get { return _cameraMoveInput.x; } set { _cameraMoveInput.x = value; }}
+    public float VerticalCameraMovement { get { return _cameraMoveInput.y; } set { _cameraMoveInput.y = value; }}
     public float MoveAmount { get { return _moveAmount; } set { _moveAmount = value; }}
 
 

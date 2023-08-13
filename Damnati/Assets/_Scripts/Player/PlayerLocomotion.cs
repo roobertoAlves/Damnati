@@ -8,7 +8,7 @@ public class PlayerLocomotion : MonoBehaviour
     [Space(15)]
     private InputHandler _inputHandler;
     private UIManager _UIManager;
-    private Rigidbody _rb;
+    [SerializeField] private Rigidbody _rb;
     private AnimatorHandler _animatorHandler;
     private PlayerManager _playerManager;
     private PlayerInventory _playerInventory;
@@ -22,7 +22,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Header("Camera Components")]
     [Space(15)]
-    [SerializeField] private Transform _cameraRoot;
+    private Transform _cameraRoot;
     private Vector3 _newCamRotation;
 
     [Header("Gravity Parameters")]
@@ -65,11 +65,12 @@ public class PlayerLocomotion : MonoBehaviour
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerManager = GetComponent<PlayerManager>();
         _animatorHandler = GetComponent<AnimatorHandler>();
-        _newCamRotation = _cameraRoot.localRotation.eulerAngles;
         _playerManager.IsGrounded = true;    
 
+        _cameraRoot = Camera.main.transform;
         _myTransform = transform;
-        _rb = GetComponent<Rigidbody>();
+
+        _newCamRotation = _cameraRoot.localRotation.eulerAngles;
 
         Physics.IgnoreCollision(_characterCollider, _characterCollisionBlockerCollider, true);
     }

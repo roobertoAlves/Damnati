@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake() 
     {
+        _inputHandler = FindObjectOfType<InputHandler>();
         _cameraHandler = GetComponent<CameraHandler>();
         _animatorHandler = GetComponent<AnimatorHandler>();
         _playerLocomotion = GetComponent<PlayerLocomotion>();
@@ -85,6 +86,12 @@ public class PlayerManager : MonoBehaviour
         if(_isHitEnemy && !_isInRage)
         {
             _playerStats.RegenerateRage();
+
+            if (_cameraHandler != null)
+            {
+                _cameraHandler.FollowTarget(delta);
+                _cameraHandler.HandleCameraRotation(delta, _inputHandler.HorizontalCameraMovement, _inputHandler.VerticalMovement);
+            }
         }
     }
 
