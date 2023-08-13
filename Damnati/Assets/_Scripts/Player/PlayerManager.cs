@@ -63,6 +63,8 @@ public class PlayerManager : MonoBehaviour
         _playerLocomotion = GetComponent<PlayerLocomotion>();
         _interactableUI = FindObjectOfType<InteractableUI>();
         _playerStats = GetComponent<PlayerStats>();
+
+        _cameraHandler = CameraHandler.singleton;
     }
     private void Update() 
     {   
