@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 50973d0a54b415f4ca615e1e0e636d22
+guid: ce0edcfeee28f7440add6519ce828296
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: SS_Damage_02
+      name: Picking Up
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 29
+      lastFrame: 296
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
