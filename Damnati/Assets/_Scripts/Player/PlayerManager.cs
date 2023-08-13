@@ -92,7 +92,7 @@ public class PlayerManager : MonoBehaviour
             if (_cameraHandler != null)
             {
                 _cameraHandler.FollowTarget(delta);
-                _cameraHandler.HandleCameraRotation(delta, _inputHandler.HorizontalCameraMovement, _inputHandler.VerticalMovement);
+                _cameraHandler.HandleCameraRotation(delta, _inputHandler.HorizontalCameraMovement, _inputHandler.VerticalCameraMovement);
             }
         }
     }

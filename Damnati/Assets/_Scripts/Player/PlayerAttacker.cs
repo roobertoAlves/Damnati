@@ -16,7 +16,7 @@ public class PlayerAttacker : MonoBehaviour
         _inputHandler = FindObjectOfType<InputHandler>();
         _animator = GetComponent<AnimatorHandler>();
         _playerManager = GetComponent<PlayerManager>();
-        _weaponSlotManager = FindObjectOfType<WeaponSlotManager>();
+        _weaponSlotManager = GetComponent<WeaponSlotManager>();
     }
 
     public void HandleLightAttack(WeaponItem weapon)
@@ -57,10 +57,6 @@ public class PlayerAttacker : MonoBehaviour
         else if(_lastAttack == weapon.SS_Light_Slash_02)
         {
             _animator.PlayTargetAnimation(weapon.SS_Light_Slash_03, true);
-        }
-        else if(_lastAttack == weapon.SS_Light_Slash_03)
-        {
-            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_04, true);
         }
 
         else if(_lastAttack == weapon.SS_Heavy_Slash_01)

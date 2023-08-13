@@ -65,6 +65,11 @@ public class PlayerLocomotion : MonoBehaviour
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerManager = GetComponent<PlayerManager>();
         _animatorHandler = GetComponent<AnimatorHandler>();
+        _playerInventory = GetComponent<PlayerInventory>();
+        _playerAttack = GetComponent<PlayerAttacker>();
+        _UIManager = FindObjectOfType<UIManager>();
+        _weaponSlotManager = GetComponent<WeaponSlotManager>();
+
         _playerManager.IsGrounded = true;    
 
         _cameraRoot = Camera.main.transform;
@@ -134,6 +139,8 @@ public class PlayerLocomotion : MonoBehaviour
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_movDirection, _normalVector);
         _rb.velocity = projectedVelocity;
+
+        _animatorHandler.UpdateAnimatorValues(_inputHandler.MoveAmount, 0, _playerManager.IsSprinting);
 
         if(_animatorHandler.CanRot)
         {

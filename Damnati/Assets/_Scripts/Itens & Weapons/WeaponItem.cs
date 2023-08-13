@@ -26,7 +26,6 @@ public class WeaponItem : Item
     public string SS_Light_Slash_01;
     public string SS_Light_Slash_02;
     public string SS_Light_Slash_03;
-    public string SS_Light_Slash_04;
 
     public string TH_Light_Slash_01;
     public string TH_Light_Slash_02;
