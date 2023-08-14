@@ -32,9 +32,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Header("Player Movement Stats")]
     [Space(15)]
-    [SerializeField] private int _runSpeed;
-    [SerializeField] private int _movSpeed;
-    [SerializeField] private int _walkSpeed;
+    [SerializeField] private int _runSpeed = 7;
+    [SerializeField] private int _movSpeed = 5;
     [SerializeField] private int _rotationSpeed = 10;
 
     private Vector3 _movDirection;
@@ -44,13 +43,10 @@ public class PlayerLocomotion : MonoBehaviour
     
     [Header("Ground, Checks & Tags")]
     [Space(15)]
-    [SerializeField] private float _minimumDistanceToFall = 1f;
+    [SerializeField] private float _groundDetectionRayStartPoint = 0.5f;
+    [SerializeField] private float _minimumDistanceNeededToBeginFall = 1f;
+    [SerializeField] private float _groundDirectionRayDistance = 0.2f;
     [SerializeField] private LayerMask _ignoreForGroundCheck;
-    [SerializeField] private GameObject _leftFootRoot;
-    [SerializeField] private GameObject _rightFootRoot;
-    [SerializeField] private Vector3 _leftFootOffset;
-    [SerializeField] private Vector3 _rightFootOffset;
-    [SerializeField] private Vector3 _centerOffset;
 
     #region GET & SET
 
@@ -82,13 +78,13 @@ public class PlayerLocomotion : MonoBehaviour
 
     #region Player Actions
 
-    private void HandleRotation(float delta)
+    public void HandleRotation(float delta)
     {
         Vector3 targetDir = Vector3.zero;
         float moveOverride = _inputHandler.MoveAmount;
 
         targetDir = _cameraRoot.forward * _inputHandler.VerticalMovement;
-        targetDir = _cameraRoot.right * _inputHandler.HorizontalMovement;
+        targetDir += _cameraRoot.right * _inputHandler.HorizontalMovement;
 
         targetDir.Normalize();
         targetDir.y = 0;
@@ -127,14 +123,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
         else
         {
-            if(_inputHandler.MoveAmount < 0.5)
-            {
-                _movDirection *= _walkSpeed;
-            }
-            else
-            {
-                _movDirection *= speed;
-            }
+            _movDirection *= speed;
         }
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_movDirection, _normalVector);
@@ -172,40 +161,39 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
     }
-    public void HandleGravity(float delta, Vector3 _movDirection)
+    public void HandleGravity(float delta, Vector3 moveDirection)
     {
-        if (!_animatorHandler.HasAnimator)
-        {
-            return;
-        }
-
         _playerManager.IsGrounded = false;
+        RaycastHit hit;
+        Vector3 origin = transform.position;
+        origin.y += _groundDetectionRayStartPoint;
 
-        _targetPosition = transform.position;
-
-        bool isCenterGrounded = Physics.Raycast(_myTransform.position + _centerOffset, -Vector3.up, out RaycastHit centerHit, _minimumDistanceToFall, _ignoreForGroundCheck);
-        bool isRightFootGrounded = Physics.Raycast(_rightFootRoot.transform.position + _rightFootOffset, -Vector3.up, out RaycastHit rightFootHit, _minimumDistanceToFall, _ignoreForGroundCheck);
-        bool isLeftFootGrounded = Physics.Raycast(_leftFootRoot.transform.position + _leftFootOffset, -Vector3.up, out RaycastHit leftFootHit, _minimumDistanceToFall, _ignoreForGroundCheck);
-
-        bool isAnyFootGrounded = isCenterGrounded || isRightFootGrounded || isLeftFootGrounded;
-        Debug.Log("Is Grounded: " + isAnyFootGrounded);
-
-        if(!isAnyFootGrounded)
+        if(Physics.Raycast(origin, transform.forward, out hit, 0.4f))
         {
-            _movDirection = Vector3.zero;
+            moveDirection = Vector3.zero;
         }
 
         if(_playerManager.IsInAir)
         {
             _rb.AddForce(-Vector3.up * _fallingSpeed);
-            _rb.AddForce(_movDirection * _fallingSpeed / 10f);
+            _rb.AddForce(moveDirection * _fallingSpeed / 10f);
         }
 
-    if(isAnyFootGrounded)
-    {
-        _playerManager.IsGrounded = true;
+        Vector3 dir = moveDirection;
+        dir.Normalize();
+        origin = origin + dir * _groundDirectionRayDistance;
 
-        if(_playerManager.IsInAir)
+        _targetPosition = transform.position;
+
+        Debug.DrawRay(origin, -Vector3.up * _minimumDistanceNeededToBeginFall, Color.red, 0.1f, false);
+        if (Physics.Raycast(origin, -Vector3.up, out hit, _minimumDistanceNeededToBeginFall, _ignoreForGroundCheck))
+        {
+            _normalVector = hit.normal;
+            Vector3 tp = hit.point;
+            _playerManager.IsGrounded = true;
+            _targetPosition.y = tp.y;
+
+            if(_playerManager.IsInAir)
             {
                 if(_inAirTimer > 0.5f)
                 {
@@ -215,7 +203,7 @@ public class PlayerLocomotion : MonoBehaviour
                 }
                 else
                 {
-                    _animatorHandler.PlayTargetAnimation("Locomotion", false);
+                    _animatorHandler.PlayTargetAnimation("Empty", false);
                     _inAirTimer = 0;
                 }
 
@@ -223,7 +211,7 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
         else
-            {
+        {
             if(_playerManager.IsGrounded)
             {
                 _playerManager.IsGrounded = false;
@@ -243,19 +231,16 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
 
-        if(_playerManager.IsGrounded)
+        if (_playerManager.IsInteracting || _inputHandler.MoveAmount > 0)
         {
-            if(_playerManager.IsInteracting || _inputHandler.MoveAmount > 0)
-            {
-                transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime);
-            }
-            else
-            {
-                transform.position = _targetPosition;
-            }
+            transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime / 0.1f);
         }
-
+        else
+        {
+            transform.position = _targetPosition;
+        }
     }
+
     public void HandleAttack(float delta)
     {
         if (!_animatorHandler.HasAnimator)
@@ -306,36 +291,5 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        RaycastHit hitLeftFoot;
-        RaycastHit hitRightFoot;
-        RaycastHit hitCenter;
-
-        Vector3 rightFootOrigin = _rightFootRoot.transform.position + _rightFootOffset;
-        Vector3 leftFootOrigin = _leftFootRoot.transform.position + _leftFootOffset;
-        Vector3 centerOrigin = transform.position + _centerOffset;
-
-
-        bool isRightFootGrounded = Physics.Raycast(rightFootOrigin, -Vector3.up, out hitRightFoot, _minimumDistanceToFall, _ignoreForGroundCheck);
-        bool isLeftFootGrounded = Physics.Raycast(leftFootOrigin, -Vector3.up, out hitLeftFoot, _minimumDistanceToFall, _ignoreForGroundCheck);
-        bool isCenterGrounded = Physics.Raycast(centerOrigin, -Vector3.up, out hitCenter, _minimumDistanceToFall, _ignoreForGroundCheck);
-
-        Gizmos.color = Color.red;
-
-        if (isRightFootGrounded)
-        Gizmos.DrawLine(rightFootOrigin, hitRightFoot.point);
-
-        if (isLeftFootGrounded)
-        Gizmos.DrawLine(leftFootOrigin, hitLeftFoot.point);
-
-        Gizmos.color = Color.red;
-
-        if (isCenterGrounded)
-        Gizmos.DrawLine(centerOrigin, hitCenter.point);
-    }
-
     #endregion
-
 }

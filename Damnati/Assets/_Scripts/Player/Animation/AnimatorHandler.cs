@@ -96,7 +96,7 @@ public class AnimatorHandler : AnimatorManager
             }
             #endregion
 
-            if (isSprinting)
+            if (isSprinting && _inputHandler.MoveAmount > 0)
             {
                 v = 2;
                 h = horizontalMovement;

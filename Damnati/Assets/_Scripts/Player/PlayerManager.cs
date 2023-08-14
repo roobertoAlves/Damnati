@@ -44,7 +44,7 @@ public class PlayerManager : MonoBehaviour
     public bool IsInAir { get { return _isInAir; } set { _isInAir = value; }}
     public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; }}
     public bool CanDoCombo { get { return _canDoCombo; } set { _canDoCombo = value; }}
-    public bool IIsDodge { get { return _isRollingOrSteppingBack; } set { _isRollingOrSteppingBack = value; }}
+    public bool IsDodge { get { return _isRollingOrSteppingBack; } set { _isRollingOrSteppingBack = value; }}
     public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; }}
     public bool TwoHandFlag { get { return _twoHandFlag; } set { _twoHandFlag = value; }}
     public bool IsUsingLeftHand { get { return _isUsingLeftHand; } set { _isUsingLeftHand = value; }}
@@ -66,37 +66,40 @@ public class PlayerManager : MonoBehaviour
 
         _cameraHandler = CameraHandler.singleton;
     }
-    private void Update() 
-    {   
+    private void Update()
+    {
         float delta = Time.deltaTime;
 
         _isInteracting = _animatorHandler.Anim.GetBool("IsInteracting");
         _canDoCombo = _animatorHandler.Anim.GetBool("CanDoCombo");
-        _isUsingLeftHand = _animatorHandler.Anim.GetBool("IsUsingLeftHand");
         _isUsingRightHand = _animatorHandler.Anim.GetBool("IsUsingRightHand");
+        _isUsingLeftHand = _animatorHandler.Anim.GetBool("IsUsingLeftHand");
         _isInvulnerable = _animatorHandler.Anim.GetBool("IsInvulnerable");
+        _animatorHandler.Anim.SetBool("IsInAir", _isInAir);
+        _animatorHandler.Anim.SetBool("IsDead", _playerStats.IsDead);
 
         _inputHandler.TickInput(delta);
-        _playerLocomotion.HandleMovement(delta);
+        _animatorHandler.CanRot = _animatorHandler.Anim.GetBool("CanRotate");
         _playerLocomotion.HandleDodge(delta);
-        _playerLocomotion.HandleGravity(delta,_playerLocomotion.MoveDirection);
-        _playerLocomotion.HandleAttack(delta);
-        _playerLocomotion.HandleTwoWeapon(delta);
-        CheckForInteractableObject();
         _playerStats.RegenerateStamina();
+
+        CheckForInteractableObject();
 
         if(_isHitEnemy && !_isInRage)
         {
             _playerStats.RegenerateRage();
-
-            if (_cameraHandler != null)
-            {
-                _cameraHandler.FollowTarget(delta);
-                _cameraHandler.HandleCameraRotation(delta, _inputHandler.HorizontalCameraMovement, _inputHandler.VerticalCameraMovement);
-            }
         }
     }
 
+    private void FixedUpdate()
+    {
+        float delta = Time.fixedDeltaTime;
+
+        _playerLocomotion.HandleGravity(delta, _playerLocomotion.MoveDirection);
+        _playerLocomotion.HandleMovement(delta);
+        _playerLocomotion.HandleRotation(delta);
+    }
+    
     private void LateUpdate() 
     {
         _inputHandler.SBFlag = false;
@@ -105,7 +108,15 @@ public class PlayerManager : MonoBehaviour
         if(_isInAir)
         {
             _playerLocomotion.InAirTimer = _playerLocomotion.InAirTimer + Time.deltaTime;
-        }    
+        } 
+
+        float delta = Time.deltaTime;
+        
+        if (_cameraHandler != null)
+        {
+            _cameraHandler.FollowTarget(delta);
+            _cameraHandler.HandleCameraRotation(delta, _inputHandler.HorizontalCameraMovement, _inputHandler.VerticalCameraMovement);
+        }   
     }
     
     public void CheckForInteractableObject()

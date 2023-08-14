@@ -55,8 +55,8 @@ public class CameraHandler : MonoBehaviour
 
     public void HandleCameraRotation(float delta, float mouseXInput, float mouseYInput)
     {
-        _lookAngle += (mouseXInput * _lookSpeed) / delta;
-        _pivotAngle -= (mouseYInput * _pivotSpeed) / delta;
+        _lookAngle += (mouseXInput * _lookSpeed * Time.deltaTime) / delta;
+        _pivotAngle -= (mouseYInput * _pivotSpeed * Time.deltaTime) / delta;
         _pivotAngle = Mathf.Clamp(_pivotAngle, _minimumPivot, _maximumPivot);
 
         Vector3 rotation = Vector3.zero;

@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         // Se trocarmos de cena a classe 'GameManager' não será destruída.
         DontDestroyOnLoad(this);
 
-        //InitializeSystem();
+        InitializeSystem();
     }
 
     private void Start() 
@@ -41,13 +41,14 @@ public class GameManager : MonoBehaviour
     public SceneLoadManager SceneLoadManager => _sceneLoadManager;      // O símbolo => significa receber algo.
     public AudioManager AudioManager => _audioManager;
     
-    /*
+
     private void InitializeSystem()
     {
         //StartCoroutine(SavedLanguage());
         SaveSystem.Load();
 
     }
+    /*
     private IEnumerator SavedLanguage()
 
     {
