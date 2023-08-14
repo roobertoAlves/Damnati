@@ -14,6 +14,7 @@ public class PlayerLocomotion : MonoBehaviour
     private PlayerInventory _playerInventory;
     private PlayerAttacker _playerAttack;
     private WeaponSlotManager _weaponSlotManager;
+    private PlayerStats _playerStats;
 
     [SerializeField] private CapsuleCollider _characterCollider;
     [SerializeField] private CapsuleCollider _characterCollisionBlockerCollider;
@@ -48,6 +49,13 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float _groundDirectionRayDistance = 0.2f;
     [SerializeField] private LayerMask _ignoreForGroundCheck;
 
+    [Header("Stamina Costs")]
+    [Space(15)]
+
+    [SerializeField] private int _rollStaminaCost = 15;
+    [SerializeField] private int _backstepStaminaCost = 8; 
+    [SerializeField] private int _sprintStaminaCost = 1;
+
     #region GET & SET
 
     public Rigidbody PlayerRB { get { return _rb; } set { _rb = value; }}
@@ -60,6 +68,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerManager = GetComponent<PlayerManager>();
+        _playerStats = GetComponent<PlayerStats>();
         _animatorHandler = GetComponent<AnimatorHandler>();
         _playerInventory = GetComponent<PlayerInventory>();
         _playerAttack = GetComponent<PlayerAttacker>();
@@ -115,11 +124,12 @@ public class PlayerLocomotion : MonoBehaviour
 
         float speed = _movSpeed;
 
-        if(_inputHandler.RunFlag)
+        if(_inputHandler.RunFlag && _inputHandler.MoveAmount > 0.5f)
         {
             speed = _runSpeed;
             _playerManager.IsSprinting = true; 
             _movDirection *= speed;
+            _playerStats.StaminaDrain(_sprintStaminaCost);
         }
         else
         {
@@ -138,7 +148,7 @@ public class PlayerLocomotion : MonoBehaviour
     }
     public void HandleDodge(float delta)
     {
-        if(_animatorHandler.Anim.GetBool("IsInteracting"))
+        if(_animatorHandler.Anim.GetBool("IsInteracting") || !_animatorHandler.HasAnimator || _playerStats.CurrentStamina <= 0)
         {
             return;
         }
@@ -148,14 +158,14 @@ public class PlayerLocomotion : MonoBehaviour
             _movDirection = _cameraRoot.forward * _inputHandler.VerticalMovement;
             _movDirection += _cameraRoot.right * _inputHandler.HorizontalMovement;
 
-            if(_inputHandler.MoveAmount > 0)
+            if(_inputHandler.MoveAmount > 0 && _playerStats.CurrentStamina >= _rollStaminaCost)
             {
                 _animatorHandler.PlayTargetAnimation("Roll", true);
                 _movDirection.y = 0;
                 Quaternion rollRotation = Quaternion.LookRotation(_movDirection);
                 _myTransform.rotation = rollRotation;
             }
-            else
+            else if(_playerStats.CurrentStamina >= _backstepStaminaCost)
             {
                 _animatorHandler.PlayTargetAnimation("Backstep", true);
             }

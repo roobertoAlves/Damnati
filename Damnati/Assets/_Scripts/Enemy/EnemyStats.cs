@@ -34,7 +34,7 @@ public class EnemyStats : CharacterStats
         if(CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            _anim.Play("Dead_01");
+            _anim.Play("Death_01");
             IsDead = true;
         }
     }

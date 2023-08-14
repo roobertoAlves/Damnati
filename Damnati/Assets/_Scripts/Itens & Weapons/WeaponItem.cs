@@ -41,6 +41,8 @@ public class WeaponItem : Item
     public int baseStamina;
     public float lightAttackMultiplier;
     public float heavyAttackMultiplier;
+    public float thLightAttackMutiplier;
+    public float thHeavyAttackMultiplier;
 
     [Header("Rage Costs")]
     [Space(15)]

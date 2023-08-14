@@ -103,7 +103,23 @@ public class PlayerManager : MonoBehaviour
     private void LateUpdate() 
     {
         _inputHandler.SBFlag = false;
-        _isSprinting = _inputHandler.RunFlag;
+        
+        if(_inputHandler.RunFlag)
+        {
+            if(_playerStats.CurrentStamina <= 0)
+            {
+                _isSprinting = false;
+                _inputHandler.RunFlag = false;
+            }
+            if(_inputHandler.MoveAmount > 0.5f && _playerStats.CurrentStamina > 0)
+            {
+                _isSprinting = true;
+            }
+        }
+        else
+        {
+            _isSprinting = false;
+        }
 
         if(_isInAir)
         {

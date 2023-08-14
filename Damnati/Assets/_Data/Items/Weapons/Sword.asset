@@ -34,6 +34,8 @@ MonoBehaviour:
   baseStamina: 20
   lightAttackMultiplier: 1
   heavyAttackMultiplier: 2
+  thLightAttackMutiplier: 2
+  thHeavyAttackMultiplier: 3
   baseRage: 15
   rageLightAttackMultiplier: 3
   rageHeavyAttackMultiplier: 5

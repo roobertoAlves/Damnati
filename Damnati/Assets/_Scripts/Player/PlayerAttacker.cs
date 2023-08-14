@@ -8,6 +8,7 @@ public class PlayerAttacker : MonoBehaviour
     private AnimatorHandler _animator;
     private PlayerManager _playerManager;
     private PlayerInventory _playerInventory;
+    private PlayerStats _playerStats;
     private string _lastAttack;
     private WeaponSlotManager _weaponSlotManager;
 
@@ -18,18 +19,24 @@ public class PlayerAttacker : MonoBehaviour
         _playerInventory = GetComponent<PlayerInventory>();
         _animator = GetComponent<AnimatorHandler>();
         _playerManager = GetComponent<PlayerManager>();
+        _playerStats = GetComponent<PlayerStats>();
         _weaponSlotManager = GetComponent<WeaponSlotManager>();
     }
 
     public void HandleLightAttack(WeaponItem weapon)
     {
+        if(_playerStats.CurrentStamina <= 0)
+        {
+            return;
+        }
+
         _weaponSlotManager.attackingWeapon = weapon;
-        if(_playerManager.TwoHandFlag)
+        if(_playerManager.TwoHandFlag && _playerStats.CurrentStamina > Mathf.RoundToInt(weapon.baseStamina * weapon.thLightAttackMutiplier))
         {
             _animator.PlayTargetAnimation(weapon.TH_Light_Slash_01, true);
             LastAttack = weapon.TH_Light_Slash_01;
         }
-        else
+        else if( _playerStats.CurrentStamina > Mathf.RoundToInt(weapon.baseStamina * weapon.lightAttackMultiplier))
         {
             _animator.PlayTargetAnimation(weapon.SS_Light_Slash_01, true);
             _lastAttack = weapon.SS_Light_Slash_01;
@@ -37,13 +44,17 @@ public class PlayerAttacker : MonoBehaviour
     }
     public void HandleHeavyAttack(WeaponItem weapon)
     {
-        _weaponSlotManager.attackingWeapon = weapon;
-        if(_playerManager.TwoHandFlag)
+        if(_playerStats.CurrentStamina <= 0 )
         {
-            _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_01, true);
-            _lastAttack = weapon.TH_Heavy_Slash_01;
+            return;
         }
-        else
+        _weaponSlotManager.attackingWeapon = weapon;
+
+        if(_playerManager.TwoHandFlag  && _playerStats.CurrentStamina > Mathf.RoundToInt(weapon.baseStamina * weapon.thHeavyAttackMultiplier))
+        {
+
+        }
+        else if(_playerStats.CurrentStamina > Mathf.RoundToInt(weapon.baseStamina * weapon.heavyAttackMultiplier))
         {
             _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_01, true);
             _lastAttack = weapon.SS_Heavy_Slash_01;
@@ -52,6 +63,11 @@ public class PlayerAttacker : MonoBehaviour
 
     public void HandleWeaponCombo(WeaponItem weapon)
     {
+        if(_playerStats.CurrentStamina <= 0)
+        {
+            return;
+        }
+
         if(_lastAttack == weapon.SS_Light_Slash_01)
         {
             _animator.PlayTargetAnimation(weapon.SS_Light_Slash_02, true);
