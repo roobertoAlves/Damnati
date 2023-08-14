@@ -120,9 +120,16 @@ public class WeaponSlotManager : MonoBehaviour
 
     public void CloseDamageCollider()
     {
-        _rightHandDamageCollider.DisableDamageCollider();
-        _leftHandDamageCollider.DisableDamageCollider();
+        if(_playerManager.IsUsingRightHand)
+        {
+            _rightHandDamageCollider.DisableDamageCollider();
+        }
+        else if(_playerManager.IsUsingLeftHand)
+        {
+            _leftHandDamageCollider.DisableDamageCollider();
+        }
     }
+
 
     #endregion
 

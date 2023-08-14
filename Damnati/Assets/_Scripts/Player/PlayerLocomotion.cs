@@ -54,7 +54,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     [SerializeField] private int _rollStaminaCost = 15;
     [SerializeField] private int _backstepStaminaCost = 8; 
-    [SerializeField] private int _sprintStaminaCost = 1;
+    [SerializeField] private float _sprintStaminaCost = 0.5f;
 
     #region GET & SET
 
@@ -129,7 +129,7 @@ public class PlayerLocomotion : MonoBehaviour
             speed = _runSpeed;
             _playerManager.IsSprinting = true; 
             _movDirection *= speed;
-            _playerStats.StaminaDrain(_sprintStaminaCost);
+            _playerStats.RunStaminaDrain(_sprintStaminaCost);
         }
         else
         {
@@ -164,10 +164,12 @@ public class PlayerLocomotion : MonoBehaviour
                 _movDirection.y = 0;
                 Quaternion rollRotation = Quaternion.LookRotation(_movDirection);
                 _myTransform.rotation = rollRotation;
+                _playerStats.StaminaDrain(_rollStaminaCost);
             }
             else if(_playerStats.CurrentStamina >= _backstepStaminaCost)
             {
                 _animatorHandler.PlayTargetAnimation("Backstep", true);
+                _playerStats.StaminaDrain(_backstepStaminaCost);
             }
         }
     }

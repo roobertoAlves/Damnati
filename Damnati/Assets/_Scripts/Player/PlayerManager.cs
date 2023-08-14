@@ -82,6 +82,7 @@ public class PlayerManager : MonoBehaviour
         _animatorHandler.CanRot = _animatorHandler.Anim.GetBool("CanRotate");
         _playerLocomotion.HandleDodge(delta);
         _playerStats.RegenerateStamina();
+        _playerLocomotion.HandleTwoWeapon(delta);
 
         CheckForInteractableObject();
 

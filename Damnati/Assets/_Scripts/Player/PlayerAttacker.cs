@@ -25,18 +25,13 @@ public class PlayerAttacker : MonoBehaviour
 
     public void HandleLightAttack(WeaponItem weapon)
     {
-        if(_playerStats.CurrentStamina <= 0)
-        {
-            return;
-        }
-
         _weaponSlotManager.attackingWeapon = weapon;
-        if(_playerManager.TwoHandFlag && _playerStats.CurrentStamina > Mathf.RoundToInt(weapon.baseStamina * weapon.thLightAttackMutiplier))
+        if(_playerManager.TwoHandFlag)
         {
             _animator.PlayTargetAnimation(weapon.TH_Light_Slash_01, true);
             LastAttack = weapon.TH_Light_Slash_01;
         }
-        else if( _playerStats.CurrentStamina > Mathf.RoundToInt(weapon.baseStamina * weapon.lightAttackMultiplier))
+        else
         {
             _animator.PlayTargetAnimation(weapon.SS_Light_Slash_01, true);
             _lastAttack = weapon.SS_Light_Slash_01;
@@ -44,17 +39,14 @@ public class PlayerAttacker : MonoBehaviour
     }
     public void HandleHeavyAttack(WeaponItem weapon)
     {
-        if(_playerStats.CurrentStamina <= 0 )
-        {
-            return;
-        }
+         
         _weaponSlotManager.attackingWeapon = weapon;
 
-        if(_playerManager.TwoHandFlag  && _playerStats.CurrentStamina > Mathf.RoundToInt(weapon.baseStamina * weapon.thHeavyAttackMultiplier))
+        if(_playerManager.TwoHandFlag)
         {
 
         }
-        else if(_playerStats.CurrentStamina > Mathf.RoundToInt(weapon.baseStamina * weapon.heavyAttackMultiplier))
+        else
         {
             _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_01, true);
             _lastAttack = weapon.SS_Heavy_Slash_01;

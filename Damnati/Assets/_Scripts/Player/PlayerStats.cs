@@ -101,7 +101,16 @@ public class PlayerStats : CharacterStats
             CurrentStamina = 0;
         }
     }
+     public void RunStaminaDrain(float drain)
+    {
+        CurrentStamina = CurrentStamina - drain;
+        _staminaBar.SetCurrentStamina(CurrentStamina);
 
+        if(CurrentStamina <= -1)
+        {
+            CurrentStamina = 0;
+        }
+    }
     public void RegenerateStamina()
     {
         if(_playerManager.IsInteracting)
@@ -112,7 +121,7 @@ public class PlayerStats : CharacterStats
         {
             _staminaRegenerationTimer += Time.deltaTime;
 
-            if(CurrentStamina < MaxStamina && _staminaRegenerationTimer > 2f )
+            if(CurrentStamina < MaxStamina && _staminaRegenerationTimer > 1f )
             {
                 CurrentStamina += _staminaRegenerationAmount * Time.deltaTime;
                 _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina));
