@@ -240,39 +240,6 @@ public class PlayerLocomotion : MonoBehaviour
             transform.position = _targetPosition;
         }
     }
-
-    public void HandleAttack(float delta)
-    {
-        if (!_animatorHandler.HasAnimator)
-        {
-            return;
-        }
-
-        if (_inputHandler.LBAttackFlag)
-        {
-            if (_playerManager.CanDoCombo)
-            {
-                _inputHandler.ComboFlag = true;
-                _playerAttack.HandleWeaponCombo(_playerInventory.rightHandWeapon);
-                _inputHandler.ComboFlag = false;
-            }
-            else
-            {
-                if (_playerManager.IsInteracting || _playerManager.CanDoCombo)
-                {
-                    return;
-                }
-
-                _animatorHandler.Anim.SetBool("IsUsingRightHand", true);
-                _playerAttack.HandleLightAttack(_playerInventory.rightHandWeapon);
-            }
-        }
-        if (_inputHandler.RBAttackFlag)
-        {
-            _animatorHandler.Anim.SetBool("IsUsingRightHand", true);
-            _playerAttack.HandleHeavyAttack(_playerInventory.rightHandWeapon);
-        }
-    }
     public void HandleTwoWeapon(float delta)
     {
         if(_inputHandler.THEquipFlag)

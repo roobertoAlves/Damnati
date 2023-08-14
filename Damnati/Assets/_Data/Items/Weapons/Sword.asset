@@ -37,3 +37,4 @@ MonoBehaviour:
   baseRage: 15
   rageLightAttackMultiplier: 3
   rageHeavyAttackMultiplier: 5
+  isMeleeWeapon: 1

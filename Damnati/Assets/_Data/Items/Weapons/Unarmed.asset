@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 0}
   itemName: 
-  modelPrefab: {fileID: 0}
+  modelPrefab: {fileID: 2596409019497258170, guid: c1f17bfe221cd3444a9a02ad635319f0, type: 3}
   isUnarmed: 1
   right_Hand_Idle: Right Arm Idle
   left_Hand_Idle: Left Arm Idle
@@ -25,7 +25,6 @@ MonoBehaviour:
   SS_Light_Slash_01: 
   SS_Light_Slash_02: 
   SS_Light_Slash_03: 
-  SS_Light_Slash_04: 
   TH_Light_Slash_01: 
   TH_Light_Slash_02: 
   TH_Light_Slash_03: 
@@ -38,3 +37,4 @@ MonoBehaviour:
   baseRage: 0
   rageLightAttackMultiplier: 0
   rageHeavyAttackMultiplier: 0
+  isMeleeWeapon: 0

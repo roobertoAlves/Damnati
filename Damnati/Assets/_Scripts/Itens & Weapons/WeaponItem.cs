@@ -48,4 +48,7 @@ public class WeaponItem : Item
     public int baseRage;
     public float rageLightAttackMultiplier;
     public float rageHeavyAttackMultiplier;  
+
+    [Header("Weapon Type")]
+    public bool isMeleeWeapon;
 }
