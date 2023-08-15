@@ -110,12 +110,12 @@ public class InputHandler : MonoBehaviour
     {
         if (_lbAttackInput)
         {
-            _playerAttacker.HandleRBAction();
+            _playerAttacker.HandleLBAction();
         }
 
         if (_rbAttackInput)
         {
-            _playerAttacker.HandleHeavyAttack(_playerInventory.rightHandWeapon);
+           _playerAttacker.HandleRBAction();
         }
     }
 

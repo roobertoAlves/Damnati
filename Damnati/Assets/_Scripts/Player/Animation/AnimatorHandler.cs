@@ -129,21 +129,25 @@ public class AnimatorHandler : AnimatorManager
     #region COMBAT
     public void EnableCombo()
     {
-        Anim.SetBool("CanDoCombo", true);
+        Anim.SetBool("CanCombo", true);
+        Debug.Log("Ativando o combo" + _playerManager.CanDoCombo);
     }
 
     public void DisableCombo()
     {
-        Anim.SetBool("CanDoCombo", false);
+        Anim.SetBool("CanCombo", false);
+        Debug.Log("Desativando o combo" + _playerManager.CanDoCombo);
     }
 
     public void EnableIsInvunerable()
     {
         Anim.SetBool("IsInvulnerable", true);
+        Debug.Log("Ativando" + _playerManager.IsInvulnerable);
     }
     public void DisableIsInvunerable()
     {
         Anim.SetBool("IsInvulnerable", false);
+        Debug.Log("Desativando" + _playerManager.IsInvulnerable);
     }
 
     #endregion

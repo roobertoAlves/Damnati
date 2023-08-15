@@ -1,16 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CombatStanceState : States
 {
     [SerializeField] private AttackState _attackState;
+    [SerializeField] private IdleState _idleState;
     [SerializeField] private PersueTargetState _persueTargetState;
     public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
     {
         float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
 
         HandleRotateTowardsTarget(enemyManager);
+
+        if(enemyManager.CurrentTarget.IsDead)
+        {
+            enemyAnimatorController.Anim.SetFloat("Vertical", 0);
+            enemyAnimatorController.Anim.SetFloat("Horizontal", 0);
+            enemyManager.CurrentTarget = null;
+            return _idleState;
+        }
         
         if(enemyManager.IsPerfomingAction)
         {
@@ -20,10 +30,12 @@ public class CombatStanceState : States
         {
             return _attackState;
         }
+        
         else if(distanceFromTarget > enemyManager.MaximumAttackRange)
         {
             return _persueTargetState;
         }
+
         else
         {
             return this;

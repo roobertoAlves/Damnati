@@ -71,10 +71,11 @@ public class PlayerManager : MonoBehaviour
         float delta = Time.deltaTime;
 
         _isInteracting = _animatorHandler.Anim.GetBool("IsInteracting");
-        _canDoCombo = _animatorHandler.Anim.GetBool("CanDoCombo");
+        _canDoCombo = _animatorHandler.Anim.GetBool("CanCombo");
         _isUsingRightHand = _animatorHandler.Anim.GetBool("IsUsingRightHand");
         _isUsingLeftHand = _animatorHandler.Anim.GetBool("IsUsingLeftHand");
         _isInvulnerable = _animatorHandler.Anim.GetBool("IsInvulnerable");
+        
         _animatorHandler.Anim.SetBool("IsInAir", _isInAir);
         _animatorHandler.Anim.SetBool("IsDead", _playerStats.IsDead);
 

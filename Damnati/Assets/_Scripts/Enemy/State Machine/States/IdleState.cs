@@ -22,7 +22,10 @@ public class IdleState : States
 
                 if(viewableAngle > enemyManager.MinimumDetectionAngle && viewableAngle < enemyManager.MaximumDetectionAngle)
                 {
-                    enemyManager.CurrentTarget = characterStats;
+                    if(!characterStats.IsDead)
+                    {
+                        enemyManager.CurrentTarget = characterStats;
+                    }
                 }
             }
         }

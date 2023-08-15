@@ -44,7 +44,8 @@ public class PlayerAttacker : MonoBehaviour
 
         if(_playerManager.TwoHandFlag)
         {
-
+            _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_01, true);
+            _lastAttack = weapon.SS_Heavy_Slash_01;
         }
         else
         {
@@ -55,52 +56,65 @@ public class PlayerAttacker : MonoBehaviour
 
     public void HandleWeaponCombo(WeaponItem weapon)
     {
-        if(_playerStats.CurrentStamina <= 0)
+        if(_animator.Anim.GetBool("IsInteracting") == true && _animator.Anim.GetBool("CanCombo") == false)
         {
             return;
         }
 
-        if(_lastAttack == weapon.SS_Light_Slash_01)
+        if(_inputHandler.ComboFlag)
         {
-            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_02, true);
-        }
-        else if(_lastAttack == weapon.SS_Light_Slash_02)
-        {
-            _animator.PlayTargetAnimation(weapon.SS_Light_Slash_03, true);
-        }
+            _animator.Anim.SetBool("CanCombo", false);
+            
+            if(_lastAttack == weapon.SS_Light_Slash_01)
+            {
+                _animator.PlayTargetAnimation(weapon.SS_Light_Slash_02, true);
+            }
+            else if(_lastAttack == weapon.SS_Light_Slash_02)
+            {
+                _animator.PlayTargetAnimation(weapon.SS_Light_Slash_03, true);
+            }
 
-        else if(_lastAttack == weapon.SS_Heavy_Slash_01)
-        {
-            _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_02, true);
-        }
-        else if(_lastAttack == weapon.SS_Heavy_Slash_02)
-        {
-            _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_03, true);
-        }
+            else if(_lastAttack == weapon.SS_Heavy_Slash_01)
+            {
+                _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_02, true);
+            }
+            else if(_lastAttack == weapon.SS_Heavy_Slash_02)
+            {
+                _animator.PlayTargetAnimation(weapon.SS_Heavy_Slash_03, true);
+            }
 
-        else if(_lastAttack == weapon.TH_Light_Slash_01)
-        {
-            _animator.PlayTargetAnimation(weapon.TH_Light_Slash_02, true);
-        }
-        else if(_lastAttack == weapon.TH_Light_Slash_02)
-        {
-            _animator.PlayTargetAnimation(weapon.TH_Light_Slash_03, true);
-        }
+            else if(_lastAttack == weapon.TH_Light_Slash_01)
+            {
+                _animator.PlayTargetAnimation(weapon.TH_Light_Slash_02, true);
+            }
+            else if(_lastAttack == weapon.TH_Light_Slash_02)
+            {
+                _animator.PlayTargetAnimation(weapon.TH_Light_Slash_03, true);
+            }
 
-        else if(_lastAttack == weapon.TH_Heavy_Slash_01)
-        {
-            _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_02, true);
-        }
-        else if(_lastAttack == weapon.TH_Heavy_Slash_02)
-        {
-            _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_03, true);
+            else if(_lastAttack == weapon.TH_Heavy_Slash_01)
+            {
+                _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_02, true);
+            }
+            else if(_lastAttack == weapon.TH_Heavy_Slash_02)
+            {
+                _animator.PlayTargetAnimation(weapon.TH_Heavy_Slash_03, true);
+            }
         }
     }
     
     #region Input Actions
-    public void HandleRBAction()
+    public void HandleLBAction()
     {
         if (_playerInventory.rightHandWeapon.isMeleeWeapon)
+        {
+            PerformLBMeleeAction();
+        }
+    }
+
+    public void HandleRBAction()
+    {
+        if(_playerInventory.rightHandWeapon.isMeleeWeapon)
         {
             PerformRBMeleeAction();
         }
@@ -108,7 +122,7 @@ public class PlayerAttacker : MonoBehaviour
     #endregion
 
     #region Attack Actions
-    private void PerformRBMeleeAction()
+    private void PerformLBMeleeAction()
     {
         if (_playerManager.CanDoCombo)
         {
@@ -123,10 +137,30 @@ public class PlayerAttacker : MonoBehaviour
                 return;
             }
 
-            _animator.Anim.SetBool("isUsingRightHand", true);
+            _animator.Anim.SetBool("IsUsingRightHand", true);
             HandleLightAttack(_playerInventory.rightHandWeapon);
         }
     }
+
+    private void PerformRBMeleeAction()
+    {
+        if(_playerManager.CanDoCombo)
+        {
+            _inputHandler.ComboFlag = true;
+            HandleWeaponCombo(_playerInventory.rightHandWeapon);
+            _inputHandler.ComboFlag= false;
+        }
+        else
+        {
+            if(_playerManager.IsInteracting || _playerManager.CanDoCombo)
+            {
+                return;
+            }
+
+            _animator.Anim.SetBool("IsUsingRightHand", true);
+            HandleHeavyAttack(_playerInventory.rightHandWeapon);
+        }
+    } 
 
     #endregion
 }
