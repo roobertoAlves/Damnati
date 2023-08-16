@@ -2256,7 +2256,7 @@ GameObject:
   - component: {fileID: 5866666020403253647}
   - component: {fileID: 5866666020403253646}
   - component: {fileID: 5866666020403253653}
-  m_Layer: 9
+  m_Layer: 7
   m_Name: Enemy Test
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -4812,10 +4812,10 @@ MonoBehaviour:
   _rotationSpeed: 10
   _groundDetectionRayStartPoint: 0.5
   _minimumDistanceNeededToBeginFall: 1
-  _groundDirectionRayDistance: 0.1
+  _groundDirectionRayDistance: 0.05
   _ignoreForGroundCheck:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 8
   _rollStaminaCost: 15
   _backstepStaminaCost: 8
   _sprintStaminaCost: 1
@@ -4903,6 +4903,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393a27cde12143f4cb72e29acd05a724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputHandler: {fileID: 0}
+  _weaponSlotManager: {fileID: 5079598194609435851}
 --- !u!114 &5079598194609435853
 MonoBehaviour:
   m_ObjectHideFlags: 0
