@@ -10,13 +10,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - Character Collision Blocker
-  - Ground
-  - Player
   - Character
+  - Player
+  - 
   - 
   - 
   - 

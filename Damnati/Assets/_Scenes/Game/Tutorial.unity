@@ -4332,7 +4332,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5394950403459672293, guid: b2014a71f25bb8d4dab004c7c3777846, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5394950403459672293, guid: b2014a71f25bb8d4dab004c7c3777846, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -4397,6 +4397,10 @@ PrefabInstance:
     - target: {fileID: 6372388958597548238, guid: b2014a71f25bb8d4dab004c7c3777846, type: 3}
       propertyPath: m_Name
       value: Arena1_Damnati
+      objectReference: {fileID: 0}
+    - target: {fileID: 6372388958597548238, guid: b2014a71f25bb8d4dab004c7c3777846, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6372388958597548238, guid: b2014a71f25bb8d4dab004c7c3777846, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -4808,7 +4812,7 @@ MonoBehaviour:
   _rotationSpeed: 10
   _groundDetectionRayStartPoint: 0.5
   _minimumDistanceNeededToBeginFall: 1
-  _groundDirectionRayDistance: 0.05
+  _groundDirectionRayDistance: 0.1
   _ignoreForGroundCheck:
     serializedVersion: 2
     m_Bits: 128

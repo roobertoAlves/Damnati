@@ -62,6 +62,7 @@ public class PlayerLocomotion : MonoBehaviour
     public LayerMask IgnoreForGroundCheck { get { return _ignoreForGroundCheck;} set { _ignoreForGroundCheck = value; }}
     public float InAirTimer { get { return _inAirTimer; } set { _inAirTimer = value; }}
     public Vector3 MoveDirection { get { return _movDirection; } set { _movDirection = value; }}
+    public float MoveDirectionY { get { return _movDirection.y; } set { _movDirection.y = value; }}
     #endregion
 
     private void Awake() 
@@ -74,7 +75,7 @@ public class PlayerLocomotion : MonoBehaviour
         _playerAttack = GetComponent<PlayerAttacker>();
         _UIManager = FindObjectOfType<UIManager>();
         _weaponSlotManager = GetComponent<WeaponSlotManager>();
-
+        
         _playerManager.IsGrounded = true;    
 
         _cameraRoot = Camera.main.transform;
@@ -251,6 +252,40 @@ public class PlayerLocomotion : MonoBehaviour
         {
             transform.position = _targetPosition;
         }
+    }
+
+    public void Attack(float delta)
+    {
+        if (!_animatorHandler.HasAnimator)
+        {
+            return;
+        }
+
+        if (_inputHandler.LBAttackFlag)
+        {
+            if (_playerManager.CanDoCombo)
+            {
+                _inputHandler.ComboFlag = true;
+                _playerAttack.HandleWeaponCombo(_playerInventory.rightHandWeapon);
+                _inputHandler.ComboFlag = false;
+            }
+            else
+            {
+                if (_playerManager.IsInteracting || _playerManager.CanDoCombo)
+                {
+                    return;
+                }
+
+                _animatorHandler.Anim.SetBool("IsUsingRightHand", true);
+                _playerAttack.HandleLightAttack(_playerInventory.rightHandWeapon);
+            }
+        }
+        if (_inputHandler.RBAttackFlag)
+        {
+            _animatorHandler.Anim.SetBool("IsUsingRightHand", true);
+            _playerAttack.HandleHeavyAttack(_playerInventory.rightHandWeapon);
+        }
+
     }
     public void HandleTwoWeapon(float delta)
     {

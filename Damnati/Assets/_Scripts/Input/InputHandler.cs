@@ -34,8 +34,7 @@ public class InputHandler : MonoBehaviour
 
    #endregion
 
-   private PlayerAttacker _playerAttacker;
-   private PlayerInventory _playerInventory;
+
 
    #region GET & SET
 
@@ -88,14 +87,11 @@ public class InputHandler : MonoBehaviour
         _gameControls.PlayerActions.Pause.performed += OnPause;
         _gameControls.PlayerActions.Pause.canceled += OnPause;
 
-        _playerAttacker = FindObjectOfType<PlayerAttacker>();
-        _playerInventory = FindObjectOfType<PlayerInventory>();
     }
     
     public void TickInput(float delta)
     {
         MoveInput(delta);
-        HandleAttackInput(delta);
     }
 
     private void MoveInput(float delta)
@@ -104,19 +100,6 @@ public class InputHandler : MonoBehaviour
         _verticalMovement = _walkMoveInput.y;
         _moveAmount = Mathf.Clamp01(Mathf.Abs(_horizontalMovement) + Mathf.Abs(_verticalMovement));
 
-    }
-
-    private void HandleAttackInput(float delta)
-    {
-        if (_lbAttackInput)
-        {
-            _playerAttacker.HandleLBAction();
-        }
-
-        if (_rbAttackInput)
-        {
-           _playerAttacker.HandleRBAction();
-        }
     }
 
     #region Input Methods

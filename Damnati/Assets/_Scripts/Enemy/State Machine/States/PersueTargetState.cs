@@ -18,7 +18,7 @@ public class PersueTargetState : States
         
         if(distanceFromTarget > enemyManager.MaximumAttackRange)
         {
-            enemyAnimatorController.Anim.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
+            enemyAnimatorController.Anim.SetFloat("Vertical", 5, 0.1f, Time.deltaTime);
         }
 
         HandleRotateTowardsTarget(enemyManager);

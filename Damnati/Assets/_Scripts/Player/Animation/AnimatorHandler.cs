@@ -142,12 +142,10 @@ public class AnimatorHandler : AnimatorManager
     public void EnableIsInvunerable()
     {
         Anim.SetBool("IsInvulnerable", true);
-        Debug.Log("Ativando" + _playerManager.IsInvulnerable);
     }
     public void DisableIsInvunerable()
     {
         Anim.SetBool("IsInvulnerable", false);
-        Debug.Log("Desativando" + _playerManager.IsInvulnerable);
     }
 
     #endregion
