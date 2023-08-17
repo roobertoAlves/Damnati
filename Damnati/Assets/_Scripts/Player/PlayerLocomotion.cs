@@ -121,7 +121,10 @@ public class PlayerLocomotion : MonoBehaviour
         _movDirection = _cameraRoot.forward * _inputHandler.VerticalMovement;
         _movDirection += _cameraRoot.right * _inputHandler.HorizontalMovement;
         _movDirection.Normalize();
-        _movDirection.y = 0;
+        if(_movDirection.y > 0 && !_playerManager.IsInteracting && !_playerManager.IsInAir)
+        {
+            _movDirection.y = 0;
+        }
 
         float speed = _movSpeed;
 
@@ -162,7 +165,10 @@ public class PlayerLocomotion : MonoBehaviour
             if(_inputHandler.MoveAmount > 0 && _playerStats.CurrentStamina >= _rollStaminaCost)
             {
                 _animatorHandler.PlayTargetAnimation("Roll", true);
-                _movDirection.y = 0;
+                if(_movDirection.y > 0 && !_playerManager.IsInteracting && !_playerManager.IsInAir)
+                {
+                    _movDirection.y = 0;
+                }
                 Quaternion rollRotation = Quaternion.LookRotation(_movDirection);
                 _myTransform.rotation = rollRotation;
                 _playerStats.StaminaDrain(_rollStaminaCost);

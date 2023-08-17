@@ -90695,14 +90695,14 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.5
+  - time: 1.8
     functionName: EnableCombo
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 2.1333334
+  - time: 2.2666667
     functionName: DisableCombo
     data: 
     objectReferenceParameter: {fileID: 0}
