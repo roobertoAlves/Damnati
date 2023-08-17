@@ -266,7 +266,7 @@ public class PlayerLocomotion : MonoBehaviour
             if (_playerManager.CanDoCombo)
             {
                 _inputHandler.ComboFlag = true;
-                _playerAttack.HandleWeaponCombo(_playerInventory.rightHandWeapon);
+                _playerAttack.HandleLightWeaponCombo(_playerInventory.rightHandWeapon);
                 _inputHandler.ComboFlag = false;
             }
             else
@@ -282,8 +282,23 @@ public class PlayerLocomotion : MonoBehaviour
         }
         if (_inputHandler.RBAttackFlag)
         {
-            _animatorHandler.Anim.SetBool("IsUsingRightHand", true);
-            _playerAttack.HandleHeavyAttack(_playerInventory.rightHandWeapon);
+            if (_playerManager.CanDoCombo)
+            {
+                _inputHandler.ComboFlag = true;
+                _playerAttack.HandleHeavyWeaponCombo(_playerInventory.rightHandWeapon);
+                _inputHandler.ComboFlag = false;
+            }
+            else
+            {
+                if (_playerManager.IsInteracting || _playerManager.CanDoCombo)
+                {
+                    return;
+                }
+
+                _animatorHandler.Anim.SetBool("IsUsingRightHand", true);
+                _playerAttack.HandleHeavyAttack(_playerInventory.rightHandWeapon);
+                
+            }
         }
 
     }
