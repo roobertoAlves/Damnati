@@ -33,6 +33,7 @@ public class PlayerManager : MonoBehaviour
     private bool _isHitEnemy;
     private bool _isInRage;
 
+
     #endregion
 
     #region GET & SET
@@ -78,6 +79,8 @@ public class PlayerManager : MonoBehaviour
         
         _animatorHandler.Anim.SetBool("IsInAir", _isInAir);
         _animatorHandler.Anim.SetBool("IsDead", _playerStats.IsDead);
+        _animatorHandler.Anim.SetFloat("InAirTimer", _playerLocomotion.InAirTimer);
+        _animatorHandler.Anim.SetBool("IsGrounded", _isGrounded);
 
         _inputHandler.TickInput(delta);
         _animatorHandler.CanRot = _animatorHandler.Anim.GetBool("CanRotate");

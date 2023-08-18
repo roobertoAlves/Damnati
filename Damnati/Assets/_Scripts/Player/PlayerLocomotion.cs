@@ -49,6 +49,9 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float _groundDirectionRayDistance = 0.2f;
     [SerializeField] private LayerMask _ignoreForGroundCheck;
 
+    [SerializeField] private GameObject _leftFoot;
+    [SerializeField] private GameObject _rightFoot;
+
     [Header("Stamina Costs")]
     [Space(15)]
 
@@ -187,6 +190,12 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 origin = transform.position;
         origin.y += _groundDetectionRayStartPoint;
 
+        Vector3 leftFootOrigin = _leftFoot.transform.position;
+        leftFootOrigin.y += _groundDetectionRayStartPoint;
+
+        Vector3 rightFootOrigin = _rightFoot.transform.position;
+        rightFootOrigin.y += _groundDetectionRayStartPoint;
+
         if(Physics.Raycast(origin, transform.forward, out hit, 0.4f))
         {
             moveDirection = Vector3.zero;
@@ -201,11 +210,18 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 dir = moveDirection;
         dir.Normalize();
         origin = origin + dir * _groundDirectionRayDistance;
+        
+
 
         _targetPosition = transform.position;
 
         Debug.DrawRay(origin, -Vector3.up * _minimumDistanceNeededToBeginFall, Color.red, 0.1f, false);
-        if (Physics.Raycast(origin, -Vector3.up, out hit, _minimumDistanceNeededToBeginFall, _ignoreForGroundCheck))
+        Debug.DrawRay(leftFootOrigin, -Vector3.up * _minimumDistanceNeededToBeginFall, Color.blue, 0.1f, false);
+        Debug.DrawRay(rightFootOrigin, -Vector3.up * _minimumDistanceNeededToBeginFall, Color.blue, 0.1f, false);
+        
+        if (Physics.Raycast(origin, -Vector3.up, out hit, _minimumDistanceNeededToBeginFall, _ignoreForGroundCheck) ||
+            Physics.Raycast(leftFootOrigin, -Vector3.up, out hit, _minimumDistanceNeededToBeginFall, _ignoreForGroundCheck) ||
+            Physics.Raycast(rightFootOrigin, -Vector3.up, out hit, _minimumDistanceNeededToBeginFall, _ignoreForGroundCheck))
         {
             _normalVector = hit.normal;
             Vector3 tp = hit.point;
@@ -218,11 +234,13 @@ public class PlayerLocomotion : MonoBehaviour
                 {
                     Debug.Log("You were in the air for " + _inAirTimer);
                     _animatorHandler.PlayTargetAnimation("Land", true);
+                    _playerManager.IsInteracting = true;
                     _inAirTimer = 0;
                 }
                 else
                 {
-                    _animatorHandler.PlayTargetAnimation("Empty", false);
+                   _playerManager.IsInteracting = false;
+                   _animatorHandler.PlayTargetAnimation("Empty", false);
                     _inAirTimer = 0;
                 }
 
@@ -241,6 +259,7 @@ public class PlayerLocomotion : MonoBehaviour
                 if(_playerManager.IsInteracting == false)
                 {
                     _animatorHandler.PlayTargetAnimation("Fall", true);
+                    _playerManager.IsInteracting = true;
                 }
 
                 Vector3 vel = _rb.velocity;
