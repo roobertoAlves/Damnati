@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : CharacterManager
 {
     private InputHandler _inputHandler;
-    private AnimatorHandler _animatorHandler;
+    private PlayerAnimatorController _animatorHandler;
     private CameraHandler _cameraHandler;
     private PlayerLocomotion _playerLocomotion;
     private PlayerStats _playerStats;
 
     [Header("Item Collect Components")]
-    [Space(15)]
-    
+    [Space(15)] 
     private InteractableUI _interactableUI;
     [SerializeField] private GameObject _interactableUIGameObject;
     [SerializeField] private GameObject _itemInteractableGameObject;
@@ -60,7 +59,7 @@ public class PlayerManager : MonoBehaviour
     {
         _inputHandler = FindObjectOfType<InputHandler>();
         _cameraHandler = GetComponent<CameraHandler>();
-        _animatorHandler = GetComponent<AnimatorHandler>();
+        _animatorHandler = GetComponent<PlayerAnimatorController>();
         _playerLocomotion = GetComponent<PlayerLocomotion>();
         _interactableUI = FindObjectOfType<InteractableUI>();
         _playerStats = GetComponent<PlayerStats>();

@@ -8,6 +8,14 @@ public class WeaponItem : Item
     public GameObject modelPrefab;
     public bool isUnarmed;
 
+    [Header("Damage")]
+    [Space(15)]
+    public int baseDamage = 25;
+    public int criticalDamageMultiplier = 3;
+
+    [Header("Weapon Type")]
+    public bool isMeleeWeapon;
+
     [Header("Idle Animations")]
     [Space(15)]
 
@@ -51,6 +59,4 @@ public class WeaponItem : Item
     public float rageLightAttackMultiplier;
     public float rageHeavyAttackMultiplier;  
 
-    [Header("Weapon Type")]
-    public bool isMeleeWeapon;
 }

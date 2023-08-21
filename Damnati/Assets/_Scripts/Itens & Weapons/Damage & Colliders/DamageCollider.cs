@@ -6,7 +6,13 @@ public class DamageCollider : MonoBehaviour
 {
     private Collider _damageCollider;
 
-    [SerializeField] private int _currentWeaponDamage = 25;
+    
+    private int _currentWeaponDamage = 25;
+
+    #region GET & SET
+
+    public int CurrentWeaponDamage { get { return _currentWeaponDamage; } set { _currentWeaponDamage = value; }}
+    #endregion
 
 
     private void Awake() 

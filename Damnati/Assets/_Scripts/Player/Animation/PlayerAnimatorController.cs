@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimatorHandler : AnimatorManager
+public class PlayerAnimatorController : AnimatorManager
 {
     private InputHandler _inputHandler;
+    private PlayerStats _playerStats;
     private PlayerLocomotion _playerLocomotion;
     private PlayerManager _playerManager;
 
@@ -27,6 +28,7 @@ public class AnimatorHandler : AnimatorManager
         Anim = GetComponent<Animator>(); 
 
         _playerLocomotion = GetComponent<PlayerLocomotion>();
+        _playerStats = GetComponent<PlayerStats>();
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
         
@@ -147,6 +149,12 @@ public class AnimatorHandler : AnimatorManager
     {
         Anim.SetBool("IsInvulnerable", false);
     }
+
+    public override void TakeCriticalDamageAnimationEvent()
+    {
+        _playerStats.TakeDamageNoAnimation(_playerManager.PendingCriticalDamage);
+        _playerManager.PendingCriticalDamage = 0;
+    } 
 
     #endregion
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerAttacker : MonoBehaviour
 {
     private InputHandler _inputHandler;
-    private AnimatorHandler _animator;
+    private PlayerAnimatorController _animator;
     private PlayerManager _playerManager;
     private string _lastAttack;
     private PlayerStats _playerStats;
@@ -15,7 +15,7 @@ public class PlayerAttacker : MonoBehaviour
     public string LastAttack {get { return _lastAttack;} set { _lastAttack = value;}}
     private void Awake() 
     {
-        _animator = GetComponent<AnimatorHandler>();
+        _animator = GetComponent<PlayerAnimatorController>();
         _playerManager = GetComponent<PlayerManager>();
         _playerLocomotion = GetComponent<PlayerLocomotion>();
         _playerStats = GetComponent<PlayerStats>();

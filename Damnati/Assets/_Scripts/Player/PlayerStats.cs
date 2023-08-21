@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
-    private AnimatorHandler _playerAnimator;
+    private PlayerAnimatorController _playerAnimator;
     private PlayerManager _playerManager;
     private InputHandler _inputHandler;
     
@@ -31,7 +31,7 @@ public class PlayerStats : CharacterStats
     [SerializeField] private float _rageRegenerationHAAmount = 5;
     private void Awake() 
     {
-        _playerAnimator = GetComponent<AnimatorHandler>();    
+        _playerAnimator = GetComponent<PlayerAnimatorController>();    
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
     }
@@ -71,6 +71,16 @@ public class PlayerStats : CharacterStats
 
     #endregion
 
+    public void TakeDamageNoAnimation(int damage)
+    { 
+        CurrentHealth = CurrentHealth - damage;
+        
+        if(CurrentHealth <= 0)
+        {
+            CurrentHealth = 0;
+            IsDead = true;
+        }       
+    }
     public void TakeDamage(int damage)
     { 
         if(_playerManager.IsInvulnerable || IsDead)
@@ -91,6 +101,7 @@ public class PlayerStats : CharacterStats
         }
     }
 
+    #region Combat Stamina Actions Drain
     public void StaminaDrain(int drain)
     {
         CurrentStamina = CurrentStamina - drain;
@@ -157,4 +168,5 @@ public class PlayerStats : CharacterStats
             }
         }
     }
+    #endregion
 }

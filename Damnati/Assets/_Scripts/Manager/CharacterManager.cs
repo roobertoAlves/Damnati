@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Critical Damage")]
+    [Space(15)]
+    [SerializeField] private int _pendingCriticalDamage;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /*[Header("Enemy Lock On")]
+    [Space(15)]
+    [SerializeField] private Transform _lockOnTransform;
+    */
+
+    #region GET & SET
+    
+    public int PendingCriticalDamage { get { return _pendingCriticalDamage; } set { _pendingCriticalDamage = value; }}
+    
+    //public Transform LockOnTransform { get { return _lockOnTransform; } set { _lockOnTransform = value; }}
+    #endregion
 }
+

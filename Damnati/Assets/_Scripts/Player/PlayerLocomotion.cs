@@ -9,7 +9,7 @@ public class PlayerLocomotion : MonoBehaviour
     private InputHandler _inputHandler;
     private UIManager _UIManager;
     [SerializeField] private Rigidbody _rb;
-    private AnimatorHandler _animatorHandler;
+    private PlayerAnimatorController _animatorHandler;
     private PlayerManager _playerManager;
     private PlayerInventory _playerInventory;
     private PlayerAttacker _playerAttack;
@@ -73,7 +73,7 @@ public class PlayerLocomotion : MonoBehaviour
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerManager = GetComponent<PlayerManager>();
         _playerStats = GetComponent<PlayerStats>();
-        _animatorHandler = GetComponent<AnimatorHandler>();
+        _animatorHandler = GetComponent<PlayerAnimatorController>();
         _playerInventory = GetComponent<PlayerInventory>();
         _playerAttack = GetComponent<PlayerAttacker>();
         _UIManager = FindObjectOfType<UIManager>();

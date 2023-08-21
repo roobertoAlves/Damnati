@@ -16,6 +16,9 @@ MonoBehaviour:
   itemName: 
   modelPrefab: {fileID: 2596409019497258170, guid: c1f17bfe221cd3444a9a02ad635319f0, type: 3}
   isUnarmed: 1
+  baseDamage: 25
+  criticalDamageMultiplier: 3
+  isMeleeWeapon: 1
   right_Hand_Idle: Right Arm Idle
   left_Hand_Idle: Left Arm Idle
   th_idle: 
@@ -34,7 +37,8 @@ MonoBehaviour:
   baseStamina: 0
   lightAttackMultiplier: 0
   heavyAttackMultiplier: 0
+  thLightAttackMutiplier: 0
+  thHeavyAttackMultiplier: 0
   baseRage: 0
   rageLightAttackMultiplier: 0
   rageHeavyAttackMultiplier: 0
-  isMeleeWeapon: 0

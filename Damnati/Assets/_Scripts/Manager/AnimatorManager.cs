@@ -14,4 +14,5 @@ public class AnimatorManager : MonoBehaviour
         Anim.SetBool("IsInteracting", isInteracting);
         Anim.CrossFade(targetAnim, 0.3f);
     }
+    public virtual void TakeCriticalDamageAnimationEvent(){}
 }

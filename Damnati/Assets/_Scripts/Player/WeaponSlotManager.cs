@@ -14,13 +14,20 @@ public class WeaponSlotManager : MonoBehaviour
 
     private PlayerStats _playerStats;
     private PlayerManager _playerManager;
+    private PlayerInventory _playerInventory;
     private Animator _anim;
     
+    #region GET & SET
+
+    public DamageCollider LeftHandDamageCollider { get { return _leftHandDamageCollider; } set { _leftHandDamageCollider = value; }}
+    public DamageCollider RightHandDamageCollider { get { return _rightHandDamageCollider; } set { _rightHandDamageCollider = value; }}
+    #endregion
     private void Awake() 
     {   
         _playerManager = GetComponent<PlayerManager>();
         _playerStats = GetComponent<PlayerStats>();
         _anim = GetComponent<Animator>();
+        _playerInventory = GetComponent<PlayerInventory>();
 
        WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();    
         
@@ -101,10 +108,12 @@ public class WeaponSlotManager : MonoBehaviour
     private void LoadLeftWeaponDamageCollider()
     {
         _leftHandDamageCollider = _leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+        _leftHandDamageCollider.CurrentWeaponDamage = _playerInventory.leftHandWeapon.baseDamage;
     }
     private void LoadRightWeaponDamageCollider()
     {
         _rightHandDamageCollider = _rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+        _rightHandDamageCollider.CurrentWeaponDamage = _playerInventory.rightHandWeapon.baseDamage;
     }
     public void OpenDamageCollider()
     {

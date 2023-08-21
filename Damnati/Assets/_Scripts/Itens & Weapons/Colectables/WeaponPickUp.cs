@@ -18,11 +18,11 @@ public class WeaponPickUp : Interactable
     {
         PlayerInventory playerInventory;
         PlayerLocomotion playerController;
-        AnimatorHandler animatorController;
+        PlayerAnimatorController animatorController;
 
         playerInventory = playerManager.GetComponent<PlayerInventory>();
         playerController = playerManager.GetComponent<PlayerLocomotion>();
-        animatorController = playerManager.GetComponent<AnimatorHandler>();
+        animatorController = playerManager.GetComponent<PlayerAnimatorController>();
 
         //playerController.NewDirection = Vector3.zero; 
         animatorController.PlayTargetAnimation("Picking Up", true);

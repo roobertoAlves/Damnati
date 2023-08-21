@@ -16,6 +16,7 @@ public class EnemyManager : CharacterManager
 
 
     private bool _isPerformingAction;
+    private bool _isInteracting;
 
     [Header("A.I Components")]
     [Space(15)]
@@ -81,6 +82,9 @@ public class EnemyManager : CharacterManager
     private void Update() 
     {
         HandleRecoveryTimer();
+
+        _isInteracting = _enemyAnimation.Anim.GetBool("IsInteracting");
+        _enemyAnimation.Anim.SetBool("IsDead", _enemyStats.IsDead);
     }
 
     private void FixedUpdate() 
