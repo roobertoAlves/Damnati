@@ -57,6 +57,9 @@ public class PlayerManager : CharacterManager
 
     private void Awake() 
     {
+        _cameraHandler = FindObjectOfType<CameraHandler>();
+        CriticalDamageCollider = GetComponentInChildren<CriticalDamageCollider>();
+        
         _inputHandler = FindObjectOfType<InputHandler>();
         _cameraHandler = GetComponent<CameraHandler>();
         _animatorHandler = GetComponent<PlayerAnimatorController>();
@@ -64,7 +67,6 @@ public class PlayerManager : CharacterManager
         _interactableUI = FindObjectOfType<InteractableUI>();
         _playerStats = GetComponent<PlayerStats>();
 
-        _cameraHandler = CameraHandler.singleton;
     }
     private void Update()
     {
@@ -82,7 +84,7 @@ public class PlayerManager : CharacterManager
         _animatorHandler.Anim.SetBool("IsGrounded", _isGrounded);
 
         _inputHandler.TickInput(delta);
-        _animatorHandler.CanRot = _animatorHandler.Anim.GetBool("CanRotate");
+        _animatorHandler.canRotate = _animatorHandler.Anim.GetBool("CanRotate");
         _playerLocomotion.HandleDodge(delta);
         _playerLocomotion.Attack(delta);
         _playerStats.RegenerateStamina();
@@ -109,28 +111,8 @@ public class PlayerManager : CharacterManager
     private void LateUpdate() 
     {
         _inputHandler.SBFlag = false;
-        
-        if(_inputHandler.RunFlag)
-        {
-            if(_playerStats.CurrentStamina <= 0)
-            {
-                _isSprinting = false;
-                _inputHandler.RunFlag = false;
-            }
-            if(_inputHandler.MoveAmount > 0.5f && _playerStats.CurrentStamina > 0)
-            {
-                _isSprinting = true;
-            }
-        }
-        else
-        {
-            _isSprinting = false;
-        }
 
-        if(_isInAir)
-        {
-            _playerLocomotion.InAirTimer = _playerLocomotion.InAirTimer + Time.deltaTime;
-        } 
+        HandleSprinting();
 
         float delta = Time.deltaTime;
         
@@ -139,6 +121,10 @@ public class PlayerManager : CharacterManager
             _cameraHandler.FollowTarget(delta);
             _cameraHandler.HandleCameraRotation(delta, _inputHandler.HorizontalCameraMovement, _inputHandler.VerticalCameraMovement);
         }   
+        if(_isInAir)
+        {
+            _playerLocomotion.InAirTimer = _playerLocomotion.InAirTimer + Time.deltaTime;
+        } 
     }
     
     public void CheckForInteractableObject()
@@ -174,6 +160,25 @@ public class PlayerManager : CharacterManager
             {
                 _itemInteractableGameObject.SetActive(false);
             }
+        }
+    }
+    private void HandleSprinting()
+    {
+        if(_inputHandler.RunFlag)
+        {
+            if(_playerStats.CurrentStamina <= 0)
+            {
+                _isSprinting = false;
+                _inputHandler.RunFlag = false;
+            }
+            if(_inputHandler.MoveAmount > 0.5f && _playerStats.CurrentStamina > 0)
+            {
+                _isSprinting = true;
+            }
+        }
+        else
+        {
+            _isSprinting = false;
         }
     }
 }

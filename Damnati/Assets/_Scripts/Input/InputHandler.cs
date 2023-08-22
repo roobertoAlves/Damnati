@@ -7,8 +7,8 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
-   private GameControls _gameControls;
-
+    private GameControls _gameControls;
+    private CameraHandler _cameraHandler;
 
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -20,11 +20,15 @@ public class InputHandler : MonoBehaviour
     private bool _sbInput;
     private bool _rbAttackInput;
     private bool _lbAttackInput;
+    private bool _criticalAttackInput;
     private bool _thEquipInput;
     private bool _comboFlag;
     private bool _interactInput;
     private bool _pauseInput;
-
+    private bool _lockOnInput;
+    private bool _lockOnFlag;
+    private bool _rStickInput;
+    private bool _lStickInput;
    #endregion
 
    #region Input Variables
@@ -53,15 +57,23 @@ public class InputHandler : MonoBehaviour
     public bool ComboFlag { get { return _comboFlag; } set { _comboFlag = value; }}
     public bool InteractInput { get { return _interactInput; } set { _interactInput = value; }}
     public bool PauseInput { get { return _pauseInput; } set { _pauseInput = value; }}
-    
+    public bool CriticalAttackFlag { get { return _criticalAttackInput; } set { _criticalAttackInput = value; }}
+    public bool LockOnInput { get { return _lockOnInput; } set { _lockOnInput = value; }}
+    public bool LockOnFlag { get { return _lockOnFlag; } set { _lockOnFlag = value; }}
+    public bool RightStickInput { get { return _rStickInput; } set { _rStickInput = value; }}
+    public bool LeftStickInput { get { return _lStickInput; } set { _lStickInput = value; }}
     #endregion
 
     private void Awake() 
     {
         _gameControls = new GameControls();
 
+        _cameraHandler = FindObjectOfType<CameraHandler>();
+
         _gameControls.PlayerMovement.View.performed += CameraView;
         _gameControls.PlayerMovement.View.canceled += CameraView;
+
+        _gameControls.PlayerActions.LockOn.performed += OnLockOn;
 
         _gameControls.PlayerMovement.Walk.performed += OnWalk;
         _gameControls.PlayerMovement.Walk.canceled += OnWalk;
@@ -74,6 +86,9 @@ public class InputHandler : MonoBehaviour
 
         _gameControls.PlayerActions.RB.performed += OnHeavyAttack;
         _gameControls.PlayerActions.RB.canceled += OnHeavyAttack;
+
+        _gameControls.PlayerActions.CriticalAttack.performed += OnCriticalAttack;
+        _gameControls.PlayerActions.CriticalAttack.canceled += OnCriticalAttack;
 
         _gameControls.PlayerActions.TH.performed += OnTwoHandEquiped;
         _gameControls.PlayerActions.TH.canceled += OnTwoHandEquiped;
@@ -101,6 +116,48 @@ public class InputHandler : MonoBehaviour
         _moveAmount = Mathf.Clamp01(Mathf.Abs(_horizontalMovement) + Mathf.Abs(_verticalMovement));
 
     }
+        public void HandleLockOn(float delta)
+    {
+        if(_lockOnInput && _lockOnFlag == false)
+        {
+            _cameraHandler.ClearLockOnTargets();
+            _lockOnInput = false;
+            _cameraHandler.HandleLockOn();
+
+            if(_cameraHandler.NearestLockOnTarget != null)
+            {
+                _cameraHandler.CurrentLockOnTarget = _cameraHandler.NearestLockOnTarget;
+                _lockOnFlag = true;
+            }
+            else if(_lockOnFlag && _lockOnInput)
+            {
+                _lockOnInput = false;
+                _lockOnFlag = false;
+                _cameraHandler.ClearLockOnTargets();
+            }
+
+            if(_lockOnFlag && _lStickInput)
+            {
+                _lStickInput = false;
+                _cameraHandler.HandleLockOn();
+                if(_cameraHandler.LeftLockOnTarget != null)
+                {
+                    _cameraHandler.CurrentLockOnTarget = _cameraHandler.LeftLockOnTarget;
+                }
+            }
+
+            if(_lockOnFlag && _rStickInput)
+            {
+                _rStickInput = false;
+                _cameraHandler.HandleLockOn();
+                
+                if(_cameraHandler.RightLockOnTarget != null)
+                {
+                    _cameraHandler.CurrentLockOnTarget = _cameraHandler.RightLockOnTarget;
+                }
+            }
+        }
+    }
 
     #region Input Methods
     public void CameraView(InputAction.CallbackContext ctx)
@@ -108,7 +165,10 @@ public class InputHandler : MonoBehaviour
         _cameraMoveInput = ctx.ReadValue<Vector2>();
 
     }
-
+    private void OnLockOn(InputAction.CallbackContext ctx)
+    {
+        _lockOnInput = ctx.ReadValueAsButton();
+    }
     private void OnWalk(InputAction.CallbackContext ctx)
     {
         _walkMoveInput = ctx.ReadValue<Vector2>();
@@ -136,6 +196,10 @@ public class InputHandler : MonoBehaviour
     private void OnHeavyAttack(InputAction.CallbackContext ctx)
     {
         _rbAttackInput = ctx.ReadValueAsButton();
+    }
+    private void OnCriticalAttack(InputAction.CallbackContext ctx)
+    {
+        _criticalAttackInput = ctx.ReadValueAsButton();
     }
 
     private void OnPause(InputAction.CallbackContext ctx)

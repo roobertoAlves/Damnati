@@ -5,6 +5,7 @@ using UnityEngine;
 public class WeaponSlotManager : MonoBehaviour
 {
     public WeaponItem attackingWeapon;
+    
     private WeaponHolderSlot _leftHandSlot;
     private WeaponHolderSlot _rightHandSlot;
     private WeaponHolderSlot _backSlot;

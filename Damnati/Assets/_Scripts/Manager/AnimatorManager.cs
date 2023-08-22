@@ -6,6 +6,7 @@ public class AnimatorManager : MonoBehaviour
 {
     [HideInInspector]
     public Animator Anim;
+    public bool canRotate;
 
     
     public void PlayTargetAnimation(string targetAnim, bool isInteracting)

@@ -112,7 +112,7 @@ public class PlayerStats : CharacterStats
             CurrentStamina = 0;
         }
     }
-     public void RunStaminaDrain(float drain)
+    public void RunStaminaDrain(float drain)
     {
         CurrentStamina = CurrentStamina - drain;
         _staminaBar.SetCurrentStamina(CurrentStamina);

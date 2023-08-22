@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
@@ -15,11 +16,16 @@ public class PlayerLocomotion : MonoBehaviour
     private PlayerAttacker _playerAttack;
     private WeaponSlotManager _weaponSlotManager;
     private PlayerStats _playerStats;
+    private CameraHandler _cameraHandler;
 
     [SerializeField] private CapsuleCollider _characterCollider;
     [SerializeField] private CapsuleCollider _characterCollisionBlockerCollider;
 
     private Transform _myTransform;
+
+    [Header("Critical Attack Components")]
+    [Space(15)]
+    [SerializeField] private Transform _criticalAttackRayCastStartPoint;
 
     [Header("Camera Components")]
     [Space(15)]
@@ -66,10 +72,14 @@ public class PlayerLocomotion : MonoBehaviour
     public float InAirTimer { get { return _inAirTimer; } set { _inAirTimer = value; }}
     public Vector3 MoveDirection { get { return _movDirection; } set { _movDirection = value; }}
     public float MoveDirectionY { get { return _movDirection.y; } set { _movDirection.y = value; }}
+    
+    public Transform CriticalAttackRayCastStartPoint { get { return _criticalAttackRayCastStartPoint; } set { _criticalAttackRayCastStartPoint = value; }}
     #endregion
 
     private void Awake() 
     {
+        _cameraHandler = FindObjectOfType<CameraHandler>();
+
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerManager = GetComponent<PlayerManager>();
         _playerStats = GetComponent<PlayerStats>();
@@ -93,26 +103,68 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleRotation(float delta)
     {
-        Vector3 targetDir = Vector3.zero;
-        float moveOverride = _inputHandler.MoveAmount;
-
-        targetDir = _cameraRoot.forward * _inputHandler.VerticalMovement;
-        targetDir += _cameraRoot.right * _inputHandler.HorizontalMovement;
-
-        targetDir.Normalize();
-        targetDir.y = 0;
-
-        if(targetDir == Vector3.zero)
+        if(_animatorHandler.canRotate)
         {
-            targetDir = _myTransform.forward;
+            if(_inputHandler.LockOnFlag)
+            {
+                if(_inputHandler.SBFlag || _inputHandler.RunFlag)
+                {
+                    Vector3 targetDir = Vector3.zero;
+                    float moveOverride = _inputHandler.MoveAmount;
+
+                    targetDir = _cameraHandler.CameraTransform.forward * _inputHandler.VerticalMovement;
+                    targetDir += _cameraHandler.CameraTransform.right * _inputHandler.HorizontalMovement;
+
+                    targetDir.Normalize();
+                    targetDir.y = 0;
+
+                    if(targetDir == Vector3.zero)
+                    {
+                        targetDir = transform.forward;
+                    }
+
+                    Quaternion tr = Quaternion.LookRotation(targetDir);
+                    Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, _rotationSpeed * delta);
+
+                    transform.rotation = targetRotation;
+                }
+                else
+                {
+                    Vector3 rotationDirection = _movDirection;
+                    rotationDirection = _cameraHandler.CurrentLockOnTarget.position - transform.position;
+                    rotationDirection.y = 0;
+                    rotationDirection.Normalize();
+                    
+                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                    Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, _rotationSpeed * delta);
+
+                    transform.rotation = targetRotation;
+                }
+            }
+            else
+            {
+                Vector3 targetDir = Vector3.zero;
+                float moveOverride = _inputHandler.MoveAmount;
+
+                targetDir = _cameraRoot.forward * _inputHandler.VerticalCameraMovement;
+                targetDir += _cameraRoot.right * _inputHandler.HorizontalCameraMovement;
+
+                targetDir.Normalize();
+                targetDir.y = 0;
+
+                if(targetDir == Vector3.zero)
+                {
+                    targetDir = _myTransform.forward;
+                }
+
+                float rs = _rotationSpeed;
+
+                Quaternion tr = Quaternion.LookRotation(targetDir);
+                Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
+
+                _myTransform.rotation = targetRotation;
+            }
         }
-
-        float rs = _rotationSpeed;
-
-        Quaternion tr = Quaternion.LookRotation(targetDir);
-        Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
-
-        _myTransform.rotation = targetRotation;
     }
     public void HandleMovement(float delta)
     {
@@ -124,10 +176,7 @@ public class PlayerLocomotion : MonoBehaviour
         _movDirection = _cameraRoot.forward * _inputHandler.VerticalMovement;
         _movDirection += _cameraRoot.right * _inputHandler.HorizontalMovement;
         _movDirection.Normalize();
-        if(_movDirection.y > 0 && !_playerManager.IsInteracting && !_playerManager.IsInAir)
-        {
-            _movDirection.y = 0;
-        }
+        _movDirection.y = 0;
 
         float speed = _movSpeed;
 
@@ -146,11 +195,13 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_movDirection, _normalVector);
         _rb.velocity = projectedVelocity;
 
-        _animatorHandler.UpdateAnimatorValues(_inputHandler.MoveAmount, 0, _playerManager.IsSprinting);
-
-        if(_animatorHandler.CanRot)
+        if(_inputHandler.LockOnFlag && _inputHandler.RunFlag == false)
         {
-            HandleRotation(delta);
+            _animatorHandler.UpdateAnimatorValues(_inputHandler.MoveAmount, _inputHandler.HorizontalMovement, _playerManager.IsSprinting);
+        }
+        else
+        {
+            _animatorHandler.UpdateAnimatorValues(_inputHandler.MoveAmount, 0, _playerManager.IsSprinting);
         }
     }
     public void HandleDodge(float delta)
@@ -167,11 +218,8 @@ public class PlayerLocomotion : MonoBehaviour
 
             if(_inputHandler.MoveAmount > 0 && _playerStats.CurrentStamina >= _rollStaminaCost)
             {
-                _animatorHandler.PlayTargetAnimation("Roll", true);
-                if(_movDirection.y > 0 && !_playerManager.IsInteracting && !_playerManager.IsInAir)
-                {
-                    _movDirection.y = 0;
-                }
+                _animatorHandler.PlayTargetAnimation("Roll", true); 
+                _movDirection.y = 0;
                 Quaternion rollRotation = Quaternion.LookRotation(_movDirection);
                 _myTransform.rotation = rollRotation;
                 _playerStats.StaminaDrain(_rollStaminaCost);
@@ -259,7 +307,6 @@ public class PlayerLocomotion : MonoBehaviour
                 if(_playerManager.IsInteracting == false)
                 {
                     _animatorHandler.PlayTargetAnimation("Fall", true);
-                    _playerManager.IsInteracting = true;
                 }
 
                 Vector3 vel = _rb.velocity;
@@ -271,14 +318,13 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (_playerManager.IsInteracting || _inputHandler.MoveAmount > 0)
         {
-            transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime / 0.1f);
+            _myTransform.position = Vector3.Lerp(_myTransform.position, _targetPosition, Time.deltaTime / 0.1f);
         }
         else
         {
-            transform.position = _targetPosition;
+            _myTransform.position = _targetPosition;
         }
     }
-
     public void Attack(float delta)
     {
         if (!_animatorHandler.HasAnimator)
@@ -326,6 +372,10 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
 
+    }
+    private void CriticalAttack(float delta)
+    {
+        _playerAttack.AttemptRiposte();
     }
     public void HandleTwoWeapon(float delta)
     {

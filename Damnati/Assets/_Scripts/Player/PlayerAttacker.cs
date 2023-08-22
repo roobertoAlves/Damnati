@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerAttacker : MonoBehaviour
@@ -7,11 +8,13 @@ public class PlayerAttacker : MonoBehaviour
     private InputHandler _inputHandler;
     private PlayerAnimatorController _animator;
     private PlayerManager _playerManager;
-    private string _lastAttack;
     private PlayerStats _playerStats;
     private WeaponSlotManager _weaponSlotManager;
     private PlayerLocomotion _playerLocomotion;
 
+    private LayerMask _riposteLayer = 1 << 9;
+
+    private string _lastAttack;
     public string LastAttack {get { return _lastAttack;} set { _lastAttack = value;}}
     private void Awake() 
     {
@@ -105,7 +108,6 @@ public class PlayerAttacker : MonoBehaviour
             #endregion
         }
     }
-
     public void HandleHeavyWeaponCombo(WeaponItem weapon)
     {
         if(_animator.Anim.GetBool("IsInteracting") == true && _animator.Anim.GetBool("CanCombo") == false)
@@ -158,4 +160,27 @@ public class PlayerAttacker : MonoBehaviour
             #endregion
         }
     }
+
+    #region Attack Actions
+    public void AttemptRiposte()
+    {
+        RaycastHit hit;
+
+        if(Physics.Raycast(_playerLocomotion.CriticalAttackRayCastStartPoint.position, 
+        transform.TransformDirection(Vector3.forward), out hit, 0.5f, _riposteLayer))
+        {
+            CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponent<CharacterManager>();
+            DamageCollider rightWeapon = _weaponSlotManager.RightHandDamageCollider;
+            _playerManager.transform.position = enemyCharacterManager.CriticalDamageCollider.CriticalDamagerStandPosition.position;
+
+            Vector3 rotationDirection = _playerManager.transform.root.eulerAngles;
+            rotationDirection = hit.transform.position - _playerManager.transform.position;
+            rotationDirection.y = 0;
+            rotationDirection.Normalize();
+            Quaternion tr = Quaternion.LookRotation(rotationDirection);
+            Quaternion targetRotation = Quaternion.Slerp(_playerManager.transform.rotation, tr, 500 * Time.deltaTime);
+            _playerManager.transform.rotation = targetRotation;
+        }
+    }
+    #endregion
 }

@@ -70,6 +70,7 @@ public class EnemyManager : CharacterManager
         _enemyAnimation = GetComponent<EnemyAnimatorController>();
         _enemyStats = GetComponent<EnemyStats>();
         _enemyRb = GetComponent<Rigidbody>();
+        CriticalDamageCollider = GetComponentInChildren<CriticalDamageCollider>();
         _navMeshAgent = GetComponentInChildren<NavMeshAgent>();
     }
 
