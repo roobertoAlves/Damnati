@@ -197,7 +197,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         if(_inputHandler.LockOnFlag && _inputHandler.RunFlag == false)
         {
-            _animatorHandler.UpdateAnimatorValues(_inputHandler.MoveAmount, _inputHandler.HorizontalMovement, _playerManager.IsSprinting);
+            _animatorHandler.UpdateAnimatorValues(_inputHandler.VerticalMovement, _inputHandler.HorizontalMovement, _playerManager.IsSprinting);
         }
         else
         {

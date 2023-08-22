@@ -61,7 +61,6 @@ public class PlayerManager : CharacterManager
         CriticalDamageCollider = GetComponentInChildren<CriticalDamageCollider>();
         
         _inputHandler = FindObjectOfType<InputHandler>();
-        _cameraHandler = GetComponent<CameraHandler>();
         _animatorHandler = GetComponent<PlayerAnimatorController>();
         _playerLocomotion = GetComponent<PlayerLocomotion>();
         _interactableUI = FindObjectOfType<InteractableUI>();

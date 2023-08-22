@@ -107,6 +107,7 @@ public class InputHandler : MonoBehaviour
     public void TickInput(float delta)
     {
         MoveInput(delta);
+        HandleLockOn(delta);
     }
 
     private void MoveInput(float delta)
@@ -116,7 +117,7 @@ public class InputHandler : MonoBehaviour
         _moveAmount = Mathf.Clamp01(Mathf.Abs(_horizontalMovement) + Mathf.Abs(_verticalMovement));
 
     }
-        public void HandleLockOn(float delta)
+    private void HandleLockOn(float delta)
     {
         if(_lockOnInput && _lockOnFlag == false)
         {

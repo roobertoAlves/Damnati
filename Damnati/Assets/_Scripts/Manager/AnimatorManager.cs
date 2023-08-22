@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimatorManager : MonoBehaviour
-{
-    [HideInInspector]
+{ 
     public Animator Anim;
     public bool canRotate;
 
