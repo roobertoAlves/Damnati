@@ -96,22 +96,9 @@ public class PlayerAnimatorController : AnimatorManager
         Anim.SetFloat(_verticalVelocity, v, 0.1f, Time.deltaTime);
         Anim.SetFloat(_horizontalVelocity, h, 0.1f, Time.deltaTime);
     }
-    public void CanRotate()
-    {
-        Anim.SetBool("CanRotate", true);
-    }
-    public void StopRotation()
-    {
-         Anim.SetBool("CanRotate", false);
-    }
-
     private void OnAnimationMove()
     {
-        if(!HasAnimator)
-        {
-            return;
-        }
-        if(_playerManager.IsInteracting == false)
+        if(!HasAnimator || _playerManager.IsInteracting == false)
         {
             return;
         }
@@ -146,6 +133,31 @@ public class PlayerAnimatorController : AnimatorManager
     {
         Anim.SetBool("IsInvulnerable", false);
     }
+    public void EnableIsParrying()
+    {
+        _playerManager.IsParrying = true;
+    }
+    public void DisableIsParrying()
+    {
+        _playerManager.IsParrying = false;
+    }
+    public void EnableCanBeRiposted()
+    {
+        _playerManager.CanBeRiposted = true;
+    }
+    public void DisableCanBeRiposted()
+    {
+        _playerManager.CanBeRiposted = false;
+    }
+    public void CanRotate()
+    {
+        Anim.SetBool("CanRotate", true);
+    }
+    public void StopRotation()
+    {
+         Anim.SetBool("CanRotate", false);
+    }
+
 
     public override void TakeCriticalDamageAnimationEvent()
     {

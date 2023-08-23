@@ -14,8 +14,14 @@ public class CharacterManager : MonoBehaviour
 
     [Header("Combat Colliders")]
     [Space(15)]
-    private BoxCollider _riposteBoxCollider;
+    [SerializeField] private BoxCollider _riposteBoxCollider;
     private CriticalDamageCollider _criticalDamageCollider;
+
+    [Header("Combat Flags")]
+    [Space(15)]
+    private bool _canBeRiposted;
+    private bool _canbeParried;
+    private bool _isParrying;
 
     /*[Header("Enemy Lock On")]
     [Space(15)]
@@ -32,6 +38,10 @@ public class CharacterManager : MonoBehaviour
     public BoxCollider RiposteBoxCollider { get { return _riposteBoxCollider; } set { _riposteBoxCollider = value; }}
     
     public Transform LockOnTransform { get { return _lockOnTransform; } set { _lockOnTransform = value; }}
+    
+    public bool IsParrying { get { return _isParrying; } set { _isParrying = value; }}
+    public bool CanBeParried { get { return _canbeParried; } set { _canbeParried = value; }}
+    public bool CanBeRiposted { get { return _canBeRiposted; } set { _canBeRiposted = value; }}
     #endregion
 }
 

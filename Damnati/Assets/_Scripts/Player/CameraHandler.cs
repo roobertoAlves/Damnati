@@ -4,15 +4,17 @@ using UnityEngine;
 public class CameraHandler : MonoBehaviour
 {
     private InputHandler _inputHandler; 
+    private PlayerManager _playerManager;
 
     [Header("Camera Components")]
     [Space(15)]
-    [SerializeField] private Transform _targetTransform;
+    private Transform _targetTransform;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private Transform _cameraPivotTransform;
     private Transform _myTransform;
     private Vector3 _cameraTransformPosition;
     private LayerMask _ignoreLayers;
+    private LayerMask _enviromentLayer;
     private Vector3 _cameraFollowVelocity = Vector3.zero;
 
 
@@ -43,10 +45,15 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] private Transform _currentLockOnTarget;
 
     private List<CharacterManager> _avaliableTargets = new List<CharacterManager>();
+
     [SerializeField] private Transform _nearestLockOnTarget;
     [SerializeField] private Transform _leftLockOnTarget;
     [SerializeField] private Transform _rightLockOnTarget;
+    [Space(15)]
     [SerializeField] private float _maximumLockOnDistance = 30;
+    [Space(15)]
+    [SerializeField] private float _lockedPivotPosition = 2.25f;
+    [SerializeField] private float _unlockedPivotPosition = 1.65f;
 
     #region GET & SET
     public Transform CameraTransform { get { return _cameraTransform; } set { _cameraTransform = value; }}
@@ -61,7 +68,14 @@ public class CameraHandler : MonoBehaviour
         _myTransform = transform;
         _defaultPosition = _cameraTransform.localPosition.z;
         _ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+        _targetTransform = FindObjectOfType<PlayerManager>().transform;
         _inputHandler = FindObjectOfType<InputHandler>();
+        _playerManager = FindObjectOfType<PlayerManager>();
+    }
+
+    private void Start() 
+    {
+        _enviromentLayer = LayerMask.NameToLayer("Environment");    
     }
 
     public void FollowTarget(float delta)
@@ -93,8 +107,6 @@ public class CameraHandler : MonoBehaviour
         }
         else
         {
-            float velocity = 0;
-
             Vector3 dir = _currentLockOnTarget.position - transform.position;
             dir.Normalize();
             dir.y = 0;
@@ -150,12 +162,25 @@ public class CameraHandler : MonoBehaviour
                 Vector3 lockTargetDirection = character.transform.position - _targetTransform.position;
                 float distanceFromTarget = Vector3.Distance(_targetTransform.position, character.transform.position);
                 float viewableAngle = Vector3.Angle(lockTargetDirection, _cameraTransform.forward);
+                RaycastHit hit;
 
                 if(character.transform.root != _targetTransform.transform.root 
                 && viewableAngle > -50 && viewableAngle < 50
                 && distanceFromTarget <= _maximumLockOnDistance)
                 {
-                    _avaliableTargets.Add(character);
+                    if(Physics.Linecast(_playerManager.LockOnTransform.position, character.LockOnTransform.position, out hit))
+                    {
+                        Debug.DrawLine(_playerManager.LockOnTransform.position, character.LockOnTransform.position);
+                    
+                        if(hit.transform.gameObject.layer == _enviromentLayer)
+                        {
+                            //Cannot lock onto target, object in the way;
+                        }
+                        else
+                        {
+                            _avaliableTargets.Add(character);
+                        }
+                    }
                 }
             }
         }
@@ -194,5 +219,21 @@ public class CameraHandler : MonoBehaviour
         _avaliableTargets.Clear();
         _nearestLockOnTarget = null;
         _currentLockOnTarget = null;
+    }
+
+    public void SetCameraHeight()
+    {
+        Vector3 velocity = Vector3.zero;
+        Vector3 newLockedPosition = new Vector3(0, _lockedPivotPosition);
+        Vector3 newUnlockedPosition = new Vector3(0, _unlockedPivotPosition);
+
+        if(_currentLockOnTarget != null)
+        {
+            _cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(_cameraPivotTransform.transform.localPosition, newLockedPosition, ref velocity, Time.deltaTime);
+        }
+        else
+        {
+            _cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(_cameraPivotTransform.transform.localPosition, newUnlockedPosition, ref velocity, Time.deltaTime);
+        }
     }
 }

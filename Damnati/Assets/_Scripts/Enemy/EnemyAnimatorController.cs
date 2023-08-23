@@ -27,5 +27,26 @@ public class EnemyAnimatorController : AnimatorManager
     {
         _enemyStats.TakeDamageNoAnimation(_enemyManager.PendingCriticalDamage);
         _enemyManager.PendingCriticalDamage = 0;
-    } 
+    }
+
+    #region Combat and Animation Events
+
+    public void EnableIsParrying()
+    {
+        _enemyManager.IsParrying = true;
+    }
+    public void DisableIsParrying()
+    {
+        _enemyManager.IsParrying = false;
+    }
+    public void EnableCanBeRiposted()
+    {
+        _enemyManager.CanBeRiposted = true;
+    }
+    public void DisableCanBeRiposted()
+    {
+        _enemyManager.CanBeRiposted = false;
+    }
+
+    #endregion 
 }

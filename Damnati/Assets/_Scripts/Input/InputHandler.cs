@@ -29,6 +29,7 @@ public class InputHandler : MonoBehaviour
     private bool _lockOnFlag;
     private bool _rStickInput;
     private bool _lStickInput;
+    private bool _caInput;
    #endregion
 
    #region Input Variables
@@ -62,6 +63,7 @@ public class InputHandler : MonoBehaviour
     public bool LockOnFlag { get { return _lockOnFlag; } set { _lockOnFlag = value; }}
     public bool RightStickInput { get { return _rStickInput; } set { _rStickInput = value; }}
     public bool LeftStickInput { get { return _lStickInput; } set { _lStickInput = value; }}
+    public bool CriticalAttackInput { get { return _caInput; } set { _caInput = value; }}
     #endregion
 
     private void Awake() 
@@ -73,7 +75,9 @@ public class InputHandler : MonoBehaviour
         _gameControls.PlayerMovement.View.performed += CameraView;
         _gameControls.PlayerMovement.View.canceled += CameraView;
 
-        _gameControls.PlayerActions.LockOn.performed += OnLockOn;
+        _gameControls.PlayerActions.CameraLockOn.performed += ctx => _lockOnInput = true;
+        _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
+        _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
 
         _gameControls.PlayerMovement.Walk.performed += OnWalk;
         _gameControls.PlayerMovement.Walk.canceled += OnWalk;
@@ -107,7 +111,7 @@ public class InputHandler : MonoBehaviour
     public void TickInput(float delta)
     {
         MoveInput(delta);
-        HandleLockOn(delta);
+        HandleLockOnInput();
     }
 
     private void MoveInput(float delta)
@@ -117,58 +121,56 @@ public class InputHandler : MonoBehaviour
         _moveAmount = Mathf.Clamp01(Mathf.Abs(_horizontalMovement) + Mathf.Abs(_verticalMovement));
 
     }
-    private void HandleLockOn(float delta)
+    private void HandleLockOnInput()
     {
         if(_lockOnInput && _lockOnFlag == false)
         {
-            _cameraHandler.ClearLockOnTargets();
             _lockOnInput = false;
             _cameraHandler.HandleLockOn();
-
+            
             if(_cameraHandler.NearestLockOnTarget != null)
             {
                 _cameraHandler.CurrentLockOnTarget = _cameraHandler.NearestLockOnTarget;
-                _lockOnFlag = true;
-            }
-            else if(_lockOnFlag && _lockOnInput)
-            {
-                _lockOnInput = false;
-                _lockOnFlag = false;
-                _cameraHandler.ClearLockOnTargets();
-            }
-
-            if(_lockOnFlag && _lStickInput)
-            {
-                _lStickInput = false;
-                _cameraHandler.HandleLockOn();
-                if(_cameraHandler.LeftLockOnTarget != null)
-                {
-                    _cameraHandler.CurrentLockOnTarget = _cameraHandler.LeftLockOnTarget;
-                }
-            }
-
-            if(_lockOnFlag && _rStickInput)
-            {
-                _rStickInput = false;
-                _cameraHandler.HandleLockOn();
-                
-                if(_cameraHandler.RightLockOnTarget != null)
-                {
-                    _cameraHandler.CurrentLockOnTarget = _cameraHandler.RightLockOnTarget;
-                }
+                _lockOnFlag = true; 
             }
         }
+        else if(_lockOnInput && _lockOnFlag)
+        {
+            _lockOnInput = false;
+            _lockOnFlag = false;
+            _cameraHandler.ClearLockOnTargets();
+        }
+        
+        if(_lockOnFlag && _lStickInput)
+        {
+            _lStickInput = false;
+            _cameraHandler.HandleLockOn();
+
+            if(_cameraHandler.LeftLockOnTarget != null)
+            {
+                _cameraHandler.CurrentLockOnTarget = _cameraHandler.LeftLockOnTarget;
+            }
+        }
+        if(_lockOnFlag && _rStickInput)
+        {
+            _rStickInput = false;
+            _cameraHandler.HandleLockOn();
+            
+            if(_cameraHandler.RightLockOnTarget != null)
+            {
+                _cameraHandler.CurrentLockOnTarget = _cameraHandler.RightLockOnTarget;
+            }
+        }
+
+        _cameraHandler.SetCameraHeight();
     }
+
 
     #region Input Methods
     public void CameraView(InputAction.CallbackContext ctx)
     {
         _cameraMoveInput = ctx.ReadValue<Vector2>();
 
-    }
-    private void OnLockOn(InputAction.CallbackContext ctx)
-    {
-        _lockOnInput = ctx.ReadValueAsButton();
     }
     private void OnWalk(InputAction.CallbackContext ctx)
     {

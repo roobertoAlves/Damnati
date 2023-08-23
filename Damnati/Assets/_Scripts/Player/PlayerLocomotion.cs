@@ -7,9 +7,10 @@ public class PlayerLocomotion : MonoBehaviour
 {
     [Header("Components")]
     [Space(15)]
+    [SerializeField] private Rigidbody _rb;
+    
     private InputHandler _inputHandler;
     private UIManager _UIManager;
-    [SerializeField] private Rigidbody _rb;
     private PlayerAnimatorController _animatorHandler;
     private PlayerManager _playerManager;
     private PlayerInventory _playerInventory;
@@ -106,64 +107,61 @@ public class PlayerLocomotion : MonoBehaviour
         if(_animatorHandler.canRotate)
         {
             if(_inputHandler.LockOnFlag)
-            {
-                if(_inputHandler.SBFlag || _inputHandler.RunFlag)
-                {
-                    Vector3 targetDir = Vector3.zero;
-                    float moveOverride = _inputHandler.MoveAmount;
-
-                    targetDir = _cameraHandler.CameraTransform.forward * _inputHandler.VerticalMovement;
-                    targetDir += _cameraHandler.CameraTransform.right * _inputHandler.HorizontalMovement;
-
-                    targetDir.Normalize();
-                    targetDir.y = 0;
-
-                    if(targetDir == Vector3.zero)
-                    {
-                        targetDir = transform.forward;
-                    }
-
-                    Quaternion tr = Quaternion.LookRotation(targetDir);
-                    Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, _rotationSpeed * delta);
-
-                    transform.rotation = targetRotation;
-                }
-                else
-                {
-                    Vector3 rotationDirection = _movDirection;
-                    rotationDirection = _cameraHandler.CurrentLockOnTarget.position - transform.position;
-                    rotationDirection.y = 0;
-                    rotationDirection.Normalize();
-                    
-                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, _rotationSpeed * delta);
-
-                    transform.rotation = targetRotation;
-                }
-            }
-            else
+        {
+            if(_inputHandler.SBFlag || _inputHandler.RunFlag)
             {
                 Vector3 targetDir = Vector3.zero;
-                float moveOverride = _inputHandler.MoveAmount;
-
-                targetDir = _cameraRoot.forward * _inputHandler.VerticalCameraMovement;
-                targetDir += _cameraRoot.right * _inputHandler.HorizontalCameraMovement;
+                targetDir = _cameraHandler.CameraTransform.forward * _inputHandler.VerticalMovement * delta;
+                targetDir += _cameraHandler.CameraTransform.right * _inputHandler.HorizontalMovement * delta;
 
                 targetDir.Normalize();
                 targetDir.y = 0;
 
                 if(targetDir == Vector3.zero)
                 {
-                    targetDir = _myTransform.forward;
+                    targetDir = transform.forward;
                 }
 
-                float rs = _rotationSpeed;
-
                 Quaternion tr = Quaternion.LookRotation(targetDir);
-                Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
 
-                _myTransform.rotation = targetRotation;
+                transform.rotation = targetRotation;
             }
+            else
+            {
+                Vector3 rotationDirection = _movDirection;
+                rotationDirection = _cameraHandler.CurrentLockOnTarget.position - transform.position;
+                rotationDirection.y = 0;
+                rotationDirection.Normalize();
+                    
+                Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, _rotationSpeed * Time.deltaTime);
+
+                transform.rotation = targetRotation;
+            }
+        }
+        else
+        {
+            Vector3 targetDir = Vector3.zero;
+            float moveOverride = _inputHandler.MoveAmount;
+
+            targetDir = _cameraRoot.forward * _inputHandler.VerticalCameraMovement * delta;
+            targetDir += _cameraRoot.right * _inputHandler.HorizontalCameraMovement * delta;
+            targetDir.Normalize();
+            targetDir.y = 0;
+
+            if(targetDir == Vector3.zero)
+            {
+                targetDir = _myTransform.forward;
+            }
+
+            float rs = _rotationSpeed;
+
+            Quaternion tr = Quaternion.LookRotation(targetDir);
+            Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
+
+            _myTransform.rotation = targetRotation;
+        }
         }
     }
     public void HandleMovement(float delta)
@@ -375,7 +373,11 @@ public class PlayerLocomotion : MonoBehaviour
     }
     private void CriticalAttack(float delta)
     {
-        _playerAttack.AttemptRiposte();
+        if(_inputHandler.CriticalAttackInput)
+        {
+            _inputHandler.CriticalAttackInput = false;
+            _playerAttack.AttemptRiposte();
+        }
     }
     public void HandleTwoWeapon(float delta)
     {

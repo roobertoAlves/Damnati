@@ -11,6 +11,7 @@ public class PlayerAttacker : MonoBehaviour
     private PlayerStats _playerStats;
     private WeaponSlotManager _weaponSlotManager;
     private PlayerLocomotion _playerLocomotion;
+    private PlayerInventory _playerInventory;
 
     private LayerMask _riposteLayer = 1 << 9;
 
@@ -24,6 +25,7 @@ public class PlayerAttacker : MonoBehaviour
         _playerStats = GetComponent<PlayerStats>();
         _weaponSlotManager = GetComponent<WeaponSlotManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
+        _playerInventory = GetComponent<PlayerInventory>();
     }
 
     public void HandleLightAttack(WeaponItem weapon)
@@ -164,6 +166,11 @@ public class PlayerAttacker : MonoBehaviour
     #region Attack Actions
     public void AttemptRiposte()
     {
+        if(_playerStats.CurrentStamina <= 0)
+        {
+            return; 
+        }
+        
         RaycastHit hit;
 
         if(Physics.Raycast(_playerLocomotion.CriticalAttackRayCastStartPoint.position, 
@@ -180,6 +187,12 @@ public class PlayerAttacker : MonoBehaviour
             Quaternion tr = Quaternion.LookRotation(rotationDirection);
             Quaternion targetRotation = Quaternion.Slerp(_playerManager.transform.rotation, tr, 500 * Time.deltaTime);
             _playerManager.transform.rotation = targetRotation;
+
+            int criticalDamage = _playerInventory.rightHandWeapon.criticalDamageMultiplier * rightWeapon.CurrentWeaponDamage;
+            enemyCharacterManager.PendingCriticalDamage = criticalDamage;
+
+            _animator.PlayTargetAnimation("Riposte", true);
+            enemyCharacterManager.GetComponent<AnimatorManager>().PlayTargetAnimation("Riposted", true);
         }
     }
     #endregion

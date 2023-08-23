@@ -67,20 +67,45 @@ public class EnemyWeaponSlotManager : MonoBehaviour
             if(isLeft)
             {
                 _leftHandDamageCollider = _leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+                //_leftHandDamageCollider.CharacterManager = GetComponent<CharacterManager>();
             }
             else
             {
                 _rightHandDamageCollider = _rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+                //_rightHandDamageCollider.CharacterManager = GetComponent<CharacterManager>();
             }
     }
 
     public void OpenDamageCollider()
     {
-            _rightHandDamageCollider.EnableDamageCollider();
+        _rightHandDamageCollider.EnableDamageCollider();
     }
 
     public void CloseDamageCollider()
     {
-            _rightHandDamageCollider.DisableDamageCollider();
+        _rightHandDamageCollider.DisableDamageCollider();
     }
+
+    #region Combat & Animation Events
+    public void DrainStaminaLightAttack()
+    {
+
+    }
+
+    public void DrainStaminaHeavyAttack()
+    {
+
+    }
+
+    public void EnableCombo()
+    {
+        //anim.SetBool("canDoCombo", true);
+    }
+
+    public void DisableCombo()
+    {
+        //anim.SetBool("canDoCombo", false);
+    }
+
+    #endregion
 }
