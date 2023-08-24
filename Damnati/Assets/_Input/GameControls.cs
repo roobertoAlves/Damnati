@@ -234,7 +234,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""CameraLockOn"",
                     ""type"": ""Button"",
-                    ""id"": ""afc9a740-a6be-443d-9f67-7ef42fa27578"",
+                    ""id"": ""eea98e9b-550d-477b-81b6-baf8296c3f8c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -332,7 +332,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""61147bd7-e6ee-4f6f-a4be-2f344c33d3d2"",
+                    ""id"": ""d1243838-6aef-48ff-99c0-fc685cb76225"",
                     ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
                     ""processors"": """",

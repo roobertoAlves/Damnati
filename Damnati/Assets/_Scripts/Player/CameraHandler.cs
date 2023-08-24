@@ -13,7 +13,7 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] private Transform _cameraPivotTransform;
     private Transform _myTransform;
     private Vector3 _cameraTransformPosition;
-    private LayerMask _ignoreLayers;
+    [SerializeField] private LayerMask _ignoreLayers;
     private LayerMask _enviromentLayer;
     private Vector3 _cameraFollowVelocity = Vector3.zero;
 
@@ -42,11 +42,9 @@ public class CameraHandler : MonoBehaviour
 
     [Header("Lock On Settings")]
     [Space(15)]
-    [SerializeField] private Transform _currentLockOnTarget;
-
-    private List<CharacterManager> _avaliableTargets = new List<CharacterManager>();
-
-    [SerializeField] private Transform _nearestLockOnTarget;
+    private Transform _currentLockOnTarget;
+    [SerializeField] private List<CharacterManager> _avaliableTargets = new List<CharacterManager>();
+    private Transform _nearestLockOnTarget;
     [SerializeField] private Transform _leftLockOnTarget;
     [SerializeField] private Transform _rightLockOnTarget;
     [Space(15)]
@@ -67,7 +65,6 @@ public class CameraHandler : MonoBehaviour
     {
         _myTransform = transform;
         _defaultPosition = _cameraTransform.localPosition.z;
-        _ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
         _targetTransform = FindObjectOfType<PlayerManager>().transform;
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerManager = FindObjectOfType<PlayerManager>();
@@ -107,14 +104,14 @@ public class CameraHandler : MonoBehaviour
         }
         else
         {
-            Vector3 dir = _currentLockOnTarget.position - transform.position;
+            Vector3 dir = _currentLockOnTarget.transform.position - transform.position;
             dir.Normalize();
             dir.y = 0;
 
             Quaternion targetRotation = Quaternion.LookRotation(dir);
             transform.rotation = targetRotation;
 
-            dir = _currentLockOnTarget.position - _cameraPivotTransform.position;
+            dir = _currentLockOnTarget.transform.position - _cameraPivotTransform.transform.position;
             dir.Normalize();
 
             targetRotation = Quaternion.LookRotation(dir);
@@ -152,22 +149,38 @@ public class CameraHandler : MonoBehaviour
         float shortestDistanceOfRightTarget = Mathf.Infinity;
 
         Collider[] colliders = Physics.OverlapSphere(_targetTransform.position, 26);
-
+        Debug.Log("Number of colliders detected: " + colliders.Length);
+        Debug.Log("Passo 1");
         for (int i = 0; i < colliders.Length; i++)
         {
             CharacterManager character = colliders[i].GetComponent<CharacterManager>();
+            if (character != null)
+            {
+                Debug.Log("CharacterManager found!");
+                Debug.Log("Passo 2");
+            }
 
             if(character != null)
             {
                 Vector3 lockTargetDirection = character.transform.position - _targetTransform.position;
                 float distanceFromTarget = Vector3.Distance(_targetTransform.position, character.transform.position);
                 float viewableAngle = Vector3.Angle(lockTargetDirection, _cameraTransform.forward);
+                Debug.Log(character.transform.root != _targetTransform.transform.root);
+                Debug.Log("Passo 3");
+                Debug.Log("Character Root: " + character.transform.name);
+                Debug.Log("Target Root: " + _targetTransform.transform.name);
                 RaycastHit hit;
 
-                if(character.transform.root != _targetTransform.transform.root 
+                if(character.transform != _targetTransform.transform)
+                {
+                    Debug.Log("Diferentes");
+                }
+
+                if(character.transform != _targetTransform.transform
                 && viewableAngle > -50 && viewableAngle < 50
                 && distanceFromTarget <= _maximumLockOnDistance)
                 {
+                    Debug.Log("Passo 4");
                     if(Physics.Linecast(_playerManager.LockOnTransform.position, character.LockOnTransform.position, out hit))
                     {
                         Debug.DrawLine(_playerManager.LockOnTransform.position, character.LockOnTransform.position);

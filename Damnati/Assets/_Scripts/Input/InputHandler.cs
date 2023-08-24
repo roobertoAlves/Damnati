@@ -59,7 +59,6 @@ public class InputHandler : MonoBehaviour
     public bool InteractInput { get { return _interactInput; } set { _interactInput = value; }}
     public bool PauseInput { get { return _pauseInput; } set { _pauseInput = value; }}
     public bool CriticalAttackFlag { get { return _criticalAttackInput; } set { _criticalAttackInput = value; }}
-    public bool LockOnInput { get { return _lockOnInput; } set { _lockOnInput = value; }}
     public bool LockOnFlag { get { return _lockOnFlag; } set { _lockOnFlag = value; }}
     public bool RightStickInput { get { return _rStickInput; } set { _rStickInput = value; }}
     public bool LeftStickInput { get { return _lStickInput; } set { _lStickInput = value; }}
@@ -68,50 +67,71 @@ public class InputHandler : MonoBehaviour
 
     private void Awake() 
     {
-        _gameControls = new GameControls();
-
         _cameraHandler = FindObjectOfType<CameraHandler>();
-
-        _gameControls.PlayerMovement.View.performed += CameraView;
-        _gameControls.PlayerMovement.View.canceled += CameraView;
-
-        _gameControls.PlayerActions.CameraLockOn.performed += ctx => _lockOnInput = true;
-        _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
-        _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
-
-        _gameControls.PlayerMovement.Walk.performed += OnWalk;
-        _gameControls.PlayerMovement.Walk.canceled += OnWalk;
-
-        _gameControls.PlayerActions.Run.performed += OnRun;
-        _gameControls.PlayerActions.Run.canceled += OnRun;
-
-        _gameControls.PlayerActions.LB.performed += OnLightAttack;
-        _gameControls.PlayerActions.LB.canceled += OnLightAttack;
-
-        _gameControls.PlayerActions.RB.performed += OnHeavyAttack;
-        _gameControls.PlayerActions.RB.canceled += OnHeavyAttack;
-
-        _gameControls.PlayerActions.CriticalAttack.performed += OnCriticalAttack;
-        _gameControls.PlayerActions.CriticalAttack.canceled += OnCriticalAttack;
-
-        _gameControls.PlayerActions.TH.performed += OnTwoHandEquiped;
-        _gameControls.PlayerActions.TH.canceled += OnTwoHandEquiped;
-
-        _gameControls.PlayerActions.StepBack.performed += OnDodge;
-        _gameControls.PlayerActions.StepBack.canceled += OnDodge;
-
-        _gameControls.PlayerActions.Interact.performed += OnInteract;
-        _gameControls.PlayerActions.Interact.canceled += OnInteract;
-
-        _gameControls.PlayerActions.Pause.performed += OnPause;
-        _gameControls.PlayerActions.Pause.canceled += OnPause;
-
     }
+    
+    #region Input Management
+
+    public GameControls GameControls
+    {
+        get { return _gameControls; }
+    }
+
+    private void OnEnable() 
+    {
+        if(_gameControls == null)
+        {
+            _gameControls = new GameControls();
+            _gameControls.PlayerMovement.View.performed += CameraView;
+            _gameControls.PlayerMovement.View.canceled += CameraView;
+
+            _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
+            _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
+
+            _gameControls.PlayerMovement.Walk.performed += OnWalk;
+            _gameControls.PlayerMovement.Walk.canceled += OnWalk;
+
+            _gameControls.PlayerActions.Run.performed += OnRun;
+            _gameControls.PlayerActions.Run.canceled += OnRun;
+
+            _gameControls.PlayerActions.LB.performed += OnLightAttack;
+            _gameControls.PlayerActions.LB.canceled += OnLightAttack;
+
+            _gameControls.PlayerActions.RB.performed += OnHeavyAttack;
+            _gameControls.PlayerActions.RB.canceled += OnHeavyAttack;
+
+            _gameControls.PlayerActions.CriticalAttack.performed += OnCriticalAttack;
+            _gameControls.PlayerActions.CriticalAttack.canceled += OnCriticalAttack;
+
+            _gameControls.PlayerActions.TH.performed += OnTwoHandEquiped;
+            _gameControls.PlayerActions.TH.canceled += OnTwoHandEquiped;
+
+            _gameControls.PlayerActions.StepBack.performed += OnDodge;
+            _gameControls.PlayerActions.StepBack.canceled += OnDodge;
+
+            _gameControls.PlayerActions.Interact.performed += OnInteract;
+            _gameControls.PlayerActions.Interact.canceled += OnInteract;
+
+            _gameControls.PlayerActions.Pause.performed += OnPause;
+            _gameControls.PlayerActions.Pause.canceled += OnPause;
+
+            _gameControls.PlayerActions.CameraLockOn.performed += OnCameraLockOn;
+
+        }
+        _gameControls.Enable();    
+    }
+    private void OnDisable() 
+    {
+        _gameControls.Disable();   
+    }
+
+    #endregion  
     
     public void TickInput(float delta)
     {
         MoveInput(delta);
         HandleLockOnInput();
+        Debug.Log("Tick Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
     }
 
     private void MoveInput(float delta)
@@ -123,22 +143,28 @@ public class InputHandler : MonoBehaviour
     }
     private void HandleLockOnInput()
     {
+        Debug.Log("Handling Lock On Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
+
         if(_lockOnInput && _lockOnFlag == false)
         {
+            Debug.Log("Activating Lock On");
             _lockOnInput = false;
             _cameraHandler.HandleLockOn();
             
             if(_cameraHandler.NearestLockOnTarget != null)
             {
                 _cameraHandler.CurrentLockOnTarget = _cameraHandler.NearestLockOnTarget;
-                _lockOnFlag = true; 
+                _lockOnFlag = true;
+                Debug.Log("Lock On Activated");
             }
         }
         else if(_lockOnInput && _lockOnFlag)
         {
+            Debug.Log("Deactivating Lock On");
             _lockOnInput = false;
             _lockOnFlag = false;
             _cameraHandler.ClearLockOnTargets();
+            Debug.Log("Lock On Deactivated");
         }
         
         if(_lockOnFlag && _lStickInput)
@@ -170,7 +196,10 @@ public class InputHandler : MonoBehaviour
     public void CameraView(InputAction.CallbackContext ctx)
     {
         _cameraMoveInput = ctx.ReadValue<Vector2>();
-
+    }
+    public void OnCameraLockOn(InputAction.CallbackContext ctx)
+    {
+        _lockOnInput = ctx.ReadValueAsButton();
     }
     private void OnWalk(InputAction.CallbackContext ctx)
     {
@@ -215,22 +244,5 @@ public class InputHandler : MonoBehaviour
     }
 
     #endregion
-
-    #region Input Management
-
-    public GameControls GameControls
-    {
-        get { return _gameControls; }
-    }
-
-    private void OnEnable() 
-    {
-        _gameControls.Enable();    
-    }
-    private void OnDisable() 
-    {
-        _gameControls.Disable();   
-    }
-
-    #endregion    
+  
 }
