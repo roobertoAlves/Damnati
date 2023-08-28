@@ -156,6 +156,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "LT",
+                    "type": "Button",
+                    "id": "53e96dcf-ed23-4c74-91c6-ab674af4e7a3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "TH",
                     "type": "Button",
                     "id": "0133a50b-73c1-490c-8eab-922f3686f7ae",
@@ -316,6 +325,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CameraLockOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf3ed446-3e79-4528-9134-b7118f33e8c7",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LT",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

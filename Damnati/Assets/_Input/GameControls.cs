@@ -178,6 +178,15 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""LT"",
+                    ""type"": ""Button"",
+                    ""id"": ""53e96dcf-ed23-4c74-91c6-ab674af4e7a3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""TH"",
                     ""type"": ""Button"",
                     ""id"": ""0133a50b-73c1-490c-8eab-922f3686f7ae"",
@@ -340,6 +349,17 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""action"": ""CameraLockOn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf3ed446-3e79-4528-9134-b7118f33e8c7"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LT"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -356,6 +376,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
         m_PlayerActions_LB = m_PlayerActions.FindAction("LB", throwIfNotFound: true);
         m_PlayerActions_RB = m_PlayerActions.FindAction("RB", throwIfNotFound: true);
+        m_PlayerActions_LT = m_PlayerActions.FindAction("LT", throwIfNotFound: true);
         m_PlayerActions_TH = m_PlayerActions.FindAction("TH", throwIfNotFound: true);
         m_PlayerActions_StepBack = m_PlayerActions.FindAction("StepBack", throwIfNotFound: true);
         m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
@@ -481,6 +502,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
     private readonly InputAction m_PlayerActions_LB;
     private readonly InputAction m_PlayerActions_RB;
+    private readonly InputAction m_PlayerActions_LT;
     private readonly InputAction m_PlayerActions_TH;
     private readonly InputAction m_PlayerActions_StepBack;
     private readonly InputAction m_PlayerActions_Pause;
@@ -494,6 +516,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         public PlayerActionsActions(@GameControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @LB => m_Wrapper.m_PlayerActions_LB;
         public InputAction @RB => m_Wrapper.m_PlayerActions_RB;
+        public InputAction @LT => m_Wrapper.m_PlayerActions_LT;
         public InputAction @TH => m_Wrapper.m_PlayerActions_TH;
         public InputAction @StepBack => m_Wrapper.m_PlayerActions_StepBack;
         public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
@@ -516,6 +539,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @RB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
                 @RB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
                 @RB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
+                @LT.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLT;
+                @LT.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLT;
+                @LT.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLT;
                 @TH.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTH;
                 @TH.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTH;
                 @TH.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTH;
@@ -547,6 +573,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @RB.started += instance.OnRB;
                 @RB.performed += instance.OnRB;
                 @RB.canceled += instance.OnRB;
+                @LT.started += instance.OnLT;
+                @LT.performed += instance.OnLT;
+                @LT.canceled += instance.OnLT;
                 @TH.started += instance.OnTH;
                 @TH.performed += instance.OnTH;
                 @TH.canceled += instance.OnTH;
@@ -583,6 +612,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     {
         void OnLB(InputAction.CallbackContext context);
         void OnRB(InputAction.CallbackContext context);
+        void OnLT(InputAction.CallbackContext context);
         void OnTH(InputAction.CallbackContext context);
         void OnStepBack(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
