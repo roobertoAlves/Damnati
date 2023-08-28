@@ -58,8 +58,6 @@ public class PlayerManager : CharacterManager
     private void Awake() 
     {
         _cameraHandler = FindObjectOfType<CameraHandler>();
-        CriticalDamageCollider = GetComponentInChildren<CriticalDamageCollider>();
-        
         _inputHandler = FindObjectOfType<InputHandler>();
         _animatorHandler = GetComponent<PlayerAnimatorController>();
         _playerLocomotion = GetComponent<PlayerLocomotion>();
@@ -85,10 +83,7 @@ public class PlayerManager : CharacterManager
         _inputHandler.TickInput(delta);
         _animatorHandler.canRotate = _animatorHandler.Anim.GetBool("CanRotate");
         _playerLocomotion.HandleDodge(delta);
-        _playerLocomotion.Attack(delta);
         _playerStats.RegenerateStamina();
-        _playerLocomotion.HandleTwoWeapon(delta);
-
 
         CheckForInteractableObject();
 

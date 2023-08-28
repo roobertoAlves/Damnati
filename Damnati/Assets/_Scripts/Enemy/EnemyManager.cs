@@ -15,6 +15,9 @@ public class EnemyManager : CharacterManager
     [SerializeField] private CharacterStats _currentTarget;
 
 
+    [Header("Flags")]
+    [Space(15)]
+    [SerializeField] private bool _canDoCombo;
     private bool _isPerformingAction;
     private bool _isInteracting;
 
@@ -51,7 +54,8 @@ public class EnemyManager : CharacterManager
     
     public float CurrentRecoveryTime { get { return _currentRecoveryTime; } set { _currentRecoveryTime = value; }}
     public bool IsPerfomingAction { get { return _isPerformingAction; } set { _isPerformingAction = value; }}
-    
+    public bool IsInteracting { get { return _isInteracting; } set { _isInteracting = value; }}
+    public bool CanDoCombo { get { return _canDoCombo; } set { _canDoCombo = value; }}
     public CharacterStats CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; }}
 
     public States CurrentState { get { return _currentState; } set { _currentState = value; }}
@@ -70,7 +74,6 @@ public class EnemyManager : CharacterManager
         _enemyAnimation = GetComponent<EnemyAnimatorController>();
         _enemyStats = GetComponent<EnemyStats>();
         _enemyRb = GetComponent<Rigidbody>();
-        CriticalDamageCollider = GetComponentInChildren<CriticalDamageCollider>();
         _navMeshAgent = GetComponentInChildren<NavMeshAgent>();
     }
 
@@ -83,6 +86,7 @@ public class EnemyManager : CharacterManager
     private void Update() 
     {
         HandleRecoveryTimer();
+        HandleStateMachine();
 
         _isInteracting = _enemyAnimation.Anim.GetBool("IsInteracting");
         _enemyAnimation.Anim.SetBool("IsDead", _enemyStats.IsDead);
@@ -90,7 +94,8 @@ public class EnemyManager : CharacterManager
 
     private void FixedUpdate() 
     {
-        HandleStateMachine();    
+        _navMeshAgent.transform.localPosition = Vector3.zero;
+        _navMeshAgent.transform.localRotation = Quaternion.identity; 
         
     }
     private void HandleStateMachine()

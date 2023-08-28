@@ -12,8 +12,23 @@ public class AttackState : States
     [Space(15)]
     [SerializeField] private EnemyAttackAction[] _enemyAttackAction;
     [SerializeField] private EnemyAttackAction _currentAttack;
+
+    private bool isComboing = false;
     public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
     {
+        if(enemyManager.IsInteracting && enemyManager.CanDoCombo == false)
+        {
+            return this; 
+        }
+        else if(enemyManager.IsInteracting && enemyManager.CanDoCombo)
+        {
+            if(isComboing)
+            {
+                enemyAnimatorController.PlayTargetAnimation(_currentAttack.ActionAnimation, true);
+                isComboing = false;
+            }
+        }
+
         Vector3 targetDirection = enemyManager.CurrentTarget.transform.position -  enemyManager.transform.position;
         float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
         float viewableAngle = Vector3.Angle(targetDirection,  enemyManager.transform.forward);
@@ -42,9 +57,18 @@ public class AttackState : States
                         enemyAnimatorController.Anim.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
                         enemyAnimatorController.PlayTargetAnimation(_currentAttack.ActionAnimation, true);
                         enemyManager.IsPerfomingAction = true;
-                        enemyManager.CurrentRecoveryTime = _currentAttack.RecoveryTime;
-                        _currentAttack = null;
-                        return _combatStanceState;
+
+                        if(_currentAttack.CanCombo)
+                        {
+                            _currentAttack = _currentAttack.ComboAction;
+                            return this;
+                        }
+                        else
+                        {
+                            enemyManager.CurrentRecoveryTime = _currentAttack.RecoveryTime;
+                            _currentAttack = null;
+                            return _combatStanceState;
+                        }
                     }
                 }
             }

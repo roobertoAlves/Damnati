@@ -9,6 +9,11 @@ public class InputHandler : MonoBehaviour
 {
     private GameControls _gameControls;
     private CameraHandler _cameraHandler;
+    private PlayerInventory _playerInventory;
+    private PlayerManager _playerManager;
+    private PlayerAttacker _playerAttacker;
+    private PlayerLocomotion _playerLocomotion;
+    private WeaponSlotManager _weaponSlotManager;
 
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -20,6 +25,7 @@ public class InputHandler : MonoBehaviour
     private bool _sbInput;
     private bool _rbAttackInput;
     private bool _lbAttackInput;
+    private bool _ltInput;
     private bool _criticalAttackInput;
     private bool _thEquipInput;
     private bool _comboFlag;
@@ -68,6 +74,11 @@ public class InputHandler : MonoBehaviour
     private void Awake() 
     {
         _cameraHandler = FindObjectOfType<CameraHandler>();
+        _playerInventory = FindObjectOfType<PlayerInventory>();
+        _playerManager = FindObjectOfType<PlayerManager>();
+        _playerAttacker = FindObjectOfType<PlayerAttacker>();
+        _playerLocomotion = FindObjectOfType<PlayerLocomotion>();
+        _weaponSlotManager = FindObjectOfType<WeaponSlotManager>();
     }
     
     #region Input Management
@@ -100,6 +111,9 @@ public class InputHandler : MonoBehaviour
             _gameControls.PlayerActions.RB.performed += OnHeavyAttack;
             _gameControls.PlayerActions.RB.canceled += OnHeavyAttack;
 
+            _gameControls.PlayerActions.LT.performed += OnWeaponArt;
+            _gameControls.PlayerActions.LT.canceled += OnWeaponArt;
+
             _gameControls.PlayerActions.CriticalAttack.performed += OnCriticalAttack;
             _gameControls.PlayerActions.CriticalAttack.canceled += OnCriticalAttack;
 
@@ -131,7 +145,10 @@ public class InputHandler : MonoBehaviour
     {
         MoveInput(delta);
         HandleLockOnInput();
-        Debug.Log("Tick Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
+        HandleAttackInput(delta);
+        HandleTwoHandWeapon();
+        CriticalAttack();
+        //Debug.Log("Tick Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
     }
 
     private void MoveInput(float delta)
@@ -143,11 +160,11 @@ public class InputHandler : MonoBehaviour
     }
     private void HandleLockOnInput()
     {
-        Debug.Log("Handling Lock On Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
+        //Debug.Log("Handling Lock On Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
 
         if(_lockOnInput && _lockOnFlag == false)
         {
-            Debug.Log("Activating Lock On");
+            //Debug.Log("Activating Lock On");
             _lockOnInput = false;
             _cameraHandler.HandleLockOn();
             
@@ -155,16 +172,16 @@ public class InputHandler : MonoBehaviour
             {
                 _cameraHandler.CurrentLockOnTarget = _cameraHandler.NearestLockOnTarget;
                 _lockOnFlag = true;
-                Debug.Log("Lock On Activated");
+                //Debug.Log("Lock On Activated");
             }
         }
         else if(_lockOnInput && _lockOnFlag)
         {
-            Debug.Log("Deactivating Lock On");
+            //Debug.Log("Deactivating Lock On");
             _lockOnInput = false;
             _lockOnFlag = false;
             _cameraHandler.ClearLockOnTargets();
-            Debug.Log("Lock On Deactivated");
+            //Debug.Log("Lock On Deactivated");
         }
         
         if(_lockOnFlag && _lStickInput)
@@ -190,7 +207,55 @@ public class InputHandler : MonoBehaviour
 
         _cameraHandler.SetCameraHeight();
     }
+    private void HandleAttackInput(float delta)
+    {
+        if(_lbAttackInput)
+        {
+            _playerAttacker.HandleLBAction();
+        }
+        if(_rbAttackInput)
+        {
+            _playerAttacker.HandleRBAction();
+        }
+        
+        if(_ltInput)
+        {
+            if(_thEquipInput)
+            {
 
+            }
+            else
+            {
+                _playerAttacker.HandleLTAction();
+            }
+        }
+    }
+    public void HandleTwoHandWeapon()
+    {
+        if(_thEquipInput)
+        {
+           _thEquipInput = false;
+            _playerManager.TwoHandFlag = !_playerManager.TwoHandFlag;
+
+            if(_playerManager.TwoHandFlag)
+            {
+                _weaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
+            }
+            else
+            {
+                _weaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
+                _weaponSlotManager.LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
+            }
+        }
+    }
+    private void CriticalAttack()
+    {
+        if(_criticalAttackInput)
+        {
+           _criticalAttackInput = false;
+            _playerAttacker.AttemptRiposte();
+        }
+    }  
 
     #region Input Methods
     public void CameraView(InputAction.CallbackContext ctx)
@@ -228,6 +293,10 @@ public class InputHandler : MonoBehaviour
     private void OnHeavyAttack(InputAction.CallbackContext ctx)
     {
         _rbAttackInput = ctx.ReadValueAsButton();
+    }
+    private void OnWeaponArt(InputAction.CallbackContext ctx)
+    {
+        _ltInput = ctx.ReadValueAsButton();
     }
     private void OnCriticalAttack(InputAction.CallbackContext ctx)
     {

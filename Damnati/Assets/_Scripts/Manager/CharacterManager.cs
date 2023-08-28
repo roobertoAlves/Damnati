@@ -14,14 +14,14 @@ public class CharacterManager : MonoBehaviour
 
     [Header("Combat Colliders")]
     [Space(15)]
-    [SerializeField] private BoxCollider _riposteBoxCollider;
-    private CriticalDamageCollider _criticalDamageCollider;
+    [SerializeField] private CriticalDamageCollider _riposteDamageCollider;
 
     [Header("Combat Flags")]
     [Space(15)]
     private bool _canBeRiposted;
     private bool _canbeParried;
     private bool _isParrying;
+    private bool _isBlocking;
 
 
     #region GET & SET
@@ -30,12 +30,12 @@ public class CharacterManager : MonoBehaviour
     
     public Transform LockOnTransform { get { return _lockOnTransform; } set { _lockOnTransform = value; }}
     
-    public CriticalDamageCollider CriticalDamageCollider { get { return _criticalDamageCollider; } set { _criticalDamageCollider = value; }}
-    public BoxCollider RiposteBoxCollider { get { return _riposteBoxCollider; } set { _riposteBoxCollider = value; }}
-    
+    public CriticalDamageCollider CriticalDamageCollider { get { return _riposteDamageCollider; } set { _riposteDamageCollider = value; }}
+  
     public bool IsParrying { get { return _isParrying; } set { _isParrying = value; }}
     public bool CanBeParried { get { return _canbeParried; } set { _canbeParried = value; }}
     public bool CanBeRiposted { get { return _canBeRiposted; } set { _canBeRiposted = value; }}
+    public bool IsBlocking { get { return _isBlocking; } set { _isBlocking = value; }}
     #endregion
 }
 

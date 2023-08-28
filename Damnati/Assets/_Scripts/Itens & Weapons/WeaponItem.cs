@@ -15,6 +15,7 @@ public class WeaponItem : Item
 
     [Header("Weapon Type")]
     public bool isMeleeWeapon;
+    public bool isShieldWeapon;
 
     [Header("Idle Animations")]
     [Space(15)]
@@ -23,7 +24,10 @@ public class WeaponItem : Item
     public string left_Hand_Idle;
     public string th_idle;
 
-
+    [Header("Weapon Art")]
+    [Space(15)]
+    public string weapon_Art;
+    
     [Header("Attack Animations")]
     [Space(15)]
 

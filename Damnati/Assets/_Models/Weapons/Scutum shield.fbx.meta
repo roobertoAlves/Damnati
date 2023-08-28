@@ -8,17 +8,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Exterior Wood
-    second: {fileID: 2100000, guid: 80bb641c41b0fd94480e3749b67a13e3, type: 2}
+    second: {fileID: 2100000, guid: fc2e3f7bf90fc9549855da45371520ca, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Interior Wood.001
-    second: {fileID: 2100000, guid: 5ea6b4c60dab728449fcd4f25fca99a7, type: 2}
+    second: {fileID: 2100000, guid: 630ef771b242f3f4686de601b472c57d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Iron Touched
-    second: {fileID: 2100000, guid: 8b77b2244546993468aefb1955247e1a, type: 2}
+    second: {fileID: 2100000, guid: 648f723f20c325448876d1f51f235289, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

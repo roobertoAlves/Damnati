@@ -163,7 +163,102 @@ public class PlayerAttacker : MonoBehaviour
         }
     }
 
+    #region Input Actions 
+
+    public void HandleRBAction()
+    {
+        if (_playerInventory.rightHandWeapon.isMeleeWeapon)
+        {
+            PerformLBMeleeAction();
+        }
+    }
+    public void HandleLBAction()
+    {
+        if(_playerInventory.rightHandWeapon.isMeleeWeapon)
+        {
+            PerformLBMeleeAction();
+        }
+    }
+
+    public void HandleLTAction()
+    {
+        if (_playerInventory.leftHandWeapon.isShieldWeapon)
+        {
+            PerformLTWeaponArt(_inputHandler.THEquipFlag);
+        }
+        else if (_playerInventory.leftHandWeapon.isMeleeWeapon)
+        {
+            //do a light attack
+        }
+    }    
+
+    #endregion
+
     #region Attack Actions
+    private void PerformLBMeleeAction()
+    {
+        if (!_animator.HasAnimator)
+        {
+            return;
+        }
+
+        if (_playerManager.CanDoCombo)
+        {
+            _inputHandler.ComboFlag = true;
+            HandleLightWeaponCombo(_playerInventory.rightHandWeapon);
+            _inputHandler.ComboFlag = false;
+        }
+        else
+        {
+            if (_playerManager.IsInteracting || _playerManager.CanDoCombo)
+            {
+                return;
+            }
+
+            _animator.Anim.SetBool("IsUsingRightHand", true);
+            HandleLightAttack(_playerInventory.rightHandWeapon);
+        }
+    }
+    private void PerfomRBMeleeAction()
+    {
+        if (!_animator.HasAnimator)
+        {
+            return;
+        }
+
+        if (_playerManager.CanDoCombo)
+        {
+            _inputHandler.ComboFlag = true;
+            HandleHeavyWeaponCombo(_playerInventory.rightHandWeapon);
+            _inputHandler.ComboFlag = false;
+        }
+        else
+        {
+            if (_playerManager.IsInteracting || _playerManager.CanDoCombo)
+            {
+                return;
+            }
+
+            _animator.Anim.SetBool("IsUsingRightHand", true);
+            HandleHeavyAttack(_playerInventory.rightHandWeapon); 
+        }
+    }
+    private void PerformLTWeaponArt(bool isTwoHanding)
+    {
+        if(_playerManager.IsInteracting)
+        {
+            return;
+        }
+
+        if(isTwoHanding)
+        {
+
+        }
+        else
+        {
+            _animator.PlayTargetAnimation(_playerInventory.leftHandWeapon.weapon_Art, true);
+        }
+    }
     public void AttemptRiposte()
     {
         if(_playerStats.CurrentStamina <= 0)
@@ -174,7 +269,7 @@ public class PlayerAttacker : MonoBehaviour
         RaycastHit hit;
 
         if(Physics.Raycast(_playerLocomotion.CriticalAttackRayCastStartPoint.position, 
-        transform.TransformDirection(Vector3.forward), out hit, 0.5f, _riposteLayer))
+        transform.TransformDirection(Vector3.forward), out hit, 0.7f, _riposteLayer))
         {
             CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponent<CharacterManager>();
             DamageCollider rightWeapon = _weaponSlotManager.RightHandDamageCollider;

@@ -7,6 +7,11 @@ public class PersueTargetState : States
     [SerializeField] private CombatStanceState _combatStanceState;
     public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
     {
+        if(enemyManager.IsInteracting)
+        {
+            return this;
+        }
+
         if(enemyManager.IsPerfomingAction)
         {
             enemyAnimatorController.Anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
@@ -22,8 +27,6 @@ public class PersueTargetState : States
         }
 
         HandleRotateTowardsTarget(enemyManager);
-        enemyManager.EnemyNavMeshAgent.transform.localPosition = Vector3.zero;
-        enemyManager.EnemyNavMeshAgent.transform.localRotation = Quaternion.identity;
         
         if(distanceFromTarget <= enemyManager.MaximumAttackRange)
         {

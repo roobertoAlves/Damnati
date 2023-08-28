@@ -10,6 +10,11 @@ public class CombatStanceState : States
     [SerializeField] private PersueTargetState _persueTargetState;
     public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
     {
+        if(enemyManager.IsInteracting)
+        {
+            return this;
+        }
+        
         float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
 
         HandleRotateTowardsTarget(enemyManager);

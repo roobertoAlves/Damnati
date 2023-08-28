@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "A.I/Enemy Actions/Attack Actions")]
 public class EnemyAttackAction : EnemyActions
 {
+    [SerializeField] private bool _canCombo;
+    [SerializeField] private EnemyAttackAction _comboAction;
     [SerializeField] private int _attackScore = 3;
     [SerializeField] private float _recoveryTime = 2;
 
@@ -16,6 +18,9 @@ public class EnemyAttackAction : EnemyActions
 
 
     #region GET & SET
+
+    public bool CanCombo { get { return _canCombo; } set { _canCombo = value; }}
+    public EnemyAttackAction ComboAction { get { return _comboAction; } set { _comboAction = value; }}
 
     public int AttackScore { get { return _attackScore; } set { _attackScore = value; }}
     public float RecoveryTime { get { return _recoveryTime; } set { _recoveryTime = value; }}
