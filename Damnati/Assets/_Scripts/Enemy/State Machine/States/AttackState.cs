@@ -13,7 +13,7 @@ public class AttackState : States
     [SerializeField] private EnemyAttackAction[] _enemyAttackAction;
     [SerializeField] private EnemyAttackAction _currentAttack;
 
-    private bool isComboing = false;
+    private bool _willDoComboOnNextAttack = false;
     public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
     {
         if(enemyManager.IsInteracting && enemyManager.CanDoCombo == false)
@@ -22,10 +22,10 @@ public class AttackState : States
         }
         else if(enemyManager.IsInteracting && enemyManager.CanDoCombo)
         {
-            if(isComboing)
+            if(_willDoComboOnNextAttack)
             {
+                _willDoComboOnNextAttack = false;
                 enemyAnimatorController.PlayTargetAnimation(_currentAttack.ActionAnimation, true);
-                isComboing = false;
             }
         }
 
@@ -57,8 +57,9 @@ public class AttackState : States
                         enemyAnimatorController.Anim.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
                         enemyAnimatorController.PlayTargetAnimation(_currentAttack.ActionAnimation, true);
                         enemyManager.IsPerfomingAction = true;
+                        RollForComboChance(enemyManager);
 
-                        if(_currentAttack.CanCombo)
+                        if(_currentAttack.CanCombo && _willDoComboOnNextAttack)
                         {
                             _currentAttack = _currentAttack.ComboAction;
                             return this;
@@ -155,6 +156,15 @@ public class AttackState : States
             enemyManager.EnemyNavMeshAgent.SetDestination(enemyManager.CurrentTarget.transform.position);
             enemyManager.EnemyRb.velocity = targetVelocity;
             enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.EnemyNavMeshAgent.transform.rotation, enemyManager.RotationSpeed / Time.deltaTime);
+        }
+    }
+    private void RollForComboChance(EnemyManager enemyManager)
+    {
+        float comboChance = Random.Range(0, 100);
+
+        if(enemyManager.AllowAIToPerformCombos && comboChance <= enemyManager.ComboLikelyHood)
+        {
+            _willDoComboOnNextAttack = true;
         }
     }
 }

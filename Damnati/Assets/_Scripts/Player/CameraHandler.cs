@@ -42,11 +42,11 @@ public class CameraHandler : MonoBehaviour
 
     [Header("Lock On Settings")]
     [Space(15)]
-    private Transform _currentLockOnTarget;
+    private CharacterManager _currentLockOnTarget;
     [SerializeField] private List<CharacterManager> _avaliableTargets = new List<CharacterManager>();
-    private Transform _nearestLockOnTarget;
-    [SerializeField] private Transform _leftLockOnTarget;
-    [SerializeField] private Transform _rightLockOnTarget;
+    private CharacterManager _nearestLockOnTarget;
+    [SerializeField] private CharacterManager _leftLockOnTarget;
+    [SerializeField] private CharacterManager _rightLockOnTarget;
     [Space(15)]
     [SerializeField] private float _maximumLockOnDistance = 30;
     [Space(15)]
@@ -55,10 +55,10 @@ public class CameraHandler : MonoBehaviour
 
     #region GET & SET
     public Transform CameraTransform { get { return _cameraTransform; } set { _cameraTransform = value; }}
-    public Transform CurrentLockOnTarget { get { return _currentLockOnTarget; } set { _currentLockOnTarget = value; }}
-    public Transform NearestLockOnTarget { get { return _nearestLockOnTarget; } set { _nearestLockOnTarget = value; }}
-    public Transform LeftLockOnTarget { get { return _leftLockOnTarget; } set { _leftLockOnTarget = value; }}
-    public Transform RightLockOnTarget { get { return _rightLockOnTarget; } set { _rightLockOnTarget = value; }}
+    public CharacterManager CurrentLockOnTarget { get { return _currentLockOnTarget; } set { _currentLockOnTarget = value; }}
+    public CharacterManager NearestLockOnTarget { get { return _nearestLockOnTarget; } set { _nearestLockOnTarget = value; }}
+    public CharacterManager LeftLockOnTarget { get { return _leftLockOnTarget; } set { _leftLockOnTarget = value; }}
+    public CharacterManager RightLockOnTarget { get { return _rightLockOnTarget; } set { _rightLockOnTarget = value; }}
     #endregion
 
     private void Awake()
@@ -145,42 +145,32 @@ public class CameraHandler : MonoBehaviour
     public void HandleLockOn()
     {
         float shortestDistance = Mathf.Infinity;
-        float shortestDistanceOfLeftTarget = Mathf.Infinity;
+        float shortestDistanceOfLeftTarget = -Mathf.Infinity;
         float shortestDistanceOfRightTarget = Mathf.Infinity;
 
         Collider[] colliders = Physics.OverlapSphere(_targetTransform.position, 26);
-        Debug.Log("Number of colliders detected: " + colliders.Length);
-        Debug.Log("Passo 1");
+        //Debug.Log("Number of colliders detected: " + colliders.Length);
+        //Debug.Log("Passo 1");
         for (int i = 0; i < colliders.Length; i++)
         {
             CharacterManager character = colliders[i].GetComponent<CharacterManager>();
-            if (character != null)
-            {
-                Debug.Log("CharacterManager found!");
-                Debug.Log("Passo 2");
-            }
 
             if(character != null)
             {
                 Vector3 lockTargetDirection = character.transform.position - _targetTransform.position;
                 float distanceFromTarget = Vector3.Distance(_targetTransform.position, character.transform.position);
                 float viewableAngle = Vector3.Angle(lockTargetDirection, _cameraTransform.forward);
-                Debug.Log(character.transform.root != _targetTransform.transform.root);
-                Debug.Log("Passo 3");
-                Debug.Log("Character Root: " + character.transform.name);
-                Debug.Log("Target Root: " + _targetTransform.transform.name);
+                //Debug.Log(character.transform.root != _targetTransform.transform.root);
+                //Debug.Log("Passo 3");
+                //Debug.Log("Character Root: " + character.transform.name);
+                //Debug.Log("Target Root: " + _targetTransform.transform.name);
                 RaycastHit hit;
-
-                if(character.transform != _targetTransform.transform)
-                {
-                    Debug.Log("Diferentes");
-                }
 
                 if(character.transform != _targetTransform.transform
                 && viewableAngle > -50 && viewableAngle < 50
                 && distanceFromTarget <= _maximumLockOnDistance)
                 {
-                    Debug.Log("Passo 4");
+                    //Debug.Log("Passo 4");
                     if(Physics.Linecast(_playerManager.LockOnTransform.position, character.LockOnTransform.position, out hit))
                     {
                         Debug.DrawLine(_playerManager.LockOnTransform.position, character.LockOnTransform.position);
@@ -204,24 +194,29 @@ public class CameraHandler : MonoBehaviour
             if(distanceFromTarget < shortestDistance)
             {
                 shortestDistance = distanceFromTarget;
-                _nearestLockOnTarget = _avaliableTargets[k].LockOnTransform;
+                _nearestLockOnTarget = _avaliableTargets[k];
             }
             if(_inputHandler.LockOnFlag)
             {
-                Vector3 _relativeEnemyPosition = _currentLockOnTarget.InverseTransformDirection(_avaliableTargets[k].transform.position);
-                var distanceFromLeftTarget = _currentLockOnTarget.transform.position.x - _avaliableTargets[k].transform.position.x;
-                var distanceFromRightTarget = _currentLockOnTarget.transform.position.x + _avaliableTargets[k].transform.position.x;
-            
-                if(_relativeEnemyPosition.x > 0.00 && distanceFromLeftTarget < shortestDistanceOfLeftTarget)
+                //Vector3 relativeEnemyPosition = _currentLockOnTarget.transform.InverseTransformDirection(_avaliableTargets[k].transform.position);
+                //var distanceFromLeftTarget = _currentLockOnTarget.transform.position.x - _avaliableTargets[k].transform.position.x;
+                //var distanceFromRightTarget = _currentLockOnTarget.transform.position.x + _avaliableTargets[k].transform.position.x;
+                Vector3 relativeEnemyPosition = _inputHandler.transform.InverseTransformDirection(_avaliableTargets[k].transform.position);
+                var distanceFromLeftTarget = relativeEnemyPosition.x;
+                var distanceFromRightTarget = relativeEnemyPosition.x;
+
+                if(relativeEnemyPosition.x <= 0.00 && distanceFromLeftTarget > shortestDistanceOfLeftTarget
+                    && _avaliableTargets[k] != _currentLockOnTarget)
                 {
                     shortestDistanceOfLeftTarget = distanceFromLeftTarget;
-                    _leftLockOnTarget = _avaliableTargets[k].LockOnTransform;
+                    _leftLockOnTarget = _avaliableTargets[k];
                 }
 
-                if(_relativeEnemyPosition.x < 0.00 && distanceFromRightTarget < shortestDistanceOfRightTarget)
+                if(relativeEnemyPosition.x >= 0.00 && distanceFromRightTarget < shortestDistanceOfRightTarget
+                    && _avaliableTargets[k] != _currentLockOnTarget)
                 {
                     shortestDistanceOfRightTarget = distanceFromRightTarget;
-                    _rightLockOnTarget = _avaliableTargets[k].LockOnTransform;
+                    _rightLockOnTarget = _avaliableTargets[k];
                 }
             }
         }

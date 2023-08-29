@@ -41,7 +41,7 @@ public class DamageCollider : MonoBehaviour
         {
             PlayerStats playerStats = collision.GetComponent<PlayerStats>();
             CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
-            //BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
+            BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
            
             if(enemyCharacterManager != null)
             {
@@ -50,17 +50,15 @@ public class DamageCollider : MonoBehaviour
                     _characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
                     return;  
                 }
-                /*
                 else if(shield != null && enemyCharacterManager.IsBlocking)
                 {
-                    float physicalDamageAfterBlock = CurrentWeaponDamage - (CurrentWeaponDamage & shield.BlockingPhysicalDamageAbsorption)/ 100;
+                    float physicalDamageAfterBlock = _currentWeaponDamage - (_currentWeaponDamage * shield.BlockingPhysicalDamageAbsorption)/ 100;
 
                     if(playerStats != null)
                     {
-                        playerStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Guard");
+                        playerStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Idle");
                     }
                 }
-                */
             }
             if (playerStats != null)
             {
@@ -72,7 +70,7 @@ public class DamageCollider : MonoBehaviour
         {
             EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
             CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
-            //BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
+            BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
             if (enemyCharacterManager != null)
             {
@@ -81,19 +79,17 @@ public class DamageCollider : MonoBehaviour
                     _characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
                     return;
                 }
-                /*
                 else if (shield != null && enemyCharacterManager.IsBlocking)
                 {
                     float physicalDamageAfterBlock =
-                    _currentWeaponDamage - (_currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
+                    _currentWeaponDamage - (_currentWeaponDamage * shield.BlockingPhysicalDamageAbsorption) / 100;
 
                     if (enemyStats != null)
                     {
-                        enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Guard");
+                        enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Idle");
                         return;
                     }
                 }
-                */
             }
 
             if (enemyStats != null)

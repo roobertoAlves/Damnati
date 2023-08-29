@@ -32,7 +32,6 @@ public class PlayerManager : CharacterManager
     private bool _isHitEnemy;
     private bool _isInRage;
 
-
     #endregion
 
     #region GET & SET
@@ -52,7 +51,6 @@ public class PlayerManager : CharacterManager
     public bool IsInvulnerable { get { return _isInvulnerable; } set { _isInvulnerable = value; }}
     public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
     public bool IsInRage { get { return _isInRage; } set { _isInRage = value; }}
-   
     #endregion  
 
     private void Awake() 
@@ -79,6 +77,7 @@ public class PlayerManager : CharacterManager
         _animatorHandler.Anim.SetBool("IsDead", _playerStats.IsDead);
         _animatorHandler.Anim.SetFloat("InAirTimer", _playerLocomotion.InAirTimer);
         _animatorHandler.Anim.SetBool("IsGrounded", _isGrounded);
+        _animatorHandler.Anim.SetBool("IsBlocking", IsBlocking);
 
         _inputHandler.TickInput(delta);
         _animatorHandler.canRotate = _animatorHandler.Anim.GetBool("CanRotate");

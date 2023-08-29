@@ -8,10 +8,10 @@ public class AnimatorManager : MonoBehaviour
     public bool canRotate;
 
     
-    public void PlayTargetAnimation(string targetAnim, bool isInteracting)
+    public void PlayTargetAnimation(string targetAnim, bool isInteracting, bool canRotate = false)
     {
         Anim.applyRootMotion = isInteracting;
-        Anim.SetBool("CanRotate", false);
+        Anim.SetBool("CanRotate", canRotate);
         Anim.SetBool("IsInteracting", isInteracting);
         Anim.CrossFade(targetAnim, 0.2f);
     }

@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour
 {
     private GameControls _gameControls;
+    private BlockingCollider _blockingCollider;
     private CameraHandler _cameraHandler;
     private PlayerInventory _playerInventory;
     private PlayerManager _playerManager;
@@ -36,6 +37,7 @@ public class InputHandler : MonoBehaviour
     private bool _rStickInput;
     private bool _lStickInput;
     private bool _caInput;
+    private bool _blockInput;
    #endregion
 
    #region Input Variables
@@ -69,6 +71,7 @@ public class InputHandler : MonoBehaviour
     public bool RightStickInput { get { return _rStickInput; } set { _rStickInput = value; }}
     public bool LeftStickInput { get { return _lStickInput; } set { _lStickInput = value; }}
     public bool CriticalAttackInput { get { return _caInput; } set { _caInput = value; }}
+    public bool BlockInput { get { return _blockInput; } set { _blockInput = value; }}
     #endregion
 
     private void Awake() 
@@ -79,6 +82,7 @@ public class InputHandler : MonoBehaviour
         _playerAttacker = FindObjectOfType<PlayerAttacker>();
         _playerLocomotion = FindObjectOfType<PlayerLocomotion>();
         _weaponSlotManager = FindObjectOfType<WeaponSlotManager>();
+        _blockingCollider = FindObjectOfType<BlockingCollider>();
     }
     
     #region Input Management
@@ -114,6 +118,9 @@ public class InputHandler : MonoBehaviour
             _gameControls.PlayerActions.LT.performed += OnWeaponArt;
             _gameControls.PlayerActions.LT.canceled += OnWeaponArt;
 
+            _gameControls.PlayerActions.Block.performed += OnDefense;
+            _gameControls.PlayerActions.Block.canceled += OnDefense;
+
             _gameControls.PlayerActions.CriticalAttack.performed += OnCriticalAttack;
             _gameControls.PlayerActions.CriticalAttack.canceled += OnCriticalAttack;
 
@@ -143,15 +150,15 @@ public class InputHandler : MonoBehaviour
     
     public void TickInput(float delta)
     {
-        MoveInput(delta);
+        HandleMoveInput(delta);
         HandleLockOnInput();
-        HandleAttackInput(delta);
+        HandleCombatInput(delta);
         HandleTwoHandWeapon();
-        CriticalAttack();
+        HandleCriticalAttack();
         //Debug.Log("Tick Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
     }
 
-    private void MoveInput(float delta)
+    private void HandleMoveInput(float delta)
     {
         _horizontalMovement = _walkMoveInput.x;
         _verticalMovement = _walkMoveInput.y;
@@ -207,7 +214,7 @@ public class InputHandler : MonoBehaviour
 
         _cameraHandler.SetCameraHeight();
     }
-    private void HandleAttackInput(float delta)
+    private void HandleCombatInput(float delta)
     {
         if(_lbAttackInput)
         {
@@ -229,6 +236,19 @@ public class InputHandler : MonoBehaviour
                 _playerAttacker.HandleLTAction();
             }
         }
+        if(_blockInput)
+        {
+            _playerAttacker.HandleDefenseAction();
+        }
+        else
+        {
+            _playerManager.IsBlocking = false;
+
+            if(_blockingCollider.BlockCollider.enabled)
+            {
+                _blockingCollider.DisableBlockingCollider();
+            }
+        }
     }
     public void HandleTwoHandWeapon()
     {
@@ -248,7 +268,7 @@ public class InputHandler : MonoBehaviour
             }
         }
     }
-    private void CriticalAttack()
+    private void HandleCriticalAttack()
     {
         if(_criticalAttackInput)
         {
@@ -301,6 +321,10 @@ public class InputHandler : MonoBehaviour
     private void OnCriticalAttack(InputAction.CallbackContext ctx)
     {
         _criticalAttackInput = ctx.ReadValueAsButton();
+    }
+    private void OnDefense(InputAction.CallbackContext ctx)
+    {
+        _blockInput = ctx.ReadValueAsButton();
     }
 
     private void OnPause(InputAction.CallbackContext ctx)

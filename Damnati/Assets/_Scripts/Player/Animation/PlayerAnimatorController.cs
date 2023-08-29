@@ -20,7 +20,7 @@ public class PlayerAnimatorController : AnimatorManager
     
     #endregion
 
-    private void Awake() 
+    public void Initialize() 
     {
         _hasAnimator = TryGetComponent<Animator>(out Anim);
 

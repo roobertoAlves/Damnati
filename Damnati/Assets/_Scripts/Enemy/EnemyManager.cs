@@ -10,7 +10,6 @@ public class EnemyManager : CharacterManager
     private EnemyAnimatorController _enemyAnimation;
     private EnemyStats _enemyStats;
 
-
     [SerializeField] private States _currentState;
     [SerializeField] private CharacterStats _currentTarget;
 
@@ -45,6 +44,11 @@ public class EnemyManager : CharacterManager
     [Space(15)]
     [SerializeField] private float _maximumAttackRange = 1.5f;
 
+    [Header("A.I Combat Settings")]
+    [Space(15)]
+    [SerializeField] private bool _allowAIToPerformCombos;
+    [SerializeField] private float _comboLikelyHood;
+
     #region Get & Set
 
     public float DetectionRadius { get { return _detectionRadius; } set { _detectionRadius = value; }}
@@ -56,6 +60,8 @@ public class EnemyManager : CharacterManager
     public bool IsPerfomingAction { get { return _isPerformingAction; } set { _isPerformingAction = value; }}
     public bool IsInteracting { get { return _isInteracting; } set { _isInteracting = value; }}
     public bool CanDoCombo { get { return _canDoCombo; } set { _canDoCombo = value; }}
+    public bool AllowAIToPerformCombos { get { return _allowAIToPerformCombos; } set { _allowAIToPerformCombos = value; }}
+    
     public CharacterStats CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; }}
 
     public States CurrentState { get { return _currentState; } set { _currentState = value; }}
@@ -65,7 +71,7 @@ public class EnemyManager : CharacterManager
     
     public float RotationSpeed { get { return _rotationSpeed; } set { _rotationSpeed = value; }}
     public float MaximumAttackRange { get { return _maximumAttackRange; } set { _maximumAttackRange = value; }}
-
+    public float ComboLikelyHood { get { return _comboLikelyHood; } set { _comboLikelyHood = value; }}
     #endregion
 
     private void Awake() 
@@ -89,6 +95,7 @@ public class EnemyManager : CharacterManager
         HandleStateMachine();
 
         _isInteracting = _enemyAnimation.Anim.GetBool("IsInteracting");
+        _canDoCombo = _enemyAnimation.Anim.GetBool("CanDoCombo");
         _enemyAnimation.Anim.SetBool("IsDead", _enemyStats.IsDead);
     }
 

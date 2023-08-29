@@ -7,6 +7,7 @@ public class PlayerAttacker : MonoBehaviour
 {
     private InputHandler _inputHandler;
     private PlayerAnimatorController _animator;
+    private PlayerEquipmentManager _playerEquipmentManager;
     private PlayerManager _playerManager;
     private PlayerStats _playerStats;
     private WeaponSlotManager _weaponSlotManager;
@@ -26,6 +27,7 @@ public class PlayerAttacker : MonoBehaviour
         _weaponSlotManager = GetComponent<WeaponSlotManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerInventory = GetComponent<PlayerInventory>();
+        _playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
     }
 
     public void HandleLightAttack(WeaponItem weapon)
@@ -190,6 +192,10 @@ public class PlayerAttacker : MonoBehaviour
         {
             //do a light attack
         }
+    }
+    public void HandleDefenseAction()
+    {
+        PerfomLBBlockAction();
     }    
 
     #endregion
@@ -289,6 +295,20 @@ public class PlayerAttacker : MonoBehaviour
             _animator.PlayTargetAnimation("Riposte", true);
             enemyCharacterManager.GetComponent<AnimatorManager>().PlayTargetAnimation("Riposted", true);
         }
+    }
+    #endregion
+
+    #region Defensive Actions 
+    private void PerfomLBBlockAction()
+    {
+        if(_playerManager.IsInteracting || _playerManager.IsBlocking)
+        {
+            return;
+        }
+
+        _animator.PlayTargetAnimation("Block Start", false, true);
+        _playerEquipmentManager.OpenBlockingCollider();
+        _playerManager.IsBlocking = true;
     }
     #endregion
 }

@@ -248,6 +248,15 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Block"",
+                    ""type"": ""Button"",
+                    ""id"": ""3adf00dd-63c6-444d-837d-d00b99fe7737"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -360,6 +369,17 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""action"": ""LT"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""426042d7-3e0d-4771-bd9a-b380d940bff1"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -384,6 +404,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_PlayerActions_Run = m_PlayerActions.FindAction("Run", throwIfNotFound: true);
         m_PlayerActions_CriticalAttack = m_PlayerActions.FindAction("Critical Attack", throwIfNotFound: true);
         m_PlayerActions_CameraLockOn = m_PlayerActions.FindAction("CameraLockOn", throwIfNotFound: true);
+        m_PlayerActions_Block = m_PlayerActions.FindAction("Block", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -510,6 +531,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Run;
     private readonly InputAction m_PlayerActions_CriticalAttack;
     private readonly InputAction m_PlayerActions_CameraLockOn;
+    private readonly InputAction m_PlayerActions_Block;
     public struct PlayerActionsActions
     {
         private @GameControls m_Wrapper;
@@ -524,6 +546,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_PlayerActions_Run;
         public InputAction @CriticalAttack => m_Wrapper.m_PlayerActions_CriticalAttack;
         public InputAction @CameraLockOn => m_Wrapper.m_PlayerActions_CameraLockOn;
+        public InputAction @Block => m_Wrapper.m_PlayerActions_Block;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -563,6 +586,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @CameraLockOn.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCameraLockOn;
                 @CameraLockOn.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCameraLockOn;
                 @CameraLockOn.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCameraLockOn;
+                @Block.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
+                @Block.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
+                @Block.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -597,6 +623,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @CameraLockOn.started += instance.OnCameraLockOn;
                 @CameraLockOn.performed += instance.OnCameraLockOn;
                 @CameraLockOn.canceled += instance.OnCameraLockOn;
+                @Block.started += instance.OnBlock;
+                @Block.performed += instance.OnBlock;
+                @Block.canceled += instance.OnBlock;
             }
         }
     }
@@ -620,5 +649,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnCriticalAttack(InputAction.CallbackContext context);
         void OnCameraLockOn(InputAction.CallbackContext context);
+        void OnBlock(InputAction.CallbackContext context);
     }
 }

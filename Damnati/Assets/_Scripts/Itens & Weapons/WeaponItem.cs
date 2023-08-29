@@ -13,7 +13,12 @@ public class WeaponItem : Item
     public int baseDamage = 25;
     public int criticalDamageMultiplier = 3;
 
+    [Header("Absorption")]
+    [Space(15)]
+    public float physicalDamageAbsorption;
+
     [Header("Weapon Type")]
+    [Space(5)]
     public bool isMeleeWeapon;
     public bool isShieldWeapon;
 

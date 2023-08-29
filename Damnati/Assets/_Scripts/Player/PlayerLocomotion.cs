@@ -7,15 +7,10 @@ public class PlayerLocomotion : MonoBehaviour
 {
     [Header("Components")]
     [Space(15)]
-    [SerializeField] private Rigidbody _rb;
-    
+    private Rigidbody _rb;
     private InputHandler _inputHandler;
-    private UIManager _UIManager;
     private PlayerAnimatorController _animatorHandler;
     private PlayerManager _playerManager;
-    private PlayerInventory _playerInventory;
-    private PlayerAttacker _playerAttack;
-    private WeaponSlotManager _weaponSlotManager;
     private PlayerStats _playerStats;
     private CameraHandler _cameraHandler;
 
@@ -85,19 +80,16 @@ public class PlayerLocomotion : MonoBehaviour
         _playerManager = GetComponent<PlayerManager>();
         _playerStats = GetComponent<PlayerStats>();
         _animatorHandler = GetComponent<PlayerAnimatorController>();
-        _playerInventory = GetComponent<PlayerInventory>();
-        _playerAttack = GetComponent<PlayerAttacker>();
-        _UIManager = FindObjectOfType<UIManager>();
-        _weaponSlotManager = GetComponent<WeaponSlotManager>();
-        
-        _playerManager.IsGrounded = true;    
-
+        _rb = GetComponent<Rigidbody>();
+    }
+    private void Start() 
+    {
         _cameraRoot = Camera.main.transform;
         _myTransform = transform;
+        _animatorHandler.Initialize();
 
-        _newCamRotation = _cameraRoot.localRotation.eulerAngles;
-
-        Physics.IgnoreCollision(_characterCollider, _characterCollisionBlockerCollider, true);
+        _playerManager.IsGrounded = true;
+        Physics.IgnoreCollision(_characterCollider, _characterCollisionBlockerCollider, true);    
     }
 
     #region Player Actions
@@ -130,7 +122,7 @@ public class PlayerLocomotion : MonoBehaviour
                 else
                 {
                     Vector3 rotationDirection = _movDirection;
-                    rotationDirection = _cameraHandler.CurrentLockOnTarget.position - transform.position;
+                    rotationDirection = _cameraHandler.CurrentLockOnTarget.transform.position - transform.position;
                     rotationDirection.y = 0;
                     rotationDirection.Normalize();
                     

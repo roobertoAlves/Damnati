@@ -18,6 +18,7 @@ MonoBehaviour:
   isUnarmed: 0
   baseDamage: 25
   criticalDamageMultiplier: 3
+  physicalDamageAbsorption: 50
   isMeleeWeapon: 0
   isShieldWeapon: 1
   right_Hand_Idle: Right Arm Idle

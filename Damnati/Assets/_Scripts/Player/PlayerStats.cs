@@ -10,19 +10,18 @@ public class PlayerStats : CharacterStats
     
     [Header("Health Parameters")]
     [Space(15)]
-    [SerializeField] private HealthBar _healthBar;
+    private HealthBar _healthBar;
 
     [Header("Stamina Parameters")]
     [Space(15)]
 
     [SerializeField] private float _staminaRegenerationAmount = 1;
     [SerializeField] private float _staminaRegenerationTimer = 0;
-    [SerializeField] private StaminaBar _staminaBar;
+    private StaminaBar _staminaBar;
 
     [Header("Rage Parameters")]
     [Space(15)]
-
-    [SerializeField] private RageBar _rageBar;
+    private RageBar _rageBar;
     [SerializeField] private int _rageLevel = 10;
     [SerializeField] private float _maxRage;
     [SerializeField] private float _currentRage;
@@ -34,20 +33,27 @@ public class PlayerStats : CharacterStats
         _playerAnimator = GetComponent<PlayerAnimatorController>();    
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
+
+        _healthBar = FindObjectOfType<HealthBar>();
+        _staminaBar = FindObjectOfType<StaminaBar>();
+        _rageBar = FindObjectOfType<RageBar>();
     }
     private void Start() 
     {
         MaxHealth = SetMaxHealthFromHealthLevel();
         CurrentHealth = MaxHealth;
         _healthBar.SetMaxhHealth(MaxHealth);
+        _healthBar.SetCurrentHealth(CurrentHealth);
 
         MaxStamina = SetMaxStaminaFromHealthLevel();
         CurrentStamina = MaxStamina;
         _staminaBar.SetMaxStamina(MaxStamina);
+        _staminaBar.SetCurrentStamina(CurrentStamina);
 
         _maxRage = SetMaxRageFromRageLevel();
         _currentRage = _maxRage;
         _rageBar.SetMaxRage(_maxRage);
+        _rageBar.SetCurrentRage(_currentRage);
     }
 
 
@@ -81,7 +87,7 @@ public class PlayerStats : CharacterStats
             IsDead = true;
         }       
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, string damageAnimation = "Damage_01")
     { 
         if(_playerManager.IsInvulnerable || IsDead)
         {
@@ -91,7 +97,7 @@ public class PlayerStats : CharacterStats
 
         _healthBar.SetCurrentHealth(CurrentHealth);
 
-        _playerAnimator.PlayTargetAnimation("Damage_01", true);
+        _playerAnimator.PlayTargetAnimation(damageAnimation, true);
 
         if(CurrentHealth <= 0)
         {

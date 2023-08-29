@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class EnemyStats : CharacterStats
 {
-    private  Animator _anim;
+    private EnemyAnimatorController _enemyAnimatorController;
+    [SerializeField] private UIEnemyHealthBar _enemyHealthBar;
     private void Awake() 
     {
-        _anim  = GetComponent<Animator>();
+        _enemyAnimatorController  = GetComponent<EnemyAnimatorController>();
     }
     private void Start() 
     {
         MaxHealth = SetMaxHealthFromHealthLevel();
         CurrentHealth = MaxHealth;
+        _enemyHealthBar.SetMaxHealth(MaxHealth);
     }
 
     private int SetMaxHealthFromHealthLevel()
@@ -31,21 +33,27 @@ public class EnemyStats : CharacterStats
             IsDead = true;
         }       
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, string damageAnimation = "Damage_01")
     {
         if(IsDead)
         {
             return;
         }
         CurrentHealth = CurrentHealth - damage;
+        _enemyHealthBar.SetHealth(CurrentHealth);
 
-        _anim.Play("Damage_01");
+        _enemyAnimatorController.PlayTargetAnimation(damageAnimation, true);
 
         if(CurrentHealth <= 0)
         {
-            CurrentHealth = 0;
-            _anim.Play("Death_01");
-            IsDead = true;
+            HandleDeath();
         }
+    }
+
+    private void HandleDeath()
+    {
+        CurrentHealth = 0;
+        _enemyAnimatorController.PlayTargetAnimation("Death_01", true);
+        IsDead = true;
     }
 }
