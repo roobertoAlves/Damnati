@@ -565,6 +565,7 @@ MonoBehaviour:
   _lockOnTransform: {fileID: 1191397369}
   _pendingCriticalDamage: 0
   _riposteDamageCollider: {fileID: 737972059}
+  _isRotatingWithRootMotion: 0
   _currentState: {fileID: 1240184416}
   _currentTarget: {fileID: 0}
   _canDoCombo: 0
@@ -7149,6 +7150,7 @@ MonoBehaviour:
   _lockOnTransform: {fileID: 494949071}
   _pendingCriticalDamage: 0
   _riposteDamageCollider: {fileID: 0}
+  _isRotatingWithRootMotion: 0
   _interactableUIGameObject: {fileID: 569324041}
   _itemInteractableGameObject: {fileID: 1055162422}
 --- !u!114 &5079598194609435847
