@@ -16,6 +16,7 @@ public class PlayerManager : CharacterManager
     [SerializeField] private GameObject _interactableUIGameObject;
     [SerializeField] private GameObject _itemInteractableGameObject;
 
+
     #region Player Flags
 
     private bool _isInteracting;
@@ -51,6 +52,8 @@ public class PlayerManager : CharacterManager
     public bool IsInvulnerable { get { return _isInvulnerable; } set { _isInvulnerable = value; }}
     public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
     public bool IsInRage { get { return _isInRage; } set { _isInRage = value; }}
+    
+
     #endregion  
 
     private void Awake() 

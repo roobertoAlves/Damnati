@@ -6,13 +6,35 @@ public class PlayerEquipmentManager : MonoBehaviour
 {
     private InputHandler _inputHandler;
     private PlayerInventory _playerInverntory;
+    private PlayerStats _playerStats;
 
     [SerializeField] private BlockingCollider _blockingCollider;
 
     private void Awake() 
     {
         _inputHandler = FindObjectOfType<InputHandler>();
-        _playerInverntory = GetComponent<PlayerInventory>();    
+        _playerInverntory = GetComponent<PlayerInventory>();  
+        _playerStats = GetComponent<PlayerStats>();  
+    }
+
+    private void Start() 
+    {
+        PhysicalDamageAbsorption();
+    }
+
+    private void PhysicalDamageAbsorption()
+    {
+        _playerStats.PhysicalDamageAbsorptionHead = _playerInverntory.HelmetPhysicalDefense;
+        Debug.Log("Head Absorption is: " + _playerStats.PhysicalDamageAbsorptionHead + "%");
+
+        _playerStats.PhysicalDamageAbsorptionBody = _playerInverntory.ChesplatePhysicalDefense;
+        Debug.Log("Body Absorption is: " + _playerStats.PhysicalDamageAbsorptionBody + "%");
+
+        _playerStats.PhysicalDamageAbsorptionLegs = _playerInverntory.LegsPhysicalDefense;
+        Debug.Log("Legs Absorption is: " + _playerStats.PhysicalDamageAbsorptionLegs + "%");
+
+        _playerStats.PhysicalDamageAbsorptionHands = _playerInverntory.GlovesPhysicalDefense;
+        Debug.Log("Hands Absorption is: " + _playerStats.PhysicalDamageAbsorptionHands + "%");
     }
 
     public void OpenBlockingCollider()

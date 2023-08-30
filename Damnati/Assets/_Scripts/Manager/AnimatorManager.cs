@@ -15,5 +15,12 @@ public class AnimatorManager : MonoBehaviour
         Anim.SetBool("IsInteracting", isInteracting);
         Anim.CrossFade(targetAnim, 0.2f);
     }
+    public void PlayerTargetAnimationWithRootRotation (string targetAnim, bool isInteracting)
+    {
+        Anim.applyRootMotion = isInteracting;
+        Anim.SetBool("IsRotatingWithRootMotion", true);
+        Anim.SetBool("IsInteracting", isInteracting);
+        Anim.CrossFade(targetAnim, 0.2f);
+    }
     public virtual void TakeCriticalDamageAnimationEvent(){}
 }

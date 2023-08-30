@@ -33,13 +33,9 @@ public class EnemyStats : CharacterStats
             IsDead = true;
         }       
     }
-    public void TakeDamage(int damage, string damageAnimation = "Damage_01")
+    public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
     {
-        if(IsDead)
-        {
-            return;
-        }
-        CurrentHealth = CurrentHealth - damage;
+        base.TakeDamage(damage, damageAnimation = "Damage_01");
         _enemyHealthBar.SetHealth(CurrentHealth);
 
         _enemyAnimatorController.PlayTargetAnimation(damageAnimation, true);

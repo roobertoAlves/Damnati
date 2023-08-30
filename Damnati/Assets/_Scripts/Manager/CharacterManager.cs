@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    [Header("Lock On Camera")]
+    [Header("Lock On Transform")]
     [Space(15)]
     [SerializeField] private Transform _lockOnTransform;
 
@@ -23,6 +23,10 @@ public class CharacterManager : MonoBehaviour
     private bool _isParrying;
     private bool _isBlocking;
 
+    [Header("Movement Flags")]
+    [Space(15)]
+    [SerializeField] private bool _isRotatingWithRootMotion;
+
 
     #region GET & SET
     
@@ -36,6 +40,7 @@ public class CharacterManager : MonoBehaviour
     public bool CanBeParried { get { return _canbeParried; } set { _canbeParried = value; }}
     public bool CanBeRiposted { get { return _canBeRiposted; } set { _canBeRiposted = value; }}
     public bool IsBlocking { get { return _isBlocking; } set { _isBlocking = value; }}
+    public bool IsRotatingWithRootMotion { get { return _isRotatingWithRootMotion; } set { _isRotatingWithRootMotion = value; }}
     #endregion
 }
 

@@ -22,11 +22,25 @@ public class PlayerInventory : MonoBehaviour
 
     [SerializeField] private List<WeaponItem> _weaponsInventory;
 
+    
+    [Header("Defensive Items Status")]
+    [Space(15)]
+
+    [SerializeField] private float _helmetPhysicalDefense;
+    [SerializeField] private float _legsPhysicalDefense;
+    [SerializeField] private float _bodyPhysicalDefense;
+    [SerializeField] private float _handsPhysicalDefense;
+
 
     #region GET & SET
 
     public List<WeaponItem> WeaponsInventory {get { return _weaponsInventory; } set {_weaponsInventory = value; }}
 
+
+    public float HelmetPhysicalDefense { get { return _helmetPhysicalDefense; }}
+    public float LegsPhysicalDefense { get { return _legsPhysicalDefense; }}
+    public float ChesplatePhysicalDefense { get { return _bodyPhysicalDefense; }}
+    public float GlovesPhysicalDefense { get { return _handsPhysicalDefense; }}
     #endregion
 
     private void Start() 

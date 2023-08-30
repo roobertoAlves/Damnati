@@ -7287,6 +7287,10 @@ MonoBehaviour:
   currentRightWeaponIndex: 1
   currentLeftWeaponIndex: 1
   _weaponsInventory: []
+  _helmetPhysicalDefense: 4
+  _legsPhysicalDefense: 5
+  _bodyPhysicalDefense: 7
+  _handsPhysicalDefense: 2
 --- !u!114 &5079598194609435854
 MonoBehaviour:
   m_ObjectHideFlags: 0

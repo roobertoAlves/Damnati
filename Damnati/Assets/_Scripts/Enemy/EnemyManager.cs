@@ -93,7 +93,8 @@ public class EnemyManager : CharacterManager
     {
         HandleRecoveryTimer();
         HandleStateMachine();
-
+        
+        IsRotatingWithRootMotion = _enemyAnimation.Anim.GetBool("IsRotatingWithRootMotion");
         _isInteracting = _enemyAnimation.Anim.GetBool("IsInteracting");
         _canDoCombo = _enemyAnimation.Anim.GetBool("CanDoCombo");
         _enemyAnimation.Anim.SetBool("IsDead", _enemyStats.IsDead);

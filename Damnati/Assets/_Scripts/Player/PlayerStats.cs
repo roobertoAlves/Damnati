@@ -87,16 +87,15 @@ public class PlayerStats : CharacterStats
             IsDead = true;
         }       
     }
-    public void TakeDamage(int damage, string damageAnimation = "Damage_01")
+    public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
     { 
-        if(_playerManager.IsInvulnerable || IsDead)
+        if(_playerManager.IsInvulnerable)
         {
             return;
         }
-        CurrentHealth = CurrentHealth - damage;
 
+        base.TakeDamage(damage, damageAnimation = "Damage_01");
         _healthBar.SetCurrentHealth(CurrentHealth);
-
         _playerAnimator.PlayTargetAnimation(damageAnimation, true);
 
         if(CurrentHealth <= 0)
