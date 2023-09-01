@@ -26,6 +26,7 @@ public class CharacterManager : MonoBehaviour
     [Header("Movement Flags")]
     [Space(15)]
     [SerializeField] private bool _isRotatingWithRootMotion;
+    [SerializeField] private bool _canRotate;
 
 
     #region GET & SET
@@ -41,6 +42,7 @@ public class CharacterManager : MonoBehaviour
     public bool CanBeRiposted { get { return _canBeRiposted; } set { _canBeRiposted = value; }}
     public bool IsBlocking { get { return _isBlocking; } set { _isBlocking = value; }}
     public bool IsRotatingWithRootMotion { get { return _isRotatingWithRootMotion; } set { _isRotatingWithRootMotion = value; }}
+    public bool CanRotate { get { return _canRotate; } set { _canRotate = value; }}
     #endregion
 }
 

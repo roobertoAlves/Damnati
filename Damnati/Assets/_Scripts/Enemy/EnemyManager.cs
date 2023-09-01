@@ -42,7 +42,7 @@ public class EnemyManager : CharacterManager
 
     [Header("A.I Attack Values")]
     [Space(15)]
-    [SerializeField] private float _maximumAttackRange = 1.5f;
+    [SerializeField] private float _maximumAggroRadius = 5f;
 
     [Header("A.I Combat Settings")]
     [Space(15)]
@@ -70,7 +70,7 @@ public class EnemyManager : CharacterManager
     public NavMeshAgent EnemyNavMeshAgent { get { return _navMeshAgent; } set { _navMeshAgent = value; }}
     
     public float RotationSpeed { get { return _rotationSpeed; } set { _rotationSpeed = value; }}
-    public float MaximumAttackRange { get { return _maximumAttackRange; } set { _maximumAttackRange = value; }}
+    public float MaximumAggroRadius { get { return _maximumAggroRadius; } set { _maximumAggroRadius = value; }}
     public float ComboLikelyHood { get { return _comboLikelyHood; } set { _comboLikelyHood = value; }}
     #endregion
 
@@ -97,10 +97,11 @@ public class EnemyManager : CharacterManager
         IsRotatingWithRootMotion = _enemyAnimation.Anim.GetBool("IsRotatingWithRootMotion");
         _isInteracting = _enemyAnimation.Anim.GetBool("IsInteracting");
         _canDoCombo = _enemyAnimation.Anim.GetBool("CanDoCombo");
+        CanRotate = _enemyAnimation.Anim.GetBool("CanRotate");
         _enemyAnimation.Anim.SetBool("IsDead", _enemyStats.IsDead);
     }
 
-    private void FixedUpdate() 
+    private void LateUpdate()
     {
         _navMeshAgent.transform.localPosition = Vector3.zero;
         _navMeshAgent.transform.localRotation = Quaternion.identity; 

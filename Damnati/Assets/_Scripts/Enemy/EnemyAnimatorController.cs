@@ -21,6 +21,11 @@ public class EnemyAnimatorController : AnimatorManager
         deltaPosition.y = 0;
         Vector3 velocity = deltaPosition / delta;
         _enemyManager.EnemyRb.velocity = velocity;
+
+        if(_enemyManager.IsRotatingWithRootMotion)
+        {
+            _enemyManager.transform.rotation *= Anim.deltaRotation;
+        }
     }
 
     public override void TakeCriticalDamageAnimationEvent()

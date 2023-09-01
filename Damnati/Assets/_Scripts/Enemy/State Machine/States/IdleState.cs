@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class IdleState : States
 {
-    [SerializeField] private PersueTargetState _persueTarget;
+    [SerializeField] private PursueTargetState _persueTarget;
     [SerializeField] private LayerMask _detectionLayer;
     public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
     {
         #region Handle Enemy Target Detection
-        Collider[] colliders = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.DetectionRadius, _detectionLayer);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, enemyManager.DetectionRadius, _detectionLayer);
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -17,8 +17,8 @@ public class IdleState : States
 
             if(characterStats != null)
             {
-                Vector3 targetDirection = characterStats.transform.position -  enemyManager.transform.position;
-                float viewableAngle = Vector3.Angle(targetDirection,  enemyManager.transform.forward);
+                Vector3 targetDirection = characterStats.transform.position - transform.position;
+                float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
                 if(viewableAngle > enemyManager.MinimumDetectionAngle && viewableAngle < enemyManager.MaximumDetectionAngle)
                 {

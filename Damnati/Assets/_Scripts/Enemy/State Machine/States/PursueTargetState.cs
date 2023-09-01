@@ -2,11 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersueTargetState : States
+public class PursueTargetState : States
 {
     [SerializeField] private CombatStanceState _combatStanceState;
+    [SerializeField] private RotateTowardsTargetState _rotateTowardsTargetState;
     public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
     {
+        Vector3 targetDirection = enemyManager.CurrentTarget.transform.position - enemyManager.transform.position;
+        float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
+        float viewableAngle = Vector3.SignedAngle(targetDirection, enemyManager.transform.forward, Vector3.up);
+
+        HandleRotateTowardsTarget(enemyManager);
+
+        if(viewableAngle > 65 || viewableAngle < -65)
+        {
+            return _rotateTowardsTargetState;
+        }
+
         if(enemyManager.IsInteracting)
         {
             return this;
@@ -14,21 +26,10 @@ public class PersueTargetState : States
 
         if(enemyManager.IsPerfomingAction)
         {
-            enemyAnimatorController.Anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
+            enemyAnimatorController.Anim.SetFloat("Vertical", 0 , 0.1f, Time.deltaTime);
             return this;
         }
-        Vector3 targetDirection = enemyManager.CurrentTarget.transform.position -  enemyManager.transform.position;
-        float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
-        float viewableAngle = Vector3.Angle(targetDirection,  enemyManager.transform.forward);
-        
-        if(distanceFromTarget > enemyManager.MaximumAttackRange)
-        {
-            enemyAnimatorController.Anim.SetFloat("Vertical", 5, 0.1f, Time.deltaTime);
-        }
-
-        HandleRotateTowardsTarget(enemyManager);
-        
-        if(distanceFromTarget <= enemyManager.MaximumAttackRange)
+        if(distanceFromTarget > enemyManager.MaximumAggroRadius)
         {
             return _combatStanceState;
         }
@@ -43,7 +44,7 @@ public class PersueTargetState : States
         //Rotate manually
         if(enemyManager.IsPerfomingAction)
         {
-            Vector3 direction = enemyManager.CurrentTarget.transform.position - enemyManager.transform.position;
+            Vector3 direction = enemyManager.CurrentTarget.transform.position - transform.position;
             direction.y = 0;
             direction.Normalize();
 
