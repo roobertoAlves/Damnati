@@ -224,10 +224,6 @@ AnimatorState:
   m_Transitions:
   - {fileID: 4092695970468226286}
   m_StateMachineBehaviours:
-  - {fileID: -2428196710500750391}
-  - {fileID: -5002458021024641064}
-  - {fileID: -5064289763970730743}
-  - {fileID: -5498919819339079538}
   - {fileID: -3516552319254880276}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -411,20 +407,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &-5498919819339079538
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e377b04ec0acad4a9cfff955f5fb1b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBool: IsUsingRightHand
-  status: 0
 --- !u!1101 &-5442446235498733651
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -521,34 +503,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!114 &-5064289763970730743
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e377b04ec0acad4a9cfff955f5fb1b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBool: IsUsingLeftHand
-  status: 0
---- !u!114 &-5002458021024641064
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e377b04ec0acad4a9cfff955f5fb1b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBool: CanDoCombo
-  status: 0
 --- !u!1102 &-5001778770195653631
 AnimatorState:
   serializedVersion: 6
@@ -784,8 +738,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e377b04ec0acad4a9cfff955f5fb1b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetBool: IsInvulnerable
-  status: 0
+  _isInteractingBool: IsInteracting
+  _isInteractingStatus: 0
+  _isRotatingWithRootMotionBool: IsRotatingWithRootMotion
+  _isRotatingWithRootMotionStatus: 0
+  _canRotateBool: CanRotate
+  _canRotateStatus: 1
 --- !u!1107 &-3304233377766519155
 AnimatorStateMachine:
   serializedVersion: 6
@@ -1127,20 +1085,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &-2428196710500750391
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e377b04ec0acad4a9cfff955f5fb1b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBool: IsInteracting
-  status: 0
 --- !u!1102 &-2105307643087944214
 AnimatorState:
   serializedVersion: 6
@@ -1218,7 +1162,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Riposte_Get_Up
+  m_Name: Riposte Get Up
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1232,7 +1176,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 1473a8753e313784bb1205ae6ba5f9a7, type: 2}
+  m_Motion: {fileID: 7400000, guid: 6e77d9e51f74b9343898886b4f4e51a9, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1381,7 +1325,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 7ffe4f3f54d15f24cb6a21bf930eb284, type: 2}
+  m_Motion: {fileID: 7400000, guid: f6c6c2e2907e73b41a86719cfe345d6d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1423,73 +1367,73 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Vertical
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsInteracting
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: CanDoCombo
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsUsingLeftHand
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsUsingRightHand
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsInvulnerable
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsInAir
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsDead
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: CanRotate
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: IsRotatinRootMotion
+    m_Controller: {fileID: 9100000}
+  - m_Name: IsRotatingWithRootMotion
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsBlocking
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -2236,7 +2180,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ec04f11f9da0fd94e8548075e861e175, type: 2}
+  m_Motion: {fileID: 7400000, guid: 40a07f987e1dc284b91d90ae252b1853, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2312,7 +2256,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 6462ecb17a28bcf4a968368f6cb896eb, type: 2}
+  m_Motion: {fileID: 7400000, guid: 3ad98ee825174da4597d4303266e6d00, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2391,7 +2335,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 03cffbb6e2334f2429ba9cbc34fdef49, type: 2}
+  m_Motion: {fileID: 7400000, guid: 630ebd67f067dbf42981df135602d869, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2474,7 +2418,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Riposte_Death
+  m_Name: Riposte Death
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -2487,7 +2431,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: ed944516aadf14d44afb519f5874763f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
