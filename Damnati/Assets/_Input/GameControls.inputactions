@@ -156,6 +156,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Critical Attack",
+                    "type": "Button",
+                    "id": "4393c9d9-48d4-44a6-8776-01bc7f527209",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LT",
                     "type": "Button",
                     "id": "53e96dcf-ed23-4c74-91c6-ab674af4e7a3",
@@ -204,15 +213,6 @@
                     "name": "Run",
                     "type": "Button",
                     "id": "4a3f588f-4a6e-44d8-ad93-47e1a0794429",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Critical Attack",
-                    "type": "Button",
-                    "id": "4393c9d9-48d4-44a6-8776-01bc7f527209",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -317,17 +317,6 @@
                 },
                 {
                     "name": "",
-                    "id": "9ff47bc2-b219-466e-921b-732e1acf4879",
-                    "path": "<Keyboard>/g",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Critical Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "d1243838-6aef-48ff-99c0-fc685cb76225",
                     "path": "<Keyboard>/l",
                     "interactions": "",
@@ -356,6 +345,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ff47bc2-b219-466e-921b-732e1acf4879",
+                    "path": "<Keyboard>/g",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Critical Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

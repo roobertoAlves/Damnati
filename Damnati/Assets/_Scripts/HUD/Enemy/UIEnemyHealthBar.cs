@@ -25,6 +25,7 @@ public class UIEnemyHealthBar : MonoBehaviour
 
     private void Update() 
     {
+        transform.rotation = Camera.main.transform.rotation;
         _timeUntilBarIsHidden = _timeUntilBarIsHidden - Time.deltaTime;
 
         if(_slider != null)

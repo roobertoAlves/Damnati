@@ -87,8 +87,8 @@ public class CameraHandler : MonoBehaviour
     {
         if(_inputHandler.LockOnFlag == false && _currentLockOnTarget == null)
         {
-            _lookAngle += (mouseXInput * _lookSpeed * Time.deltaTime) / delta;
-            _pivotAngle -= (mouseYInput * _pivotSpeed * Time.deltaTime) / delta;
+            _lookAngle += mouseXInput * _lookSpeed * delta;
+            _pivotAngle -= mouseYInput * _pivotSpeed  * delta;
             _pivotAngle = Mathf.Clamp(_pivotAngle, _minimumPivot, _maximumPivot);
 
             Vector3 rotation = Vector3.zero;
@@ -104,9 +104,8 @@ public class CameraHandler : MonoBehaviour
         }
         else
         {
-            Vector3 dir = _currentLockOnTarget.transform.position - transform.position;
+            Vector3 dir = _currentLockOnTarget.LockOnTransform.transform.position - _cameraPivotTransform.position;
             dir.Normalize();
-            dir.y = 0;
 
             Quaternion targetRotation = Quaternion.LookRotation(dir);
             transform.rotation = targetRotation;

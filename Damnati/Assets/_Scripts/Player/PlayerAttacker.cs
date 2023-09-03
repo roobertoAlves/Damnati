@@ -277,23 +277,31 @@ public class PlayerAttacker : MonoBehaviour
         if(Physics.Raycast(_playerLocomotion.CriticalAttackRayCastStartPoint.position, 
         transform.TransformDirection(Vector3.forward), out hit, 0.7f, _riposteLayer))
         {
-            CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponent<CharacterManager>();
+            Debug.Log("Step 1");
+            CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
+            Debug.Log("Enemy Character Manager: " + enemyCharacterManager.transform.name);
             DamageCollider rightWeapon = _weaponSlotManager.RightHandDamageCollider;
-            _playerManager.transform.position = enemyCharacterManager.CriticalDamageCollider.CriticalDamagerStandPosition.position;
+            Debug.Log("Right Weapon Collider: " +  rightWeapon.transform.name);
+           
+            if(enemyCharacterManager != null && enemyCharacterManager.CanBeRiposted)
+            {
+                Debug.Log("Step 2");
+                _playerManager.transform.position = enemyCharacterManager.CriticalDamageCollider.CriticalDamagerStandPosition.position;
 
-            Vector3 rotationDirection = _playerManager.transform.root.eulerAngles;
-            rotationDirection = hit.transform.position - _playerManager.transform.position;
-            rotationDirection.y = 0;
-            rotationDirection.Normalize();
-            Quaternion tr = Quaternion.LookRotation(rotationDirection);
-            Quaternion targetRotation = Quaternion.Slerp(_playerManager.transform.rotation, tr, 500 * Time.deltaTime);
-            _playerManager.transform.rotation = targetRotation;
+                Vector3 rotationDirection = _playerManager.transform.eulerAngles;
+                rotationDirection = hit.transform.position - _playerManager.transform.position;
+                rotationDirection.y = 0;
+                rotationDirection.Normalize();
+                Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                Quaternion targetRotation = Quaternion.Slerp(_playerManager.transform.rotation, tr, 500 * Time.deltaTime);
+                _playerManager.transform.rotation = targetRotation;
 
-            int criticalDamage = _playerInventory.rightHandWeapon.criticalDamageMultiplier * rightWeapon.CurrentWeaponDamage;
-            enemyCharacterManager.PendingCriticalDamage = criticalDamage;
+                int criticalDamage = _playerInventory.rightHandWeapon.criticalDamageMultiplier * rightWeapon.CurrentWeaponDamage;
+                enemyCharacterManager.PendingCriticalDamage = criticalDamage;
 
-            _animator.PlayTargetAnimation("Riposte", true);
-            enemyCharacterManager.GetComponent<AnimatorManager>().PlayTargetAnimation("Riposted", true);
+                _animator.PlayTargetAnimation("Riposte", true);
+                enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Riposted", true);
+            }
         }
     }
     #endregion

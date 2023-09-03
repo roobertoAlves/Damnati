@@ -18,8 +18,8 @@ public class CharacterManager : MonoBehaviour
 
     [Header("Combat Flags")]
     [Space(15)]
-    private bool _canBeRiposted;
-    private bool _canbeParried;
+    [SerializeField] private bool _canBeRiposted;
+    private bool _canBeParried;
     private bool _isParrying;
     private bool _isBlocking;
 
@@ -38,7 +38,7 @@ public class CharacterManager : MonoBehaviour
     public CriticalDamageCollider CriticalDamageCollider { get { return _riposteDamageCollider; } set { _riposteDamageCollider = value; }}
   
     public bool IsParrying { get { return _isParrying; } set { _isParrying = value; }}
-    public bool CanBeParried { get { return _canbeParried; } set { _canbeParried = value; }}
+    public bool CanBeParried { get { return _canBeParried; } set { _canBeParried = value; }}
     public bool CanBeRiposted { get { return _canBeRiposted; } set { _canBeRiposted = value; }}
     public bool IsBlocking { get { return _isBlocking; } set { _isBlocking = value; }}
     public bool IsRotatingWithRootMotion { get { return _isRotatingWithRootMotion; } set { _isRotatingWithRootMotion = value; }}

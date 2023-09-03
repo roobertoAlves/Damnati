@@ -178,6 +178,15 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Critical Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""4393c9d9-48d4-44a6-8776-01bc7f527209"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LT"",
                     ""type"": ""Button"",
                     ""id"": ""53e96dcf-ed23-4c74-91c6-ab674af4e7a3"",
@@ -226,15 +235,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""name"": ""Run"",
                     ""type"": ""Button"",
                     ""id"": ""4a3f588f-4a6e-44d8-ad93-47e1a0794429"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Critical Attack"",
-                    ""type"": ""Button"",
-                    ""id"": ""4393c9d9-48d4-44a6-8776-01bc7f527209"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -339,17 +339,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9ff47bc2-b219-466e-921b-732e1acf4879"",
-                    ""path"": ""<Keyboard>/g"",
-                    ""interactions"": ""Hold"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Critical Attack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""d1243838-6aef-48ff-99c0-fc685cb76225"",
                     ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
@@ -380,6 +369,17 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ff47bc2-b219-466e-921b-732e1acf4879"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Critical Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -396,13 +396,13 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
         m_PlayerActions_LB = m_PlayerActions.FindAction("LB", throwIfNotFound: true);
         m_PlayerActions_RB = m_PlayerActions.FindAction("RB", throwIfNotFound: true);
+        m_PlayerActions_CriticalAttack = m_PlayerActions.FindAction("Critical Attack", throwIfNotFound: true);
         m_PlayerActions_LT = m_PlayerActions.FindAction("LT", throwIfNotFound: true);
         m_PlayerActions_TH = m_PlayerActions.FindAction("TH", throwIfNotFound: true);
         m_PlayerActions_StepBack = m_PlayerActions.FindAction("StepBack", throwIfNotFound: true);
         m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Run = m_PlayerActions.FindAction("Run", throwIfNotFound: true);
-        m_PlayerActions_CriticalAttack = m_PlayerActions.FindAction("Critical Attack", throwIfNotFound: true);
         m_PlayerActions_CameraLockOn = m_PlayerActions.FindAction("CameraLockOn", throwIfNotFound: true);
         m_PlayerActions_Block = m_PlayerActions.FindAction("Block", throwIfNotFound: true);
     }
@@ -523,13 +523,13 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
     private readonly InputAction m_PlayerActions_LB;
     private readonly InputAction m_PlayerActions_RB;
+    private readonly InputAction m_PlayerActions_CriticalAttack;
     private readonly InputAction m_PlayerActions_LT;
     private readonly InputAction m_PlayerActions_TH;
     private readonly InputAction m_PlayerActions_StepBack;
     private readonly InputAction m_PlayerActions_Pause;
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_Run;
-    private readonly InputAction m_PlayerActions_CriticalAttack;
     private readonly InputAction m_PlayerActions_CameraLockOn;
     private readonly InputAction m_PlayerActions_Block;
     public struct PlayerActionsActions
@@ -538,13 +538,13 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         public PlayerActionsActions(@GameControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @LB => m_Wrapper.m_PlayerActions_LB;
         public InputAction @RB => m_Wrapper.m_PlayerActions_RB;
+        public InputAction @CriticalAttack => m_Wrapper.m_PlayerActions_CriticalAttack;
         public InputAction @LT => m_Wrapper.m_PlayerActions_LT;
         public InputAction @TH => m_Wrapper.m_PlayerActions_TH;
         public InputAction @StepBack => m_Wrapper.m_PlayerActions_StepBack;
         public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @Run => m_Wrapper.m_PlayerActions_Run;
-        public InputAction @CriticalAttack => m_Wrapper.m_PlayerActions_CriticalAttack;
         public InputAction @CameraLockOn => m_Wrapper.m_PlayerActions_CameraLockOn;
         public InputAction @Block => m_Wrapper.m_PlayerActions_Block;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
@@ -562,6 +562,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @RB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
                 @RB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
                 @RB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
+                @CriticalAttack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
+                @CriticalAttack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
+                @CriticalAttack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
                 @LT.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLT;
                 @LT.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLT;
                 @LT.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLT;
@@ -580,9 +583,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Run.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRun;
                 @Run.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRun;
                 @Run.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRun;
-                @CriticalAttack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
-                @CriticalAttack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
-                @CriticalAttack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
                 @CameraLockOn.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCameraLockOn;
                 @CameraLockOn.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCameraLockOn;
                 @CameraLockOn.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCameraLockOn;
@@ -599,6 +599,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @RB.started += instance.OnRB;
                 @RB.performed += instance.OnRB;
                 @RB.canceled += instance.OnRB;
+                @CriticalAttack.started += instance.OnCriticalAttack;
+                @CriticalAttack.performed += instance.OnCriticalAttack;
+                @CriticalAttack.canceled += instance.OnCriticalAttack;
                 @LT.started += instance.OnLT;
                 @LT.performed += instance.OnLT;
                 @LT.canceled += instance.OnLT;
@@ -617,9 +620,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
-                @CriticalAttack.started += instance.OnCriticalAttack;
-                @CriticalAttack.performed += instance.OnCriticalAttack;
-                @CriticalAttack.canceled += instance.OnCriticalAttack;
                 @CameraLockOn.started += instance.OnCameraLockOn;
                 @CameraLockOn.performed += instance.OnCameraLockOn;
                 @CameraLockOn.canceled += instance.OnCameraLockOn;
@@ -641,13 +641,13 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     {
         void OnLB(InputAction.CallbackContext context);
         void OnRB(InputAction.CallbackContext context);
+        void OnCriticalAttack(InputAction.CallbackContext context);
         void OnLT(InputAction.CallbackContext context);
         void OnTH(InputAction.CallbackContext context);
         void OnStepBack(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
-        void OnCriticalAttack(InputAction.CallbackContext context);
         void OnCameraLockOn(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
     }

@@ -272,7 +272,7 @@ public class InputHandler : MonoBehaviour
     {
         if(_criticalAttackInput)
         {
-           _criticalAttackInput = false;
+            Debug.Log("Função sendo chamada");
             _playerAttacker.AttemptRiposte();
         }
     }  

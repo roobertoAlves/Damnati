@@ -94,69 +94,66 @@ public class PlayerLocomotion : MonoBehaviour
 
     #region Player Actions
 
-    public void HandleRotation(float delta)
+   public void HandleRotation(float delta)
+{
+    if (_animatorHandler.canRotate)
     {
-        if(_animatorHandler.canRotate)
+        if(_inputHandler.LockOnFlag)
         {
-            if(_inputHandler.LockOnFlag)
-            {  
-                if(_inputHandler.SBFlag || _inputHandler.RunFlag)
+            if (_inputHandler.RunFlag || _inputHandler.SBFlag)
+            {
+                Vector3 targetDirection = Vector3.zero;
+                targetDirection = _cameraHandler.CameraTransform.forward * _inputHandler.VerticalMovement;
+                targetDirection += _cameraHandler.CameraTransform.right * _inputHandler.HorizontalMovement;
+                targetDirection.Normalize();
+                targetDirection.y = 0;
+
+                if (targetDirection == Vector3.zero)
                 {
-                    Vector3 targetDir = Vector3.zero;
-                    targetDir = _cameraHandler.CameraTransform.forward * _inputHandler.VerticalMovement;
-                    targetDir += _cameraHandler.CameraTransform.right * _inputHandler.HorizontalMovement;
-
-                    targetDir.Normalize();
-                    targetDir.y = 0;
-
-                    if(targetDir == Vector3.zero)
-                    {
-                        targetDir = transform.forward;
-                    }
-
-                    Quaternion tr = Quaternion.LookRotation(targetDir);
-                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
-
-                    transform.rotation = targetRotation;
+                    targetDirection = transform.forward;
                 }
-                else
-                {
-                    Vector3 rotationDirection = _movDirection;
-                    rotationDirection = _cameraHandler.CurrentLockOnTarget.transform.position - transform.position;
-                    rotationDirection.y = 0;
-                    rotationDirection.Normalize();
-                    
-                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
 
-                    transform.rotation = targetRotation;
-                }
-                            
+                Quaternion tr = Quaternion.LookRotation(targetDirection);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
+
+                transform.rotation = targetRotation;
             }
             else
             {
-                Vector3 targetDir = Vector3.zero;
-                float moveOverride = _inputHandler.MoveAmount;
-
-                targetDir = _cameraRoot.forward * _inputHandler.VerticalCameraMovement;
-                targetDir += _cameraRoot.right * _inputHandler.HorizontalCameraMovement;
-                targetDir.Normalize();
-                targetDir.y = 0;
-
-                if(targetDir == Vector3.zero)
-                {
-                    targetDir = _myTransform.forward;
-                }
-
-                float rs = _rotationSpeed;
-
-                Quaternion tr = Quaternion.LookRotation(targetDir);
-                Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
-
-                _myTransform.rotation = targetRotation;
+                Vector3 rotationDirection = _movDirection;
+                rotationDirection = _cameraHandler.CurrentLockOnTarget.transform.position - transform.position;
+                rotationDirection.y = 0;
+                rotationDirection.Normalize();
+                Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
+                transform.rotation = targetRotation;
             }
         }
+        else
+        {
+            Vector3 targetDir = Vector3.zero;
+            float moveOverride = _inputHandler.MoveAmount;
+
+            targetDir = _cameraRoot.forward * _inputHandler.VerticalMovement;
+            targetDir += _cameraRoot.right * _inputHandler.HorizontalMovement;
+
+            targetDir.Normalize();
+            targetDir.y = 0;
+
+            if (targetDir == Vector3.zero)
+            {
+                targetDir = _myTransform.forward;
+            }
+
+            float rs = _rotationSpeed;
+
+            Quaternion tr = Quaternion.LookRotation(targetDir);
+            Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
+
+            _myTransform.rotation = targetRotation;
+        }
     }
+}
     public void HandleMovement(float delta)
     {
         if(_inputHandler.SBFlag || _playerManager.IsInteracting)
