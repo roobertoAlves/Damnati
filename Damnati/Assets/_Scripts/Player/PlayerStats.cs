@@ -37,23 +37,24 @@ public class PlayerStats : CharacterStats
         _healthBar = FindObjectOfType<HealthBar>();
         _staminaBar = FindObjectOfType<StaminaBar>();
         _rageBar = FindObjectOfType<RageBar>();
-    }
-    private void Start() 
-    {
+
         MaxHealth = SetMaxHealthFromHealthLevel();
         CurrentHealth = MaxHealth;
-        _healthBar.SetMaxhHealth(MaxHealth);
         _healthBar.SetCurrentHealth(CurrentHealth);
 
         MaxStamina = SetMaxStaminaFromHealthLevel();
         CurrentStamina = MaxStamina;
-        _staminaBar.SetMaxStamina(MaxStamina);
         _staminaBar.SetCurrentStamina(CurrentStamina);
 
         _maxRage = SetMaxRageFromRageLevel();
         _currentRage = _maxRage;
-        _rageBar.SetMaxRage(_maxRage);
         _rageBar.SetCurrentRage(_currentRage);
+    }
+    private void Start() 
+    {
+        _healthBar.SetMaxhHealth(MaxHealth);
+        _staminaBar.SetMaxStamina(MaxStamina);
+        _rageBar.SetMaxRage(_maxRage);
     }
 
 
