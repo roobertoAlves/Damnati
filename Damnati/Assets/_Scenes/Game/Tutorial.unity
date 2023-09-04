@@ -2561,7 +2561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa64fb3025dc6504781ee2accc1050f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bossName: Junin Ferradura
+  _bossName: Boss 1
 --- !u!1 &818372402
 GameObject:
   m_ObjectHideFlags: 0
@@ -7094,6 +7094,10 @@ PrefabInstance:
     - target: {fileID: 1173625291451584136, guid: efccc6a5865043a43a266396057730d2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173625291451584137, guid: efccc6a5865043a43a266396057730d2, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1173625292717111854, guid: efccc6a5865043a43a266396057730d2, type: 3}
       propertyPath: _playerInventory
