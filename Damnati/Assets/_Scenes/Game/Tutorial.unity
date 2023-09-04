@@ -570,7 +570,7 @@ MonoBehaviour:
   _canRotate: 0
   _currentState: {fileID: 1240184416}
   _currentTarget: {fileID: 0}
-  _canDoCombo: 0
+  _canDoCombo: 1
   _detectionRadius: 20
   _minimumDetectionAngle: -50
   _maximumDetectionAngle: 50
