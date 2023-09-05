@@ -11,9 +11,15 @@ public class CombatStanceState : States
 
     [SerializeField] private EnemyAttackAction[] _enemyAttackAction;
 
-    private bool _rangeDestinationSet = false;
-    private float _verticalMoveValue = 0;
-    private float _horizontalMoveValue = 0;
+    protected bool _rangeDestinationSet = false;
+    protected float _verticalMoveValue = 0;
+    protected float _horizontalMoveValue = 0;
+
+    #region GET & SET
+    public AttackState AttackingState { get { return _attackState; }}
+    public PursueTargetState PersueTarget { get { return _persueTargetState; }}
+    public EnemyAttackAction[] EnemyAtttackActions { get { return _enemyAttackAction; }}
+    #endregion
     public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
     {
         float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
@@ -62,7 +68,7 @@ public class CombatStanceState : States
         return this;
     }
 
-    private void HandleRotateTowardsTarget(EnemyManager enemyManager)
+    protected void HandleRotateTowardsTarget(EnemyManager enemyManager)
     {
         //Rotate manually
         if(enemyManager.IsPerfomingAction)
@@ -92,11 +98,11 @@ public class CombatStanceState : States
             enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.EnemyNavMeshAgent.transform.rotation, enemyManager.RotationSpeed / Time.deltaTime);
         }
     }
-    private void DecideCirclingAction(EnemyAnimatorController enemyAnimatorController)
+    protected void DecideCirclingAction(EnemyAnimatorController enemyAnimatorController)
     {
         WalkAroundTarget(enemyAnimatorController);
     }
-    private void WalkAroundTarget(EnemyAnimatorController enemyAnimatorController)
+    protected void WalkAroundTarget(EnemyAnimatorController enemyAnimatorController)
     {
         _verticalMoveValue = 0.5f;
         _horizontalMoveValue = Random.Range(-1, 1);
@@ -110,7 +116,7 @@ public class CombatStanceState : States
             _horizontalMoveValue = -0.5f;
         }
     }
-    private void GetNewAttack(EnemyManager enemyManager)
+    protected virtual void GetNewAttack(EnemyManager enemyManager)
     {
         Vector3 targetsDirection = enemyManager.CurrentTarget.transform.position -  enemyManager.transform.position;
         float viewableAngle = Vector3.Angle(targetsDirection,  enemyManager.transform.forward);
@@ -138,9 +144,11 @@ public class CombatStanceState : States
         {
             EnemyAttackAction enemyAttackAction = _enemyAttackAction[i];
 
-            if(distanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack && distanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
+            if(distanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack 
+                && distanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
             {
-                if(viewableAngle <= enemyAttackAction.MaximumAttackAngle && viewableAngle >= enemyAttackAction.MinimumAttackAngle)
+                if(viewableAngle <= enemyAttackAction.MaximumAttackAngle 
+                && viewableAngle >= enemyAttackAction.MinimumAttackAngle)
                 {
                    if(_attackState.CurrentAttack != null)
                    {

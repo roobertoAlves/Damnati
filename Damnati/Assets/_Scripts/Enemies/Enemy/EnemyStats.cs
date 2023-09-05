@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class EnemyStats : CharacterStats
 {
     private EnemyAnimatorController _enemyAnimatorController;
-    private EnemyBossManager _eenemyBossManager;
+    private EnemyBossManager _enemyBossManager;
+
     [SerializeField] private UIEnemyHealthBar _enemyHealthBar;
 
     [SerializeField] private bool _isBoss;
@@ -16,7 +18,7 @@ public class EnemyStats : CharacterStats
     private void Awake() 
     {
         _enemyAnimatorController  = GetComponent<EnemyAnimatorController>();
-        _eenemyBossManager = GetComponent<EnemyBossManager>();
+        _enemyBossManager = GetComponent<EnemyBossManager>();
         MaxHealth = SetMaxHealthFromHealthLevel();
         CurrentHealth = MaxHealth;
     }
@@ -36,26 +38,35 @@ public class EnemyStats : CharacterStats
 
     public void TakeDamageNoAnimation(int damage)
     { 
+
         CurrentHealth = CurrentHealth - damage;
-        _enemyHealthBar.SetHealth(CurrentHealth);
-        
-        if(CurrentHealth <= 0)
-        {
-            CurrentHealth = 0;
-            IsDead = true;
-        }       
-    }
-    public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
-    {
-        base.TakeDamage(damage, damageAnimation = "Damage_01");
-        
         if(!_isBoss)
         {
             _enemyHealthBar.SetHealth(CurrentHealth);
         }
-        else if(_isBoss && _eenemyBossManager != null)
+        else if(_isBoss && _enemyBossManager != null)
         {
-            _eenemyBossManager.UpdateBossHealthBar(CurrentHealth);
+            _enemyBossManager.UpdateBossHealthBar(CurrentHealth, MaxHealth);
+        }
+
+
+        if(CurrentHealth <= 0)
+        {
+            CurrentHealth = 0;
+            IsDead = true;
+        }
+    }
+    public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
+    {
+        base.TakeDamage(damage, damageAnimation = "Damage_01");
+
+        if(!_isBoss)
+        {
+            _enemyHealthBar.SetHealth(CurrentHealth);
+        }
+        else if(_isBoss && _enemyBossManager != null)
+        {
+            _enemyBossManager.UpdateBossHealthBar(CurrentHealth, MaxHealth);
         }
 
         _enemyAnimatorController.PlayTargetAnimation(damageAnimation, true);
@@ -65,7 +76,6 @@ public class EnemyStats : CharacterStats
             HandleDeath();
         }
     }
-
     private void HandleDeath()
     {
         CurrentHealth = 0;

@@ -15,6 +15,7 @@ public class InputHandler : MonoBehaviour
     private PlayerAttacker _playerAttacker;
     private PlayerLocomotion _playerLocomotion;
     private WeaponSlotManager _weaponSlotManager;
+    private EnemyStats _enemyStats;
 
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -83,6 +84,7 @@ public class InputHandler : MonoBehaviour
         _playerLocomotion = FindObjectOfType<PlayerLocomotion>();
         _weaponSlotManager = FindObjectOfType<WeaponSlotManager>();
         _blockingCollider = FindObjectOfType<BlockingCollider>();
+        _enemyStats = FindObjectOfType<EnemyStats>();
     }
     
     #region Input Management
@@ -273,7 +275,11 @@ public class InputHandler : MonoBehaviour
         if(_criticalAttackInput)
         {
             Debug.Log("Função sendo chamada");
-            _playerAttacker.AttemptRiposte();
+
+            if(!_enemyStats.IsBoss)
+            {
+                _playerAttacker.AttemptRiposte();
+            }
         }
     }  
 

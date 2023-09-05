@@ -47,6 +47,7 @@ public class EnemyManager : CharacterManager
     [Header("A.I Combat Settings")]
     [Space(15)]
     [SerializeField] private bool _allowAIToPerformCombos;
+    [SerializeField] private bool _isPhaseShifting;
     [SerializeField] private float _comboLikelyHood;
 
     #region Get & Set
@@ -61,7 +62,8 @@ public class EnemyManager : CharacterManager
     public bool IsInteracting { get { return _isInteracting; } set { _isInteracting = value; }}
     public bool CanDoCombo { get { return _canDoCombo; } set { _canDoCombo = value; }}
     public bool AllowAIToPerformCombos { get { return _allowAIToPerformCombos; } set { _allowAIToPerformCombos = value; }}
-    
+    public bool IsPhaseShifting { get { return _isPhaseShifting; } set { _isPhaseShifting = value; }}
+
     public CharacterStats CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; }}
 
     public States CurrentState { get { return _currentState; } set { _currentState = value; }}
@@ -81,11 +83,11 @@ public class EnemyManager : CharacterManager
         _enemyStats = GetComponent<EnemyStats>();
         _enemyRb = GetComponent<Rigidbody>();
         _navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+        _navMeshAgent.enabled = false;
     }
 
     private void Start() 
     {
-        _navMeshAgent.enabled = false;
         _enemyRb.isKinematic = false;
     }
 
@@ -96,6 +98,8 @@ public class EnemyManager : CharacterManager
         
         IsRotatingWithRootMotion = _enemyAnimation.Anim.GetBool("IsRotatingWithRootMotion");
         _isInteracting = _enemyAnimation.Anim.GetBool("IsInteracting");
+        _isPhaseShifting = _enemyAnimation.Anim.GetBool("IsPhaseShifting");
+        IsInvulnerable = _enemyAnimation.Anim.GetBool("IsInvulnerable");
         _canDoCombo = _enemyAnimation.Anim.GetBool("CanDoCombo");
         CanRotate = _enemyAnimation.Anim.GetBool("CanRotate");
         _enemyAnimation.Anim.SetBool("IsDead", _enemyStats.IsDead);

@@ -14,6 +14,7 @@ public class AnimatorManager : MonoBehaviour
         Anim.SetBool("CanRotate", canRotate);
         Anim.SetBool("IsInteracting", isInteracting);
         Anim.CrossFade(targetAnim, 0.2f);
+        Debug.Log(targetAnim);
     }
     public void PlayerTargetAnimationWithRootRotation (string targetAnim, bool isInteracting)
     {

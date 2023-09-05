@@ -28,7 +28,6 @@ public class PlayerManager : CharacterManager
     private bool _twoHandFlag;
     private bool _isUsingLeftHand;
     private bool _isUsingRightHand;
-    private bool _isInvulnerable;
     private bool _isSprinting;
     private bool _isHitEnemy;
     private bool _isInRage;
@@ -49,7 +48,6 @@ public class PlayerManager : CharacterManager
     public bool TwoHandFlag { get { return _twoHandFlag; } set { _twoHandFlag = value; }}
     public bool IsUsingLeftHand { get { return _isUsingLeftHand; } set { _isUsingLeftHand = value; }}
     public bool IsUsingRightHand { get { return _isUsingRightHand; } set { _isUsingRightHand = value; }}
-    public bool IsInvulnerable { get { return _isInvulnerable; } set { _isInvulnerable = value; }}
     public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
     public bool IsInRage { get { return _isInRage; } set { _isInRage = value; }}
     
@@ -74,7 +72,7 @@ public class PlayerManager : CharacterManager
         _canDoCombo = _animatorHandler.Anim.GetBool("CanCombo");
         _isUsingRightHand = _animatorHandler.Anim.GetBool("IsUsingRightHand");
         _isUsingLeftHand = _animatorHandler.Anim.GetBool("IsUsingLeftHand");
-        _isInvulnerable = _animatorHandler.Anim.GetBool("IsInvulnerable");
+        IsInvulnerable = _animatorHandler.Anim.GetBool("IsInvulnerable");
         
         _animatorHandler.Anim.SetBool("IsInAir", _isInAir);
         _animatorHandler.Anim.SetBool("IsDead", _playerStats.IsDead);

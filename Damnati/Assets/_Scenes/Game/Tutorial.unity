@@ -958,7 +958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc429815d8091646a16d83f4da12413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatStanceState: {fileID: 540064478}
+  _combatStanceState: {fileID: 0}
   _pursueTargetState: {fileID: 2053714748}
   _rotateTowardsTargetState: {fileID: 1575871922}
   _currentAttack: {fileID: 0}
@@ -1434,7 +1434,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 540064479}
-  - component: {fileID: 540064478}
   m_Layer: 0
   m_Name: Combat Stance State
   m_TagString: Untagged
@@ -1442,25 +1441,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &540064478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 540064477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d164eea0eccf30b42aa91db319bffda6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackState: {fileID: 306318657}
-  _idleState: {fileID: 1378736202}
-  _persueTargetState: {fileID: 2053714748}
-  _enemyAttackAction:
-  - {fileID: 11400000, guid: bb3bcfb6c31c61f49b6574cdf5a8f1da, type: 2}
-  - {fileID: 11400000, guid: 2e4aab10a11c69948b4672789941bd14, type: 2}
-  - {fileID: 11400000, guid: e417707d70d86d1448c189d565e08b70, type: 2}
 --- !u!4 &540064479
 Transform:
   m_ObjectHideFlags: 0
@@ -2561,7 +2541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa64fb3025dc6504781ee2accc1050f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bossName: Boss 1
+  _bossName: Hanibal o Impiedoso
 --- !u!1 &818372402
 GameObject:
   m_ObjectHideFlags: 0
@@ -4833,7 +4813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a7d72941a617d49be5a94eb21f345e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatStanceState: {fileID: 540064478}
+  _combatStanceState: {fileID: 0}
 --- !u!1 &1603290725
 GameObject:
   m_ObjectHideFlags: 0
@@ -5845,7 +5825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbef1220c92dd4e4791704d30de28eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatStanceState: {fileID: 540064478}
+  _combatStanceState: {fileID: 0}
   _rotateTowardsTargetState: {fileID: 1575871922}
 --- !u!4 &2053714749
 Transform:
@@ -6571,7 +6551,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7099632714943398342}
-  m_LocalRotation: {x: 0.6850361, y: -0.1486992, z: -0.19335252, w: 0.6864612}
+  m_LocalRotation: {x: 0.6850361, y: -0.14869897, z: -0.19335207, w: 0.6864614}
   m_LocalPosition: {x: -0.0000000044237822, y: 0.43213004, z: 0.0000000037252903}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6958,8 +6938,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4364491562562454392}
-  m_LocalRotation: {x: -0.21368645, y: 0.36808753, z: 0.8586573, w: 0.2855825}
-  m_LocalPosition: {x: -0.23494184, y: -0.12081571, z: 0.0077059995}
+  m_LocalRotation: {x: -0.21368644, y: 0.36808735, z: 0.8586575, w: 0.2855822}
+  m_LocalPosition: {x: -0.23494221, y: -0.12081571, z: 0.00770601}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7037,7 +7017,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8360243169684983265}
-  m_LocalRotation: {x: 0.5772334, y: -0.037066262, z: 0.07996283, w: 0.8118089}
+  m_LocalRotation: {x: 0.5772335, y: -0.037066214, z: 0.07996262, w: 0.8118089}
   m_LocalPosition: {x: -9.313226e-10, y: 0.43212238, z: 0.000000011175871}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8245,8 +8225,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6110236860399346717}
-  m_LocalRotation: {x: -0.37654328, y: -0.06528958, z: -0.012978284, w: 0.9240044}
-  m_LocalPosition: {x: 0.00000014901161, y: 0.6404758, z: -0.00000006519258}
+  m_LocalRotation: {x: -0.37654302, y: -0.06528956, z: -0.012978451, w: 0.9240045}
+  m_LocalPosition: {x: 0, y: 0.64047587, z: -0.000000027939677}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8279,7 +8259,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734394451075618655}
   m_LocalRotation: {x: 0.0798211, y: -0.015056635, z: 0.006487342, w: 0.99667436}
-  m_LocalPosition: {x: 0.015026182, y: 1.0594112, z: -0.139938}
+  m_LocalPosition: {x: 0.015026331, y: 1.0594112, z: -0.139938}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8407,8 +8387,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4773262331367308766}
-  m_LocalRotation: {x: 0.13707201, y: 0.120209225, z: 0.94007814, w: -0.28812188}
-  m_LocalPosition: {x: 0.23494183, y: -0.120815545, z: 0.00835238}
+  m_LocalRotation: {x: 0.13707216, y: 0.12020922, z: 0.9400782, w: -0.28812155}
+  m_LocalPosition: {x: 0.2349422, y: -0.12081555, z: 0.00835237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8651,8 +8631,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4416139200418614101}
-  m_LocalRotation: {x: -0.42307198, y: 0.07681735, z: 0.07695493, w: 0.89954835}
-  m_LocalPosition: {x: -0.000000037252903, y: 0.64047575, z: -0.00000029802322}
+  m_LocalRotation: {x: -0.4230719, y: 0.07681735, z: 0.07695489, w: 0.8995483}
+  m_LocalPosition: {x: -0.00000011175871, y: 0.64047563, z: -0.00000033527613}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

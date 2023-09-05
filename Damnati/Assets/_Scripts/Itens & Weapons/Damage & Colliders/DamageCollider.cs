@@ -7,7 +7,7 @@ public class DamageCollider : MonoBehaviour
 {
     private CharacterManager _characterManager;
     private Collider _damageCollider;
-
+    private bool _enabledDamageColliderOnStartUp = false;
     
     private int _currentWeaponDamage = 25;
 
@@ -15,6 +15,8 @@ public class DamageCollider : MonoBehaviour
 
     public int CurrentWeaponDamage { get { return _currentWeaponDamage; } set { _currentWeaponDamage = value; }}
     public CharacterManager characterManager { get { return _characterManager; } set { _characterManager = value; }}
+    public bool EnabledDamageColliderOnStartUp { get { return _enabledDamageColliderOnStartUp; } set { _enabledDamageColliderOnStartUp = value; }}
+
     #endregion
 
 
@@ -23,7 +25,7 @@ public class DamageCollider : MonoBehaviour
         _damageCollider = GetComponent<Collider>();
         _damageCollider.gameObject.SetActive(true);
         _damageCollider.isTrigger = true;
-        _damageCollider.enabled = false;
+        _damageCollider.enabled = _enabledDamageColliderOnStartUp;
     }
 
     public void EnableDamageCollider()
@@ -57,6 +59,7 @@ public class DamageCollider : MonoBehaviour
                     if(playerStats != null)
                     {
                         playerStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Idle");
+                        return;
                     }
                 }
             }
@@ -71,6 +74,7 @@ public class DamageCollider : MonoBehaviour
             EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
             CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
             BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
+            
 
             if (enemyCharacterManager != null)
             {
@@ -94,7 +98,14 @@ public class DamageCollider : MonoBehaviour
 
             if (enemyStats != null)
             {
-                enemyStats.TakeDamage(_currentWeaponDamage);
+                if(enemyStats.IsBoss)
+                {
+                    enemyStats.TakeDamageNoAnimation(_currentWeaponDamage);
+                }
+                else
+                {
+                    enemyStats.TakeDamage(_currentWeaponDamage);
+                }
             }
         }        
     }
