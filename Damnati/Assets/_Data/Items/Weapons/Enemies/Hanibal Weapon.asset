@@ -13,12 +13,18 @@ MonoBehaviour:
   m_Name: Hanibal Weapon
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: 9c0d6ec706e01ce448aea81584af092b, type: 3}
-  itemName: Sword
-  modelPrefab: {fileID: 6944629568366627670, guid: 158285e5eecf3a14abd8140e5c1f1508, type: 3}
+  itemName: Hanibal Sword
+  modelPrefab: {fileID: 6944629568366627670, guid: a0ab721d64e039943b8afeb5cf3533fe, type: 3}
   isUnarmed: 0
+  baseDamage: 25
+  criticalDamageMultiplier: 3
+  physicalDamageAbsorption: 0
+  isMeleeWeapon: 1
+  isShieldWeapon: 0
   right_Hand_Idle: Right Arm Idle
   left_Hand_Idle: Left Arm Idle
   th_idle: Both Arms Idle
+  weapon_Art: 
   SS_Heavy_Slash_01: SS_Heavy_Slash_01
   SS_Heavy_Slash_02: SS_Heavy_Slash_02
   SS_Heavy_Slash_03: SS_Heavy_Slash_03
@@ -39,4 +45,3 @@ MonoBehaviour:
   baseRage: 15
   rageLightAttackMultiplier: 3
   rageHeavyAttackMultiplier: 5
-  isMeleeWeapon: 1

@@ -13,11 +13,18 @@ public class ResetAnimatorBool : StateMachineBehaviour
 
     [SerializeField] private string _canRotateBool = "CanRotate";
     [SerializeField] private bool _canRotateStatus = true;
+    
+    [SerializeField] private string _isInvulnerable = "IsInvulnerable";
+    [SerializeField] private bool _isInvulnerableStatus = false;
 
+    [SerializeField] private string _isUsingRightHand = "IsUsingRightHand";
+    [SerializeField] private bool _isUsingRightHandStatus = false;
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool(_isInteractingBool, _isInteractingStatus);
         animator.SetBool(_isRotatingWithRootMotionBool, _isRotatingWithRootMotionStatus);
         animator.SetBool(_canRotateBool, _canRotateStatus);
+        animator.SetBool(_isInvulnerable, _isInvulnerableStatus);
+        animator.SetBool(_isUsingRightHand, _isInteractingStatus);
     }
 }

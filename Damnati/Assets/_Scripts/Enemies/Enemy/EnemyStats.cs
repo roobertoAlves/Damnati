@@ -6,6 +6,7 @@ using UnityEngine.XR;
 public class EnemyStats : CharacterStats
 {
     private EnemyAnimatorController _enemyAnimatorController;
+    private EnemyManager _enemyManager;
     private EnemyBossManager _enemyBossManager;
 
     [SerializeField] private UIEnemyHealthBar _enemyHealthBar;
@@ -20,6 +21,7 @@ public class EnemyStats : CharacterStats
         _enemyAnimatorController  = GetComponent<EnemyAnimatorController>();
         _enemyBossManager = GetComponent<EnemyBossManager>();
         MaxHealth = SetMaxHealthFromHealthLevel();
+        _enemyManager = GetComponent<EnemyManager>();
         CurrentHealth = MaxHealth;
     }
     private void Start() 
@@ -29,17 +31,28 @@ public class EnemyStats : CharacterStats
             _enemyHealthBar.SetMaxHealth(MaxHealth);
         }
     }
-
+    public override void HandlePoiseResetTimer()
+    {
+        if(PoiseResetTimer > 0)
+        {
+            PoiseResetTimer = PoiseResetTimer - Time.deltaTime;
+        }
+        else if(PoiseResetTimer <= 0 && !_enemyManager.IsInteracting)
+        {
+            TotalPoiseDefense = ArmorPoiseBonus;
+        }
+    }
     private int SetMaxHealthFromHealthLevel()
     {
         MaxHealth = HealthLevel * 10;
         return MaxHealth;
     }
 
+    #region Damage Functions
     public void TakeDamageNoAnimation(int damage)
     { 
-
         CurrentHealth = CurrentHealth - damage;
+        
         if(!_isBoss)
         {
             _enemyHealthBar.SetHealth(CurrentHealth);
@@ -56,8 +69,14 @@ public class EnemyStats : CharacterStats
             IsDead = true;
         }
     }
+
+    public void BreakGuard()
+    {
+        _enemyAnimatorController.PlayTargetAnimation("Break Guard", true);
+    }
     public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
     {
+
         base.TakeDamage(damage, damageAnimation = "Damage_01");
 
         if(!_isBoss)
@@ -82,4 +101,6 @@ public class EnemyStats : CharacterStats
         _enemyAnimatorController.PlayTargetAnimation("Death_01", true);
         IsDead = true;
     }
+
+    #endregion
 }

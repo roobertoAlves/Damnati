@@ -18,6 +18,8 @@ MonoBehaviour:
   isUnarmed: 0
   baseDamage: 25
   criticalDamageMultiplier: 3
+  poiseBreak: 25
+  offensivePoiseBonus: 0
   physicalDamageAbsorption: 50
   isMeleeWeapon: 0
   isShieldWeapon: 1

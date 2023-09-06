@@ -48,7 +48,8 @@ public class EnemyBossManager : MonoBehaviour
     public void ShiftToSecondPhase()
     {
         _enemyAnimatorController.Anim.SetBool("IsInvulnerable", true);
-        _enemyAnimatorController.PlayTargetAnimation(" Phase Shift", true);
+        _enemyAnimatorController.Anim.SetBool("IsPhaseShifting", true);
+        _enemyAnimatorController.PlayTargetAnimation("Phase Shift", true);
         _bossCombatStanceState.HasPhaseShifted = true;
     }
 }

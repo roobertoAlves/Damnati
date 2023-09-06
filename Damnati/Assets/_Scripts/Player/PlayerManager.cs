@@ -5,10 +5,11 @@ using UnityEngine;
 public class PlayerManager : CharacterManager
 {
     private InputHandler _inputHandler;
-    private PlayerAnimatorController _animatorHandler;
+    private Animator _animator;
     private CameraHandler _cameraHandler;
     private PlayerLocomotion _playerLocomotion;
     private PlayerStats _playerStats;
+    private PlayerAnimatorController _playerAnimatorController;
 
     [Header("Item Collect Components")]
     [Space(15)] 
@@ -36,7 +37,7 @@ public class PlayerManager : CharacterManager
 
     #region GET & SET
 
-     public GameObject ItemInteractableGameObject {get { return _itemInteractableGameObject; } set { _itemInteractableGameObject = value; }}
+    public GameObject ItemInteractableGameObject {get { return _itemInteractableGameObject; } set { _itemInteractableGameObject = value; }}
 
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; }}
     public bool IsInteracting { get { return _isInteracting; } set { _isInteracting = value; }}
@@ -58,30 +59,31 @@ public class PlayerManager : CharacterManager
     {
         _cameraHandler = FindObjectOfType<CameraHandler>();
         _inputHandler = FindObjectOfType<InputHandler>();
-        _animatorHandler = GetComponent<PlayerAnimatorController>();
+        _animator = GetComponent<Animator>();
         _playerLocomotion = GetComponent<PlayerLocomotion>();
         _interactableUI = FindObjectOfType<InteractableUI>();
         _playerStats = GetComponent<PlayerStats>();
+        _playerAnimatorController = GetComponent<PlayerAnimatorController>();
 
     }
     private void Update()
     {
         float delta = Time.deltaTime;
 
-        _isInteracting = _animatorHandler.Anim.GetBool("IsInteracting");
-        _canDoCombo = _animatorHandler.Anim.GetBool("CanCombo");
-        _isUsingRightHand = _animatorHandler.Anim.GetBool("IsUsingRightHand");
-        _isUsingLeftHand = _animatorHandler.Anim.GetBool("IsUsingLeftHand");
-        IsInvulnerable = _animatorHandler.Anim.GetBool("IsInvulnerable");
+        _isInteracting = _animator.GetBool("IsInteracting");
+        _canDoCombo = _animator.GetBool("CanCombo");
+        _isUsingRightHand = _animator.GetBool("IsUsingRightHand");
+        _isUsingLeftHand = _animator.GetBool("IsUsingLeftHand");
+        IsInvulnerable = _animator.GetBool("IsInvulnerable");
         
-        _animatorHandler.Anim.SetBool("IsInAir", _isInAir);
-        _animatorHandler.Anim.SetBool("IsDead", _playerStats.IsDead);
-        _animatorHandler.Anim.SetFloat("InAirTimer", _playerLocomotion.InAirTimer);
-        _animatorHandler.Anim.SetBool("IsGrounded", _isGrounded);
-        _animatorHandler.Anim.SetBool("IsBlocking", IsBlocking);
+        _animator.SetBool("IsInAir", _isInAir);
+        _animator.SetBool("IsDead", _playerStats.IsDead);
+        _animator.SetFloat("InAirTimer", _playerLocomotion.InAirTimer);
+        _animator.SetBool("IsGrounded", _isGrounded);
+        _animator.SetBool("IsBlocking", IsBlocking);
 
         _inputHandler.TickInput(delta);
-        _animatorHandler.canRotate = _animatorHandler.Anim.GetBool("CanRotate");
+        _playerAnimatorController.canRotate = _animator.GetBool("CanRotate");
         _playerLocomotion.HandleDodge(delta);
         _playerStats.RegenerateStamina();
 

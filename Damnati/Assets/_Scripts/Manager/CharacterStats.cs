@@ -17,10 +17,19 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] private float _currentStamina;
 
     [Header("Armor Absorptions")]
+    [Space(15)]
     private float _physicalDamageAbsorptionHead;
     private float _physicalDamageAbsorptionBody;
     private float _physicalDamageAbsorptionLegs;
     private float _physicalDamageAbsorptionHands;
+
+    [Header("Poise")]
+    [Space(15)]
+    [SerializeField] private float _totalPoiseDefense; //the TOTAL poise after damage calculation
+    [SerializeField] private float _offensivePoiseBonus; //The poise you GAIN during an attack with a weapon
+    [SerializeField] private float _armorPoiseBonus; //The poise you GAIN from waringwhat ever you have equipped;
+    [SerializeField] private float _totalPoiseResetTime = 15;
+    [SerializeField] private float _poiseResetTimer;
 
     private bool _isDead;
 
@@ -42,7 +51,22 @@ public class CharacterStats : MonoBehaviour
     public float PhysicalDamageAbsorptionLegs { get { return _physicalDamageAbsorptionLegs; } set { _physicalDamageAbsorptionLegs = value; }}
     public float PhysicalDamageAbsorptionHands { get { return _physicalDamageAbsorptionHands; } set { _physicalDamageAbsorptionHands = value; }}
     public float PhysicalDamageAbsorptionHead { get { return _physicalDamageAbsorptionHead; } set { _physicalDamageAbsorptionHead = value; }}
+    
+    public float TotalPoiseDefense { get { return _totalPoiseDefense; } set { _totalPoiseDefense = value; }}
+    public float OffensivePoiseBonus { get { return _offensivePoiseBonus; } set { _offensivePoiseBonus = value; }}
+    public float ArmorPoiseBonus { get { return _armorPoiseBonus; } set { _armorPoiseBonus = value; }}
+    public float TotalPoiseResetTime { get { return _totalPoiseResetTime; } set { _totalPoiseResetTime = value; }}
+    public float PoiseResetTimer { get { return _poiseResetTimer; } set { _poiseResetTimer = value; }}
     #endregion
+
+    protected virtual void Update()
+    {
+        HandlePoiseResetTimer();
+    }
+    private void Start()
+    {
+        _totalPoiseDefense = _armorPoiseBonus;
+    }
 
     public virtual void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
     {
@@ -69,6 +93,17 @@ public class CharacterStats : MonoBehaviour
         {
             _currentHealth = 0;
             _isDead = true;
+        }
+    }
+    public virtual void HandlePoiseResetTimer()
+    {
+        if(_poiseResetTimer > 0)
+        {
+            _poiseResetTimer = _poiseResetTimer - Time.deltaTime;
+        }
+        else
+        {
+            _totalPoiseDefense = _armorPoiseBonus;
         }
     }
 }

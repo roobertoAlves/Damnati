@@ -8,14 +8,25 @@ public class DamageCollider : MonoBehaviour
     private CharacterManager _characterManager;
     private Collider _damageCollider;
     private bool _enabledDamageColliderOnStartUp = false;
+
+    [Header("Poise")]
+    [Space(15)]
+    [SerializeField] private float _poiseBreak;
+    [SerializeField] private float _offensivePoiseBonus;
     
-    private int _currentWeaponDamage = 25;
+    [Header("Damage")]
+    [Space(15)]
+    [SerializeField] private int _currentWeaponDamage = 25;
 
     #region GET & SET
 
     public int CurrentWeaponDamage { get { return _currentWeaponDamage; } set { _currentWeaponDamage = value; }}
     public CharacterManager characterManager { get { return _characterManager; } set { _characterManager = value; }}
     public bool EnabledDamageColliderOnStartUp { get { return _enabledDamageColliderOnStartUp; } set { _enabledDamageColliderOnStartUp = value; }}
+
+
+    public float PoiseBreak { get { return _poiseBreak; } set { _poiseBreak = value; }}
+    public float OffensivePoiseBonus { get { return _offensivePoiseBonus; } set { _offensivePoiseBonus = value; }}
 
     #endregion
 
@@ -65,7 +76,18 @@ public class DamageCollider : MonoBehaviour
             }
             if (playerStats != null)
             {
-                playerStats.TakeDamage(_currentWeaponDamage);
+                playerStats.PoiseResetTimer = playerStats.TotalPoiseResetTime;
+                playerStats.TotalPoiseDefense = playerStats.TotalPoiseDefense - _poiseBreak;
+                Debug.Log("Player's Poise is currently " + playerStats.TotalPoiseDefense);
+                
+                if(playerStats.TotalPoiseDefense > _poiseBreak)
+                {
+                    playerStats.TakeDamageNoAnimation(_currentWeaponDamage);
+                }
+                else
+                {
+                    playerStats.TakeDamage(_currentWeaponDamage);
+                }
             }
         }
 
@@ -98,13 +120,32 @@ public class DamageCollider : MonoBehaviour
 
             if (enemyStats != null)
             {
+                enemyStats.PoiseResetTimer = enemyStats.TotalPoiseResetTime;
+                enemyStats.TotalPoiseDefense = enemyStats.TotalPoiseDefense - _poiseBreak;
+                Debug.Log("Enemie's Poise is currently " + enemyStats.TotalPoiseDefense);
+
                 if(enemyStats.IsBoss)
                 {
-                    enemyStats.TakeDamageNoAnimation(_currentWeaponDamage);
+                    if(enemyStats.TotalPoiseDefense > _poiseBreak)
+                    {
+                        enemyStats.TakeDamageNoAnimation(_currentWeaponDamage);
+                    }
+                    else
+                    {
+                        enemyStats.TakeDamageNoAnimation(_currentWeaponDamage);
+                        enemyStats.BreakGuard();
+                    }
                 }
                 else
                 {
-                    enemyStats.TakeDamage(_currentWeaponDamage);
+                    if(enemyStats.TotalPoiseDefense > _poiseBreak)
+                    {
+                        enemyStats.TakeDamageNoAnimation(_currentWeaponDamage);
+                    }
+                    else
+                    {
+                        enemyStats.TakeDamage(_currentWeaponDamage);
+                    }    
                 }
             }
         }        

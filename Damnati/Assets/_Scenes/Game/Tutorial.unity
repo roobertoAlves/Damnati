@@ -340,7 +340,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21125568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -958,7 +958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc429815d8091646a16d83f4da12413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatStanceState: {fileID: 0}
+  _combatStanceState: {fileID: 540064480}
   _pursueTargetState: {fileID: 2053714748}
   _rotateTowardsTargetState: {fileID: 1575871922}
   _currentAttack: {fileID: 0}
@@ -1434,6 +1434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 540064479}
+  - component: {fileID: 540064480}
   m_Layer: 0
   m_Name: Combat Stance State
   m_TagString: Untagged
@@ -1456,6 +1457,30 @@ Transform:
   m_Father: {fileID: 326345996}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &540064480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540064477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d008945bef7414282f5540be9d1076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackState: {fileID: 306318657}
+  _idleState: {fileID: 1378736202}
+  _persueTargetState: {fileID: 2053714748}
+  _enemyAttackAction:
+  - {fileID: 11400000, guid: 052c0ef43d5f50b4ba8ad753f86c1a4d, type: 2}
+  - {fileID: 11400000, guid: 2d0e0ee7b0224204ea8f8795eaba88d0, type: 2}
+  - {fileID: 11400000, guid: fedf7ca2165852c4bb93bdbd1ac6e462, type: 2}
+  _hasPhaseShifted: 0
+  _secondPhaseAttacks:
+  - {fileID: 11400000, guid: 0072e7459d27a704194c80f78aed82bb, type: 2}
+  - {fileID: 11400000, guid: 2985bab1335b6c740a73e0a9ff57a78f, type: 2}
+  - {fileID: 11400000, guid: 98ae1a95f953fa84ea9884470147f0f0, type: 2}
 --- !u!1 &545596502
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,6 +2221,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1759713633}
   - {fileID: 2063965219}
   - {fileID: 1022554389}
   m_Father: {fileID: 983664900}
@@ -2414,7 +2440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38da638a507bfc345b4fd9686c9d5ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rightHandWeapon: {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}
+  _rightHandWeapon: {fileID: 11400000, guid: aabbde6e0e3d59b44af77c374003819d, type: 2}
   _leftHandWeapon: {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
 --- !u!114 &799066304
 MonoBehaviour:
@@ -2442,14 +2468,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2c691dd3336f26489ae3e7b9f06f621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthLevel: 1000
-  _maxHealth: 15
+  _healthLevel: 100
+  _maxHealth: 0
   _currentHealth: 0
   _staminaLevel: 10
   _maxStamina: 0
   _currentStamina: 0
+  _totalPoiseDefense: 0
+  _offensivePoiseBonus: 45
+  _armorPoiseBonus: 100
+  _totalPoiseResetTime: 15
+  _poiseResetTimer: 0
   _enemyHealthBar: {fileID: 0}
-  _isBoss: 0
+  _isBoss: 1
 --- !u!114 &799066306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2478,6 +2509,7 @@ MonoBehaviour:
   _rotationSpeed: 15
   _maximumAggroRadius: 1
   _allowAIToPerformCombos: 1
+  _isPhaseShifting: 0
   _comboLikelyHood: 100
 --- !u!136 &799066307
 CapsuleCollider:
@@ -2542,6 +2574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bossName: Hanibal o Impiedoso
+  _particleFX: {fileID: 1648978194837340, guid: c3039019fa1c65840b1b35eed158363c, type: 3}
 --- !u!1 &818372402
 GameObject:
   m_ObjectHideFlags: 0
@@ -3291,7 +3324,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 727998943}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4813,7 +4846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a7d72941a617d49be5a94eb21f345e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatStanceState: {fileID: 0}
+  _combatStanceState: {fileID: 540064480}
 --- !u!1 &1603290725
 GameObject:
   m_ObjectHideFlags: 0
@@ -5087,12 +5120,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1759713632}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2063965219}
+  m_Father: {fileID: 727998943}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5825,7 +5858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbef1220c92dd4e4791704d30de28eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatStanceState: {fileID: 0}
+  _combatStanceState: {fileID: 540064480}
   _rotateTowardsTargetState: {fileID: 1575871922}
 --- !u!4 &2053714749
 Transform:
@@ -5904,10 +5937,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1759713633}
+  m_Children: []
   m_Father: {fileID: 727998943}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7657,7 +7689,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
@@ -7680,6 +7712,11 @@ MonoBehaviour:
   _staminaLevel: 10
   _maxStamina: 0
   _currentStamina: 0
+  _totalPoiseDefense: 0
+  _offensivePoiseBonus: 0
+  _armorPoiseBonus: 0
+  _totalPoiseResetTime: 15
+  _poiseResetTimer: 0
   _staminaRegenerationAmount: 13
   _staminaRegenerationTimer: 0
   _rageLevel: 10

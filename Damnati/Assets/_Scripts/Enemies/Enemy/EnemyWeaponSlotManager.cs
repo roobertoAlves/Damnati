@@ -7,6 +7,7 @@ public class EnemyWeaponSlotManager : MonoBehaviour
 
     private WeaponHolderSlot _rightHandSlot;
     private WeaponHolderSlot _leftHandSlot;
+
     
     [SerializeField] private WeaponItem _rightHandWeapon;
     [SerializeField] private WeaponItem _leftHandWeapon;
@@ -14,26 +15,35 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     private DamageCollider _leftHandDamageCollider;
     private DamageCollider _rightHandDamageCollider;
 
+    private EnemyStats _enemyStats;
+
     private void Awake() 
     {
-            WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();    
+        _enemyStats = GetComponent<EnemyStats>();
+        LoadWeaponHolderSlots();
             
-            foreach (WeaponHolderSlot weaponSlot in weaponHolderSlots)
-            {
-                if(weaponSlot.isLeftHandSlot)
-                {
-                    _leftHandSlot = weaponSlot;
-                }
-                else if(weaponSlot.isRightHandSlot)
-                {
-                    _rightHandSlot = weaponSlot;
-                }
-            }
     }
 
     private void Start() 
     {
         LoadWeaponsOnBothHands();
+    }
+
+    private void LoadWeaponHolderSlots()
+    {
+        WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();    
+            
+        foreach (WeaponHolderSlot weaponSlot in weaponHolderSlots)
+        {
+            if(weaponSlot.isLeftHandSlot)
+            {
+                _leftHandSlot = weaponSlot;
+            }
+            else if(weaponSlot.isRightHandSlot)
+            {
+                _rightHandSlot = weaponSlot;
+            }
+        }
     }
     public void LoadWeaponOnSlot(WeaponItem weapon, bool isLeft)
     {
@@ -105,6 +115,19 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     public void DisableCombo()
     {
         //anim.SetBool("canDoCombo", false);
+    }
+    #endregion
+
+    #region Handle Weapon's Poise Bonus
+
+    public void GrantWeaponAttackingPoiseBonus()
+    {
+        _enemyStats.TotalPoiseDefense = _enemyStats.TotalPoiseDefense + _enemyStats.OffensivePoiseBonus;
+    }
+
+    public void ResetWeaponAttackingPoiseBonus()
+    {
+        _enemyStats.TotalPoiseDefense = _enemyStats.ArmorPoiseBonus;
     }
 
     #endregion

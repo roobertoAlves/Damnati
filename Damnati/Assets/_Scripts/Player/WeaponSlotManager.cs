@@ -30,7 +30,12 @@ public class WeaponSlotManager : MonoBehaviour
         _anim = GetComponent<Animator>();
         _playerInventory = GetComponent<PlayerInventory>();
 
-       WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();    
+        LoadWeaponHolderSlots();
+    }
+
+    public void LoadWeaponHolderSlots()
+    {
+        WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();    
         
         foreach (WeaponHolderSlot weaponSlot in weaponHolderSlots)
         {
@@ -48,7 +53,11 @@ public class WeaponSlotManager : MonoBehaviour
             }
         }
     }
-
+    public void LoadBothWeaponsOnSlots()
+    {
+        LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
+        LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
+    }
     public void LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft)
     {
         if(isLeft)
@@ -110,11 +119,13 @@ public class WeaponSlotManager : MonoBehaviour
     {
         _leftHandDamageCollider = _leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
         _leftHandDamageCollider.CurrentWeaponDamage = _playerInventory.leftHandWeapon.baseDamage;
+        _leftHandDamageCollider.PoiseBreak = _playerInventory.leftHandWeapon.poiseBreak;
     }
     private void LoadRightWeaponDamageCollider()
     {
         _rightHandDamageCollider = _rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
         _rightHandDamageCollider.CurrentWeaponDamage = _playerInventory.rightHandWeapon.baseDamage;
+        _rightHandDamageCollider.PoiseBreak = _playerInventory.rightHandWeapon.poiseBreak;
     }
     public void OpenDamageCollider()
     {
@@ -130,11 +141,12 @@ public class WeaponSlotManager : MonoBehaviour
 
     public void CloseDamageCollider()
     {
-        if(_playerManager.IsUsingRightHand)
+        if(_rightHandDamageCollider != null)
         {
             _rightHandDamageCollider.DisableDamageCollider();
         }
-        else if(_playerManager.IsUsingLeftHand)
+        
+        if(_leftHandDamageCollider != null)
         {
             _leftHandDamageCollider.DisableDamageCollider();
         }
@@ -168,6 +180,19 @@ public class WeaponSlotManager : MonoBehaviour
         {
              _playerStats.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageHeavyAttackMultiplier));
         }
+    }
+
+    #endregion
+
+    #region Handle Weapon's Poise Bonus
+
+    public void WeaponAttackingPoiseBonus()
+    {
+        _playerStats.TotalPoiseDefense = _playerStats.TotalPoiseDefense + attackingWeapon.offensivePoiseBonus;
+    }
+    public void ResetWeaponAttackingPoiseBonus()
+    {
+        _playerStats.TotalPoiseDefense = _playerStats.ArmorPoiseBonus;
     }
 
     #endregion

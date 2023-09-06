@@ -37,28 +37,37 @@ public class PlayerStats : CharacterStats
         _healthBar = FindObjectOfType<HealthBar>();
         _staminaBar = FindObjectOfType<StaminaBar>();
         _rageBar = FindObjectOfType<RageBar>();
-
-        MaxHealth = SetMaxHealthFromHealthLevel();
+    }
+    private void Start() 
+    {
+         MaxHealth = SetMaxHealthFromHealthLevel();
         CurrentHealth = MaxHealth;
+        _healthBar.SetMaxhHealth(MaxHealth);
         _healthBar.SetCurrentHealth(CurrentHealth);
 
         MaxStamina = SetMaxStaminaFromHealthLevel();
         CurrentStamina = MaxStamina;
+        _staminaBar.SetMaxStamina(MaxStamina);
         _staminaBar.SetCurrentStamina(CurrentStamina);
 
         _maxRage = SetMaxRageFromRageLevel();
         _currentRage = _maxRage;
+        _rageBar.SetMaxRage(_maxRage);
         _rageBar.SetCurrentRage(_currentRage);
     }
-    private void Start() 
-    {
-        _healthBar.SetMaxhHealth(MaxHealth);
-        _staminaBar.SetMaxStamina(MaxStamina);
-        _rageBar.SetMaxRage(_maxRage);
-    }
-
 
     #region Set Stats from Level
+    public override void HandlePoiseResetTimer()
+    {
+        if(PoiseResetTimer > 0)
+        {
+            PoiseResetTimer = PoiseResetTimer - Time.deltaTime;
+        }
+        else if(PoiseResetTimer <= 0 && !_playerManager.IsInteracting)
+        {
+            TotalPoiseDefense = ArmorPoiseBonus;
+        }
+    }
     private int SetMaxHealthFromHealthLevel()
     {
         MaxHealth = HealthLevel * 10;
@@ -78,6 +87,7 @@ public class PlayerStats : CharacterStats
 
     #endregion
 
+    #region Damage Functions
     public void TakeDamageNoAnimation(int damage)
     { 
         CurrentHealth = CurrentHealth - damage;
@@ -101,11 +111,18 @@ public class PlayerStats : CharacterStats
 
         if(CurrentHealth <= 0)
         {
-            CurrentHealth = 0;
-            _playerAnimator.PlayTargetAnimation("Death_01", true);
-            IsDead = true;
+            HandleDeath();
         }
     }
+
+    private void HandleDeath()
+    {
+        CurrentHealth = 0;
+        _playerAnimator.PlayTargetAnimation("Death_01", true);
+        IsDead = true;
+    }
+
+    #endregion
 
     #region Combat Stamina Actions Drain
     public void StaminaDrain(int drain)

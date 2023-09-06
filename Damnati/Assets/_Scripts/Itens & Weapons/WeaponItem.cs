@@ -13,6 +13,12 @@ public class WeaponItem : Item
     public int baseDamage = 25;
     public int criticalDamageMultiplier = 3;
 
+    [Header("Poise")]
+    [Space(15)]
+    
+    public float poiseBreak;
+    public float offensivePoiseBonus;
+
     [Header("Absorption")]
     [Space(15)]
     public float physicalDamageAbsorption;
