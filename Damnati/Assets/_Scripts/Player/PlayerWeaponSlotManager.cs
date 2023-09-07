@@ -2,22 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSlotManager : MonoBehaviour
+public class PlayerWeaponSlotManager : MonoBehaviour
 {
-    public WeaponItem attackingWeapon;
+    private PlayerStatsManager _playerStatsManager;
+    private PlayerManager _playerManager;
+    private PlayerInventoryManager _playerInventoryManager;
+    private Animator _anim;
     
+    [Header("Weapon Slots")]
+    [Space(15)]
     private WeaponHolderSlot _leftHandSlot;
     private WeaponHolderSlot _rightHandSlot;
     private WeaponHolderSlot _backSlot;
 
+    [Header("Damage Colliders")]
+    [Space(15)]
     private DamageCollider _leftHandDamageCollider;
     private DamageCollider _rightHandDamageCollider;
 
-    private PlayerStats _playerStats;
-    private PlayerManager _playerManager;
-    private PlayerInventory _playerInventory;
-    private Animator _anim;
-    
+    [Header("Attacking Weapon")]
+    [Space(15)]
+    public WeaponItem attackingWeapon;
+
+    [Header("Unarmed Weapon")]
+    [Space(15)]
+    public WeaponItem unarmedWeapon;
+
+
     #region GET & SET
 
     public DamageCollider LeftHandDamageCollider { get { return _leftHandDamageCollider; } set { _leftHandDamageCollider = value; }}
@@ -26,9 +37,9 @@ public class WeaponSlotManager : MonoBehaviour
     private void Awake() 
     {   
         _playerManager = GetComponent<PlayerManager>();
-        _playerStats = GetComponent<PlayerStats>();
+        _playerStatsManager = GetComponent<PlayerStatsManager>();
         _anim = GetComponent<Animator>();
-        _playerInventory = GetComponent<PlayerInventory>();
+        _playerInventoryManager = GetComponent<PlayerInventoryManager>();
 
         LoadWeaponHolderSlots();
     }
@@ -55,61 +66,58 @@ public class WeaponSlotManager : MonoBehaviour
     }
     public void LoadBothWeaponsOnSlots()
     {
-        LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
-        LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
+        LoadWeaponOnSlot(_playerInventoryManager.rightHandWeapon, false);
+        LoadWeaponOnSlot(_playerInventoryManager.leftHandWeapon, true);
     }
     public void LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft)
     {
-        if(isLeft)
+        if(weaponItem != null)
         {
-           _leftHandSlot.CurrentWeapon = weaponItem;
-            _leftHandSlot.LoadWeaponModel(weaponItem);
-            LoadLeftWeaponDamageCollider();
-            
-            #region Handle Left Weapon Idle Animation 
-
-            if(weaponItem != null)
+            if(isLeft)
             {
+                _leftHandSlot.CurrentWeapon = weaponItem;
                 _anim.CrossFade(weaponItem.left_Hand_Idle, 0.2f);
             }
             else
             {
-                _anim.CrossFade("Left Arm Empty", 0.2f);
-            }
-
-            #endregion
-        }
-        else
-        {
-            if(_playerManager.TwoHandFlag)
-            {
-                _backSlot.LoadWeaponModel(_leftHandSlot.CurrentWeapon);
-                _leftHandSlot.UnloadWeaponAndDestroy();
-                _anim.CrossFade(weaponItem.th_idle, 0.2f);
-            }
-            else
-            {
-                #region Handle Right Weapon Idle Animation
-
-                _anim.CrossFade("Both Arms Empty", 0.2f);
-                _backSlot.UnloadWeaponAndDestroy();
-                
-                if(weaponItem != null)
+                if(_playerManager.TwoHandFlag)
                 {
-                    _anim.CrossFade(weaponItem.right_Hand_Idle, 0.2f);
+                    _backSlot.LoadWeaponModel(_leftHandSlot.CurrentWeapon);
+                    _leftHandSlot.UnloadWeaponAndDestroy();
+                    _anim.CrossFade(weaponItem.th_idle, 0.2f);
                 }
                 else
                 {
-                    _anim.CrossFade("Right Arm Empty", 0.2f);
+                    _anim.CrossFade("Both Arms Empty", 0.2f);
+                    _backSlot.UnloadWeaponAndDestroy();
+                    _anim.CrossFade(weaponItem.right_Hand_Idle, 0.2f);
                 }
-
-                #endregion
             }
-            
+                
             _rightHandSlot.CurrentWeapon = weaponItem;
             _rightHandSlot.LoadWeaponModel(weaponItem);
             LoadRightWeaponDamageCollider();  
-                 
+        }
+        else
+        {
+            weaponItem = unarmedWeapon;
+
+            if(isLeft)
+            {
+                _anim.CrossFade("Left Arm Empty", 0.2f);
+                _playerInventoryManager.leftHandWeapon = weaponItem;
+                _leftHandSlot.CurrentWeapon = weaponItem;
+                _leftHandSlot.LoadWeaponModel(weaponItem);
+                LoadLeftWeaponDamageCollider();
+            }
+            else
+            {
+                _anim.CrossFade("Right Arm Empty", 0.2f);
+                _playerInventoryManager.rightHandWeapon = weaponItem;
+                _rightHandSlot.CurrentWeapon = weaponItem;
+                _rightHandSlot.LoadWeaponModel(weaponItem);
+                LoadRightWeaponDamageCollider();  
+            }
         }
     }
 
@@ -118,14 +126,14 @@ public class WeaponSlotManager : MonoBehaviour
     private void LoadLeftWeaponDamageCollider()
     {
         _leftHandDamageCollider = _leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-        _leftHandDamageCollider.CurrentWeaponDamage = _playerInventory.leftHandWeapon.baseDamage;
-        _leftHandDamageCollider.PoiseBreak = _playerInventory.leftHandWeapon.poiseBreak;
+        _leftHandDamageCollider.CurrentWeaponDamage = _playerInventoryManager.leftHandWeapon.baseDamage;
+        _leftHandDamageCollider.PoiseBreak = _playerInventoryManager.leftHandWeapon.poiseBreak;
     }
     private void LoadRightWeaponDamageCollider()
     {
         _rightHandDamageCollider = _rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-        _rightHandDamageCollider.CurrentWeaponDamage = _playerInventory.rightHandWeapon.baseDamage;
-        _rightHandDamageCollider.PoiseBreak = _playerInventory.rightHandWeapon.poiseBreak;
+        _rightHandDamageCollider.CurrentWeaponDamage = _playerInventoryManager.rightHandWeapon.baseDamage;
+        _rightHandDamageCollider.PoiseBreak = _playerInventoryManager.rightHandWeapon.poiseBreak;
     }
     public void OpenDamageCollider()
     {
@@ -159,11 +167,11 @@ public class WeaponSlotManager : MonoBehaviour
     #region Stamina & Rage Drain
     public void DrainsStaminaLightAttack()
     {
-        _playerStats.StaminaDrain(Mathf.RoundToInt(attackingWeapon.baseStamina * attackingWeapon.lightAttackMultiplier));
+        _playerStatsManager.StaminaDrain(Mathf.RoundToInt(attackingWeapon.baseStamina * attackingWeapon.lightAttackMultiplier));
     }
     public void DrainsStaminaHeavyAttack()
     {
-        _playerStats.StaminaDrain(Mathf.RoundToInt(attackingWeapon.baseStamina * attackingWeapon.heavyAttackMultiplier));
+        _playerStatsManager.StaminaDrain(Mathf.RoundToInt(attackingWeapon.baseStamina * attackingWeapon.heavyAttackMultiplier));
     }
 
 
@@ -171,14 +179,14 @@ public class WeaponSlotManager : MonoBehaviour
     {
         if(_playerManager.IsInRage)
         {
-            _playerStats.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageLightAttackMultiplier));
+            _playerStatsManager.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageLightAttackMultiplier));
         }
     }
     public void DrainRageHeavyAttack()
     {
         if(_playerManager.IsInRage)
         {
-             _playerStats.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageHeavyAttackMultiplier));
+             _playerStatsManager.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageHeavyAttackMultiplier));
         }
     }
 
@@ -188,11 +196,11 @@ public class WeaponSlotManager : MonoBehaviour
 
     public void WeaponAttackingPoiseBonus()
     {
-        _playerStats.TotalPoiseDefense = _playerStats.TotalPoiseDefense + attackingWeapon.offensivePoiseBonus;
+        _playerStatsManager.TotalPoiseDefense = _playerStatsManager.TotalPoiseDefense + attackingWeapon.offensivePoiseBonus;
     }
     public void ResetWeaponAttackingPoiseBonus()
     {
-        _playerStats.TotalPoiseDefense = _playerStats.ArmorPoiseBonus;
+        _playerStatsManager.TotalPoiseDefense = _playerStatsManager.ArmorPoiseBonus;
     }
 
     #endregion

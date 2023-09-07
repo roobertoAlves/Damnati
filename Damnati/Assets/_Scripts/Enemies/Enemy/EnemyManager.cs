@@ -6,19 +6,15 @@ public class EnemyManager : CharacterManager
 {
     [Header("A.I Scripts Components")]
     [Space(15)]
-    private EnemyLocomotion _enemyController;
-    private EnemyAnimatorController _enemyAnimation;
-    private EnemyStats _enemyStats;
+    private EnemyLocomotionManager _enemyLocomotionManager;
+    private EnemyAnimatorManager _enemyAnimatorManager;
+    private EnemyStatsManager _enemyStatsManager;
 
     [SerializeField] private States _currentState;
-    [SerializeField] private CharacterStats _currentTarget;
+    [SerializeField] private CharacterStatsManager _currentTarget;
 
-
-    [Header("Flags")]
-    [Space(15)]
-    [SerializeField] private bool _canDoCombo;
     private bool _isPerformingAction;
-    private bool _isInteracting;
+
 
     [Header("A.I Components")]
     [Space(15)]
@@ -59,12 +55,10 @@ public class EnemyManager : CharacterManager
     
     public float CurrentRecoveryTime { get { return _currentRecoveryTime; } set { _currentRecoveryTime = value; }}
     public bool IsPerfomingAction { get { return _isPerformingAction; } set { _isPerformingAction = value; }}
-    public bool IsInteracting { get { return _isInteracting; } set { _isInteracting = value; }}
-    public bool CanDoCombo { get { return _canDoCombo; } set { _canDoCombo = value; }}
     public bool AllowAIToPerformCombos { get { return _allowAIToPerformCombos; } set { _allowAIToPerformCombos = value; }}
     public bool IsPhaseShifting { get { return _isPhaseShifting; } set { _isPhaseShifting = value; }}
 
-    public CharacterStats CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; }}
+    public CharacterStatsManager CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; }}
 
     public States CurrentState { get { return _currentState; } set { _currentState = value; }}
     
@@ -78,9 +72,9 @@ public class EnemyManager : CharacterManager
 
     private void Awake() 
     {
-        _enemyController = GetComponent<EnemyLocomotion>();
-        _enemyAnimation = GetComponent<EnemyAnimatorController>();
-        _enemyStats = GetComponent<EnemyStats>();
+        _enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
+        _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+        _enemyStatsManager = GetComponent<EnemyStatsManager>();
         _enemyRb = GetComponent<Rigidbody>();
         _navMeshAgent = GetComponentInChildren<NavMeshAgent>();
         _navMeshAgent.enabled = false;
@@ -96,13 +90,13 @@ public class EnemyManager : CharacterManager
         HandleRecoveryTimer();
         HandleStateMachine();
         
-        IsRotatingWithRootMotion = _enemyAnimation.Anim.GetBool("IsRotatingWithRootMotion");
-        _isInteracting = _enemyAnimation.Anim.GetBool("IsInteracting");
-        _isPhaseShifting = _enemyAnimation.Anim.GetBool("IsPhaseShifting");
-        IsInvulnerable = _enemyAnimation.Anim.GetBool("IsInvulnerable");
-        _canDoCombo = _enemyAnimation.Anim.GetBool("CanDoCombo");
-        CanRotate = _enemyAnimation.Anim.GetBool("CanRotate");
-        _enemyAnimation.Anim.SetBool("IsDead", _enemyStats.IsDead);
+        IsRotatingWithRootMotion = _enemyAnimatorManager.Anim.GetBool("IsRotatingWithRootMotion");
+        IsInteracting = _enemyAnimatorManager.Anim.GetBool("IsInteracting");
+        _isPhaseShifting = _enemyAnimatorManager.Anim.GetBool("IsPhaseShifting");
+        IsInvulnerable = _enemyAnimatorManager.Anim.GetBool("IsInvulnerable");
+        CanDoCombo = _enemyAnimatorManager.Anim.GetBool("CanDoCombo");
+        CanRotate = _enemyAnimatorManager.Anim.GetBool("CanRotate");
+        _enemyAnimatorManager.Anim.SetBool("IsDead", _enemyStatsManager.IsDead);
     }
 
     private void LateUpdate()
@@ -115,7 +109,7 @@ public class EnemyManager : CharacterManager
     {
         if(_currentState != null)
         {
-            States nextState = _currentState.Tick(this, _enemyStats, _enemyAnimation);
+            States nextState = _currentState.Tick(this, _enemyStatsManager, _enemyAnimatorManager);
 
             if(nextState != null)
             {

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : CharacterStats
+public class PlayerStatsManager : CharacterStatsManager
 {
-    private PlayerAnimatorController _playerAnimator;
+    private PlayerAnimatorManager _playerAnimatorManager;
     private PlayerManager _playerManager;
     private InputHandler _inputHandler;
     
@@ -30,7 +30,7 @@ public class PlayerStats : CharacterStats
     [SerializeField] private float _rageRegenerationHAAmount = 5;
     private void Awake() 
     {
-        _playerAnimator = GetComponent<PlayerAnimatorController>();    
+        _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();    
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
 
@@ -40,7 +40,7 @@ public class PlayerStats : CharacterStats
     }
     private void Start() 
     {
-         MaxHealth = SetMaxHealthFromHealthLevel();
+        MaxHealth = SetMaxHealthFromHealthLevel();
         CurrentHealth = MaxHealth;
         _healthBar.SetMaxhHealth(MaxHealth);
         _healthBar.SetCurrentHealth(CurrentHealth);
@@ -107,7 +107,7 @@ public class PlayerStats : CharacterStats
 
         base.TakeDamage(damage, damageAnimation = "Damage_01");
         _healthBar.SetCurrentHealth(CurrentHealth);
-        _playerAnimator.PlayTargetAnimation(damageAnimation, true);
+        _playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
         if(CurrentHealth <= 0)
         {
@@ -118,7 +118,7 @@ public class PlayerStats : CharacterStats
     private void HandleDeath()
     {
         CurrentHealth = 0;
-        _playerAnimator.PlayTargetAnimation("Death_01", true);
+        _playerAnimatorManager.PlayTargetAnimation("Death_01", true);
         IsDead = true;
     }
 

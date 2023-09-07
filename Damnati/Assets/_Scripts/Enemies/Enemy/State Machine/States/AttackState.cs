@@ -19,7 +19,7 @@ public class AttackState : States
     public EnemyAttackAction CurrentAttack { get { return _currentAttack; } set { _currentAttack = value; }}
     public bool HasPerformedAttack { get { return _hasPerformedAttack; } set { _hasPerformedAttack = value; }}
     #endregion
-    public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
+    public override States Tick(EnemyManager enemyManager, EnemyStatsManager enemyStatsManager, EnemyAnimatorManager enemyAnimatorManager)
     {
        float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
 
@@ -32,12 +32,12 @@ public class AttackState : States
         
         if(_willDoComboOnNextAttack && enemyManager.CanDoCombo)
         {
-            AttackTargetWithCombo(enemyAnimatorController, enemyManager);
+            AttackTargetWithCombo(enemyAnimatorManager, enemyManager);
         }
 
         if(!_hasPerformedAttack)
         {
-            AttackTarget(enemyAnimatorController, enemyManager);
+            AttackTarget(enemyAnimatorManager, enemyManager);
             RollForComboChance(enemyManager);
         }
 
@@ -49,16 +49,16 @@ public class AttackState : States
         return _rotateTowardsTargetState;
     }
 
-    private void AttackTarget(EnemyAnimatorController enemyAnimatorController, EnemyManager enemyManager)
+    private void AttackTarget(EnemyAnimatorManager enemyAnimatorManager, EnemyManager enemyManager)
     {
-        enemyAnimatorController.PlayTargetAnimation(_currentAttack.ActionAnimation, true);
+        enemyAnimatorManager.PlayTargetAnimation(_currentAttack.ActionAnimation, true);
         enemyManager.CurrentRecoveryTime = _currentAttack.RecoveryTime;
         _hasPerformedAttack = true;
     }
-    private void AttackTargetWithCombo(EnemyAnimatorController enemyAnimatorController, EnemyManager enemyManager)
+    private void AttackTargetWithCombo(EnemyAnimatorManager enemyAnimatorManager, EnemyManager enemyManager)
     {
         _willDoComboOnNextAttack = false;
-        enemyAnimatorController.PlayTargetAnimation(_currentAttack.ActionAnimation, true);
+        enemyAnimatorManager.PlayTargetAnimation(_currentAttack.ActionAnimation, true);
         enemyManager.CurrentRecoveryTime = _currentAttack.RecoveryTime;
         _currentAttack = null;
     }

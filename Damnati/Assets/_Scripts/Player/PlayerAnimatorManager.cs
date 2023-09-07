@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimatorController : AnimatorManager
+public class PlayerAnimatorManager : AnimatorManager
 {
     private InputHandler _inputHandler;
-    private PlayerStats _playerStats;
-    private PlayerLocomotion _playerLocomotion;
+    private PlayerStatsManager _playerStatsManager;
+    private PlayerLocomotionManager _playerLocomotionManager;
     private PlayerManager _playerManager;
 
     private int _horizontalVelocity;
@@ -26,8 +26,8 @@ public class PlayerAnimatorController : AnimatorManager
 
         Anim = GetComponent<Animator>(); 
 
-        _playerLocomotion = GetComponent<PlayerLocomotion>();
-        _playerStats = GetComponent<PlayerStats>();
+        _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+        _playerStatsManager = GetComponent<PlayerStatsManager>();
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
         
@@ -104,11 +104,11 @@ public class PlayerAnimatorController : AnimatorManager
         }
 
         float delta = Time.deltaTime;
-        _playerLocomotion.PlayerRB.drag = 0;
+        _playerLocomotionManager.PlayerRB.drag = 0;
         Vector3 deltaPos = Anim.deltaPosition;
         deltaPos.y = 0;
         Vector3 velocity = deltaPos / delta;
-        _playerLocomotion.PlayerRB.velocity = velocity;
+        _playerLocomotionManager.PlayerRB.velocity = velocity;
     }
 
 
@@ -161,7 +161,7 @@ public class PlayerAnimatorController : AnimatorManager
 
     public override void TakeCriticalDamageAnimationEvent()
     {
-        _playerStats.TakeDamageNoAnimation(_playerManager.PendingCriticalDamage);
+        _playerStatsManager.TakeDamageNoAnimation(_playerManager.PendingCriticalDamage);
         _playerManager.PendingCriticalDamage = 0;
     } 
 

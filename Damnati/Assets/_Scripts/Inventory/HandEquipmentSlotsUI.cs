@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class HandEquipmentSlotsUI : MonoBehaviour
 {
-    [SerializeField] private UIManager _uiManager;
+    private UIManager _uiManager;
+    
+    [Header("UI Components")]
+    [Space(15)]
     [SerializeField] private Image _icon;
     private WeaponItem _weapon;
 
@@ -19,12 +22,24 @@ public class HandEquipmentSlotsUI : MonoBehaviour
     public bool LeftHandSlot01 { get{ return _leftHandSlot01; } set{ _leftHandSlot01 = value; }}
 
     #endregion
+
+    private void Awake() 
+    {
+        _uiManager = FindObjectOfType<UIManager>();    
+    }
     public void AddItem(WeaponItem newWeapon)
     {
-        _weapon = newWeapon;
-        _icon.sprite = _weapon.itemIcon;
-        _icon.enabled = true;
-        gameObject.SetActive(true);
+        if(newWeapon != null)
+        {
+            _weapon = newWeapon;
+            _icon.sprite = _weapon.itemIcon;
+            _icon.enabled = true;
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            ClearItem();
+        }
     }
     public void ClearItem()
     {

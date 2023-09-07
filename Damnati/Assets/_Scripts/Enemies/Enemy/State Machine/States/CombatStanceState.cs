@@ -20,17 +20,17 @@ public class CombatStanceState : States
     public PursueTargetState PersueTarget { get { return _persueTargetState; }}
     public EnemyAttackAction[] EnemyAtttackActions { get { return _enemyAttackAction; }}
     #endregion
-    public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
+    public override States Tick(EnemyManager enemyManager, EnemyStatsManager enemyStatsManager, EnemyAnimatorManager enemyAnimatorManager)
     {
         float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
-        enemyAnimatorController.Anim.SetFloat("Vertical", _verticalMoveValue, 0.2f, Time.deltaTime);
-        enemyAnimatorController.Anim.SetFloat("Horizontal", _horizontalMoveValue, 0.2f, Time.deltaTime);
+        enemyAnimatorManager.Anim.SetFloat("Vertical", _verticalMoveValue, 0.2f, Time.deltaTime);
+        enemyAnimatorManager.Anim.SetFloat("Horizontal", _horizontalMoveValue, 0.2f, Time.deltaTime);
         _attackState.HasPerformedAttack = false;
 
         if(enemyManager.IsInteracting)
         {
-            enemyAnimatorController.Anim.SetFloat("Vertical", 0);
-            enemyAnimatorController.Anim.SetFloat("Horizontal", 0);
+            enemyAnimatorManager.Anim.SetFloat("Vertical", 0);
+            enemyAnimatorManager.Anim.SetFloat("Horizontal", 0);
             return this;
         }
         if(distanceFromTarget > enemyManager.MaximumAggroRadius)
@@ -41,15 +41,15 @@ public class CombatStanceState : States
         if(_rangeDestinationSet)
         {
             _rangeDestinationSet = true;
-            DecideCirclingAction(enemyAnimatorController);
+            DecideCirclingAction(enemyAnimatorManager);
         }
 
         HandleRotateTowardsTarget(enemyManager);
 
         if(enemyManager.CurrentTarget.IsDead)
         {
-            enemyAnimatorController.Anim.SetFloat("Vertical", 0);
-            enemyAnimatorController.Anim.SetFloat("Horizontal", 0);
+            enemyAnimatorManager.Anim.SetFloat("Vertical", 0);
+            enemyAnimatorManager.Anim.SetFloat("Horizontal", 0);
             enemyManager.CurrentTarget = null;
             return _idleState;
         }
@@ -98,11 +98,11 @@ public class CombatStanceState : States
             enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.EnemyNavMeshAgent.transform.rotation, enemyManager.RotationSpeed / Time.deltaTime);
         }
     }
-    protected void DecideCirclingAction(EnemyAnimatorController enemyAnimatorController)
+    protected void DecideCirclingAction(EnemyAnimatorManager enemyAnimatorManager)
     {
-        WalkAroundTarget(enemyAnimatorController);
+        WalkAroundTarget(enemyAnimatorManager);
     }
-    protected void WalkAroundTarget(EnemyAnimatorController enemyAnimatorController)
+    protected void WalkAroundTarget(EnemyAnimatorManager enemyAnimatorManager)
     {
         _verticalMoveValue = 0.5f;
         _horizontalMoveValue = Random.Range(-1, 1);

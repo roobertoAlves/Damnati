@@ -16,17 +16,17 @@ public class WeaponPickUp : Interactable
 
     private void PickUpItem(PlayerManager playerManager)
     {
-        PlayerInventory playerInventory;
-        PlayerLocomotion playerController;
-        PlayerAnimatorController animatorController;
+        PlayerInventoryManager playerInventoryManager;
+        PlayerLocomotionManager playerLocomotionManager;
+        PlayerAnimatorManager playerAnimatorManager;
 
-        playerInventory = playerManager.GetComponent<PlayerInventory>();
-        playerController = playerManager.GetComponent<PlayerLocomotion>();
-        animatorController = playerManager.GetComponent<PlayerAnimatorController>();
+        playerInventoryManager = playerManager.GetComponent<PlayerInventoryManager>();
+        playerLocomotionManager = playerManager.GetComponent<PlayerLocomotionManager>();
+        playerAnimatorManager = playerManager.GetComponent<PlayerAnimatorManager>();
 
         //playerController.NewDirection = Vector3.zero; 
-        animatorController.PlayTargetAnimation("Picking Up", true);
-        playerInventory.WeaponsInventory.Add(weapon);
+        playerAnimatorManager.PlayTargetAnimation("Picking Up", true);
+        playerInventoryManager.WeaponsInventory.Add(weapon);
         playerManager.ItemInteractableGameObject.GetComponentInChildren<TextMeshProUGUI>().text = weapon.itemName;
         playerManager.ItemInteractableGameObject.GetComponentInChildren<RawImage>().texture = weapon.itemIcon.texture;
         playerManager.ItemInteractableGameObject.SetActive(true);

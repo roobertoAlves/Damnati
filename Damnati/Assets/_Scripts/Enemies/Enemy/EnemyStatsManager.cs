@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class EnemyStats : CharacterStats
+public class EnemyStatsManager : CharacterStatsManager
 {
-    private EnemyAnimatorController _enemyAnimatorController;
+    private EnemyAnimatorManager _enemyAnimatorManager;
     private EnemyManager _enemyManager;
     private EnemyBossManager _enemyBossManager;
 
@@ -18,7 +18,7 @@ public class EnemyStats : CharacterStats
     #endregion
     private void Awake() 
     {
-        _enemyAnimatorController  = GetComponent<EnemyAnimatorController>();
+        _enemyAnimatorManager  = GetComponent<EnemyAnimatorManager>();
         _enemyBossManager = GetComponent<EnemyBossManager>();
         MaxHealth = SetMaxHealthFromHealthLevel();
         _enemyManager = GetComponent<EnemyManager>();
@@ -72,7 +72,7 @@ public class EnemyStats : CharacterStats
 
     public void BreakGuard()
     {
-        _enemyAnimatorController.PlayTargetAnimation("Break Guard", true);
+        _enemyAnimatorManager.PlayTargetAnimation("Break Guard", true);
     }
     public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
     {
@@ -88,7 +88,7 @@ public class EnemyStats : CharacterStats
             _enemyBossManager.UpdateBossHealthBar(CurrentHealth, MaxHealth);
         }
 
-        _enemyAnimatorController.PlayTargetAnimation(damageAnimation, true);
+        _enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
         if(CurrentHealth <= 0)
         {
@@ -98,7 +98,7 @@ public class EnemyStats : CharacterStats
     private void HandleDeath()
     {
         CurrentHealth = 0;
-        _enemyAnimatorController.PlayTargetAnimation("Death_01", true);
+        _enemyAnimatorManager.PlayTargetAnimation("Death_01", true);
         IsDead = true;
     }
 

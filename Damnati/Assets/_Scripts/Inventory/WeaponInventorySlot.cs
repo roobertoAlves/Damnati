@@ -6,14 +6,17 @@ using TMPro;
 
 public class WeaponInventorySlot : MonoBehaviour
 {
-    [SerializeField] private PlayerInventory _playerInventory;
-    [SerializeField] private WeaponSlotManager _weaponSlotManager;
-    [SerializeField] private UIManager _uiManager;
+    private PlayerInventoryManager _playerInventoryManager;
+    private PlayerWeaponSlotManager _playerWeaponSlotManager;
+    private UIManager _uiManager;
     [SerializeField] private Image _icon;
     private WeaponItem _item;
 
     private void Awake() 
     {
+        _playerInventoryManager =  FindObjectOfType<PlayerInventoryManager>();
+        _playerWeaponSlotManager =  FindObjectOfType<PlayerWeaponSlotManager>();
+        _uiManager = FindObjectOfType<UIManager>();
     }
 
     public void AddItem(WeaponItem newItem)
@@ -35,28 +38,28 @@ public class WeaponInventorySlot : MonoBehaviour
     {
         if(_uiManager.RightHandSlot01Selected)
         {
-            _playerInventory.WeaponsInventory.Add(_playerInventory.weaponsInRightHandSlots[0]);
-            _playerInventory.weaponsInRightHandSlots[0] = _item;
-            _playerInventory.WeaponsInventory.Remove(_item);
+            _playerInventoryManager.WeaponsInventory.Add(_playerInventoryManager.weaponsInRightHandSlots[0]);
+            _playerInventoryManager.weaponsInRightHandSlots[0] = _item;
+            _playerInventoryManager.WeaponsInventory.Remove(_item);
         }
         else if(_uiManager.LeftHandSlot01Selected)
         {
-            _playerInventory.WeaponsInventory.Add(_playerInventory.weaponsInLeftHandSlot[0]);
-            _playerInventory.weaponsInLeftHandSlot[0] = _item;
-            _playerInventory.WeaponsInventory.Remove(_item);
+            _playerInventoryManager.WeaponsInventory.Add(_playerInventoryManager.weaponsInLeftHandSlot[0]);
+            _playerInventoryManager.weaponsInLeftHandSlot[0] = _item;
+            _playerInventoryManager.WeaponsInventory.Remove(_item);
         }
         else
         {
             return;
         }
 
-        _playerInventory.rightHandWeapon = _playerInventory.weaponsInRightHandSlots[_playerInventory.currentRightWeaponIndex];
-        _playerInventory.rightHandWeapon = _playerInventory.weaponsInLeftHandSlot[_playerInventory.currentLeftWeaponIndex];
+        _playerInventoryManager.rightHandWeapon = _playerInventoryManager.weaponsInRightHandSlots[_playerInventoryManager.currentRightWeaponIndex];
+        _playerInventoryManager.rightHandWeapon = _playerInventoryManager.weaponsInLeftHandSlot[_playerInventoryManager.currentLeftWeaponIndex];
 
-        _weaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
-        _weaponSlotManager.LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
+        _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventoryManager.rightHandWeapon, false);
+        _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventoryManager.leftHandWeapon, true);
     
-        _uiManager.EquipmentWindowUI.LoadWeaponsOnEquipmentScreen(_playerInventory);
+        _uiManager.EquipmentWindowUI.LoadWeaponsOnEquipmentScreen(_playerInventoryManager);
         _uiManager.ResetSelectedSlots();
     }
 }

@@ -5,16 +5,16 @@ using UnityEngine;
 public class PlayerEquipmentManager : MonoBehaviour
 {
     private InputHandler _inputHandler;
-    private PlayerInventory _playerInverntory;
-    private PlayerStats _playerStats;
+    private PlayerInventoryManager _playerInverntory;
+    private PlayerStatsManager _playerStats;
 
     [SerializeField] private BlockingCollider _blockingCollider;
 
     private void Awake() 
     {
         _inputHandler = FindObjectOfType<InputHandler>();
-        _playerInverntory = GetComponent<PlayerInventory>();  
-        _playerStats = GetComponent<PlayerStats>();  
+        _playerInverntory = GetComponent<PlayerInventoryManager>();  
+        _playerStats = GetComponent<PlayerStatsManager>();  
     }
 
     private void Start() 

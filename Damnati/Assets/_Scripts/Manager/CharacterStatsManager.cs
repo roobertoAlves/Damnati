@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterStats : MonoBehaviour
+public class CharacterStatsManager : MonoBehaviour
 {
 [Header("Health Parameters")]
     [Space(15)]
@@ -82,14 +82,22 @@ public class CharacterStats : MonoBehaviour
         (1 - _physicalDamageAbsorptionHands / 100);
 
         physicalDamage = Mathf.RoundToInt(physicalDamage - (physicalDamage * totalPhysicalDamageAbsorption));
-        Debug.Log("Total Damage Absorption is " + totalPhysicalDamageAbsorption + "%");
 
         float finalDamage = physicalDamage;
 
         _currentHealth = Mathf.RoundToInt(_currentHealth - finalDamage);
-        Debug.Log("Total Damage Dealt is " + finalDamage);
 
         if (_currentHealth <= 0)
+        {
+            _currentHealth = 0;
+            _isDead = true;
+        }
+    }
+    public virtual void TakeDamageNoAnimation(int damage)
+    {
+        _currentHealth = _currentHealth - damage;
+
+        if(_currentHealth <= 0)
         {
             _currentHealth = 0;
             _isDead = true;

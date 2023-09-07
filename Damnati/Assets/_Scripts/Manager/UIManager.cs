@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Components")]
     [Space(15)]
-    [SerializeField] private PlayerInventory _playerInventory;
+    private PlayerInventoryManager _playerInventoryManager;
     [SerializeField] private EquipmentWindowUI _equipmentWindowUI;
 
     [Header("UI Window")]
@@ -39,11 +39,14 @@ public class UIManager : MonoBehaviour
     
     #endregion
 
-
+    private void Awake() 
+    {
+        _playerInventoryManager = FindObjectOfType<PlayerInventoryManager>();
+        _equipmentWindowUI = FindObjectOfType<EquipmentWindowUI>();    
+    }
     private void Start() 
     {
         _weaponsInventorySlots = _weaponInventorySlotsParent.GetComponentsInChildren<WeaponInventorySlot>();
-        _equipmentWindowUI.LoadWeaponsOnEquipmentScreen(_playerInventory);
     }
     public void UpdateUI()
     {
@@ -51,14 +54,14 @@ public class UIManager : MonoBehaviour
 
         for(int i = 0; i < _weaponsInventorySlots.Length; i++)
         {
-            if(i < _playerInventory.WeaponsInventory.Count)
+            if(i < _playerInventoryManager.WeaponsInventory.Count)
             {
-                if(_weaponsInventorySlots.Length < _playerInventory.WeaponsInventory.Count)
+                if(_weaponsInventorySlots.Length < _playerInventoryManager.WeaponsInventory.Count)
                 {
                     Instantiate(_weaponInventorySlotPrefab, _weaponInventorySlotsParent);
                     _weaponsInventorySlots = _weaponInventorySlotsParent.GetComponentsInChildren<WeaponInventorySlot>();
                 }
-                _weaponsInventorySlots[i].AddItem(_playerInventory.WeaponsInventory[i]);
+                _weaponsInventorySlots[i].AddItem(_playerInventoryManager.WeaponsInventory[i]);
             }
             else
             {

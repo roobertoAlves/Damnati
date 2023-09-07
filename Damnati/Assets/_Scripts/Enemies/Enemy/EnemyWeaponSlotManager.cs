@@ -15,11 +15,11 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     private DamageCollider _leftHandDamageCollider;
     private DamageCollider _rightHandDamageCollider;
 
-    private EnemyStats _enemyStats;
+    private EnemyStatsManager _enemyStatsManager;
 
     private void Awake() 
     {
-        _enemyStats = GetComponent<EnemyStats>();
+        _enemyStatsManager = GetComponent<EnemyStatsManager>();
         LoadWeaponHolderSlots();
             
     }
@@ -122,12 +122,12 @@ public class EnemyWeaponSlotManager : MonoBehaviour
 
     public void GrantWeaponAttackingPoiseBonus()
     {
-        _enemyStats.TotalPoiseDefense = _enemyStats.TotalPoiseDefense + _enemyStats.OffensivePoiseBonus;
+        _enemyStatsManager.TotalPoiseDefense = _enemyStatsManager.TotalPoiseDefense + _enemyStatsManager.OffensivePoiseBonus;
     }
 
     public void ResetWeaponAttackingPoiseBonus()
     {
-        _enemyStats.TotalPoiseDefense = _enemyStats.ArmorPoiseBonus;
+        _enemyStatsManager.TotalPoiseDefense = _enemyStatsManager.ArmorPoiseBonus;
     }
 
     #endregion

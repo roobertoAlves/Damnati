@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventoryManager : MonoBehaviour
 {
 
-    [SerializeField] private WeaponSlotManager _weaponSlot;
+    private PlayerWeaponSlotManager _playerWeaponSlotManager;
 
     [Header("Weapons")]
     [Space(15)]
     public WeaponItem rightHandWeapon;
     public WeaponItem leftHandWeapon;
-
-    public WeaponItem unarmedWeapon;
 
     public WeaponItem[] weaponsInRightHandSlots = new WeaponItem[1];
     public WeaponItem[] weaponsInLeftHandSlot = new WeaponItem[1];
@@ -43,13 +41,17 @@ public class PlayerInventory : MonoBehaviour
     public float GlovesPhysicalDefense { get { return _handsPhysicalDefense; }}
     #endregion
 
+    private void Awake() 
+    {
+        _playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();    
+    }
     private void Start() 
     { 
-        rightHandWeapon = weaponsInRightHandSlots[0];
-        _weaponSlot.LoadWeaponOnSlot(rightHandWeapon, false);
+        //rightHandWeapon = weaponsInRightHandSlots[0];
+        _playerWeaponSlotManager.LoadWeaponOnSlot(rightHandWeapon, false);
 
-        leftHandWeapon = weaponsInLeftHandSlot[0];
-        _weaponSlot.LoadWeaponOnSlot(leftHandWeapon, true);
+        //leftHandWeapon = weaponsInLeftHandSlot[0];
+        _playerWeaponSlotManager.LoadWeaponOnSlot(leftHandWeapon, true);
     }
 
     public void ChangeRightWeapon()
@@ -59,13 +61,13 @@ public class PlayerInventory : MonoBehaviour
         if (currentRightWeaponIndex > weaponsInRightHandSlots.Length - 1)
         {
             currentRightWeaponIndex = -1;
-            rightHandWeapon = unarmedWeapon;
-            _weaponSlot.LoadWeaponOnSlot(unarmedWeapon, false);
+            rightHandWeapon = _playerWeaponSlotManager.unarmedWeapon;
+            _playerWeaponSlotManager.LoadWeaponOnSlot(_playerWeaponSlotManager.unarmedWeapon, false);
         }
         else if (weaponsInRightHandSlots[currentRightWeaponIndex] != null)
         {
             rightHandWeapon = weaponsInRightHandSlots[currentRightWeaponIndex];
-            _weaponSlot.LoadWeaponOnSlot(weaponsInRightHandSlots[currentRightWeaponIndex], false);
+            _playerWeaponSlotManager.LoadWeaponOnSlot(weaponsInRightHandSlots[currentRightWeaponIndex], false);
         }
         else
         {
@@ -80,13 +82,13 @@ public class PlayerInventory : MonoBehaviour
         if (currentLeftWeaponIndex > weaponsInLeftHandSlot.Length - 1)
         {
             currentLeftWeaponIndex = -1;
-            leftHandWeapon = unarmedWeapon;
-            _weaponSlot.LoadWeaponOnSlot(unarmedWeapon, false);
+            leftHandWeapon = _playerWeaponSlotManager.unarmedWeapon;
+            _playerWeaponSlotManager.LoadWeaponOnSlot(_playerWeaponSlotManager.unarmedWeapon, false);
         }
         else if (weaponsInLeftHandSlot[currentLeftWeaponIndex] != null)
         {
             leftHandWeapon = weaponsInLeftHandSlot[currentLeftWeaponIndex];
-            _weaponSlot.LoadWeaponOnSlot(weaponsInLeftHandSlot[currentLeftWeaponIndex], false);
+            _playerWeaponSlotManager.LoadWeaponOnSlot(weaponsInLeftHandSlot[currentLeftWeaponIndex], false);
         }
         else
         {

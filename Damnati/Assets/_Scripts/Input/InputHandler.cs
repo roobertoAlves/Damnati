@@ -10,12 +10,12 @@ public class InputHandler : MonoBehaviour
     private GameControls _gameControls;
     private BlockingCollider _blockingCollider;
     private CameraHandler _cameraHandler;
-    private PlayerInventory _playerInventory;
+    private PlayerInventoryManager _playerInventory;
     private PlayerManager _playerManager;
-    private PlayerAttacker _playerAttacker;
-    private PlayerLocomotion _playerLocomotion;
-    private WeaponSlotManager _weaponSlotManager;
-    private EnemyStats _enemyStats;
+    private PlayerCombatManager _playerCombatManager;
+    private PlayerLocomotionManager _playerLocomotionManager;
+    private PlayerWeaponSlotManager _playerWeaponSlotManager;
+    private EnemyStatsManager _enemyStats;
 
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -78,13 +78,13 @@ public class InputHandler : MonoBehaviour
     private void Awake() 
     {
         _cameraHandler = FindObjectOfType<CameraHandler>();
-        _playerInventory = FindObjectOfType<PlayerInventory>();
+        _playerInventory = FindObjectOfType<PlayerInventoryManager>();
         _playerManager = FindObjectOfType<PlayerManager>();
-        _playerAttacker = FindObjectOfType<PlayerAttacker>();
-        _playerLocomotion = FindObjectOfType<PlayerLocomotion>();
-        _weaponSlotManager = FindObjectOfType<WeaponSlotManager>();
+        _playerCombatManager = FindObjectOfType<PlayerCombatManager>();
+        _playerLocomotionManager = FindObjectOfType<PlayerLocomotionManager>();
+        _playerWeaponSlotManager = FindObjectOfType<PlayerWeaponSlotManager>();
         _blockingCollider = FindObjectOfType<BlockingCollider>();
-        _enemyStats = FindObjectOfType<EnemyStats>();
+        _enemyStats = FindObjectOfType<EnemyStatsManager>();
     }
     
     #region Input Management
@@ -220,11 +220,11 @@ public class InputHandler : MonoBehaviour
     {
         if(_lbAttackInput)
         {
-            _playerAttacker.HandleLBAction();
+            _playerCombatManager.HandleLBAction();
         }
         if(_rbAttackInput)
         {
-            _playerAttacker.HandleRBAction();
+            _playerCombatManager.HandleRBAction();
         }
         
         if(_ltInput)
@@ -235,12 +235,12 @@ public class InputHandler : MonoBehaviour
             }
             else
             {
-                _playerAttacker.HandleLTAction();
+                _playerCombatManager.HandleLTAction();
             }
         }
         if(_blockInput)
         {
-            _playerAttacker.HandleDefenseAction();
+            _playerCombatManager.HandleDefenseAction();
         }
         else
         {
@@ -261,12 +261,12 @@ public class InputHandler : MonoBehaviour
 
             if(_playerManager.TwoHandFlag)
             {
-                _weaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
+                _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
             }
             else
             {
-                _weaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
-                _weaponSlotManager.LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
+                _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
+                _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
             }
         }
     }
@@ -278,7 +278,7 @@ public class InputHandler : MonoBehaviour
 
             if(!_enemyStats.IsBoss)
             {
-                _playerAttacker.AttemptRiposte();
+                _playerCombatManager.AttemptRiposte();
             }
         }
     }  

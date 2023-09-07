@@ -9,17 +9,17 @@ public class EquipmentWindowUI : MonoBehaviour
 
     [SerializeField] private HandEquipmentSlotsUI[] _handEquipmentSlots;
     
-    public void LoadWeaponsOnEquipmentScreen(PlayerInventory playerInventory)
+    public void LoadWeaponsOnEquipmentScreen(PlayerInventoryManager playerInventoryManager)
     {
         for(int i = 0; i < _handEquipmentSlots.Length; i++)
         {
             if(_handEquipmentSlots[i].RightHandSlot01)
             {
-                _handEquipmentSlots[i].AddItem(playerInventory.weaponsInRightHandSlots[0]);
+                _handEquipmentSlots[i].AddItem(playerInventoryManager.weaponsInRightHandSlots[0]);
             }
             else if(_handEquipmentSlots[i].LeftHandSlot01)
             {
-                _handEquipmentSlots[i].AddItem(playerInventory.weaponsInLeftHandSlot[0]);
+                _handEquipmentSlots[i].AddItem(playerInventoryManager.weaponsInLeftHandSlot[0]);
             }
         }
     }

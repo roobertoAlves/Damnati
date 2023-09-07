@@ -6546,14 +6546,14 @@ GameObject:
   - component: {fileID: 5079598194609435844}
   - component: {fileID: 5079598194609435849}
   - component: {fileID: 5079598194609435848}
-  - component: {fileID: 5079598194609435847}
-  - component: {fileID: 5079598194609435853}
-  - component: {fileID: 5079598194609435850}
   - component: {fileID: 5079598194609435846}
-  - component: {fileID: 5079598194609435845}
-  - component: {fileID: 5079598194609435852}
+  - component: {fileID: 5079598194609435847}
+  - component: {fileID: 5079598194609435850}
+  - component: {fileID: 5079598194609435853}
   - component: {fileID: 5079598194609435851}
   - component: {fileID: 5079598194609435854}
+  - component: {fileID: 5079598194609435845}
+  - component: {fileID: 5079598194609435852}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -7738,6 +7738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackingWeapon: {fileID: 0}
+  unarmedWeapon: {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
 --- !u!114 &5079598194609435852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7762,16 +7763,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d8e6786f1c8724c8ad69042b09dfef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponSlot: {fileID: 5079598194609435851}
   rightHandWeapon: {fileID: 0}
   leftHandWeapon: {fileID: 0}
-  unarmedWeapon: {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
   weaponsInRightHandSlots:
+  - {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
   - {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}
-  - {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
   weaponsInLeftHandSlot:
-  - {fileID: 11400000, guid: b3c07d4d8fffb8945841147b8114c785, type: 2}
   - {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
+  - {fileID: 11400000, guid: b3c07d4d8fffb8945841147b8114c785, type: 2}
   currentRightWeaponIndex: 1
   currentLeftWeaponIndex: 1
   _weaponsInventory: []
@@ -7847,14 +7846,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2715078581417051989}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 1.9677446, z: 0}
-  m_LocalScale: {x: 19.122717, y: 19.323397, z: 38.247334}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 19, y: 19, z: 38}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1197525880861421246}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!4 &5424693526626940642
 Transform:
   m_ObjectHideFlags: 0
@@ -8295,9 +8294,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734394451075618655}
-  m_LocalRotation: {x: 0.0798211, y: -0.015056635, z: 0.006487342, w: 0.99667436}
-  m_LocalPosition: {x: 0.015026331, y: 1.0594112, z: -0.139938}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.07982109, y: -0.015056635, z: 0.0064873416, w: 0.99667436}
+  m_LocalPosition: {x: 0.015026331, y: 1.0594115, z: -0.139938}
+  m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3787710790403733334}

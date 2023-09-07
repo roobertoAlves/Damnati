@@ -7,9 +7,9 @@ public class PlayerManager : CharacterManager
     private InputHandler _inputHandler;
     private Animator _animator;
     private CameraHandler _cameraHandler;
-    private PlayerLocomotion _playerLocomotion;
-    private PlayerStats _playerStats;
-    private PlayerAnimatorController _playerAnimatorController;
+    private PlayerLocomotionManager _playerLocomotionManager;
+    private PlayerStatsManager _playerStatsManager;
+    private PlayerAnimatorManager _playerAnimatorManager;
 
     [Header("Item Collect Components")]
     [Space(15)] 
@@ -60,10 +60,10 @@ public class PlayerManager : CharacterManager
         _cameraHandler = FindObjectOfType<CameraHandler>();
         _inputHandler = FindObjectOfType<InputHandler>();
         _animator = GetComponent<Animator>();
-        _playerLocomotion = GetComponent<PlayerLocomotion>();
+        _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
         _interactableUI = FindObjectOfType<InteractableUI>();
-        _playerStats = GetComponent<PlayerStats>();
-        _playerAnimatorController = GetComponent<PlayerAnimatorController>();
+        _playerStatsManager = GetComponent<PlayerStatsManager>();
+        _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
 
     }
     private void Update()
@@ -77,31 +77,30 @@ public class PlayerManager : CharacterManager
         IsInvulnerable = _animator.GetBool("IsInvulnerable");
         
         _animator.SetBool("IsInAir", _isInAir);
-        _animator.SetBool("IsDead", _playerStats.IsDead);
-        _animator.SetFloat("InAirTimer", _playerLocomotion.InAirTimer);
+        _animator.SetBool("IsDead", _playerStatsManager.IsDead);
+        _animator.SetFloat("InAirTimer", _playerLocomotionManager.InAirTimer);
         _animator.SetBool("IsGrounded", _isGrounded);
         _animator.SetBool("IsBlocking", IsBlocking);
 
         _inputHandler.TickInput(delta);
-        _playerAnimatorController.canRotate = _animator.GetBool("CanRotate");
-        _playerLocomotion.HandleDodge(delta);
-        _playerStats.RegenerateStamina();
+        _playerAnimatorManager.canRotate = _animator.GetBool("CanRotate");
+        _playerLocomotionManager.HandleDodge(delta);
+        _playerStatsManager.RegenerateStamina();
 
         CheckForInteractableObject();
 
         if(_isHitEnemy && !_isInRage)
         {
-            _playerStats.RegenerateRage();
+            _playerStatsManager.RegenerateRage();
         }
     }
-
     private void FixedUpdate()
     {
         float delta = Time.fixedDeltaTime;
 
-        _playerLocomotion.HandleGravity(delta, _playerLocomotion.MoveDirection);
-        _playerLocomotion.HandleMovement(delta);
-        _playerLocomotion.HandleRotation(delta);
+        _playerLocomotionManager.HandleGravity(delta, _playerLocomotionManager.MoveDirection);
+        _playerLocomotionManager.HandleMovement(delta);
+        _playerLocomotionManager.HandleRotation(delta);
     }
     
     private void LateUpdate() 
@@ -119,7 +118,7 @@ public class PlayerManager : CharacterManager
         }   
         if(_isInAir)
         {
-            _playerLocomotion.InAirTimer = _playerLocomotion.InAirTimer + Time.deltaTime;
+            _playerLocomotionManager.InAirTimer = _playerLocomotionManager.InAirTimer + Time.deltaTime;
         } 
     }
     
@@ -127,7 +126,7 @@ public class PlayerManager : CharacterManager
     {
         RaycastHit hit;
 
-        if(Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, _playerLocomotion.IgnoreForGroundCheck))
+        if(Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, _playerLocomotionManager.IgnoreForGroundCheck))
         {
             if(hit.collider.tag == "Interactable")
             {
@@ -162,12 +161,12 @@ public class PlayerManager : CharacterManager
     {
         if(_inputHandler.RunFlag)
         {
-            if(_playerStats.CurrentStamina <= 0)
+            if(_playerStatsManager.CurrentStamina <= 0)
             {
                 _isSprinting = false;
                 _inputHandler.RunFlag = false;
             }
-            if(_inputHandler.MoveAmount > 0.5f && _playerStats.CurrentStamina > 0)
+            if(_inputHandler.MoveAmount > 0.5f && _playerStatsManager.CurrentStamina > 0)
             {
                 _isSprinting = true;
             }

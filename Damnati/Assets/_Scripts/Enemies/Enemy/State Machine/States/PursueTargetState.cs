@@ -6,7 +6,7 @@ public class PursueTargetState : States
 {
     [SerializeField] private CombatStanceState _combatStanceState;
     [SerializeField] private RotateTowardsTargetState _rotateTowardsTargetState;
-    public override States Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorController enemyAnimatorController)
+    public override States Tick(EnemyManager enemyManager, EnemyStatsManager enemyStatsManager, EnemyAnimatorManager enemyAnimatorManager)
     {
         Vector3 targetDirection = enemyManager.CurrentTarget.transform.position - enemyManager.transform.position;
         float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
@@ -21,12 +21,12 @@ public class PursueTargetState : States
 
         if(enemyManager.IsPerfomingAction)
         {
-            enemyAnimatorController.Anim.SetFloat("Vertical", 0 , 0.1f, Time.deltaTime);
+            enemyAnimatorManager.Anim.SetFloat("Vertical", 0 , 0.1f, Time.deltaTime);
             return this;
         }
         if(distanceFromTarget > enemyManager.MaximumAggroRadius)
         {
-            enemyAnimatorController.Anim.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
+            enemyAnimatorManager.Anim.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
         }
 
         if(distanceFromTarget <= enemyManager.MaximumAggroRadius)
