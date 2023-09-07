@@ -2,43 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWeaponSlotManager : MonoBehaviour
+public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
 {
     private PlayerStatsManager _playerStatsManager;
     private PlayerManager _playerManager;
     private PlayerInventoryManager _playerInventoryManager;
-    private Animator _anim;
-    
-    [Header("Weapon Slots")]
-    [Space(15)]
-    private WeaponHolderSlot _leftHandSlot;
-    private WeaponHolderSlot _rightHandSlot;
-    private WeaponHolderSlot _backSlot;
-
-    [Header("Damage Colliders")]
-    [Space(15)]
-    private DamageCollider _leftHandDamageCollider;
-    private DamageCollider _rightHandDamageCollider;
+    private InputHandler _inputHandler;
+    private Animator _animator;
 
     [Header("Attacking Weapon")]
     [Space(15)]
     public WeaponItem attackingWeapon;
-
-    [Header("Unarmed Weapon")]
-    [Space(15)]
-    public WeaponItem unarmedWeapon;
-
-
-    #region GET & SET
-
-    public DamageCollider LeftHandDamageCollider { get { return _leftHandDamageCollider; } set { _leftHandDamageCollider = value; }}
-    public DamageCollider RightHandDamageCollider { get { return _rightHandDamageCollider; } set { _rightHandDamageCollider = value; }}
-    #endregion
     private void Awake() 
     {   
         _playerManager = GetComponent<PlayerManager>();
+        _inputHandler = FindObjectOfType<InputHandler>();
         _playerStatsManager = GetComponent<PlayerStatsManager>();
-        _anim = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         _playerInventoryManager = GetComponent<PlayerInventoryManager>();
 
         LoadWeaponHolderSlots();
@@ -52,15 +32,15 @@ public class PlayerWeaponSlotManager : MonoBehaviour
         {
             if(weaponSlot.isLeftHandSlot)
             {
-                _leftHandSlot = weaponSlot;
+                LeftHandSlot = weaponSlot;
             }
             else if(weaponSlot.isRightHandSlot)
             {
-                _rightHandSlot = weaponSlot;
+                RightHandSlot = weaponSlot;
             }
             else if(weaponSlot.isBackSlot)
             {
-                _backSlot = weaponSlot;
+                BackSlot = weaponSlot;
             }
         }
     }
@@ -75,47 +55,49 @@ public class PlayerWeaponSlotManager : MonoBehaviour
         {
             if(isLeft)
             {
-                _leftHandSlot.CurrentWeapon = weaponItem;
-                _anim.CrossFade(weaponItem.left_Hand_Idle, 0.2f);
+                LeftHandSlot.CurrentWeapon = weaponItem;
+                LeftHandSlot.LoadWeaponModel(weaponItem);
+                _animator.CrossFade(weaponItem.left_Hand_Idle, 0.2f);
             }
             else
             {
-                if(_playerManager.TwoHandFlag)
+                if(_inputHandler.TwoHandFlag)
                 {
-                    _backSlot.LoadWeaponModel(_leftHandSlot.CurrentWeapon);
-                    _leftHandSlot.UnloadWeaponAndDestroy();
-                    _anim.CrossFade(weaponItem.th_idle, 0.2f);
+                    BackSlot.LoadWeaponModel(LeftHandSlot.CurrentWeapon);
+                    LeftHandSlot.UnloadWeaponAndDestroy();
+                    _animator.CrossFade(weaponItem.th_idle, 0.2f);
                 }
                 else
                 {
-                    _anim.CrossFade("Both Arms Empty", 0.2f);
-                    _backSlot.UnloadWeaponAndDestroy();
-                    _anim.CrossFade(weaponItem.right_Hand_Idle, 0.2f);
+                    _animator.CrossFade("Both Arms Empty", 0.2f);
+                    BackSlot.UnloadWeaponAndDestroy();
+                    _animator.CrossFade(weaponItem.right_Hand_Idle, 0.2f);
                 }
-            }
                 
-            _rightHandSlot.CurrentWeapon = weaponItem;
-            _rightHandSlot.LoadWeaponModel(weaponItem);
-            LoadRightWeaponDamageCollider();  
+                RightHandSlot.CurrentWeapon = weaponItem;
+                RightHandSlot.LoadWeaponModel(weaponItem);
+                LoadRightWeaponDamageCollider();  
+            }
+            
         }
         else
         {
-            weaponItem = unarmedWeapon;
+            weaponItem = UnarmedWeapon;
 
             if(isLeft)
             {
-                _anim.CrossFade("Left Arm Empty", 0.2f);
+                _animator.CrossFade("Left Arm Empty", 0.2f);
                 _playerInventoryManager.leftHandWeapon = weaponItem;
-                _leftHandSlot.CurrentWeapon = weaponItem;
-                _leftHandSlot.LoadWeaponModel(weaponItem);
+                LeftHandSlot.CurrentWeapon = weaponItem;
+                LeftHandSlot.LoadWeaponModel(weaponItem);
                 LoadLeftWeaponDamageCollider();
             }
             else
             {
-                _anim.CrossFade("Right Arm Empty", 0.2f);
+                _animator.CrossFade("Right Arm Empty", 0.2f);
                 _playerInventoryManager.rightHandWeapon = weaponItem;
-                _rightHandSlot.CurrentWeapon = weaponItem;
-                _rightHandSlot.LoadWeaponModel(weaponItem);
+                RightHandSlot.CurrentWeapon = weaponItem;
+                RightHandSlot.LoadWeaponModel(weaponItem);
                 LoadRightWeaponDamageCollider();  
             }
         }
@@ -125,38 +107,38 @@ public class PlayerWeaponSlotManager : MonoBehaviour
 
     private void LoadLeftWeaponDamageCollider()
     {
-        _leftHandDamageCollider = _leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-        _leftHandDamageCollider.CurrentWeaponDamage = _playerInventoryManager.leftHandWeapon.baseDamage;
-        _leftHandDamageCollider.PoiseBreak = _playerInventoryManager.leftHandWeapon.poiseBreak;
+        LeftHandDamageCollider = LeftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+        LeftHandDamageCollider.CurrentWeaponDamage = _playerInventoryManager.leftHandWeapon.baseDamage;
+        LeftHandDamageCollider.PoiseBreak = _playerInventoryManager.leftHandWeapon.poiseBreak;
     }
     private void LoadRightWeaponDamageCollider()
     {
-        _rightHandDamageCollider = _rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-        _rightHandDamageCollider.CurrentWeaponDamage = _playerInventoryManager.rightHandWeapon.baseDamage;
-        _rightHandDamageCollider.PoiseBreak = _playerInventoryManager.rightHandWeapon.poiseBreak;
+        RightHandDamageCollider = RightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+        RightHandDamageCollider.CurrentWeaponDamage = _playerInventoryManager.rightHandWeapon.baseDamage;
+        RightHandDamageCollider.PoiseBreak = _playerInventoryManager.rightHandWeapon.poiseBreak;
     }
     public void OpenDamageCollider()
     {
         if(_playerManager.IsUsingRightHand)
         {
-            _rightHandDamageCollider.EnableDamageCollider();
+            RightHandDamageCollider.EnableDamageCollider();
         }
         else if(_playerManager.IsUsingLeftHand)
         {
-            _leftHandDamageCollider.EnableDamageCollider();
+            LeftHandDamageCollider.EnableDamageCollider();
         }
     }
 
     public void CloseDamageCollider()
     {
-        if(_rightHandDamageCollider != null)
+        if(RightHandDamageCollider != null)
         {
-            _rightHandDamageCollider.DisableDamageCollider();
+            RightHandDamageCollider.DisableDamageCollider();
         }
         
-        if(_leftHandDamageCollider != null)
+        if(LeftHandDamageCollider != null)
         {
-            _leftHandDamageCollider.DisableDamageCollider();
+            LeftHandDamageCollider.DisableDamageCollider();
         }
     }
 
@@ -177,16 +159,16 @@ public class PlayerWeaponSlotManager : MonoBehaviour
 
     public void DrainRageLightAttack()
     {
-        if(_playerManager.IsInRage)
+        if(_inputHandler.IsInRage)
         {
             _playerStatsManager.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageLightAttackMultiplier));
         }
     }
     public void DrainRageHeavyAttack()
     {
-        if(_playerManager.IsInRage)
+        if(_inputHandler.IsInRage)
         {
-             _playerStatsManager.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageHeavyAttackMultiplier));
+            _playerStatsManager.RageDrain(Mathf.RoundToInt(attackingWeapon.baseRage * attackingWeapon.rageHeavyAttackMultiplier));
         }
     }
 

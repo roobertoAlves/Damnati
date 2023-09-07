@@ -21,7 +21,7 @@ public class InputHandler : MonoBehaviour
     private float _verticalMovement;
     private float _moveAmount;
    
-   #region Input Flags
+    #region Input Flags
 
     private bool _runInput;
     private bool _sbInput;
@@ -39,9 +39,20 @@ public class InputHandler : MonoBehaviour
     private bool _lStickInput;
     private bool _caInput;
     private bool _blockInput;
-   #endregion
 
-   #region Input Variables
+    #endregion
+
+    #region Player Flags
+
+    private bool _twoHandFlag;
+    private bool _isDodge;
+    private bool _isHitEnemy;
+    private bool _isInRage;
+
+
+    #endregion
+
+    #region Input Variables
 
     private Vector2 _cameraMoveInput;
     private Vector2 _walkMoveInput;
@@ -73,6 +84,11 @@ public class InputHandler : MonoBehaviour
     public bool LeftStickInput { get { return _lStickInput; } set { _lStickInput = value; }}
     public bool CriticalAttackInput { get { return _caInput; } set { _caInput = value; }}
     public bool BlockInput { get { return _blockInput; } set { _blockInput = value; }}
+    
+    public bool TwoHandFlag { get { return _twoHandFlag; } set { _twoHandFlag = value; }}
+    public bool IsDodge { get { return _isDodge; } set { _isDodge = value; }}
+    public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
+    public bool IsInRage { get { return _isInRage; } set { _isInRage = value; }}
     #endregion
 
     private void Awake() 
@@ -257,9 +273,9 @@ public class InputHandler : MonoBehaviour
         if(_thEquipInput)
         {
            _thEquipInput = false;
-            _playerManager.TwoHandFlag = !_playerManager.TwoHandFlag;
+           _twoHandFlag = !_twoHandFlag;
 
-            if(_playerManager.TwoHandFlag)
+            if(_twoHandFlag)
             {
                 _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
             }

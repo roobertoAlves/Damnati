@@ -25,6 +25,6 @@ public class ResetAnimatorBool : StateMachineBehaviour
         animator.SetBool(_isRotatingWithRootMotionBool, _isRotatingWithRootMotionStatus);
         animator.SetBool(_canRotateBool, _canRotateStatus);
         animator.SetBool(_isInvulnerable, _isInvulnerableStatus);
-        animator.SetBool(_isUsingRightHand, _isInteractingStatus);
+        animator.SetBool(_isUsingRightHand, _isUsingRightHandStatus);
     }
 }

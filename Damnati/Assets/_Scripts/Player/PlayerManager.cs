@@ -17,41 +17,9 @@ public class PlayerManager : CharacterManager
     [SerializeField] private GameObject _interactableUIGameObject;
     [SerializeField] private GameObject _itemInteractableGameObject;
 
-
-    #region Player Flags
-
-    private bool _isInteracting;
-    private bool _isInAir;
-    private bool _isGrounded;
-    private bool _canDoCombo;
-    private bool _isRollingOrSteppingBack;
-    private bool _isAttacking;
-    private bool _twoHandFlag;
-    private bool _isUsingLeftHand;
-    private bool _isUsingRightHand;
-    private bool _isSprinting;
-    private bool _isHitEnemy;
-    private bool _isInRage;
-
-    #endregion
-
     #region GET & SET
 
     public GameObject ItemInteractableGameObject {get { return _itemInteractableGameObject; } set { _itemInteractableGameObject = value; }}
-
-    public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; }}
-    public bool IsInteracting { get { return _isInteracting; } set { _isInteracting = value; }}
-    public bool IsInAir { get { return _isInAir; } set { _isInAir = value; }}
-    public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; }}
-    public bool CanDoCombo { get { return _canDoCombo; } set { _canDoCombo = value; }}
-    public bool IsDodge { get { return _isRollingOrSteppingBack; } set { _isRollingOrSteppingBack = value; }}
-    public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; }}
-    public bool TwoHandFlag { get { return _twoHandFlag; } set { _twoHandFlag = value; }}
-    public bool IsUsingLeftHand { get { return _isUsingLeftHand; } set { _isUsingLeftHand = value; }}
-    public bool IsUsingRightHand { get { return _isUsingRightHand; } set { _isUsingRightHand = value; }}
-    public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
-    public bool IsInRage { get { return _isInRage; } set { _isInRage = value; }}
-    
 
     #endregion  
 
@@ -70,16 +38,16 @@ public class PlayerManager : CharacterManager
     {
         float delta = Time.deltaTime;
 
-        _isInteracting = _animator.GetBool("IsInteracting");
-        _canDoCombo = _animator.GetBool("CanCombo");
-        _isUsingRightHand = _animator.GetBool("IsUsingRightHand");
-        _isUsingLeftHand = _animator.GetBool("IsUsingLeftHand");
+        IsInteracting = _animator.GetBool("IsInteracting");
+        CanDoCombo = _animator.GetBool("CanDoCombo");
+        IsUsingRightHand = _animator.GetBool("IsUsingRightHand");
+        IsUsingLeftHand = _animator.GetBool("IsUsingLeftHand");
         IsInvulnerable = _animator.GetBool("IsInvulnerable");
         
-        _animator.SetBool("IsInAir", _isInAir);
+        _animator.SetBool("IsInAir", IsInAir);
         _animator.SetBool("IsDead", _playerStatsManager.IsDead);
         _animator.SetFloat("InAirTimer", _playerLocomotionManager.InAirTimer);
-        _animator.SetBool("IsGrounded", _isGrounded);
+        _animator.SetBool("IsGrounded", IsGrounded);
         _animator.SetBool("IsBlocking", IsBlocking);
 
         _inputHandler.TickInput(delta);
@@ -89,7 +57,7 @@ public class PlayerManager : CharacterManager
 
         CheckForInteractableObject();
 
-        if(_isHitEnemy && !_isInRage)
+        if(_inputHandler.IsHitEnemy && !_inputHandler.IsInRage)
         {
             _playerStatsManager.RegenerateRage();
         }
@@ -116,7 +84,7 @@ public class PlayerManager : CharacterManager
             _cameraHandler.FollowTarget(delta);
             _cameraHandler.HandleCameraRotation(delta, _inputHandler.HorizontalCameraMovement, _inputHandler.VerticalCameraMovement);
         }   
-        if(_isInAir)
+        if(IsInAir)
         {
             _playerLocomotionManager.InAirTimer = _playerLocomotionManager.InAirTimer + Time.deltaTime;
         } 
@@ -163,17 +131,17 @@ public class PlayerManager : CharacterManager
         {
             if(_playerStatsManager.CurrentStamina <= 0)
             {
-                _isSprinting = false;
+                IsSprinting = false;
                 _inputHandler.RunFlag = false;
             }
             if(_inputHandler.MoveAmount > 0.5f && _playerStatsManager.CurrentStamina > 0)
             {
-                _isSprinting = true;
+                IsSprinting = true;
             }
         }
         else
         {
-            _isSprinting = false;
+            IsSprinting = false;
         }
     }
 }

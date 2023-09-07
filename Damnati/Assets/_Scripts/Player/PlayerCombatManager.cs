@@ -36,7 +36,7 @@ public class PlayerCombatManager : MonoBehaviour
     {
         _playerWeaponSlotManager.attackingWeapon = weapon;
         
-        if(_playerManager.TwoHandFlag)
+        if(_inputHandler.TwoHandFlag)
         {
             _playerAnimatorManager.PlayTargetAnimation(weapon.TH_Light_Slash_01, true);
             LastAttack = weapon.TH_Light_Slash_01;
@@ -51,12 +51,12 @@ public class PlayerCombatManager : MonoBehaviour
     {
         _playerWeaponSlotManager.attackingWeapon = weapon;
 
-        if(_playerManager.TwoHandFlag)
+        if(_inputHandler.TwoHandFlag)
         {
             _playerAnimatorManager.PlayTargetAnimation(weapon.TH_Heavy_Slash_01, true);
             _lastAttack = weapon.TH_Heavy_Slash_01;
         }
-        else if(!_playerManager.TwoHandFlag)
+        else if(!_inputHandler.TwoHandFlag)
         {
             _playerAnimatorManager.PlayTargetAnimation(weapon.SS_Heavy_Slash_01, true);
             _lastAttack = weapon.SS_Heavy_Slash_01;
@@ -64,14 +64,14 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void HandleLightWeaponCombo(WeaponItem weapon)
     {
-        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanCombo") == false)
+        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanDoCombo") == false)
         {
             return;
         }
 
         if(_inputHandler.ComboFlag)
         {
-            _playerAnimatorManager.Anim.SetBool("CanCombo", false);
+            _playerAnimatorManager.Anim.SetBool("CanDoCombo", false);
             
             #region Sword And Shield One Hand Attack
 
@@ -116,14 +116,14 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void HandleHeavyWeaponCombo(WeaponItem weapon)
     {
-        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanCombo") == false)
+        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanDoCombo") == false)
         {
             return;
         }
 
         if(_inputHandler.ComboFlag)
         {
-            _playerAnimatorManager.Anim.SetBool("CanCombo", false);
+            _playerAnimatorManager.Anim.SetBool("CanDoCombo", false);
             
             #region Sword And Shield One Handed Attacks
             

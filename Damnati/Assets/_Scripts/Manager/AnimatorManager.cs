@@ -34,43 +34,43 @@ public class AnimatorManager : MonoBehaviour
 
     #region Combat and Animation Events
     
-    public void CanRotate()
+    public virtual void CanRotate()
     {
         Anim.SetBool("CanRotate", true);
     }
-    public void StopRotation()
+    public virtual void StopRotation()
     {
         Anim.SetBool("CanRotate", false);
     }
-    public void EnableCombo()
+    public virtual void EnableCombo()
     {
         Anim.SetBool("CanDoCombo", true);
     }
-    public void DisableCombo()
+    public virtual void DisableCombo()
     {
         Anim.SetBool("CanDoCombo", false);
     }
-    public void EnableIsInvulnerable()
+    public virtual void EnableIsInvulnerable()
     {
         Anim.SetBool("IsInvulnerable", true);
     }
-    public void DisableIsInvulnerable()
+    public virtual void DisableIsInvulnerable()
     {
         Anim.SetBool("IsInvulnerable", false);
     }
-    public void EnableIsParrying()
+    public virtual void EnableIsParrying()
     {
         _characterManager.IsParrying = true;
     }
-    public void DisableIsParrying()
+    public virtual void DisableIsParrying()
     {
         _characterManager.IsParrying = false;
     }
-    public void EnableCanBeRiposted()
+    public virtual void EnableCanBeRiposted()
     {
         _characterManager.CanBeRiposted = true;
     }
-    public void DisableCanBeRiposted()
+    public virtual void DisableCanBeRiposted()
     {
         _characterManager.CanBeRiposted = false;
     }

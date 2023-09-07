@@ -49,10 +49,10 @@ public class EnemyStatsManager : CharacterStatsManager
     }
 
     #region Damage Functions
-    public void TakeDamageNoAnimation(int damage)
+    public override void TakeDamageNoAnimation(int damage)
     { 
-        CurrentHealth = CurrentHealth - damage;
-        
+        base.TakeDamageNoAnimation(damage);
+
         if(!_isBoss)
         {
             _enemyHealthBar.SetHealth(CurrentHealth);
@@ -60,13 +60,6 @@ public class EnemyStatsManager : CharacterStatsManager
         else if(_isBoss && _enemyBossManager != null)
         {
             _enemyBossManager.UpdateBossHealthBar(CurrentHealth, MaxHealth);
-        }
-
-
-        if(CurrentHealth <= 0)
-        {
-            CurrentHealth = 0;
-            IsDead = true;
         }
     }
 

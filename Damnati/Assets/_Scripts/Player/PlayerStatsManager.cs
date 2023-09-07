@@ -29,14 +29,14 @@ public class PlayerStatsManager : CharacterStatsManager
     [SerializeField] private float _rageRegenerationLAAmount = 3;
     [SerializeField] private float _rageRegenerationHAAmount = 5;
     private void Awake() 
-    {
-        _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();    
+    {  
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
 
         _healthBar = FindObjectOfType<HealthBar>();
         _staminaBar = FindObjectOfType<StaminaBar>();
         _rageBar = FindObjectOfType<RageBar>();
+        _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();  
     }
     private void Start() 
     {
@@ -88,16 +88,6 @@ public class PlayerStatsManager : CharacterStatsManager
     #endregion
 
     #region Damage Functions
-    public void TakeDamageNoAnimation(int damage)
-    { 
-        CurrentHealth = CurrentHealth - damage;
-        
-        if(CurrentHealth <= 0)
-        {
-            CurrentHealth = 0;
-            IsDead = true;
-        }       
-    }
     public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
     { 
         if(_playerManager.IsInvulnerable)
@@ -114,7 +104,11 @@ public class PlayerStatsManager : CharacterStatsManager
             HandleDeath();
         }
     }
-
+    public override void TakeDamageNoAnimation(int damage)
+    { 
+        base.TakeDamageNoAnimation(damage);
+        _healthBar.SetCurrentHealth(CurrentHealth);
+    }
     private void HandleDeath()
     {
         CurrentHealth = 0;
@@ -162,16 +156,14 @@ public class PlayerStatsManager : CharacterStatsManager
             }
         }
     }
-
     public void RageDrain(int drain)
     {
         _currentRage = _currentRage - drain;
         _rageBar.SetCurrentRage(_currentRage);
     }
-
     public void RegenerateRage()
     {
-        if(_playerManager.IsInRage)
+        if(_inputHandler.IsInRage)
         {
             _rageRegenerationTimer = 0;
         }
@@ -179,12 +171,12 @@ public class PlayerStatsManager : CharacterStatsManager
         {
             _rageRegenerationTimer += Time.deltaTime;
 
-            if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.LBAttackFlag && _playerManager.IsHitEnemy)
+            if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.LBAttackFlag && _inputHandler.IsHitEnemy)
             {
                 _currentRage += _rageRegenerationLAAmount * Time.deltaTime;
                 _rageBar.SetCurrentRage(Mathf.RoundToInt(_currentRage));
             }
-            else if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.RBAttackFlag && _playerManager.IsHitEnemy)
+            else if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.RBAttackFlag && _inputHandler.IsHitEnemy)
             {
                 _currentRage += _rageRegenerationHAAmount * Time.deltaTime;
                 _rageBar.SetCurrentRage(Mathf.RoundToInt(_currentRage));

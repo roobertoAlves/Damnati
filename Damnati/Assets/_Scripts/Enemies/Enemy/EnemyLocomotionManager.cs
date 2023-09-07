@@ -12,12 +12,20 @@ public class EnemyLocomotionManager : MonoBehaviour
     [SerializeField] private CapsuleCollider _characterCollider;
     [SerializeField] private CapsuleCollider _characterCollisionBlockerCollider;
 
+
+    [SerializeField] private LayerMask _detectionLayer; 
+
+    #region GET & SET
+
+    public LayerMask DetectionLayer { get { return _detectionLayer; } set { _detectionLayer = value; }}
+    #endregion
     private void Awake()
     {
         _enemyManager = GetComponent<EnemyManager>();
         _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
-    
-        Physics.IgnoreCollision(_characterCollider, _characterCollisionBlockerCollider, true);
     }
-    
+    private void Start() 
+    {
+        Physics.IgnoreCollision(_characterCollider, _characterCollisionBlockerCollider, true);    
+    }   
 }

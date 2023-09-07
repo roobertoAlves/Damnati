@@ -2,18 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyWeaponSlotManager : MonoBehaviour
+public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
 {
 
-    private WeaponHolderSlot _rightHandSlot;
-    private WeaponHolderSlot _leftHandSlot;
-
-    
+    [Header("Enemy Weapon")]
+    [Space(15)]
     [SerializeField] private WeaponItem _rightHandWeapon;
     [SerializeField] private WeaponItem _leftHandWeapon;
-
-    private DamageCollider _leftHandDamageCollider;
-    private DamageCollider _rightHandDamageCollider;
 
     private EnemyStatsManager _enemyStatsManager;
 
@@ -37,11 +32,11 @@ public class EnemyWeaponSlotManager : MonoBehaviour
         {
             if(weaponSlot.isLeftHandSlot)
             {
-                _leftHandSlot = weaponSlot;
+                LeftHandSlot = weaponSlot;
             }
             else if(weaponSlot.isRightHandSlot)
             {
-                _rightHandSlot = weaponSlot;
+                RightHandSlot = weaponSlot;
             }
         }
     }
@@ -49,25 +44,24 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     {
             if(isLeft)
             {
-                _leftHandSlot.CurrentWeapon = weapon;
-                _leftHandSlot.LoadWeaponModel(weapon);
+                LeftHandSlot.CurrentWeapon = weapon;
+                LeftHandSlot.LoadWeaponModel(weapon);
                 LoadWeaponDamageCollider(true);
             }
             else
             {
-                _rightHandSlot.CurrentWeapon = weapon;
-                _rightHandSlot.LoadWeaponModel(weapon);
+                RightHandSlot.CurrentWeapon = weapon;
+                RightHandSlot.LoadWeaponModel(weapon);
                 LoadWeaponDamageCollider(false);
             }
     }
-
     public void LoadWeaponsOnBothHands()
     {
-        if(_rightHandWeapon != null)
+        if(RightHandSlot != null)
         {
             LoadWeaponOnSlot(_rightHandWeapon, false);
         }
-        if(_leftHandWeapon != null)
+        if(LeftHandSlot != null)
         {
             LoadWeaponOnSlot(_leftHandWeapon, true);
         }
@@ -76,24 +70,24 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     {
             if(isLeft)
             {
-                _leftHandDamageCollider = _leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-                _leftHandDamageCollider.characterManager = GetComponent<CharacterManager>();
+                LeftHandDamageCollider = LeftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+                LeftHandDamageCollider.characterManager = GetComponent<CharacterManager>();
             }
             else
             {
-                _rightHandDamageCollider = _rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-                _rightHandDamageCollider.characterManager = GetComponent<CharacterManager>();
+                RightHandDamageCollider = RightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+                RightHandDamageCollider.characterManager = GetComponent<CharacterManager>();
             }
     }
 
     public void OpenDamageCollider()
     {
-        _rightHandDamageCollider.EnableDamageCollider();
+        RightHandDamageCollider.EnableDamageCollider();
     }
 
     public void CloseDamageCollider()
     {
-        _rightHandDamageCollider.DisableDamageCollider();
+        RightHandDamageCollider.DisableDamageCollider();
     }
 
     #region Combat & Animation Events

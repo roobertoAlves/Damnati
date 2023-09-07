@@ -20,17 +20,16 @@ public class PlayerAnimatorManager : AnimatorManager
     
     #endregion
 
-    public void Initialize() 
+    protected override void Awake() 
     {
+
+        base.Awake();
         _hasAnimator = TryGetComponent<Animator>(out Anim);
-
         Anim = GetComponent<Animator>(); 
-
-        _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
-        _playerStatsManager = GetComponent<PlayerStatsManager>();
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
-        
+        _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+        _playerStatsManager = GetComponent<PlayerStatsManager>();
         _horizontalVelocity = Animator.StringToHash("Horizontal");
         _verticalVelocity = Animator.StringToHash("Vertical");   
     }
@@ -96,6 +95,17 @@ public class PlayerAnimatorManager : AnimatorManager
         Anim.SetFloat(_verticalVelocity, v, 0.1f, Time.deltaTime);
         Anim.SetFloat(_horizontalVelocity, h, 0.1f, Time.deltaTime);
     }
+    public void DisableCollision()
+    {
+        _playerLocomotionManager.CharacterCollider.enabled = false;
+        _playerLocomotionManager.CharacterCollisionBlockerCollider.enabled = false;
+    }
+    public void EnableCollision()
+    {
+        _playerLocomotionManager.CharacterCollider.enabled = true;
+        _playerLocomotionManager.CharacterCollisionBlockerCollider.enabled = true;
+
+    }
     private void OnAnimationMove()
     {
         if(!HasAnimator || _playerManager.IsInteracting == false)
@@ -110,61 +120,4 @@ public class PlayerAnimatorManager : AnimatorManager
         Vector3 velocity = deltaPos / delta;
         _playerLocomotionManager.PlayerRB.velocity = velocity;
     }
-
-
-    #region COMBAT
-    public void EnableCombo()
-    {
-        Anim.SetBool("CanCombo", true);
-        Debug.Log("Ativando o combo" + _playerManager.CanDoCombo);
-    }
-
-    public void DisableCombo()
-    {
-        Anim.SetBool("CanCombo", false);
-        Debug.Log("Desativando o combo" + _playerManager.CanDoCombo);
-    }
-
-    public void EnableIsInvunerable()
-    {
-        Anim.SetBool("IsInvulnerable", true);
-    }
-    public void DisableIsInvunerable()
-    {
-        Anim.SetBool("IsInvulnerable", false);
-    }
-    public void EnableIsParrying()
-    {
-        _playerManager.IsParrying = true;
-    }
-    public void DisableIsParrying()
-    {
-        _playerManager.IsParrying = false;
-    }
-    public void EnableCanBeRiposted()
-    {
-        _playerManager.CanBeRiposted = true;
-    }
-    public void DisableCanBeRiposted()
-    {
-        _playerManager.CanBeRiposted = false;
-    }
-    public void CanRotate()
-    {
-        Anim.SetBool("CanRotate", true);
-    }
-    public void StopRotation()
-    {
-         Anim.SetBool("CanRotate", false);
-    }
-
-
-    public override void TakeCriticalDamageAnimationEvent()
-    {
-        _playerStatsManager.TakeDamageNoAnimation(_playerManager.PendingCriticalDamage);
-        _playerManager.PendingCriticalDamage = 0;
-    } 
-
-    #endregion
-
 }

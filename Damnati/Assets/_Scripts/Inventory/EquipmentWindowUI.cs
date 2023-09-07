@@ -19,7 +19,7 @@ public class EquipmentWindowUI : MonoBehaviour
             }
             else if(_handEquipmentSlots[i].LeftHandSlot01)
             {
-                _handEquipmentSlots[i].AddItem(playerInventoryManager.weaponsInLeftHandSlot[0]);
+                _handEquipmentSlots[i].AddItem(playerInventoryManager.weaponsInLeftHandSlots[0]);
             }
         }
     }

@@ -68,6 +68,9 @@ public class PlayerLocomotionManager : MonoBehaviour
     public float MoveDirectionY { get { return _movDirection.y; } set { _movDirection.y = value; }}
     
     public Transform CriticalAttackRayCastStartPoint { get { return _criticalAttackRayCastStartPoint; } set { _criticalAttackRayCastStartPoint = value; }}
+   
+    public CapsuleCollider CharacterCollider { get { return _characterCollider; } set { _characterCollider = value; }}
+    public CapsuleCollider CharacterCollisionBlockerCollider { get { return _characterCollisionBlockerCollider; } set { _characterCollisionBlockerCollider = value; }}
     #endregion
 
     private void Awake() 
@@ -83,8 +86,6 @@ public class PlayerLocomotionManager : MonoBehaviour
     {
         _cameraRoot = Camera.main.transform;
         _myTransform = transform;
-        _playerAnimatorManager.Initialize();
-
         _playerManager.IsGrounded = true;
         Physics.IgnoreCollision(_characterCollider, _characterCollisionBlockerCollider, true);    
     }
