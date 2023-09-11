@@ -9,6 +9,7 @@ public class EnemyManager : CharacterManager
     private EnemyLocomotionManager _enemyLocomotionManager;
     private EnemyAnimatorManager _enemyAnimatorManager;
     private EnemyStatsManager _enemyStatsManager;
+    private EnemyEffectsManager _enemyEffectsManager;
 
     [SerializeField] private States _currentState;
     [SerializeField] private CharacterStatsManager _currentTarget;
@@ -75,6 +76,7 @@ public class EnemyManager : CharacterManager
         _enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
         _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
         _enemyStatsManager = GetComponent<EnemyStatsManager>();
+        _enemyEffectsManager = GetComponent<EnemyEffectsManager>();
         _enemyRb = GetComponent<Rigidbody>();
         _navMeshAgent = GetComponentInChildren<NavMeshAgent>();
         _navMeshAgent.enabled = false;
@@ -90,6 +92,8 @@ public class EnemyManager : CharacterManager
         HandleRecoveryTimer();
         HandleStateMachine();
         
+        IsUsingLeftHand = _enemyAnimatorManager.Anim.GetBool("IsUsingLeftHand");
+        IsUsingRightHand = _enemyAnimatorManager.Anim.GetBool("IsUsingRightHand");
         IsRotatingWithRootMotion = _enemyAnimatorManager.Anim.GetBool("IsRotatingWithRootMotion");
         IsInteracting = _enemyAnimatorManager.Anim.GetBool("IsInteracting");
         _isPhaseShifting = _enemyAnimatorManager.Anim.GetBool("IsPhaseShifting");
@@ -98,7 +102,10 @@ public class EnemyManager : CharacterManager
         CanRotate = _enemyAnimatorManager.Anim.GetBool("CanRotate");
         _enemyAnimatorManager.Anim.SetBool("IsDead", _enemyStatsManager.IsDead);
     }
-
+    private void FixedUpdate() 
+    {
+        //_enemyEffectsManager.HandleAllBuildUpEffects();    
+    }
     private void LateUpdate()
     {
         _navMeshAgent.transform.localPosition = Vector3.zero;

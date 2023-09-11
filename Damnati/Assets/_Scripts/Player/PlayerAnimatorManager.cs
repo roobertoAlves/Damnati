@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimatorManager : AnimatorManager
+public class PlayerAnimatorManager : CharacterAnimatorManager
 {
     private InputHandler _inputHandler;
     private PlayerStatsManager _playerStatsManager;

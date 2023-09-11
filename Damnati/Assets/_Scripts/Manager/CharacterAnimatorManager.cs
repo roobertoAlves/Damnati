@@ -1,19 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
-public class AnimatorManager : MonoBehaviour
+public class CharacterAnimatorManager : MonoBehaviour
 { 
     public Animator Anim;
     protected CharacterManager _characterManager;
     protected CharacterStatsManager _characterStatsManager;
-    public bool canRotate;    
+    public bool canRotate;  
+
+    protected RigBuilder rigBuilder;
+    [SerializeField] private TwoBoneIKConstraint _leftHandConstraint;
+    [SerializeField] private TwoBoneIKConstraint _rightHandConstrait;
 
 
+    #region GET & SET
+
+    public TwoBoneIKConstraint LeftHandConstraint { get { return _leftHandConstraint; } set { _leftHandConstraint = value; }}
+    public TwoBoneIKConstraint RightHandConstraint { get { return _rightHandConstrait; } set { _rightHandConstrait = value; }}
+
+    #endregion
     protected virtual void Awake()
     {
         _characterManager = GetComponent<CharacterManager>();
         _characterStatsManager = GetComponent<CharacterStatsManager>();
+        rigBuilder = GetComponent<RigBuilder>();
     }
     
     public void PlayTargetAnimation(string targetAnim, bool isInteracting, bool canRotate = false)
@@ -80,5 +92,31 @@ public class AnimatorManager : MonoBehaviour
     {
         _characterStatsManager.TakeDamageNoAnimation(_characterManager.PendingCriticalDamage, 0);
         _characterManager.PendingCriticalDamage = 0;
+    }
+    
+    public virtual void SetHandIKForWeapon(RightHandIKTarget rightHandTarget, LeftHandIKTarget leftHandTarget, bool isTwoHandingWeapon)
+    {
+        if(isTwoHandingWeapon)
+        {
+            Debug.Log("Stage 2");
+            _rightHandConstrait.data.target = rightHandTarget.transform;
+            _rightHandConstrait.data.targetPositionWeight = 1;
+            _rightHandConstrait.data.targetRotationWeight = 1;
+
+            _leftHandConstraint.data.target = leftHandTarget.transform;
+            _leftHandConstraint.data.targetPositionWeight = 1;
+            _leftHandConstraint.data.targetRotationWeight = 1;
+        }
+        else
+        {
+            _rightHandConstrait.data.target = null;
+            _leftHandConstraint.data.target = null;
+        }
+
+        rigBuilder.Build();
+    }
+    public virtual void EraseHandIKForWeapon()
+    {
+
     }
 }

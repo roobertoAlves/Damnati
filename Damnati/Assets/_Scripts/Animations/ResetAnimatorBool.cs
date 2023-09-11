@@ -19,6 +19,8 @@ public class ResetAnimatorBool : StateMachineBehaviour
 
     [SerializeField] private string _isUsingRightHand = "IsUsingRightHand";
     [SerializeField] private bool _isUsingRightHandStatus = false;
+    [SerializeField] private string _isUsingLeftHand = "IsUsingLeftHand";
+    [SerializeField] private bool _isUsingLeftHandStatus = false;
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool(_isInteractingBool, _isInteractingStatus);
@@ -26,5 +28,6 @@ public class ResetAnimatorBool : StateMachineBehaviour
         animator.SetBool(_canRotateBool, _canRotateStatus);
         animator.SetBool(_isInvulnerable, _isInvulnerableStatus);
         animator.SetBool(_isUsingRightHand, _isUsingRightHandStatus);
+        animator.SetBool(_isUsingLeftHand, _isUsingLeftHandStatus);
     }
 }

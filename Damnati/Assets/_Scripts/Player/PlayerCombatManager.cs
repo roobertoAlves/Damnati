@@ -62,6 +62,8 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void HandleLBAction()
     {
+        _playerAnimatorManager.EraseHandIKForWeapon();
+
         if (_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.StraightSword || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
         {
             PerformLBMeleeAction();
@@ -69,6 +71,8 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void HandleRBAction()
     {
+        _playerAnimatorManager.EraseHandIKForWeapon();
+
         if (_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.StraightSword || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
         {
             PerformRBMeleeAction();
@@ -147,7 +151,7 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void HandleLightAttack(WeaponItem weapon)
     {
-        _playerWeaponSlotManager.attackingWeapon = weapon;
+        _playerWeaponSlotManager.AttackingWeapon = weapon;
 
         if(_inputHandler.TwoHandFlag)
         {
@@ -162,7 +166,7 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void HandleHeavyAttack(WeaponItem weapon)
     {
-        _playerWeaponSlotManager.attackingWeapon = weapon;
+        _playerWeaponSlotManager.AttackingWeapon = weapon;
 
         if(_inputHandler.TwoHandFlag)
         {
@@ -296,7 +300,7 @@ public class PlayerCombatManager : MonoBehaviour
                 enemyCharacterManager.PendingCriticalDamage = criticalDamage;
 
                 _playerAnimatorManager.PlayTargetAnimation("Riposte", true);
-                enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Riposted", true);
+                enemyCharacterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Riposted", true);
             }
         }
     }

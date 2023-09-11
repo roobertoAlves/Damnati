@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bcbce156adc5ac41a13595a1aebab71, type: 3}
-  m_Name: Attack 01
+  m_Name: Attack 07
   m_EditorClassIdentifier: 
-  _actionAnimation: OH_Light_Attack_01
-  _canCombo: 1
-  _comboAction: {fileID: 11400000, guid: e417707d70d86d1448c189d565e08b70, type: 2}
+  _actionAnimation: OH_Heavy_Slash_03
+  _canCombo: 0
+  _comboAction: {fileID: 11400000, guid: 36522d827c3ed6143be24a85124c06e4, type: 2}
   _attackScore: 3
   _recoveryTime: 2
   _maximumAttackAngle: 35

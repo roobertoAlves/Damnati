@@ -277,14 +277,16 @@ public class InputHandler : MonoBehaviour
 
             if(_twoHandFlag)
             {
-                _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
                 _playerManager.IsTwoHandingWeapon = true;
+                _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
+                _playerWeaponSlotManager.LoadTwoHandIKTargets(true);
             }
             else
             {
+                _playerManager.IsTwoHandingWeapon = false;
                 _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
                 _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
-                _playerManager.IsTwoHandingWeapon = false;
+                _playerWeaponSlotManager.LoadTwoHandIKTargets(false);
             }
         }
     }
