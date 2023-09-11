@@ -6,6 +6,7 @@ public class EnemyAnimatorManager : AnimatorManager
 {
     private EnemyManager _enemyManager;
     private EnemyBossManager _enemyBossManager;
+    private EnemyEffectsManager _enemyEffectsManager;
 
 
     protected override void Awake() 
@@ -13,13 +14,19 @@ public class EnemyAnimatorManager : AnimatorManager
         base.Awake();
         Anim = GetComponent<Animator>();
         _enemyBossManager = GetComponent<EnemyBossManager>();
-        _enemyManager = GetComponent<EnemyManager>();   
+        _enemyManager = GetComponent<EnemyManager>();
+        _enemyEffectsManager = GetComponent<EnemyEffectsManager>();   
     }
     
     public void InstantiateBossParticleFX()
     {
         BossFXTransform bossFXTransform = GetComponentInChildren<BossFXTransform>();
         GameObject phaseFX = Instantiate(_enemyBossManager.ParticleFX, bossFXTransform.transform);
+    }
+
+    public void PlayWeaponTrailFX()
+    {
+        _enemyEffectsManager.PlayWeaponFX(false);
     }
 
     private void OnAnimatorMove()

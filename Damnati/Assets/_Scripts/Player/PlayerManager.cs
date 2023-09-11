@@ -43,11 +43,9 @@ public class PlayerManager : CharacterManager
         IsUsingRightHand = _animator.GetBool("IsUsingRightHand");
         IsUsingLeftHand = _animator.GetBool("IsUsingLeftHand");
         IsInvulnerable = _animator.GetBool("IsInvulnerable");
-        
+        _animator.SetBool("IsTwoHandingWeapon", IsTwoHandingWeapon);
         _animator.SetBool("IsInAir", IsInAir);
         _animator.SetBool("IsDead", _playerStatsManager.IsDead);
-        _animator.SetFloat("InAirTimer", _playerLocomotionManager.InAirTimer);
-        _animator.SetBool("IsGrounded", IsGrounded);
         _animator.SetBool("IsBlocking", IsBlocking);
 
         _inputHandler.TickInput(delta);

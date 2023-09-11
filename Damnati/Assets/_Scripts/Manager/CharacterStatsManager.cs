@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class CharacterStatsManager : MonoBehaviour
 {
-[Header("Health Parameters")]
+    [Header("Team I.D")]
+    [Space(15)]
+    [SerializeField] private int _teamIDNumber = 0;
+
+    [Header("Health Parameters")]
     [Space(15)]
     [SerializeField] private int _healthLevel = 10;
     [SerializeField] private int _maxHealth;
@@ -22,6 +26,10 @@ public class CharacterStatsManager : MonoBehaviour
     private float _physicalDamageAbsorptionBody;
     private float _physicalDamageAbsorptionLegs;
     private float _physicalDamageAbsorptionHands;
+    private float _fireDamageAbsorptionHead;
+    private float _fireDamageAbsorptionBody;
+    private float _fireDamageAbsorptionLegs;
+    private float _fireDamageAbsorptionHands;
 
     [Header("Poise")]
     [Space(15)]
@@ -35,7 +43,7 @@ public class CharacterStatsManager : MonoBehaviour
 
 
     #region Get & Set
-
+    public int TeamIDNumber { get { return _teamIDNumber; } set { _teamIDNumber = value; }}
     public int HealthLevel { get { return _healthLevel; } set { _healthLevel = value; }}
     public int MaxHealth { get { return _maxHealth; } set { _maxHealth = value; }}
     public int CurrentHealth { get { return _currentHealth; } set { _currentHealth = value; }}
@@ -52,6 +60,13 @@ public class CharacterStatsManager : MonoBehaviour
     public float PhysicalDamageAbsorptionHands { get { return _physicalDamageAbsorptionHands; } set { _physicalDamageAbsorptionHands = value; }}
     public float PhysicalDamageAbsorptionHead { get { return _physicalDamageAbsorptionHead; } set { _physicalDamageAbsorptionHead = value; }}
     
+    public float FireDamageAbsorptionBody { get { return _fireDamageAbsorptionBody; } set { _fireDamageAbsorptionBody = value; }}
+    public float FireDamageAbsorptionLegs { get { return _fireDamageAbsorptionLegs; } set { _fireDamageAbsorptionLegs = value; }}
+    public float FireDamageAbsorptionHands { get { return _fireDamageAbsorptionHands; } set { _fireDamageAbsorptionHands = value; }}
+    public float FireDamageAbsorptionHead { get { return _fireDamageAbsorptionHead; } set { _fireDamageAbsorptionHead = value; }}
+    
+
+
     public float TotalPoiseDefense { get { return _totalPoiseDefense; } set { _totalPoiseDefense = value; }}
     public float OffensivePoiseBonus { get { return _offensivePoiseBonus; } set { _offensivePoiseBonus = value; }}
     public float ArmorPoiseBonus { get { return _armorPoiseBonus; } set { _armorPoiseBonus = value; }}
@@ -68,24 +83,32 @@ public class CharacterStatsManager : MonoBehaviour
         _totalPoiseDefense = _armorPoiseBonus;
     }
 
-    public virtual void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
+    public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
     {
         if(_isDead)
         {
             return;
         }
-
-        float totalPhysicalDamageAbsorption = 1 - 
-        (1 - _physicalDamageAbsorptionHead / 100) * 
+        float totalPhysicalDamageAbsorption = 1 -
+        (1 - _physicalDamageAbsorptionHead / 100) *
         (1 - _physicalDamageAbsorptionBody / 100) *
         (1 - _physicalDamageAbsorptionLegs / 100) *
         (1 - _physicalDamageAbsorptionHands / 100);
 
-        physicalDamage = Mathf.RoundToInt(physicalDamage - (physicalDamage * totalPhysicalDamageAbsorption));
+        physicalDamage = Mathf.RoundToInt( physicalDamage - (physicalDamage * totalPhysicalDamageAbsorption));
+        
+        float totalFireDamageAbsorption = 1 -
+        (1 - _fireDamageAbsorptionHead / 100) *
+        (1 - _fireDamageAbsorptionBody / 100) *
+        (1 - _fireDamageAbsorptionLegs / 100) *
+        (1 - _fireDamageAbsorptionHands / 100);
 
-        float finalDamage = physicalDamage;
+        fireDamage = Mathf.RoundToInt(fireDamage - (fireDamage * totalFireDamageAbsorption));
 
-        _currentHealth = Mathf.RoundToInt(_currentHealth - finalDamage);
+
+        float finalDamage = physicalDamage + fireDamage;// + others type of damage;
+
+        CurrentHealth = Mathf.RoundToInt(CurrentHealth - finalDamage);
 
         if (_currentHealth <= 0)
         {
@@ -93,13 +116,37 @@ public class CharacterStatsManager : MonoBehaviour
             _isDead = true;
         }
     }
-    public virtual void TakeDamageNoAnimation(int damage)
+    public virtual void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
     {
-        _currentHealth = _currentHealth - damage;
-
-        if(_currentHealth <= 0)
+        if(_isDead)
         {
-            _currentHealth = 0;
+            return;
+        }
+
+        float totalPhysicalDamageAbsorption = 1 -
+        (1 - _physicalDamageAbsorptionHead / 100) *
+        (1 - _physicalDamageAbsorptionBody / 100) *
+        (1 - _physicalDamageAbsorptionLegs / 100) *
+        (1 - _physicalDamageAbsorptionHands / 100);
+
+        physicalDamage = Mathf.RoundToInt( physicalDamage - (physicalDamage * totalPhysicalDamageAbsorption));
+        
+        float totalFireDamageAbsorption = 1 -
+        (1 - _fireDamageAbsorptionHead / 100) *
+        (1 - _fireDamageAbsorptionBody / 100) *
+        (1 - _fireDamageAbsorptionLegs / 100) *
+        (1 - _fireDamageAbsorptionHands / 100);
+
+        fireDamage = Mathf.RoundToInt(fireDamage - (fireDamage * totalFireDamageAbsorption));
+
+
+        float finalDamage = physicalDamage + fireDamage;// + others type of damage;
+
+        CurrentHealth = Mathf.RoundToInt(CurrentHealth - finalDamage);
+
+        if(CurrentHealth <= 0)
+        {
+            CurrentHealth = 0;
             _isDead = true;
         }
     }

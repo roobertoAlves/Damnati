@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Attack 01
   m_EditorClassIdentifier: 
   _actionAnimation: SS_Light_Slash_01
+  _canCombo: 1
+  _comboAction: {fileID: 11400000, guid: e417707d70d86d1448c189d565e08b70, type: 2}
   _attackScore: 3
   _recoveryTime: 2
   _maximumAttackAngle: 35

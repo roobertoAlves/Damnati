@@ -22,6 +22,7 @@ public class RotateTowardsTargetState : States
         && !enemyManager.IsInteracting)
         {
             enemyAnimatorManager.PlayerTargetAnimationWithRootRotation("Turn Behind", true);
+            Debug.Log("back");
             return _combatStanceState;
         }
 
@@ -29,6 +30,7 @@ public class RotateTowardsTargetState : States
         && !enemyManager.IsInteracting)
         {
             enemyAnimatorManager.PlayerTargetAnimationWithRootRotation("Turn Behind", true);
+            Debug.Log("back");
             return _combatStanceState;
         }
 
@@ -36,6 +38,7 @@ public class RotateTowardsTargetState : States
         && !enemyManager.IsInteracting)
         {
             enemyAnimatorManager.PlayerTargetAnimationWithRootRotation("Turn Right", true);
+            Debug.Log("right");
             return _combatStanceState;
         }
         
@@ -43,6 +46,7 @@ public class RotateTowardsTargetState : States
         && !enemyManager.IsInteracting)
         {
             enemyAnimatorManager.PlayerTargetAnimationWithRootRotation("Turn Left", true);
+            Debug.Log("left");
             return _combatStanceState;
         }
         

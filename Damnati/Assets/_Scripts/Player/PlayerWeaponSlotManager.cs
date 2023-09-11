@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
 {
@@ -9,21 +10,26 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
     private PlayerInventoryManager _playerInventoryManager;
     private InputHandler _inputHandler;
     private Animator _animator;
+    private PlayerEffectsManager _playerEffectsManager;
+    private PlayerAnimatorManager _playerAnimatorManager;
+    private CameraHandler _cameraHandler;
 
     [Header("Attacking Weapon")]
     [Space(15)]
     public WeaponItem attackingWeapon;
     private void Awake() 
     {   
+        _cameraHandler = FindObjectOfType<CameraHandler>();
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerStatsManager = GetComponent<PlayerStatsManager>();
         _animator = GetComponent<Animator>();
         _playerInventoryManager = GetComponent<PlayerInventoryManager>();
+        _playerEffectsManager = GetComponent<PlayerEffectsManager>();
+        _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
 
         LoadWeaponHolderSlots();
     }
-
     public void LoadWeaponHolderSlots()
     {
         WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();    
@@ -57,7 +63,8 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
             {
                 LeftHandSlot.CurrentWeapon = weaponItem;
                 LeftHandSlot.LoadWeaponModel(weaponItem);
-                _animator.CrossFade(weaponItem.left_Hand_Idle, 0.2f);
+                LoadLeftWeaponDamageCollider();
+                _playerAnimatorManager.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
             }
             else
             {
@@ -65,18 +72,17 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
                 {
                     BackSlot.LoadWeaponModel(LeftHandSlot.CurrentWeapon);
                     LeftHandSlot.UnloadWeaponAndDestroy();
-                    _animator.CrossFade(weaponItem.th_idle, 0.2f);
+                    _playerAnimatorManager.PlayTargetAnimation("Left Arm Empty", false, true);
                 }
                 else
                 {
-                    _animator.CrossFade("Both Arms Empty", 0.2f);
-                    BackSlot.UnloadWeaponAndDestroy();
-                    _animator.CrossFade(weaponItem.right_Hand_Idle, 0.2f);
+                    BackSlot.UnloadWeaponAndDestroy();   
                 }
                 
                 RightHandSlot.CurrentWeapon = weaponItem;
                 RightHandSlot.LoadWeaponModel(weaponItem);
-                LoadRightWeaponDamageCollider();  
+                LoadRightWeaponDamageCollider();
+                _playerAnimatorManager.Anim.runtimeAnimatorController = weaponItem.weaponController;  
             }
             
         }
@@ -86,19 +92,19 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
 
             if(isLeft)
             {
-                _animator.CrossFade("Left Arm Empty", 0.2f);
                 _playerInventoryManager.leftHandWeapon = weaponItem;
                 LeftHandSlot.CurrentWeapon = weaponItem;
                 LeftHandSlot.LoadWeaponModel(weaponItem);
                 LoadLeftWeaponDamageCollider();
+                _playerAnimatorManager.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
             }
             else
             {
-                _animator.CrossFade("Right Arm Empty", 0.2f);
                 _playerInventoryManager.rightHandWeapon = weaponItem;
                 RightHandSlot.CurrentWeapon = weaponItem;
                 RightHandSlot.LoadWeaponModel(weaponItem);
-                LoadRightWeaponDamageCollider();  
+                LoadRightWeaponDamageCollider(); 
+                _playerAnimatorManager.Anim.runtimeAnimatorController = weaponItem.weaponController; 
             }
         }
     }
@@ -108,14 +114,24 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
     private void LoadLeftWeaponDamageCollider()
     {
         LeftHandDamageCollider = LeftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-        LeftHandDamageCollider.CurrentWeaponDamage = _playerInventoryManager.leftHandWeapon.baseDamage;
+
+        LeftHandDamageCollider.PhysicalDamage = _playerInventoryManager.leftHandWeapon.PhysicalDamage;
+
+        LeftHandDamageCollider.TeamIDNumber = _playerStatsManager.TeamIDNumber;
+
         LeftHandDamageCollider.PoiseBreak = _playerInventoryManager.leftHandWeapon.poiseBreak;
+        _playerEffectsManager.LeftWeaponFX = LeftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
     }
     private void LoadRightWeaponDamageCollider()
     {
         RightHandDamageCollider = RightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-        RightHandDamageCollider.CurrentWeaponDamage = _playerInventoryManager.rightHandWeapon.baseDamage;
+       
+        RightHandDamageCollider.PhysicalDamage = _playerInventoryManager.rightHandWeapon.PhysicalDamage;
+        
+        RightHandDamageCollider.TeamIDNumber = _playerStatsManager.TeamIDNumber;
+
         RightHandDamageCollider.PoiseBreak = _playerInventoryManager.rightHandWeapon.poiseBreak;
+        _playerEffectsManager.RightWeaponFX = RightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
     }
     public void OpenDamageCollider()
     {

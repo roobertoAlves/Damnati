@@ -6,7 +6,6 @@ using UnityEngine.XR;
 public class EnemyStatsManager : CharacterStatsManager
 {
     private EnemyAnimatorManager _enemyAnimatorManager;
-    private EnemyManager _enemyManager;
     private EnemyBossManager _enemyBossManager;
 
     [SerializeField] private UIEnemyHealthBar _enemyHealthBar;
@@ -21,7 +20,6 @@ public class EnemyStatsManager : CharacterStatsManager
         _enemyAnimatorManager  = GetComponent<EnemyAnimatorManager>();
         _enemyBossManager = GetComponent<EnemyBossManager>();
         MaxHealth = SetMaxHealthFromHealthLevel();
-        _enemyManager = GetComponent<EnemyManager>();
         CurrentHealth = MaxHealth;
     }
     private void Start() 
@@ -31,17 +29,6 @@ public class EnemyStatsManager : CharacterStatsManager
             _enemyHealthBar.SetMaxHealth(MaxHealth);
         }
     }
-    public override void HandlePoiseResetTimer()
-    {
-        if(PoiseResetTimer > 0)
-        {
-            PoiseResetTimer = PoiseResetTimer - Time.deltaTime;
-        }
-        else if(PoiseResetTimer <= 0 && !_enemyManager.IsInteracting)
-        {
-            TotalPoiseDefense = ArmorPoiseBonus;
-        }
-    }
     private int SetMaxHealthFromHealthLevel()
     {
         MaxHealth = HealthLevel * 10;
@@ -49,9 +36,9 @@ public class EnemyStatsManager : CharacterStatsManager
     }
 
     #region Damage Functions
-    public override void TakeDamageNoAnimation(int damage)
+    public override void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
     { 
-        base.TakeDamageNoAnimation(damage);
+        base.TakeDamageNoAnimation(physicalDamage, fireDamage);
 
         if(!_isBoss)
         {
@@ -67,10 +54,10 @@ public class EnemyStatsManager : CharacterStatsManager
     {
         _enemyAnimatorManager.PlayTargetAnimation("Break Guard", true);
     }
-    public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
+    public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
     {
 
-        base.TakeDamage(damage, damageAnimation = "Damage_01");
+        base.TakeDamage(physicalDamage, fireDamage, damageAnimation = "Damage_01");
 
         if(!_isBoss)
         {

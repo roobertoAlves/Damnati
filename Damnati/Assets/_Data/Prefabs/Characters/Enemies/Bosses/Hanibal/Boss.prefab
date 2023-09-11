@@ -2883,7 +2883,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7952139148776318343}
-  m_LocalRotation: {x: -0, y: 0.7586332, z: -0, w: 0.6515179}
+  m_LocalRotation: {x: 0, y: 0.75863487, z: 0, w: 0.6515161}
   m_LocalPosition: {x: -5.21, y: 0.364, z: -4.76}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
@@ -3030,6 +3030,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38da638a507bfc345b4fd9686c9d5ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnarmedWeapon: {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
+  LeftHandSlot: {fileID: 0}
+  RightHandSlot: {fileID: 0}
+  BackSlot: {fileID: 0}
+  LeftHandDamageCollider: {fileID: 0}
+  RightHandDamageCollider: {fileID: 0}
   _rightHandWeapon: {fileID: 11400000, guid: aabbde6e0e3d59b44af77c374003819d, type: 2}
   _leftHandWeapon: {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
 --- !u!114 &7952139148776318341
@@ -3046,6 +3052,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterCollider: {fileID: 7952139148776318456}
   _characterCollisionBlockerCollider: {fileID: 7952139147964152645}
+  _detectionLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &7952139148776318461
 MonoBehaviour:
   m_ObjectHideFlags: 0

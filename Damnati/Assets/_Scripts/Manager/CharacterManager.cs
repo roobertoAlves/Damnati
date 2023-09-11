@@ -31,6 +31,7 @@ public class CharacterManager : MonoBehaviour
     private bool _isInvulnerable;
     private bool _isUsingRightHand;
     private bool _isUsingLeftHand;
+    private bool _isTwoHandingWeapon;
 
     [Header("Movement Flags")]
     [Space(15)]
@@ -64,6 +65,7 @@ public class CharacterManager : MonoBehaviour
     public bool CanDoCombo { get { return _canDoCombo; } set { _canDoCombo = value; }}
     public bool IsUsingRightHand { get { return _isUsingRightHand; } set { _isUsingRightHand = value; }}
     public bool IsUsingLeftHand { get { return _isUsingLeftHand; } set { _isUsingLeftHand = value; }}
+    public bool IsTwoHandingWeapon { get { return _isTwoHandingWeapon; } set { _isTwoHandingWeapon = value; }}
     #endregion
 }
 

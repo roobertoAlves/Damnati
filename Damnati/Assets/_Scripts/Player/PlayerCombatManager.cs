@@ -6,14 +6,39 @@ using UnityEngine;
 public class PlayerCombatManager : MonoBehaviour
 {
     private InputHandler _inputHandler;
+    private CameraHandler _cameraHandler;
+    private PlayerManager _playerManager;
     private PlayerAnimatorManager _playerAnimatorManager;
     private PlayerEquipmentManager _playerEquipmentManager;
-    private PlayerManager _playerManager;
     private PlayerStatsManager _playerStatsManager;
     private PlayerWeaponSlotManager _playerWeaponSlotManager;
     private PlayerLocomotionManager _playerLocomotionManger;
     private PlayerInventoryManager _playerInventoryManager;
-    private CameraHandler _cameraHandler;
+    private PlayerEffectsManager _playerEffectsManager;
+
+    #region Attack Animations
+
+    [Header("Attack Animations")]
+    [Space(15)]
+    private string oh_light_attack_01 = "OH_Light_Attack_01";
+    private string oh_light_attack_02 = "OH_Light_Attack_02";
+    private string oh_light_attack_03 = "OH_Light_Attack_03";
+    
+    private string oh_heavy_attack_01 = "OH_Heavy_Attack_01";
+    private string oh_heavy_attack_02 = "OH_Heavy_Attack_02";
+    private string oh_heavy_attack_03 = "OH_Heavy_Attack_02";
+
+    private string th_light_attack_01 = "TH_Light_Attack_01";
+    private string th_light_attack_02 = "TH_Light_Attack_02";
+    private string th_light_attack_03 = "TH_Light_Attack_03";
+
+    private string th_heavy_attack_01 = "TH_Heavy_Attack_01";
+    private string th_heavy_attack_02 = "TH_Heavy_Attack_02";
+    private string th_heavy_attack_03 = "TH_Heavy_Attack_03";
+
+    private string weapon_art = "Weapon_Art";
+
+    #endregion
 
     private LayerMask _riposteLayer = 1 << 9;
 
@@ -30,167 +55,32 @@ public class PlayerCombatManager : MonoBehaviour
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerInventoryManager = GetComponent<PlayerInventoryManager>();
         _playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
-    }
-
-    public void HandleLightAttack(WeaponItem weapon)
-    {
-        _playerWeaponSlotManager.attackingWeapon = weapon;
-        
-        if(_inputHandler.TwoHandFlag)
-        {
-            _playerAnimatorManager.PlayTargetAnimation(weapon.TH_Light_Slash_01, true);
-            LastAttack = weapon.TH_Light_Slash_01;
-        }
-        else
-        {
-            _playerAnimatorManager.PlayTargetAnimation(weapon.SS_Light_Slash_01, true);
-            _lastAttack = weapon.SS_Light_Slash_01;
-        }
-    }
-    public void HandleHeavyAttack(WeaponItem weapon)
-    {
-        _playerWeaponSlotManager.attackingWeapon = weapon;
-
-        if(_inputHandler.TwoHandFlag)
-        {
-            _playerAnimatorManager.PlayTargetAnimation(weapon.TH_Heavy_Slash_01, true);
-            _lastAttack = weapon.TH_Heavy_Slash_01;
-        }
-        else if(!_inputHandler.TwoHandFlag)
-        {
-            _playerAnimatorManager.PlayTargetAnimation(weapon.SS_Heavy_Slash_01, true);
-            _lastAttack = weapon.SS_Heavy_Slash_01;
-        }
-    }
-    public void HandleLightWeaponCombo(WeaponItem weapon)
-    {
-        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanDoCombo") == false)
-        {
-            return;
-        }
-
-        if(_inputHandler.ComboFlag)
-        {
-            _playerAnimatorManager.Anim.SetBool("CanDoCombo", false);
-            
-            #region Sword And Shield One Hand Attack
-
-            if(_lastAttack == weapon.SS_Light_Slash_01)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(weapon.SS_Light_Slash_02, true);
-                _lastAttack = weapon.SS_Light_Slash_02;
-            }
-            else if(_lastAttack == weapon.SS_Light_Slash_02)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(weapon.SS_Light_Slash_03, true);
-                _lastAttack = weapon.SS_Light_Slash_03;
-            }
-            else if(_lastAttack == weapon.SS_Light_Slash_03 && !_playerManager.IsInteracting)
-            {
-                _playerManager.CanDoCombo = false;
-                _lastAttack = "";
-            }
-
-            #endregion
-
-            #region Sword And Shield Two Handed Attacks
-
-            else if(_lastAttack == weapon.TH_Light_Slash_01)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(weapon.TH_Light_Slash_02, true);
-                _lastAttack = weapon.TH_Light_Slash_02;
-            }
-            else if(_lastAttack == weapon.TH_Light_Slash_02)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(weapon.TH_Light_Slash_03, true);
-                _lastAttack = weapon.TH_Light_Slash_03;
-            }
-            else if(_lastAttack == weapon.TH_Light_Slash_03 && !_playerManager.IsInteracting)
-            {
-                _playerManager.CanDoCombo = false;
-                _lastAttack = "";
-            }
-
-            #endregion
-        }
-    }
-    public void HandleHeavyWeaponCombo(WeaponItem weapon)
-    {
-        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanDoCombo") == false)
-        {
-            return;
-        }
-
-        if(_inputHandler.ComboFlag)
-        {
-            _playerAnimatorManager.Anim.SetBool("CanDoCombo", false);
-            
-            #region Sword And Shield One Handed Attacks
-            
-            if(_lastAttack == weapon.SS_Heavy_Slash_01)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(weapon.SS_Heavy_Slash_02, true);
-                _lastAttack = weapon.SS_Heavy_Slash_02;
-            }
-            else if(_lastAttack == weapon.SS_Heavy_Slash_02)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(weapon.SS_Heavy_Slash_03, true);
-                _lastAttack = weapon.SS_Heavy_Slash_03;
-            }
-            else if(_lastAttack == weapon.SS_Heavy_Slash_03 && !_playerManager.IsInteracting)
-            {
-                _playerManager.CanDoCombo = false;
-                _lastAttack = "";
-            }
-
-            #endregion
-
-            #region Sword And Shield Two Handed Attacks
-
-            else if(_lastAttack == weapon.TH_Heavy_Slash_01)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(weapon.TH_Heavy_Slash_02, true);
-                _lastAttack = weapon.TH_Heavy_Slash_02;
-            }
-            else if(_lastAttack == weapon.TH_Heavy_Slash_02)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(weapon.TH_Heavy_Slash_03, true);
-                _lastAttack = weapon.TH_Heavy_Slash_03;
-            }
-            else if(_lastAttack == weapon.TH_Heavy_Slash_03 && !_playerManager.IsInteracting)
-            {
-                _playerManager.CanDoCombo = false;
-                _lastAttack = "";
-            }
-
-            #endregion
-        }
+        _playerEffectsManager = GetComponent<PlayerEffectsManager>();
     }
 
     #region Input Actions 
 
-    public void HandleRBAction()
-    {
-        if (_playerInventoryManager.rightHandWeapon.isMeleeWeapon)
-        {
-            PerformLBMeleeAction();
-        }
-    }
     public void HandleLBAction()
     {
-        if(_playerInventoryManager.rightHandWeapon.isMeleeWeapon)
+        if (_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.StraightSword || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
         {
             PerformLBMeleeAction();
         }
     }
-
+    public void HandleRBAction()
+    {
+        if (_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.StraightSword || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
+        {
+            PerformRBMeleeAction();
+        }
+    }
     public void HandleLTAction()
     {
-        if (_playerInventoryManager.leftHandWeapon.isShieldWeapon)
+        if (_playerInventoryManager.leftHandWeapon.weaponType == WeaponType.Shield || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
         {
             PerformLTWeaponArt(_inputHandler.THEquipFlag);
         }
-        else if (_playerInventoryManager.leftHandWeapon.isMeleeWeapon)
+        else if (_playerInventoryManager.leftHandWeapon.weaponType == WeaponType.StraightSword)
         {
             //do a light attack
         }
@@ -201,6 +91,90 @@ public class PlayerCombatManager : MonoBehaviour
     }    
 
     #endregion
+
+    public void HandleWeaponCombo(WeaponItem weapon)
+    {
+        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanDoCombo") == false)
+        {
+            return;
+        }
+
+        if(_inputHandler.ComboFlag)
+        {
+            _playerAnimatorManager.Anim.SetBool("CanDoCombo", false);
+
+            if(_lastAttack == oh_light_attack_01)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(oh_light_attack_02, true);
+                _lastAttack = oh_light_attack_02;
+            }
+            else if(_lastAttack == oh_light_attack_02)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(oh_light_attack_03, true);
+                _lastAttack = oh_light_attack_03;
+            }
+            else if(_lastAttack == oh_heavy_attack_01)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(oh_heavy_attack_02, true);
+                _lastAttack = oh_heavy_attack_02;
+            }
+            else if(_lastAttack == oh_heavy_attack_02)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(oh_heavy_attack_03, true);
+                _lastAttack = oh_heavy_attack_03;
+            }
+            else if(_lastAttack == th_light_attack_01)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(th_light_attack_02, true);
+                _lastAttack = th_light_attack_02;
+            }
+            else if(_lastAttack == th_light_attack_02)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(th_light_attack_03, true);
+                _lastAttack = th_light_attack_03;
+            }
+            else if(_lastAttack == th_heavy_attack_01)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(th_heavy_attack_02, true);
+                _lastAttack = th_heavy_attack_02;
+            }
+            else if(_lastAttack == th_heavy_attack_02)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(th_heavy_attack_03, true);
+                _lastAttack = th_heavy_attack_03;
+            }
+        }
+    }
+    public void HandleLightAttack(WeaponItem weapon)
+    {
+        _playerWeaponSlotManager.attackingWeapon = weapon;
+
+        if(_inputHandler.TwoHandFlag)
+        {
+            _playerAnimatorManager.PlayTargetAnimation(th_light_attack_01, true);
+            _lastAttack = th_light_attack_01;
+        }
+        else
+        {
+            _playerAnimatorManager.PlayTargetAnimation(oh_light_attack_01, true);
+            _lastAttack = oh_light_attack_01;
+        }
+    }
+    public void HandleHeavyAttack(WeaponItem weapon)
+    {
+        _playerWeaponSlotManager.attackingWeapon = weapon;
+
+        if(_inputHandler.TwoHandFlag)
+        {
+            _playerAnimatorManager.PlayTargetAnimation(th_heavy_attack_01, true);
+            _lastAttack = th_heavy_attack_01;
+        }
+        else
+        {
+            _playerAnimatorManager.PlayTargetAnimation(oh_heavy_attack_01, true);
+            _lastAttack = oh_heavy_attack_01;
+        }
+    }
 
     #region Attack Actions
     private void PerformLBMeleeAction()
@@ -213,7 +187,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (_playerManager.CanDoCombo)
         {
             _inputHandler.ComboFlag = true;
-            HandleLightWeaponCombo(_playerInventoryManager.rightHandWeapon);
+            HandleWeaponCombo(_playerInventoryManager.rightHandWeapon);
             _inputHandler.ComboFlag = false;
         }
         else
@@ -226,8 +200,10 @@ public class PlayerCombatManager : MonoBehaviour
             _playerAnimatorManager.Anim.SetBool("IsUsingRightHand", true);
             HandleLightAttack(_playerInventoryManager.rightHandWeapon);
         }
+        
+        _playerEffectsManager.PlayWeaponFX(false);
     }
-    private void PerfomRBMeleeAction()
+    private void PerformRBMeleeAction()
     {
         if (!_playerAnimatorManager.HasAnimator)
         {
@@ -237,7 +213,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (_playerManager.CanDoCombo)
         {
             _inputHandler.ComboFlag = true;
-            HandleHeavyWeaponCombo(_playerInventoryManager.rightHandWeapon);
+            HandleWeaponCombo(_playerInventoryManager.rightHandWeapon);
             _inputHandler.ComboFlag = false;
         }
         else
@@ -248,8 +224,10 @@ public class PlayerCombatManager : MonoBehaviour
             }
 
             _playerAnimatorManager.Anim.SetBool("IsUsingRightHand", true);
-            HandleHeavyAttack(_playerInventoryManager.rightHandWeapon); 
+            HandleHeavyAttack(_playerInventoryManager.rightHandWeapon);
         }
+        
+        _playerEffectsManager.PlayWeaponFX(false);
     }
     private void PerformLTWeaponArt(bool isTwoHanding)
     {
@@ -264,7 +242,7 @@ public class PlayerCombatManager : MonoBehaviour
         }
         else
         {
-            _playerAnimatorManager.PlayTargetAnimation(_playerInventoryManager.leftHandWeapon.weapon_Art, true);
+            _playerAnimatorManager.PlayTargetAnimation(weapon_art, true);
         }
     }
     #endregion
@@ -314,7 +292,7 @@ public class PlayerCombatManager : MonoBehaviour
                 Quaternion targetRotation = Quaternion.Slerp(_playerManager.transform.rotation, tr, 500 * Time.deltaTime);
                 _playerManager.transform.rotation = targetRotation;
 
-                int criticalDamage = _playerInventoryManager.rightHandWeapon.criticalDamageMultiplier * rightWeapon.CurrentWeaponDamage;
+                int criticalDamage = _playerInventoryManager.rightHandWeapon.criticalDamageMultiplier * rightWeapon.PhysicalDamage;
                 enemyCharacterManager.PendingCriticalDamage = criticalDamage;
 
                 _playerAnimatorManager.PlayTargetAnimation("Riposte", true);

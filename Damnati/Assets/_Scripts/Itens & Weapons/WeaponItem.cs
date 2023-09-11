@@ -8,9 +8,19 @@ public class WeaponItem : Item
     public GameObject modelPrefab;
     public bool isUnarmed;
 
+    [Header("Animator Replacer")]
+    [Space(15)]
+    public AnimatorOverrideController weaponController;
+    public string offHandIdleAnimation = "Left Arm Idle 01";
+    
+    [Header("Weapon Type")]
+    [Space(5)]
+    public WeaponType weaponType;
+
     [Header("Damage")]
     [Space(15)]
-    public int baseDamage = 25;
+    public int PhysicalDamage;
+    public int FireDamage;
     public int criticalDamageMultiplier = 3;
 
     [Header("Poise")]
@@ -22,41 +32,6 @@ public class WeaponItem : Item
     [Header("Absorption")]
     [Space(15)]
     public float physicalDamageAbsorption;
-
-    [Header("Weapon Type")]
-    [Space(5)]
-    public bool isMeleeWeapon;
-    public bool isShieldWeapon;
-
-    [Header("Idle Animations")]
-    [Space(15)]
-
-    public string right_Hand_Idle;
-    public string left_Hand_Idle;
-    public string th_idle;
-
-    [Header("Weapon Art")]
-    [Space(15)]
-    public string weapon_Art;
-    
-    [Header("Attack Animations")]
-    [Space(15)]
-
-    public string SS_Heavy_Slash_01;
-    public string SS_Heavy_Slash_02;
-    public string SS_Heavy_Slash_03;
-
-    public string SS_Light_Slash_01;
-    public string SS_Light_Slash_02;
-    public string SS_Light_Slash_03;
-
-    public string TH_Light_Slash_01;
-    public string TH_Light_Slash_02;
-    public string TH_Light_Slash_03;
-
-    public string TH_Heavy_Slash_01;
-    public string TH_Heavy_Slash_02;
-    public string TH_Heavy_Slash_03;
     
     [Header("Stamina Costs")]
     [Space(15)]

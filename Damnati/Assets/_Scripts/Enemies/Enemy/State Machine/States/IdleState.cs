@@ -6,7 +6,7 @@ public class IdleState : States
 {
     [SerializeField] private PursueTargetState _persueTarget;
     [SerializeField] private LayerMask _detectionLayer;
-    public override States Tick(EnemyManager enemyManager, EnemyStatsManager enemyStatsManager, EnemyAnimatorManager enemyAnimatorManager)
+    public override States Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
         #region Handle Enemy Target Detection
         Collider[] colliders = Physics.OverlapSphere(transform.position, enemyManager.DetectionRadius, _detectionLayer);
@@ -17,14 +17,17 @@ public class IdleState : States
 
             if(characterStats != null)
             {
-                Vector3 targetDirection = characterStats.transform.position - transform.position;
-                float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
-
-                if(viewableAngle > enemyManager.MinimumDetectionAngle && viewableAngle < enemyManager.MaximumDetectionAngle)
+                if(characterStats.TeamIDNumber != enemyStats.TeamIDNumber)
                 {
-                    if(!characterStats.IsDead)
+                    Vector3 targetDirection = characterStats.transform.position - transform.position;
+                    float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+
+                    if(viewableAngle > enemyManager.MinimumDetectionAngle && viewableAngle < enemyManager.MaximumDetectionAngle)
                     {
-                        enemyManager.CurrentTarget = characterStats;
+                        if(!characterStats.IsDead)
+                        {
+                            enemyManager.CurrentTarget = characterStats;
+                        }
                     }
                 }
             }

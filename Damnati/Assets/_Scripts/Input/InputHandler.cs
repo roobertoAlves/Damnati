@@ -278,11 +278,13 @@ public class InputHandler : MonoBehaviour
             if(_twoHandFlag)
             {
                 _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
+                _playerManager.IsTwoHandingWeapon = true;
             }
             else
             {
                 _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
                 _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
+                _playerManager.IsTwoHandingWeapon = false;
             }
         }
     }
@@ -290,8 +292,6 @@ public class InputHandler : MonoBehaviour
     {
         if(_criticalAttackInput)
         {
-            Debug.Log("Função sendo chamada");
-
             if(!_enemyStats.IsBoss)
             {
                 _playerCombatManager.AttemptRiposte();

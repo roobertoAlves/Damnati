@@ -88,14 +88,14 @@ public class PlayerStatsManager : CharacterStatsManager
     #endregion
 
     #region Damage Functions
-    public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
+    public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
     { 
         if(_playerManager.IsInvulnerable)
         {
             return;
         }
 
-        base.TakeDamage(damage, damageAnimation = "Damage_01");
+        base.TakeDamage(physicalDamage, fireDamage, damageAnimation = "Damage_01");
         _healthBar.SetCurrentHealth(CurrentHealth);
         _playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
@@ -104,9 +104,9 @@ public class PlayerStatsManager : CharacterStatsManager
             HandleDeath();
         }
     }
-    public override void TakeDamageNoAnimation(int damage)
+    public override void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
     { 
-        base.TakeDamageNoAnimation(damage);
+        base.TakeDamageNoAnimation(physicalDamage, fireDamage);
         _healthBar.SetCurrentHealth(CurrentHealth);
     }
     private void HandleDeath()

@@ -11,10 +11,12 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     [SerializeField] private WeaponItem _leftHandWeapon;
 
     private EnemyStatsManager _enemyStatsManager;
+    private EnemyEffectsManager _enemyEffectsManager;
 
     private void Awake() 
     {
         _enemyStatsManager = GetComponent<EnemyStatsManager>();
+        _enemyEffectsManager = GetComponent<EnemyEffectsManager>();
         LoadWeaponHolderSlots();
             
     }
@@ -23,7 +25,6 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     {
         LoadWeaponsOnBothHands();
     }
-
     private void LoadWeaponHolderSlots()
     {
         WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();    
@@ -72,11 +73,24 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
             {
                 LeftHandDamageCollider = LeftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
                 LeftHandDamageCollider.characterManager = GetComponent<CharacterManager>();
+                
+                LeftHandDamageCollider.PhysicalDamage = _leftHandWeapon.PhysicalDamage;
+
+                LeftHandDamageCollider.TeamIDNumber = _enemyStatsManager.TeamIDNumber;
+
+                _enemyEffectsManager.LeftWeaponFX = LeftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
+
             }
             else
             {
                 RightHandDamageCollider = RightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
                 RightHandDamageCollider.characterManager = GetComponent<CharacterManager>();
+
+                RightHandDamageCollider.PhysicalDamage = _rightHandWeapon.PhysicalDamage;
+
+                RightHandDamageCollider.TeamIDNumber = _enemyStatsManager.TeamIDNumber;
+                
+                _enemyEffectsManager.RightWeaponFX = RightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
             }
     }
 

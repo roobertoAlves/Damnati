@@ -16,27 +16,15 @@ MonoBehaviour:
   itemName: Hanibal Sword
   modelPrefab: {fileID: 6944629568366627670, guid: a0ab721d64e039943b8afeb5cf3533fe, type: 3}
   isUnarmed: 0
-  baseDamage: 25
+  weaponController: {fileID: 0}
+  offHandIdleAnimation: Left_Arm_Idle_01
+  weaponType: 2
+  PhysicalDamage: 0
+  FireDamage: 0
   criticalDamageMultiplier: 3
+  poiseBreak: 0
+  offensivePoiseBonus: 0
   physicalDamageAbsorption: 0
-  isMeleeWeapon: 1
-  isShieldWeapon: 0
-  right_Hand_Idle: Right Arm Idle
-  left_Hand_Idle: Left Arm Idle
-  th_idle: Both Arms Idle
-  weapon_Art: 
-  SS_Heavy_Slash_01: SS_Heavy_Slash_01
-  SS_Heavy_Slash_02: SS_Heavy_Slash_02
-  SS_Heavy_Slash_03: SS_Heavy_Slash_03
-  SS_Light_Slash_01: SS_Light_Slash_01
-  SS_Light_Slash_02: SS_Light_Slash_02
-  SS_Light_Slash_03: SS_Light_Slash_03
-  TH_Light_Slash_01: TH_Light_Slash_01
-  TH_Light_Slash_02: TH_Light_Slash_02
-  TH_Light_Slash_03: TH_Light_Slash_03
-  TH_Heavy_Slash_01: TH_Heavy_Slash_01
-  TH_Heavy_Slash_02: TH_Heavy_Slash_02
-  TH_Heavy_Slash_03: TH_Heavy_Slash_03
   baseStamina: 20
   lightAttackMultiplier: 1
   heavyAttackMultiplier: 2

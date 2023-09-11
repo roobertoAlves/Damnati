@@ -78,7 +78,7 @@ public class AnimatorManager : MonoBehaviour
     #endregion 
     public virtual void TakeCriticalDamageAnimationEvent()
     {
-        _characterStatsManager.TakeDamageNoAnimation(_characterManager.PendingCriticalDamage);
+        _characterStatsManager.TakeDamageNoAnimation(_characterManager.PendingCriticalDamage, 0);
         _characterManager.PendingCriticalDamage = 0;
     }
 }
