@@ -15,8 +15,9 @@ public class EnemyStatsManager : CharacterStatsManager
     #region  GET & SET
     public bool IsBoss { get { return _isBoss;}}
     #endregion
-    private void Awake() 
+    protected override void Awake() 
     {
+        base.Awake();
         _enemyAnimatorManager  = GetComponent<EnemyAnimatorManager>();
         _enemyBossManager = GetComponent<EnemyBossManager>();
         MaxHealth = SetMaxHealthFromHealthLevel();
@@ -54,10 +55,10 @@ public class EnemyStatsManager : CharacterStatsManager
     {
         _enemyAnimatorManager.PlayTargetAnimation("Break Guard", true);
     }
-    public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
+    public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
     {
 
-        base.TakeDamage(physicalDamage, fireDamage, damageAnimation = "Damage_01");
+        base.TakeDamage(physicalDamage, fireDamage, damageAnimation);
 
         if(!_isBoss)
         {

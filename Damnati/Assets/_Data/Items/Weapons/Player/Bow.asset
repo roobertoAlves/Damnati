@@ -13,23 +13,23 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 0}
-  itemName: 
-  modelPrefab: {fileID: 0}
+  itemName: Bow
+  modelPrefab: {fileID: 1124222977789396218, guid: 260d32216b706d945aae93bf5079a8aa, type: 3}
   isUnarmed: 0
-  weaponController: {fileID: 0}
+  weaponController: {fileID: 22100000, guid: f99ba15e6f92ec54b992d4d8c0131b7c, type: 2}
   offHandIdleAnimation: Left_Arm_Idle_01
   weaponType: 4
-  PhysicalDamage: 0
+  PhysicalDamage: 25
   FireDamage: 0
-  criticalDamageMultiplier: 3
-  poiseBreak: 0
-  offensivePoiseBonus: 0
+  criticalDamageMultiplier: 4
+  poiseBreak: 25
+  offensivePoiseBonus: 10
   physicalDamageAbsorption: 0
-  baseStamina: 0
-  lightAttackMultiplier: 0
-  heavyAttackMultiplier: 0
-  thLightAttackMutiplier: 0
-  thHeavyAttackMultiplier: 0
+  baseStamina: 20
+  lightAttackMultiplier: 1
+  heavyAttackMultiplier: 2
+  thLightAttackMutiplier: 2
+  thHeavyAttackMultiplier: 3
   baseRage: 0
   rageLightAttackMultiplier: 0
   rageHeavyAttackMultiplier: 0

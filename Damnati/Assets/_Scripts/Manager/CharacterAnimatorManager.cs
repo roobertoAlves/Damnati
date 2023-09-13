@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.TextCore.Text;
 
 public class CharacterAnimatorManager : MonoBehaviour
 { 
@@ -13,7 +14,7 @@ public class CharacterAnimatorManager : MonoBehaviour
     protected RigBuilder rigBuilder;
     [SerializeField] private TwoBoneIKConstraint _leftHandConstraint;
     [SerializeField] private TwoBoneIKConstraint _rightHandConstrait;
-
+    private bool _handIKWeightsReset = false;
 
     #region GET & SET
 
@@ -98,14 +99,18 @@ public class CharacterAnimatorManager : MonoBehaviour
     {
         if(isTwoHandingWeapon)
         {
-            Debug.Log("Stage 2");
-            _rightHandConstrait.data.target = rightHandTarget.transform;
-            _rightHandConstrait.data.targetPositionWeight = 1;
-            _rightHandConstrait.data.targetRotationWeight = 1;
-
-            _leftHandConstraint.data.target = leftHandTarget.transform;
-            _leftHandConstraint.data.targetPositionWeight = 1;
-            _leftHandConstraint.data.targetRotationWeight = 1;
+            if(rightHandTarget != null)
+            {
+                _rightHandConstrait.data.target = rightHandTarget.transform;
+                _rightHandConstrait.data.targetPositionWeight = 1;
+                _rightHandConstrait.data.targetRotationWeight = 1;
+            }
+            if(leftHandTarget != null)
+            {
+                _leftHandConstraint.data.target = leftHandTarget.transform;
+                _leftHandConstraint.data.targetPositionWeight = 1;
+                _leftHandConstraint.data.targetRotationWeight = 1;
+            }
         }
         else
         {
@@ -115,8 +120,46 @@ public class CharacterAnimatorManager : MonoBehaviour
 
         rigBuilder.Build();
     }
+    public virtual void CheckHandIKWeight(RightHandIKTarget rightHandIK, LeftHandIKTarget leftHandIK, bool isTwoHandingWeapon)
+    {
+        if(_characterManager.IsInteracting)
+        {
+            return;
+        }
+
+        if(_handIKWeightsReset)
+        {
+            _handIKWeightsReset = false;
+
+            if(_rightHandConstrait.data.target != null)
+            {
+                Debug.Log("Yeet");
+
+                _rightHandConstrait.data.target = rightHandIK.transform;
+                _rightHandConstrait.data.targetPositionWeight = 1;
+                _rightHandConstrait.data.targetRotationWeight = 1;
+            }
+            if(_leftHandConstraint.data.target != null)
+            {
+                _leftHandConstraint.data.target = leftHandIK.transform;
+                _leftHandConstraint.data.targetPositionWeight = 1;
+                _leftHandConstraint.data.targetRotationWeight = 1;
+            }
+        }
+    }
     public virtual void EraseHandIKForWeapon()
     {
+        _handIKWeightsReset = true;
 
+        if(_rightHandConstrait.data.target != null)
+        {
+            _rightHandConstrait.data.targetPositionWeight = 0;
+            _rightHandConstrait.data.targetRotationWeight = 0;
+        }
+        if(_leftHandConstraint.data.target != null)
+        {
+            _leftHandConstraint.data.targetPositionWeight = 0;
+            _leftHandConstraint.data.targetRotationWeight = 0;
+        }
     }
 }

@@ -179,7 +179,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Critical Attack"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""4393c9d9-48d4-44a6-8776-01bc7f527209"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

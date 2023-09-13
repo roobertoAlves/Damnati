@@ -28,8 +28,9 @@ public class PlayerStatsManager : CharacterStatsManager
     [SerializeField] private float _rageRegenerationTimer = 0;
     [SerializeField] private float _rageRegenerationLAAmount = 3;
     [SerializeField] private float _rageRegenerationHAAmount = 5;
-    private void Awake() 
+    protected override void Awake() 
     {  
+        base.Awake();
         _playerManager = GetComponent<PlayerManager>();
         _inputHandler = FindObjectOfType<InputHandler>();
 
@@ -88,14 +89,14 @@ public class PlayerStatsManager : CharacterStatsManager
     #endregion
 
     #region Damage Functions
-    public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
+    public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
     { 
         if(_playerManager.IsInvulnerable)
         {
             return;
         }
 
-        base.TakeDamage(physicalDamage, fireDamage, damageAnimation = "Damage_01");
+        base.TakeDamage(physicalDamage, fireDamage, damageAnimation);
         _healthBar.SetCurrentHealth(CurrentHealth);
         _playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
@@ -149,7 +150,7 @@ public class PlayerStatsManager : CharacterStatsManager
         {
             _staminaRegenerationTimer += Time.deltaTime;
 
-            if(CurrentStamina < MaxStamina && _staminaRegenerationTimer > 0.1f)
+            if(CurrentStamina < MaxStamina && _staminaRegenerationTimer > 1f)
             {
                 CurrentStamina += _staminaRegenerationAmount * Time.deltaTime;
                 _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina));

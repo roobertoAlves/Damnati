@@ -24,8 +24,9 @@ public class PlayerManager : CharacterManager
 
     #endregion  
 
-    private void Awake() 
+    protected override void Awake() 
     {
+        base.Awake();
         _cameraHandler = FindObjectOfType<CameraHandler>();
         _inputHandler = FindObjectOfType<InputHandler>();
         _animator = GetComponent<Animator>();
@@ -62,8 +63,9 @@ public class PlayerManager : CharacterManager
             _playerStatsManager.RegenerateRage();
         }
     }
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         float delta = Time.fixedDeltaTime;
 
         _playerLocomotionManager.HandleGravity(delta, _playerLocomotionManager.MoveDirection);

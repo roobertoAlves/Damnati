@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
+    private CharacterAnimatorManager _characterAnimatorManager;
+    private CharacterWeaponSlotManager _characterWeaponSlotManager;
+
     [Header("Lock On Transform")]
     [Space(15)]
     [SerializeField] private Transform _lockOnTransform;
@@ -67,5 +70,15 @@ public class CharacterManager : MonoBehaviour
     public bool IsUsingLeftHand { get { return _isUsingLeftHand; } set { _isUsingLeftHand = value; }}
     public bool IsTwoHandingWeapon { get { return _isTwoHandingWeapon; } set { _isTwoHandingWeapon = value; }}
     #endregion
+
+    protected virtual void Awake()
+    {
+        _characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+        _characterWeaponSlotManager = GetComponent<CharacterWeaponSlotManager>();
+    }
+    protected virtual void FixedUpdate()
+    {
+        _characterAnimatorManager.CheckHandIKWeight(_characterWeaponSlotManager.RightHandIKTarget, _characterWeaponSlotManager.LeftHandIKTarget, _isTwoHandingWeapon);
+    }
 }
 

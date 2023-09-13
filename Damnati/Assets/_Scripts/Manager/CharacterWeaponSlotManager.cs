@@ -35,6 +35,9 @@ public class CharacterWeaponSlotManager : MonoBehaviour
     private RightHandIKTarget _rightHandIKTarget;
     private LeftHandIKTarget _leftHandIKTarget;
 
+    public RightHandIKTarget RightHandIKTarget { get { return _rightHandIKTarget; }}
+    public LeftHandIKTarget LeftHandIKTarget { get { return _leftHandIKTarget; }}
+
     protected virtual void Awake()
     {
         characterManager = GetComponent<CharacterManager>();
@@ -102,6 +105,7 @@ public class CharacterWeaponSlotManager : MonoBehaviour
                 RightHandSlot.CurrentWeapon = weaponItem;
                 RightHandSlot.LoadWeaponModel(weaponItem);
                 LoadRightWeaponDamageCollider();
+                LoadTwoHandIKTargets(characterManager.IsTwoHandingWeapon);
                 characterAnimatorManager.Anim.runtimeAnimatorController = weaponItem.weaponController;  
             }
             
@@ -134,7 +138,9 @@ public class CharacterWeaponSlotManager : MonoBehaviour
         LeftHandDamageCollider = LeftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
 
         LeftHandDamageCollider.PhysicalDamage = characterInventoryManager.leftHandWeapon.PhysicalDamage;
+        LeftHandDamageCollider.FireDamage = characterInventoryManager.leftHandWeapon.FireDamage;
 
+        LeftHandDamageCollider.characterManager = characterManager;
         LeftHandDamageCollider.TeamIDNumber = characterStatsManager.TeamIDNumber;
 
         LeftHandDamageCollider.PoiseBreak = characterInventoryManager.leftHandWeapon.poiseBreak;
@@ -146,7 +152,9 @@ public class CharacterWeaponSlotManager : MonoBehaviour
         RightHandDamageCollider = RightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
        
         RightHandDamageCollider.PhysicalDamage = characterInventoryManager.rightHandWeapon.PhysicalDamage;
-        
+        RightHandDamageCollider.FireDamage = characterInventoryManager.rightHandWeapon.FireDamage;
+
+        RightHandDamageCollider.characterManager = characterManager;
         RightHandDamageCollider.TeamIDNumber = characterStatsManager.TeamIDNumber;
 
         RightHandDamageCollider.PoiseBreak = characterInventoryManager.rightHandWeapon.poiseBreak;

@@ -205,6 +205,7 @@ public class PlayerLocomotionManager : MonoBehaviour
             if(_inputHandler.MoveAmount > 0 && _playerStatsManager.CurrentStamina >= _rollStaminaCost)
             {
                 _playerAnimatorManager.PlayTargetAnimation("Roll", true); 
+                _playerAnimatorManager.EraseHandIKForWeapon();
                 _movDirection.y = 0;
                 Quaternion rollRotation = Quaternion.LookRotation(_movDirection);
                 _myTransform.rotation = rollRotation;
@@ -213,6 +214,7 @@ public class PlayerLocomotionManager : MonoBehaviour
             else if(_playerStatsManager.CurrentStamina >= _backstepStaminaCost)
             {
                 _playerAnimatorManager.PlayTargetAnimation("Backstep", true);
+                _playerAnimatorManager.EraseHandIKForWeapon();
                 _playerStatsManager.StaminaDrain(_backstepStaminaCost);
             }
         }

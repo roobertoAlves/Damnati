@@ -21,13 +21,22 @@ public class DamageCollider : MonoBehaviour
     [Header("Damage")]
     [Space(15)]
     [SerializeField] private int _physicalDamage;
+    [SerializeField] private int _fireDamage;
+
+    private bool _shieldHasBeenHit;
+    private bool _hasBeenParried;
+    protected string currentDamageAnimation;
 
     #region GET & SET
     public int TeamIDNumber { get { return _teamIDNumber; } set { _teamIDNumber = value; }}
+    
+    
     public int PhysicalDamage { get { return _physicalDamage; } set { _physicalDamage = value; }}
+    public int FireDamage { get { return _fireDamage; } set { _fireDamage = value; }}
+    
     public CharacterManager characterManager { get { return _characterManager; } set { _characterManager = value; }}
+    
     public bool EnabledDamageColliderOnStartUp { get { return _enabledDamageColliderOnStartUp; } set { _enabledDamageColliderOnStartUp = value; }}
-
 
     public float PoiseBreak { get { return _poiseBreak; } set { _poiseBreak = value; }}
     public float OffensivePoiseBonus { get { return _offensivePoiseBonus; } set { _offensivePoiseBonus = value; }}
@@ -56,6 +65,9 @@ public class DamageCollider : MonoBehaviour
     {
         if(collision.tag == "Character")
         {
+            _shieldHasBeenHit = false;
+            _hasBeenParried = false;
+             
             CharacterStatsManager enemyStats = collision.GetComponent<CharacterStatsManager>();
             CharacterManager enemyManager = collision.GetComponent<CharacterManager>();
             CharacterEffectsManager enemyEffects = collision.GetComponent<CharacterEffectsManager>();
@@ -68,24 +80,13 @@ public class DamageCollider : MonoBehaviour
                     return;
                 }
 
-                if(enemyManager.IsParrying)
-                {
-                    characterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Parried", true);
-                    return;
-                }
-                else if(shield != null && enemyManager.IsBlocking)
-                {
-                    float physicalDamageAfterBlock = _physicalDamage - (_physicalDamage * shield.BlockingPhysicalDamageAbsorption) / 100;
-
-                    if(enemyStats != null)
-                    {
-                        enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), 0 , "Block Idle");
-                    }
-                }
+                CheckForParry(enemyManager);
+                CheckForBlock(enemyManager, enemyStats, shield);
             }
+
             if(enemyStats != null)
             {
-                if(enemyStats.TeamIDNumber == _teamIDNumber)
+                if(enemyStats.TeamIDNumber == _teamIDNumber || _hasBeenParried || _shieldHasBeenHit)
                 {
                     return;
                 }
@@ -93,19 +94,70 @@ public class DamageCollider : MonoBehaviour
                 enemyStats.PoiseResetTimer = enemyStats.TotalPoiseResetTime;
                 enemyStats.TotalPoiseDefense = enemyStats.TotalPoiseDefense - _poiseBreak;
 
-                //DETECTS WHERE ON THE COLLIDER OUR WEAPON FIRST MAKES CONTACT
+                //Detecta onde o colisor da arma fez o primeiro contato
+
                 Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                float directionHitFrom = (Vector3.SignedAngle(characterManager.transform.forward, enemyManager.transform.forward, Vector3.up));
+                ChooseWhichDirectionDamageCameFrom(directionHitFrom);
                 enemyEffects.PlayerBloodSplatterFX(contactPoint);
 
-                if (enemyStats.TotalPoiseDefense > _poiseBreak)
+                if(enemyStats.TotalPoiseDefense > _poiseBreak)
                 {
                     enemyStats.TakeDamageNoAnimation(_physicalDamage, 0);
                 }
                 else
                 {
-                    enemyStats.TakeDamage(_physicalDamage, 0);
+                    enemyStats.TakeDamage(_physicalDamage, 0, currentDamageAnimation);
                 }
             }
+        }
+    }
+
+    protected virtual void CheckForParry(CharacterManager enemyManager)
+    {
+        if(enemyManager.IsParrying)
+        {
+            characterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Parried", true);
+            _hasBeenParried = true;
+        }
+    }
+    protected virtual void CheckForBlock(CharacterManager enemyManager, CharacterStatsManager enemyStats, BlockingCollider shield)
+    {
+        if(shield != null && enemyManager.IsBlocking)
+        {
+            float physicalDamageAfterBlock = _physicalDamage - (_physicalDamage * shield.BlockingPhysicalDamageAbsorption) / 100;
+            float fireDamageAfterBlock = _fireDamage - (_fireDamage * shield.BlockingFireDamageAbsorption) / 100;
+        
+            if(enemyStats != null)
+            {
+                enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), 0, "Block Idle");
+                _shieldHasBeenHit = true;
+            }
+        }
+    }
+    protected virtual void ChooseWhichDirectionDamageCameFrom(float direction)
+    {
+        Debug.Log(direction);
+
+        if(direction >= 145 && direction <= 180)
+        {
+            currentDamageAnimation = "Damage Forward";
+        }
+        else if(direction <= -145 && direction >= -180)
+        {
+            currentDamageAnimation = "Damage Forward";
+        }
+        else if(direction >= -45 && direction <= 45)
+        {
+            currentDamageAnimation = "Damage Back";
+        }
+        else if(direction >= -144 && direction <= -45)
+        {
+            currentDamageAnimation = "Damage Left";
+        }
+        else if(direction >= 45 && direction <= 144)
+        {
+            currentDamageAnimation = "Damage Right";
         }
     }
 }

@@ -71,8 +71,9 @@ public class EnemyManager : CharacterManager
     public float ComboLikelyHood { get { return _comboLikelyHood; } set { _comboLikelyHood = value; }}
     #endregion
 
-    private void Awake() 
+    protected override void Awake() 
     {
+        base.Awake();
         _enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
         _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
         _enemyStatsManager = GetComponent<EnemyStatsManager>();
@@ -102,8 +103,9 @@ public class EnemyManager : CharacterManager
         CanRotate = _enemyAnimatorManager.Anim.GetBool("CanRotate");
         _enemyAnimatorManager.Anim.SetBool("IsDead", _enemyStatsManager.IsDead);
     }
-    private void FixedUpdate() 
+    protected override void FixedUpdate() 
     {
+        base.FixedUpdate();
         //_enemyEffectsManager.HandleAllBuildUpEffects();    
     }
     private void LateUpdate()

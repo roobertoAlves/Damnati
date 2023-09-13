@@ -15,6 +15,7 @@ public class InputHandler : MonoBehaviour
     private PlayerCombatManager _playerCombatManager;
     private PlayerLocomotionManager _playerLocomotionManager;
     private PlayerWeaponSlotManager _playerWeaponSlotManager;
+    private PlayerStatsManager _playerStatsManager;
     private EnemyStatsManager _enemyStats;
 
     private float _horizontalMovement;
@@ -100,6 +101,7 @@ public class InputHandler : MonoBehaviour
         _playerLocomotionManager = FindObjectOfType<PlayerLocomotionManager>();
         _playerWeaponSlotManager = FindObjectOfType<PlayerWeaponSlotManager>();
         _blockingCollider = FindObjectOfType<BlockingCollider>();
+        _playerStatsManager = FindObjectOfType<PlayerStatsManager>();
         _enemyStats = FindObjectOfType<EnemyStatsManager>();
     }
     
@@ -168,6 +170,11 @@ public class InputHandler : MonoBehaviour
     
     public void TickInput(float delta)
     {
+        if(_playerStatsManager.IsDead)
+        {
+            return;
+        }
+        
         HandleMoveInput(delta);
         HandleLockOnInput();
         HandleCombatInput(delta);

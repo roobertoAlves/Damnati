@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharacterStatsManager : MonoBehaviour
 {
+    private CharacterAnimatorManager _characterAnimatorManager;
+
     [Header("Team I.D")]
     [Space(15)]
     [SerializeField] private int _teamIDNumber = 0;
@@ -74,6 +76,10 @@ public class CharacterStatsManager : MonoBehaviour
     public float PoiseResetTimer { get { return _poiseResetTimer; } set { _poiseResetTimer = value; }}
     #endregion
 
+    protected virtual void Awake()
+    {
+        _characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+    }
     protected virtual void Update()
     {
         HandlePoiseResetTimer();
@@ -83,12 +89,15 @@ public class CharacterStatsManager : MonoBehaviour
         _totalPoiseDefense = _armorPoiseBonus;
     }
 
-    public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
+    public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
     {
         if(_isDead)
         {
             return;
         }
+
+        _characterAnimatorManager.EraseHandIKForWeapon();
+
         float totalPhysicalDamageAbsorption = 1 -
         (1 - _physicalDamageAbsorptionHead / 100) *
         (1 - _physicalDamageAbsorptionBody / 100) *
