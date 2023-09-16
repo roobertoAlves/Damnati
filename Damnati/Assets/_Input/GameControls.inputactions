@@ -235,6 +235,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Aiming",
+                    "type": "PassThrough",
+                    "id": "76762242-fad6-4775-a73d-1dc000898dd8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -352,10 +361,21 @@
                     "name": "",
                     "id": "9ff47bc2-b219-466e-921b-732e1acf4879",
                     "path": "<Keyboard>/g",
-                    "interactions": "Hold",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "",
                     "action": "Critical Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfa24f79-0817-4c6c-890e-f18b766cf1b2",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aiming",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

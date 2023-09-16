@@ -3,7 +3,22 @@ guid: e69c6c9f1eff9ae46aea6251fb6eb321
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark iron
+    second: {fileID: 2100000, guid: d0f2a95954378954f939fa8c26a6e372, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stylised wood
+    second: {fileID: 2100000, guid: 66ac7af6531afc14ba674d480bbbbbab, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: tiled_plane_DefaultMaterial_Normal
+    second: {fileID: 2800000, guid: a5a642b3880b0a44085f99ad83d84f19, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

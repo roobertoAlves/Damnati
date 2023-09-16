@@ -59,12 +59,19 @@ public class PlayerCombatManager : MonoBehaviour
     }
 
     #region Input Actions 
-
+    public void HandleArrowActions()
+    {
+        if(_playerManager.IsTwoHandingWeapon)
+        {
+            PerformRangedAction();
+        }
+    }
     public void HandleLBAction()
     {
         _playerAnimatorManager.EraseHandIKForWeapon();
 
-        if (_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.StraightSword || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
+        if (_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.StraightSword 
+            || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
         {
             PerformLBMeleeAction();
         }
@@ -73,14 +80,16 @@ public class PlayerCombatManager : MonoBehaviour
     {
         _playerAnimatorManager.EraseHandIKForWeapon();
 
-        if (_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.StraightSword || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
+        if (_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.StraightSword 
+            || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
         {
             PerformRBMeleeAction();
         }
     }
     public void HandleLTAction()
     {
-        if (_playerInventoryManager.leftHandWeapon.weaponType == WeaponType.Shield || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
+        if (_playerInventoryManager.leftHandWeapon.weaponType == WeaponType.Shield 
+            || _playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Unarmed)
         {
             PerformLTWeaponArt(_inputHandler.THEquipFlag);
         }
@@ -89,9 +98,23 @@ public class PlayerCombatManager : MonoBehaviour
             //do a light attack
         }
     }
-    public void HandleDefenseAction()
+    public void HandleRTAction()
     {
-        PerfomLBBlockAction();
+        if(_playerManager.IsTwoHandingWeapon)
+        {
+            if(_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Bow)
+            {
+                PerfomLBAimingAction();
+            }
+            else
+            {
+                if(_playerInventoryManager.leftHandWeapon.weaponType == WeaponType.Shield ||
+                    _playerInventoryManager.leftHandWeapon.weaponType == WeaponType.StraightSword)
+                    {
+                        PerfomLBBlockAction();
+                    }
+            }
+        }
     }    
 
     #endregion
@@ -249,8 +272,41 @@ public class PlayerCombatManager : MonoBehaviour
             _playerAnimatorManager.PlayTargetAnimation(weapon_art, true);
         }
     }
+    private void PerfomLBAimingAction()
+    {
+        _playerAnimatorManager.Anim.SetBool("IsTwoHandingWeapon", true);
+    }
     #endregion
     
+    #region Arrow Actions
+
+    private void DrawArrowAction()
+    {
+        _playerAnimatorManager.PlayTargetAnimation("Draw Arrow", true);
+        _playerAnimatorManager.Anim.SetBool("IsHoldingArrow", true);
+        GameObject loadedArrow = Instantiate(_playerInventoryManager.currentAmmo.loadedItemModel, _playerWeaponSlotManager.LeftHandSlot.transform);
+    
+        _playerEffectsManager.CurrentRangeFX = loadedArrow;
+    }
+    private void PerformRangedAction()
+    {
+        _playerAnimatorManager.EraseHandIKForWeapon();
+        _playerAnimatorManager.Anim.SetBool("IsUsingRightHand", true);
+
+        if(!_playerManager.IsHoldingArrow)
+        {
+            if(_playerInventoryManager.currentAmmo != null)
+            {
+                DrawArrowAction();
+            }
+            else
+            {
+                _playerAnimatorManager.PlayTargetAnimation("Shrug", true);
+            }
+        }
+    }
+    #endregion
+
     #region Defensive Actions 
     private void PerfomLBBlockAction()
     {

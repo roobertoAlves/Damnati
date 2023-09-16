@@ -7,6 +7,7 @@ public class CharacterInventoryManager : MonoBehaviour
     protected CharacterWeaponSlotManager characterWeaponSlotManager;
     public WeaponItem rightHandWeapon;
     public WeaponItem leftHandWeapon;
+    public RangedAmmoItem currentAmmo;
 
     [Header("Current Equipment")]
     [Space(15)]

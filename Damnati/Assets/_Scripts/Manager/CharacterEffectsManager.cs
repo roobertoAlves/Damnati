@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class CharacterEffectsManager : MonoBehaviour
 {
+    private CharacterStatsManager _characterStatsManager;
+    [Header("Current Range FX")]
+    [Space(15)]
+    [SerializeField] private GameObject _currentRangeFX;
 
     [Header("Damage FX")]
     [Space(15)]
-    [SerializeField] GameObject _bloodSplatterFX;
+    [SerializeField] private GameObject _bloodSplatterFX;
 
     [Header("Weapon FX")]
     [Space(15)]
@@ -18,7 +22,13 @@ public class CharacterEffectsManager : MonoBehaviour
     public WeaponFX RightWeaponFX { get { return _rightWeaponFX; } set { _rightWeaponFX = value; }}
     public WeaponFX LeftWeaponFX { get { return _leftWeaponFX; } set { _leftWeaponFX = value; }}
     public GameObject BloodSplatterFX { get { return _bloodSplatterFX; } set { _bloodSplatterFX = value; }}
+    public GameObject CurrentRangeFX { get { return _currentRangeFX; } set { _currentRangeFX = value; }}
     #endregion
+    
+    protected virtual void Awake()
+    {
+        _characterStatsManager = GetComponent<CharacterStatsManager>();
+    }
     public virtual void PlayWeaponFX(bool isLeft)
     {
         if(isLeft == false)
@@ -42,5 +52,13 @@ public class CharacterEffectsManager : MonoBehaviour
     public virtual void PlayerBloodSplatterFX(Vector3 bloodSplatterLocation)
     {
         GameObject blood = Instantiate(_bloodSplatterFX, bloodSplatterLocation, Quaternion.identity);
+    }
+
+    public virtual void HandleAllBuildUpEffects()
+    {
+        if(_characterStatsManager.IsDead)
+        {
+            return;
+        }
     }
 }

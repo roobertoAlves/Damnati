@@ -930,10 +930,14 @@ MonoBehaviour:
   _isRotatingWithRootMotionStatus: 0
   _canRotateBool: CanRotate
   _canRotateStatus: 1
-  _isInvulnerable: IsInvulnerable
+  _isMirroredBool: IsMirrored
+  _isMirroredStatus: 0
+  _isInvulnerableBool: IsInvulnerable
   _isInvulnerableStatus: 0
-  _isUsingRightHand: IsUsingRightHand
+  _isUsingRightHandBool: IsUsingRightHand
   _isUsingRightHandStatus: 0
+  _isUsingLeftHandBool: IsUsingLeftHand
+  _isUsingLeftHandStatus: 0
 --- !u!1107 &-3304233377766519155
 AnimatorStateMachine:
   serializedVersion: 6
@@ -1378,10 +1382,14 @@ MonoBehaviour:
   _isRotatingWithRootMotionStatus: 0
   _canRotateBool: CanRotate
   _canRotateStatus: 1
-  _isInvulnerable: IsInvulnerable
+  _isMirroredBool: IsMirrored
+  _isMirroredStatus: 0
+  _isInvulnerableBool: IsInvulnerable
   _isInvulnerableStatus: 0
-  _isUsingRightHand: IsUsingRightHand
+  _isUsingRightHandBool: IsUsingRightHand
   _isUsingRightHandStatus: 0
+  _isUsingLeftHandBool: IsUsingLeftHand
+  _isUsingLeftHandStatus: 0
   _isPhaseShifting: IsPhaseShifting
   _isPhaseShiftingStatus: 0
 --- !u!1101 &-1379560645899661615
@@ -1542,79 +1550,91 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Vertical
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsInteracting
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: CanDoCombo
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsUsingLeftHand
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsUsingRightHand
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsInvulnerable
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsInAir
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsDead
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: CanRotate
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsRotatingWithRootMotion
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsBlocking
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsPhaseShifting
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
+  - m_Name: IsMirrored
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: IsTwoHandingWeapon
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer

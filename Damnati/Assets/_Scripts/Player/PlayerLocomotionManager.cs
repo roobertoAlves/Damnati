@@ -192,7 +192,9 @@ public class PlayerLocomotionManager : MonoBehaviour
     }
     public void HandleDodge(float delta)
     {
-        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") || !_playerAnimatorManager.HasAnimator || _playerStatsManager.CurrentStamina <= 0)
+        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") 
+            || !_playerAnimatorManager.HasAnimator 
+            || _playerStatsManager.CurrentStamina <= 0)
         {
             return;
         }

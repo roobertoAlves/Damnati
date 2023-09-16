@@ -869,6 +869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aadaef73e485db43844fbc1d7876d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentRangeFX: {fileID: 0}
   _bloodSplatterFX: {fileID: 6487492482581109093, guid: 5b4345b65737f754dbe5338d2ce25e58, type: 3}
   _rightWeaponFX: {fileID: 0}
   _leftWeaponFX: {fileID: 0}
@@ -886,6 +887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightHandWeapon: {fileID: 11400000, guid: c66f05ab9756faa418aa77b412f23bb1, type: 2}
   leftHandWeapon: {fileID: 0}
+  currentAmmo: {fileID: 0}
   weaponsInRightHandSlots:
   - {fileID: 11400000, guid: c66f05ab9756faa418aa77b412f23bb1, type: 2}
   weaponsInLeftHandSlots:
@@ -8624,6 +8626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightHandWeapon: {fileID: 11400000, guid: 24474f8663adf6c4a8bc1463ae965641, type: 2}
   leftHandWeapon: {fileID: 0}
+  currentAmmo: {fileID: 11400000, guid: a39c7c93cf1873642a06b2be99ff0671, type: 2}
   weaponsInRightHandSlots:
   - {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}
   - {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
@@ -8662,6 +8665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e1916675b82346448c8f3c919917a80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentRangeFX: {fileID: 0}
   _bloodSplatterFX: {fileID: 6487492482581109093, guid: 5b4345b65737f754dbe5338d2ce25e58, type: 3}
   _rightWeaponFX: {fileID: 0}
   _leftWeaponFX: {fileID: 0}
@@ -8929,9 +8933,9 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1142a3f6026bfec4c92792b3de727af8, type: 2}
-  - {fileID: 2100000, guid: e225e82d9d5e36f44900dbc460afeca8, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 9a5597cd9942e164b8e9a1dbc2c0c018, type: 2}
+  - {fileID: 2100000, guid: ceec3c2ada4660a42bdd31630f0a7784, type: 2}
+  - {fileID: 2100000, guid: 3ce01c8ca7674ea4a9d4d0e50b84567c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

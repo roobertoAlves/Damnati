@@ -15,6 +15,7 @@ public class InputHandler : MonoBehaviour
     private PlayerCombatManager _playerCombatManager;
     private PlayerLocomotionManager _playerLocomotionManager;
     private PlayerWeaponSlotManager _playerWeaponSlotManager;
+    private PlayerAnimatorManager _playerAnimatorManager;
     private PlayerStatsManager _playerStatsManager;
     private EnemyStatsManager _enemyStats;
 
@@ -35,11 +36,11 @@ public class InputHandler : MonoBehaviour
     private bool _interactInput;
     private bool _pauseInput;
     private bool _lockOnInput;
-    private bool _lockOnFlag;
     private bool _rStickInput;
     private bool _lStickInput;
     private bool _caInput;
     private bool _blockInput;
+    private bool _aimingInput;
 
     #endregion
 
@@ -49,8 +50,8 @@ public class InputHandler : MonoBehaviour
     private bool _isDodge;
     private bool _isHitEnemy;
     private bool _isInRage;
-
-
+    private bool _fireFlag;
+    private bool _lockOnFlag;
     #endregion
 
     #region Input Variables
@@ -85,11 +86,12 @@ public class InputHandler : MonoBehaviour
     public bool LeftStickInput { get { return _lStickInput; } set { _lStickInput = value; }}
     public bool CriticalAttackInput { get { return _caInput; } set { _caInput = value; }}
     public bool BlockInput { get { return _blockInput; } set { _blockInput = value; }}
-    
+    public bool AimingInput { get { return _aimingInput; } set { _aimingInput = value; }}
     public bool TwoHandFlag { get { return _twoHandFlag; } set { _twoHandFlag = value; }}
     public bool IsDodge { get { return _isDodge; } set { _isDodge = value; }}
     public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
     public bool IsInRage { get { return _isInRage; } set { _isInRage = value; }}
+    public bool FireFlag { get { return _fireFlag; } set { _fireFlag = value; }}
     #endregion
 
     private void Awake() 
@@ -102,6 +104,7 @@ public class InputHandler : MonoBehaviour
         _playerWeaponSlotManager = FindObjectOfType<PlayerWeaponSlotManager>();
         _blockingCollider = FindObjectOfType<BlockingCollider>();
         _playerStatsManager = FindObjectOfType<PlayerStatsManager>();
+        _playerAnimatorManager = FindObjectOfType<PlayerAnimatorManager>();
         _enemyStats = FindObjectOfType<EnemyStatsManager>();
     }
     
@@ -122,6 +125,10 @@ public class InputHandler : MonoBehaviour
 
             _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
             _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
+
+            _gameControls.PlayerActions.Aiming.performed += OnAiming;
+            _gameControls.PlayerActions.Aiming.canceled += OnAiming;
+            _gameControls.PlayerActions.Aiming.canceled += ctx => _fireFlag = true;
 
             _gameControls.PlayerMovement.Walk.performed += OnWalk;
             _gameControls.PlayerMovement.Walk.canceled += OnWalk;
@@ -180,15 +187,25 @@ public class InputHandler : MonoBehaviour
         HandleCombatInput(delta);
         HandleTwoHandWeapon();
         HandleCriticalAttack();
+        HandleLBInput();
+        HandleAimingInput();
         //Debug.Log("Tick Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
     }
 
     private void HandleMoveInput(float delta)
     {
-        _horizontalMovement = _walkMoveInput.x;
-        _verticalMovement = _walkMoveInput.y;
-        _moveAmount = Mathf.Clamp01(Mathf.Abs(_horizontalMovement) + Mathf.Abs(_verticalMovement));
-
+        if(_playerManager.IsHoldingArrow)
+        {
+            _horizontalMovement = _walkMoveInput.x;
+            _verticalMovement = _walkMoveInput.y;
+            _moveAmount = Mathf.Clamp01(Mathf.Abs(_horizontalMovement) + Mathf.Abs(_verticalMovement) / 2);
+        }
+        else
+        {
+            _horizontalMovement = _walkMoveInput.x;
+            _verticalMovement = _walkMoveInput.y;
+            _moveAmount = Mathf.Clamp01(Mathf.Abs(_horizontalMovement) + Mathf.Abs(_verticalMovement));
+        }
     }
     private void HandleLockOnInput()
     {
@@ -261,17 +278,44 @@ public class InputHandler : MonoBehaviour
                 _playerCombatManager.HandleLTAction();
             }
         }
+    }
+    private void HandleLBInput()
+    {
+        if(_playerManager.IsInAir || _playerManager.IsSprinting)
+        {
+            _blockInput = false;
+            return;
+        }
+
         if(_blockInput)
         {
-            _playerCombatManager.HandleDefenseAction();
+            _playerCombatManager.HandleRTAction();
         }
-        else
+        else if(_blockInput == false)
         {
             _playerManager.IsBlocking = false;
 
             if(_blockingCollider.BlockCollider.enabled)
             {
                 _blockingCollider.DisableBlockingCollider();
+            }
+            if(_playerManager.IsHoldingArrow)
+            {
+                //_playerAnimatorManager.Anim.SetBool("IsAiming", false);
+            }
+        }
+    }
+    private void HandleAimingInput()
+    {
+        if(_aimingInput)
+        {
+            if(_playerInventory.rightHandWeapon.weaponType == WeaponType.Bow)
+            {
+                _playerCombatManager.HandleArrowActions();
+            }
+            else
+            {
+                _aimingInput = false;
             }
         }
     }
@@ -348,6 +392,10 @@ public class InputHandler : MonoBehaviour
     private void OnWeaponArt(InputAction.CallbackContext ctx)
     {
         _ltInput = ctx.ReadValueAsButton();
+    }
+    private void OnAiming(InputAction.CallbackContext ctx)
+    {
+        _aimingInput = ctx.ReadValueAsButton();
     }
     private void OnCriticalAttack(InputAction.CallbackContext ctx)
     {

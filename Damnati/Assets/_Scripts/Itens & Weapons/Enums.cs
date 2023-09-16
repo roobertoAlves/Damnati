@@ -11,6 +11,10 @@ public enum WeaponType
     Bow
 
 }
+public enum AmmoType
+{
+    Arrow
+}
 public class Enums : MonoBehaviour
 {
 
