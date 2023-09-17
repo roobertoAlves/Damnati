@@ -72,7 +72,7 @@ public class PlayerManager : CharacterManager
         _playerLocomotionManager.HandleGravity(delta, _playerLocomotionManager.MoveDirection);
         _playerLocomotionManager.HandleMovement(delta);
         _playerLocomotionManager.HandleRotation(delta);
-        //_playerEffectsManager.HandleAllBuildUpEffects();
+        _playerEffectsManager.HandleAllBuildUpEffects();
     }
     
     private void LateUpdate() 
@@ -85,8 +85,8 @@ public class PlayerManager : CharacterManager
         
         if (_cameraHandler != null)
         {
-            _cameraHandler.FollowTarget(delta);
-            _cameraHandler.HandleCameraRotation(delta, _inputHandler.HorizontalCameraMovement, _inputHandler.VerticalCameraMovement);
+            _cameraHandler.FollowTarget();
+           _cameraHandler.HandleCameraRotation();
         }   
         if(IsInAir)
         {

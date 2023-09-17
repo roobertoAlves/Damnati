@@ -7,7 +7,7 @@ public class DamageCollider : MonoBehaviour
 {
     private CharacterManager _characterManager;
     protected Collider damageCollider;
-    private bool _enabledDamageColliderOnStartUp = false;
+    [SerializeField] private bool _enabledDamageColliderOnStartUp = false;
 
     [Header("Team I.D")]
     [Space(15)]
@@ -23,8 +23,8 @@ public class DamageCollider : MonoBehaviour
     [SerializeField] private int _physicalDamage;
     [SerializeField] private int _fireDamage;
 
-    private bool _shieldHasBeenHit;
-    private bool _hasBeenParried;
+    protected bool shieldHasBeenHit;
+    protected bool hasBeenParried;
     protected string currentDamageAnimation;
 
     #region GET & SET
@@ -44,7 +44,7 @@ public class DamageCollider : MonoBehaviour
     #endregion
 
 
-    private void Awake() 
+    protected virtual void Awake() 
     {
         damageCollider = GetComponent<Collider>();
         damageCollider.gameObject.SetActive(true);
@@ -61,12 +61,12 @@ public class DamageCollider : MonoBehaviour
         damageCollider.enabled = false;
     }
 
-    private void OnTriggerEnter(Collider collision) 
+    protected virtual void OnTriggerEnter(Collider collision) 
     {
         if(collision.tag == "Character")
         {
-            _shieldHasBeenHit = false;
-            _hasBeenParried = false;
+            shieldHasBeenHit = false;
+            hasBeenParried = false;
              
             CharacterStatsManager enemyStats = collision.GetComponent<CharacterStatsManager>();
             CharacterManager enemyManager = collision.GetComponent<CharacterManager>();
@@ -86,7 +86,7 @@ public class DamageCollider : MonoBehaviour
 
             if(enemyStats != null)
             {
-                if(enemyStats.TeamIDNumber == _teamIDNumber || _hasBeenParried || _shieldHasBeenHit)
+                if(enemyStats.TeamIDNumber == _teamIDNumber || hasBeenParried || shieldHasBeenHit)
                 {
                     return;
                 }
@@ -118,7 +118,7 @@ public class DamageCollider : MonoBehaviour
         if(enemyManager.IsParrying)
         {
             characterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Parried", true);
-            _hasBeenParried = true;
+            hasBeenParried = true;
         }
     }
     protected virtual void CheckForBlock(CharacterManager enemyManager, CharacterStatsManager enemyStats, BlockingCollider shield)
@@ -131,7 +131,7 @@ public class DamageCollider : MonoBehaviour
             if(enemyStats != null)
             {
                 enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), 0, "Block Idle");
-                _shieldHasBeenHit = true;
+                shieldHasBeenHit = true;
             }
         }
     }

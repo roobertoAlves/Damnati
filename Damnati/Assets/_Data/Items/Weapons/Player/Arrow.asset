@@ -15,10 +15,10 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   itemName: Arrow
   ammoType: 0
-  forwardVelocity: 550
-  upwardVelocity: 0
-  ammoMass: 0
-  useGravity: 0
+  forwardVelocity: 1250
+  upwardVelocity: 150
+  ammoMass: 0.1
+  useGravity: 1
   carryLimit: 99
   currentAmount: 99
   physicalDamage: 50

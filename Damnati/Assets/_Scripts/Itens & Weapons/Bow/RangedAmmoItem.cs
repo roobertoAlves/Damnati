@@ -23,8 +23,8 @@ public class RangedAmmoItem : Item
 
     [Header("Ammo Base Damage")]
     [Space(15)]
-    public float physicalDamage = 50;
-    public float fireDamage = 25;
+    public int physicalDamage = 50;
+    public int fireDamage = 25;
 
     [Header("Item Models")]
     [Space(15)]

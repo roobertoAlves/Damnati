@@ -36,6 +36,14 @@ public class PlayerCombatManager : MonoBehaviour
     private string th_heavy_attack_02 = "TH_Heavy_Attack_02";
     private string th_heavy_attack_03 = "TH_Heavy_Attack_03";
 
+    private string th_running_attack_01 = "TH_Running_Attack_01";
+    
+    private string oh_running_attack_01 = "OH_Running_Attack_01";
+
+    private string th_jumping_attack_01 = "TH_Jumping_Attack_01";
+
+    private string oh_jumping_attack_01 = "OH_Jumping_Attack_01";
+
     private string weapon_art = "Weapon_Art";
 
     #endregion
@@ -43,7 +51,12 @@ public class PlayerCombatManager : MonoBehaviour
     private LayerMask _riposteLayer = 1 << 9;
 
     private string _lastAttack;
+
+    #region GET & SET
     public string LastAttack {get { return _lastAttack;} set { _lastAttack = value;}}
+   
+    #endregion
+
     private void Awake() 
     {
         _cameraHandler = FindObjectOfType<CameraHandler>();
@@ -104,7 +117,7 @@ public class PlayerCombatManager : MonoBehaviour
         {
             if(_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Bow)
             {
-                PerfomLBAimingAction();
+                PerformRBAimingAction();
             }
             else
             {
@@ -119,7 +132,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     #endregion
 
-    public void HandleWeaponCombo(WeaponItem weapon)
+    public void HandleLightWeaponCombo(WeaponItem weapon)
     {
         if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanDoCombo") == false)
         {
@@ -140,16 +153,6 @@ public class PlayerCombatManager : MonoBehaviour
                 _playerAnimatorManager.PlayTargetAnimation(oh_light_attack_03, true);
                 _lastAttack = oh_light_attack_03;
             }
-            else if(_lastAttack == oh_heavy_attack_01)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(oh_heavy_attack_02, true);
-                _lastAttack = oh_heavy_attack_02;
-            }
-            else if(_lastAttack == oh_heavy_attack_02)
-            {
-                _playerAnimatorManager.PlayTargetAnimation(oh_heavy_attack_03, true);
-                _lastAttack = oh_heavy_attack_03;
-            }
             else if(_lastAttack == th_light_attack_01)
             {
                 _playerAnimatorManager.PlayTargetAnimation(th_light_attack_02, true);
@@ -159,6 +162,29 @@ public class PlayerCombatManager : MonoBehaviour
             {
                 _playerAnimatorManager.PlayTargetAnimation(th_light_attack_03, true);
                 _lastAttack = th_light_attack_03;
+            }
+        }
+    }
+    public void HandleHeavyWeaponCombo(WeaponItem weapon)
+    {
+        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") == true && _playerAnimatorManager.Anim.GetBool("CanDoCombo") == false)
+        {
+            return;
+        }
+
+        if(_inputHandler.ComboFlag)
+        {
+            _playerAnimatorManager.Anim.SetBool("CanDoCombo", false);
+
+            if(_lastAttack == oh_heavy_attack_01)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(oh_heavy_attack_02, true);
+                _lastAttack = oh_heavy_attack_02;
+            }
+            else if(_lastAttack == oh_heavy_attack_02)
+            {
+                _playerAnimatorManager.PlayTargetAnimation(oh_heavy_attack_03, true);
+                _lastAttack = oh_heavy_attack_03;
             }
             else if(_lastAttack == th_heavy_attack_01)
             {
@@ -202,7 +228,36 @@ public class PlayerCombatManager : MonoBehaviour
             _lastAttack = oh_heavy_attack_01;
         }
     }
+    private void HandleRunningAttack(WeaponItem weapon)
+    {
+        _playerWeaponSlotManager.AttackingWeapon = weapon;
 
+        if(_inputHandler.TwoHandFlag)
+        {
+            _playerAnimatorManager.PlayTargetAnimation(th_running_attack_01, true);
+            _lastAttack = th_running_attack_01;
+        }
+        else
+        {
+            _playerAnimatorManager.PlayTargetAnimation(oh_running_attack_01, true);
+            _lastAttack = oh_running_attack_01;
+        }
+    }
+    private void HandleJumpingAttack(WeaponItem weapon)
+    {
+        _playerWeaponSlotManager.AttackingWeapon = weapon;
+
+        if(_inputHandler.TwoHandFlag)
+        {
+            _playerAnimatorManager.PlayTargetAnimation(th_jumping_attack_01, true);
+            _lastAttack = th_jumping_attack_01;
+        }
+        else
+        {
+            _playerAnimatorManager.PlayTargetAnimation(oh_jumping_attack_01, true);
+            _lastAttack = oh_jumping_attack_01;
+        }
+    }
     #region Attack Actions
     private void PerformLBMeleeAction()
     {
@@ -210,11 +265,19 @@ public class PlayerCombatManager : MonoBehaviour
         {
             return;
         }
+        
+        _playerAnimatorManager.Anim.SetBool("IsUsingRightHand", true);
+
+        if(_playerManager.IsSprinting)
+        {
+            HandleRunningAttack(_playerInventoryManager.rightHandWeapon);
+            return;
+        }
 
         if (_playerManager.CanDoCombo)
         {
             _inputHandler.ComboFlag = true;
-            HandleWeaponCombo(_playerInventoryManager.rightHandWeapon);
+            HandleLightWeaponCombo(_playerInventoryManager.rightHandWeapon);
             _inputHandler.ComboFlag = false;
         }
         else
@@ -224,7 +287,6 @@ public class PlayerCombatManager : MonoBehaviour
                 return;
             }
 
-            _playerAnimatorManager.Anim.SetBool("IsUsingRightHand", true);
             HandleLightAttack(_playerInventoryManager.rightHandWeapon);
         }
         
@@ -237,10 +299,18 @@ public class PlayerCombatManager : MonoBehaviour
             return;
         }
 
+        if(_playerManager.IsSprinting)
+        {
+            HandleJumpingAttack(_playerInventoryManager.rightHandWeapon);
+            return;
+        }
+
+        _playerAnimatorManager.Anim.SetBool("IsUsingRightHand", true);
+
         if (_playerManager.CanDoCombo)
         {
             _inputHandler.ComboFlag = true;
-            HandleWeaponCombo(_playerInventoryManager.rightHandWeapon);
+            HandleHeavyWeaponCombo(_playerInventoryManager.rightHandWeapon);
             _inputHandler.ComboFlag = false;
         }
         else
@@ -250,7 +320,6 @@ public class PlayerCombatManager : MonoBehaviour
                 return;
             }
 
-            _playerAnimatorManager.Anim.SetBool("IsUsingRightHand", true);
             HandleHeavyAttack(_playerInventoryManager.rightHandWeapon);
         }
         
@@ -272,21 +341,77 @@ public class PlayerCombatManager : MonoBehaviour
             _playerAnimatorManager.PlayTargetAnimation(weapon_art, true);
         }
     }
-    private void PerfomLBAimingAction()
-    {
-        _playerAnimatorManager.Anim.SetBool("IsTwoHandingWeapon", true);
-    }
     #endregion
     
-    #region Arrow Actions
+    #region Bow and Arrow Actions
 
     private void DrawArrowAction()
     {
         _playerAnimatorManager.PlayTargetAnimation("Draw Arrow", true);
         _playerAnimatorManager.Anim.SetBool("IsHoldingArrow", true);
         GameObject loadedArrow = Instantiate(_playerInventoryManager.currentAmmo.loadedItemModel, _playerWeaponSlotManager.LeftHandSlot.transform);
-    
+        Animator bowAnimator = _playerWeaponSlotManager.RightHandSlot.GetComponentInChildren<Animator>();
+        bowAnimator.SetBool("IsDrawn", true);
+        bowAnimator.Play("Draw Arrow");
         _playerEffectsManager.CurrentRangeFX = loadedArrow;
+    }
+    public void FireArrowAction()
+    {
+        ArrowInstantiationLocation arrowInstantiationLocation;
+        arrowInstantiationLocation = _playerWeaponSlotManager.RightHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+        Debug.Log(arrowInstantiationLocation.transform.parent.name);
+
+        Animator bowAnimator = _playerWeaponSlotManager.RightHandSlot.GetComponentInChildren<Animator>();
+        bowAnimator.SetBool("IsDrawn", false);
+        bowAnimator.Play("Bow Fire");
+        Destroy(_playerEffectsManager.CurrentRangeFX);
+
+        _playerAnimatorManager.PlayTargetAnimation("Bow Fire", true);
+        _playerAnimatorManager.Anim.SetBool("IsHoldingArrow", false);
+
+        GameObject liveArrow = Instantiate(_playerInventoryManager.currentAmmo.liveAmmoModel, arrowInstantiationLocation.transform.position, _cameraHandler.CameraPivotTransform.rotation);
+        Rigidbody rb = liveArrow.GetComponentInChildren<Rigidbody>();
+        RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
+        Debug.Log(damageCollider.transform.parent.name);
+        
+        if(_playerManager.IsAiming)
+        {
+            Ray ray = _cameraHandler.CameraObject.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hitPoint;
+
+            if(Physics.Raycast(ray, out hitPoint, 100.0f))
+            {
+                liveArrow.transform.LookAt(hitPoint.point);
+                Debug.Log(hitPoint.transform.name);
+            }
+            else
+            {
+                liveArrow.transform.rotation = Quaternion.Euler(_cameraHandler.CameraTransform.localEulerAngles.x, _playerManager.LockOnTransform.eulerAngles.y, 0);
+            }
+        }
+        else
+        {
+            if(_cameraHandler.CurrentLockOnTarget != null)
+            {
+                Quaternion arrowRotation = Quaternion.LookRotation(_cameraHandler.CurrentLockOnTarget.LockOnTransform.position - liveArrow.gameObject.transform.position);
+                liveArrow.transform.rotation = arrowRotation;
+            }
+            else
+            {
+                liveArrow.transform.rotation = Quaternion.Euler(_cameraHandler.CameraPivotTransform.eulerAngles.x, _playerManager.LockOnTransform.eulerAngles.y, 0);
+            }
+        }
+            rb.AddForce(liveArrow.transform.forward * _playerInventoryManager.currentAmmo.forwardVelocity);
+            rb.AddForce(liveArrow.transform.up * _playerInventoryManager.currentAmmo.upwardVelocity);
+            rb.useGravity = _playerInventoryManager.currentAmmo.useGravity;
+            rb.mass = _playerInventoryManager.currentAmmo.ammoMass;
+            liveArrow.transform.parent = null;
+
+            //SET LIVE ARROW DAMAGE
+            damageCollider.characterManager = _playerManager;
+            damageCollider.AmmoItem = _playerInventoryManager.currentAmmo;
+            damageCollider.PhysicalDamage = _playerInventoryManager.currentAmmo.physicalDamage;
+    
     }
     private void PerformRangedAction()
     {
@@ -304,6 +429,16 @@ public class PlayerCombatManager : MonoBehaviour
                 _playerAnimatorManager.PlayTargetAnimation("Shrug", true);
             }
         }
+    }
+    private void PerformRBAimingAction()
+    {
+        if(_playerManager.IsAiming)
+        {
+            return;
+        }
+
+        _inputHandler.UIManager.CrossHair.SetActive(true);
+        _playerManager.IsAiming = true;
     }
     #endregion
 

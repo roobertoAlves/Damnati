@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,36 +10,42 @@ public class CameraHandler : MonoBehaviour
     [Header("Camera Components")]
     [Space(15)]
     private Transform _targetTransform;
+    [SerializeField] private Transform _targetTransformWhileAiming;
     [SerializeField] private Transform _cameraTransform;
+    private Camera _cameraObject;
     [SerializeField] private Transform _cameraPivotTransform;
-    private Transform _myTransform;
+
     private Vector3 _cameraTransformPosition;
     [SerializeField] private LayerMask _ignoreLayers;
-    private LayerMask _enviromentLayer;
+    [SerializeField] private LayerMask _enviromentLayer;
     private Vector3 _cameraFollowVelocity = Vector3.zero;
 
 
     [Header("Camera Settings")]
     [Space(15)]
-    [SerializeField] private float _lookSpeed = 0.1f;
-    [SerializeField] private float _followSpeed = 0.1f;
-    [SerializeField] private float _pivotSpeed = 0.03f;
+
+    [SerializeField] private float _horizontalLookSpeed = 25f;
+    [SerializeField] private float _verticalLookSpeed = 25f;
+    [SerializeField] private float _followSpeed = 1f;
+    [SerializeField] private float _horizontalAimingLookSpeed = 5f;
+    [SerializeField] private float _verticalAimingLookSpeed = 5f;
 
     private float _targetPosition;
     private float _defaultPosition;
-    private float _lookAngle;
-    private float _pivotAngle;
+
 
     [Header("Camera Angle")]
     [Space(15)]
-    [SerializeField] private float _minimumPivot = -35;
-    [SerializeField] private float _maximumPivot = 35;
+    [SerializeField] private float _minimumLookUpAngle = -35;
+    [SerializeField] private float _maximumLookDownAngle = 35;
+    private float _horizontalAngle;
+    private float _verticalAngle;
 
     [Header("Camera Collision")]
     [Space(15)]
-    private float _cameraSphereRadius = 0.2f;
-    private float _cameraCollisionOffSet = 0.2f;
-    private float _minimumCollisionOffset = 0.2f;
+    [SerializeField] private float _cameraSphereRadius = 0.2f;
+    [SerializeField] private float _cameraCollisionOffSet = 0.2f;
+    [SerializeField] private float _minimumCollisionOffset = 0.2f;
 
     [Header("Lock On Settings")]
     [Space(15)]
@@ -54,20 +61,22 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] private float _unlockedPivotPosition = 1.65f;
 
     #region GET & SET
+    public Transform CameraPivotTransform { get { return _cameraPivotTransform; } set { _cameraPivotTransform = value; }}
     public Transform CameraTransform { get { return _cameraTransform; } set { _cameraTransform = value; }}
     public CharacterManager CurrentLockOnTarget { get { return _currentLockOnTarget; } set { _currentLockOnTarget = value; }}
     public CharacterManager NearestLockOnTarget { get { return _nearestLockOnTarget; } set { _nearestLockOnTarget = value; }}
     public CharacterManager LeftLockOnTarget { get { return _leftLockOnTarget; } set { _leftLockOnTarget = value; }}
     public CharacterManager RightLockOnTarget { get { return _rightLockOnTarget; } set { _rightLockOnTarget = value; }}
+    public Camera CameraObject { get { return _cameraObject; }}
     #endregion
 
     private void Awake()
     {
-        _myTransform = transform;
         _defaultPosition = _cameraTransform.localPosition.z;
         _targetTransform = FindObjectOfType<PlayerManager>().transform;
         _inputHandler = FindObjectOfType<InputHandler>();
         _playerManager = FindObjectOfType<PlayerManager>();
+        _cameraObject = GetComponentInChildren<Camera>();
     }
 
     private void Start() 
@@ -75,52 +84,104 @@ public class CameraHandler : MonoBehaviour
         _enviromentLayer = LayerMask.NameToLayer("Environment");    
     }
 
-    public void FollowTarget(float delta)
+    public void FollowTarget()
     {
-        Vector3 targetPosition = Vector3.SmoothDamp(_myTransform.position, _targetTransform.position, ref _cameraFollowVelocity, delta / _followSpeed);
-        _myTransform.position = targetPosition;
-
-        HandleCameraCollisions(delta);
-    }
-
-    public void HandleCameraRotation(float delta, float mouseXInput, float mouseYInput)
-    {
-        if(_inputHandler.LockOnFlag == false && _currentLockOnTarget == null)
+        if(_playerManager.IsAiming)
         {
-            _lookAngle += mouseXInput * _lookSpeed * delta;
-            _pivotAngle -= mouseYInput * _pivotSpeed  * delta;
-            _pivotAngle = Mathf.Clamp(_pivotAngle, _minimumPivot, _maximumPivot);
-
-            Vector3 rotation = Vector3.zero;
-            rotation.y = _lookAngle;
-            Quaternion targetRotation = Quaternion.Euler(rotation);
-            _myTransform.rotation = targetRotation;
-
-            rotation = Vector3.zero;
-            rotation.x = _pivotAngle;
-
-            targetRotation = Quaternion.Euler(rotation);
-            _cameraPivotTransform.localRotation = targetRotation;
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransformWhileAiming.position, ref _cameraFollowVelocity, Time.deltaTime * _followSpeed);
+            transform.position = targetPosition;
         }
         else
         {
-            Vector3 dir = _currentLockOnTarget.LockOnTransform.transform.position - _cameraPivotTransform.position;
-            dir.Normalize();
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransform.position, ref _cameraFollowVelocity, Time.deltaTime * _followSpeed);
+            transform.position = targetPosition;
+        }
 
-            Quaternion targetRotation = Quaternion.LookRotation(dir);
-            transform.rotation = targetRotation;
+        HandleCameraCollisions();
+    }
 
-            dir = _currentLockOnTarget.transform.position - _cameraPivotTransform.transform.position;
-            dir.Normalize();
-
-            targetRotation = Quaternion.LookRotation(dir);
-            Vector3 eulerAngles = targetRotation.eulerAngles;
-            eulerAngles.y = 0;
-            _cameraPivotTransform.localEulerAngles = eulerAngles;
+    public void HandleCameraRotation()
+    {
+        if(_inputHandler.LockOnFlag && _currentLockOnTarget != null)
+        {
+            HandleLockedCameraRotation();
+            Debug.Log("Locked Rotations");
+        }
+        else if(_playerManager.IsAiming)
+        {
+            HandleAimedCameraRotation();
+            Debug.Log("Aim Rotations");
+        }
+        else
+        {
+            HandleStandardCameraRotation();
+            Debug.Log("Standard Rotations");
         }
     }
 
-    private void HandleCameraCollisions(float delta)
+    public void HandleStandardCameraRotation()
+    {
+        _horizontalAngle += _inputHandler.HorizontalCameraMovement * _horizontalLookSpeed * Time.deltaTime;
+        _verticalAngle -= _inputHandler.VerticalCameraMovement * _verticalLookSpeed * Time.deltaTime;
+        _verticalAngle = Mathf.Clamp(_verticalAngle, _minimumLookUpAngle, _maximumLookDownAngle);
+
+        Vector3 rotation = Vector3.zero;
+        rotation.y = _horizontalAngle;
+        Quaternion targetRotation = Quaternion.Euler(rotation);
+        transform.rotation = targetRotation;
+
+        rotation = Vector3.zero;
+        rotation.x = _verticalAngle;
+
+        targetRotation = Quaternion.Euler(rotation);
+        _cameraPivotTransform.localRotation = targetRotation;
+    }
+    private void HandleLockedCameraRotation()
+    {
+        Vector3 dir = _currentLockOnTarget.transform.position - transform.position;
+        dir.Normalize();
+        dir.y = 0;
+
+        Quaternion targetRotation = Quaternion.LookRotation(dir);
+        transform.rotation = targetRotation;
+
+        dir = _currentLockOnTarget.transform.position - _cameraPivotTransform.position;
+        dir.Normalize();
+
+        targetRotation = Quaternion.LookRotation(dir);
+        Vector3 eulerAngle = targetRotation.eulerAngles;
+        eulerAngle.y = 0;
+        _cameraPivotTransform.localEulerAngles = eulerAngle;
+    }
+    private void HandleAimedCameraRotation()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        _cameraPivotTransform.rotation = Quaternion.Euler(0, 0, 0);
+
+        Quaternion targetRotationX;
+        Quaternion targetRotationY;
+
+        Vector3 cameraRotationX = Vector3.zero;
+        Vector3 cameraRotationY = Vector3.zero;
+
+        _horizontalAngle += (_inputHandler.HorizontalCameraMovement * _horizontalAimingLookSpeed) * Time.deltaTime;
+        _verticalAngle -= (_inputHandler.VerticalCameraMovement * _verticalAimingLookSpeed) * Time.deltaTime;
+
+        cameraRotationY.y = _horizontalAngle;
+        targetRotationY = Quaternion.Euler(cameraRotationY);
+        targetRotationY = Quaternion.Slerp(transform.rotation, targetRotationY, 1);
+        transform.localRotation = targetRotationY;
+
+        cameraRotationX.x = _verticalAngle;
+        targetRotationX = Quaternion.Euler(cameraRotationX);
+        targetRotationX = Quaternion.Slerp(_cameraTransform.localRotation, targetRotationX, 1);
+        _cameraTransform.localRotation = targetRotationX;
+    }
+    public void ResetAimCameraRotations()
+    {
+        _cameraTransform.localRotation = Quaternion.Euler(0, 0, 0);
+    }
+    private void HandleCameraCollisions()
     {
         _targetPosition = _defaultPosition;
         RaycastHit hit;
@@ -138,7 +199,7 @@ public class CameraHandler : MonoBehaviour
             _targetPosition = -_minimumCollisionOffset;
         }
 
-        _cameraTransformPosition.z = Mathf.Lerp(_cameraTransform.localPosition.z, _targetPosition, delta / 0.2f);
+        _cameraTransformPosition.z = Mathf.Lerp(_cameraTransform.localPosition.z, _targetPosition, Time.deltaTime / 0.2f);
         _cameraTransform.localPosition = _cameraTransformPosition;
     }
     public void HandleLockOn()

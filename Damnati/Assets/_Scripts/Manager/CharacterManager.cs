@@ -35,6 +35,7 @@ public class CharacterManager : MonoBehaviour
     private bool _isUsingRightHand;
     private bool _isUsingLeftHand;
     private bool _isTwoHandingWeapon;
+    private bool _isAiming;
     private bool _isHoldingArrow;
 
     [Header("Movement Flags")]
@@ -71,6 +72,7 @@ public class CharacterManager : MonoBehaviour
     public bool IsUsingLeftHand { get { return _isUsingLeftHand; } set { _isUsingLeftHand = value; }}
     public bool IsTwoHandingWeapon { get { return _isTwoHandingWeapon; } set { _isTwoHandingWeapon = value; }}
     public bool IsHoldingArrow { get { return _isHoldingArrow; } set { _isHoldingArrow = value; }}
+    public bool IsAiming { get { return _isAiming; } set { _isAiming = value; }}
     #endregion
 
     protected virtual void Awake()

@@ -18,6 +18,7 @@ public class InputHandler : MonoBehaviour
     private PlayerAnimatorManager _playerAnimatorManager;
     private PlayerStatsManager _playerStatsManager;
     private EnemyStatsManager _enemyStats;
+    private UIManager _uiManager;
 
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -92,6 +93,8 @@ public class InputHandler : MonoBehaviour
     public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
     public bool IsInRage { get { return _isInRage; } set { _isInRage = value; }}
     public bool FireFlag { get { return _fireFlag; } set { _fireFlag = value; }}
+    
+    public UIManager UIManager { get { return _uiManager; }}
     #endregion
 
     private void Awake() 
@@ -106,6 +109,7 @@ public class InputHandler : MonoBehaviour
         _playerStatsManager = FindObjectOfType<PlayerStatsManager>();
         _playerAnimatorManager = FindObjectOfType<PlayerAnimatorManager>();
         _enemyStats = FindObjectOfType<EnemyStatsManager>();
+        _uiManager = FindObjectOfType<UIManager>();
     }
     
     #region Input Management
@@ -189,6 +193,7 @@ public class InputHandler : MonoBehaviour
         HandleCriticalAttack();
         HandleLBInput();
         HandleAimingInput();
+        HandleFireBowInput();
         //Debug.Log("Tick Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
     }
 
@@ -199,6 +204,11 @@ public class InputHandler : MonoBehaviour
             _horizontalMovement = _walkMoveInput.x;
             _verticalMovement = _walkMoveInput.y;
             _moveAmount = Mathf.Clamp01(Mathf.Abs(_horizontalMovement) + Mathf.Abs(_verticalMovement) / 2);
+
+            if(_moveAmount > 0.5f)
+            {
+                _moveAmount = 0.5f;
+            }
         }
         else
         {
@@ -299,10 +309,12 @@ public class InputHandler : MonoBehaviour
             {
                 _blockingCollider.DisableBlockingCollider();
             }
-            if(_playerManager.IsHoldingArrow)
-            {
-                //_playerAnimatorManager.Anim.SetBool("IsAiming", false);
-            }
+        }
+        else if(_aimingInput == false)
+        {
+            _playerManager.IsAiming = false;
+            _uiManager.CrossHair.SetActive(false);
+            _cameraHandler.ResetAimCameraRotations();
         }
     }
     private void HandleAimingInput()
@@ -315,7 +327,21 @@ public class InputHandler : MonoBehaviour
             }
             else
             {
-                _aimingInput = false;
+                if(_playerManager.IsAiming)
+                {
+                    _aimingInput = false;
+                }
+            }
+        }
+    }
+    private void HandleFireBowInput()
+    {
+        if(_fireFlag)
+        {
+            if(_playerManager.IsHoldingArrow)
+            {
+                _fireFlag = false;
+                _playerCombatManager.FireArrowAction();
             }
         }
     }

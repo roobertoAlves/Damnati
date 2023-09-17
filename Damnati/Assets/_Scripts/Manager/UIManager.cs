@@ -10,6 +10,10 @@ public class UIManager : MonoBehaviour
     private PlayerInventoryManager _playerInventoryManager;
     [SerializeField] private EquipmentWindowUI _equipmentWindowUI;
 
+    [Header("HUD")]
+    [Space(15)]
+    [SerializeField] private GameObject _crossHair;
+
     [Header("UI Window")]
     [Space(15)]
     [SerializeField] private GameObject _hudWindow;
@@ -36,7 +40,7 @@ public class UIManager : MonoBehaviour
     public EquipmentWindowUI EquipmentWindowUI {get { return _equipmentWindowUI; } set { _equipmentWindowUI = value; }}
     public bool RightHandSlot01Selected {get { return _rightHandSlot01Selected; } set { _rightHandSlot01Selected = value; }}
     public bool LeftHandSlot01Selected {get { return _leftHandSlot01Selected; } set { _leftHandSlot01Selected = value; }}
-    
+    public GameObject CrossHair { get { return _crossHair; } set { _crossHair = value; }}
     #endregion
 
     private void Awake() 
@@ -47,6 +51,7 @@ public class UIManager : MonoBehaviour
     private void Start() 
     {
         _weaponsInventorySlots = _weaponInventorySlotsParent.GetComponentsInChildren<WeaponInventorySlot>();
+        _equipmentWindowUI.LoadWeaponsOnEquipmentScreen(_playerInventoryManager);
     }
     public void UpdateUI()
     {

@@ -96,59 +96,68 @@ public class PlayerLocomotionManager : MonoBehaviour
     {
         if (_playerAnimatorManager.canRotate)
         {
-            if(_inputHandler.LockOnFlag)
+            if (_playerManager.IsAiming)
             {
-                if (_inputHandler.RunFlag || _inputHandler.SBFlag)
-                {
-                    Vector3 targetDirection = Vector3.zero;
-                    targetDirection = _cameraHandler.CameraTransform.forward * _inputHandler.VerticalMovement;
-                    targetDirection += _cameraHandler.CameraTransform.right * _inputHandler.HorizontalMovement;
-                    targetDirection.Normalize();
-                    targetDirection.y = 0;
-
-                    if (targetDirection == Vector3.zero)
-                    {
-                        targetDirection = transform.forward;
-                    }
-
-                    Quaternion tr = Quaternion.LookRotation(targetDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
-
-                    transform.rotation = targetRotation;
-                }
-                else
-                {
-                    Vector3 rotationDirection = _movDirection;
-                    rotationDirection = _cameraHandler.CurrentLockOnTarget.transform.position - transform.position;
-                    rotationDirection.y = 0;
-                    rotationDirection.Normalize();
-                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
-                    transform.rotation = targetRotation;
-                }
+                Quaternion targetRotation = Quaternion.Euler(0, _cameraHandler.CameraTransform.eulerAngles.y, 0);
+                Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+                transform.rotation = playerRotation;
             }
             else
             {
-                Vector3 targetDir = Vector3.zero;
-                float moveOverride = _inputHandler.MoveAmount;
-
-                targetDir = _cameraRoot.forward * _inputHandler.VerticalMovement;
-                targetDir += _cameraRoot.right * _inputHandler.HorizontalMovement;
-
-                targetDir.Normalize();
-                targetDir.y = 0;
-
-                if (targetDir == Vector3.zero)
+                if (_inputHandler.LockOnFlag)
                 {
-                    targetDir = _myTransform.forward;
+                    if (_inputHandler.RunFlag || _inputHandler.SBFlag)
+                    {
+                        Vector3 targetDirection = Vector3.zero;
+                        targetDirection = _cameraHandler.CameraTransform.forward * _inputHandler.VerticalMovement;
+                        targetDirection += _cameraHandler.CameraTransform.right * _inputHandler.HorizontalMovement;
+                        targetDirection.Normalize();
+                        targetDirection.y = 0;
+
+                        if (targetDirection == Vector3.zero)
+                        {
+                            targetDirection = transform.forward;
+                        }
+
+                        Quaternion tr = Quaternion.LookRotation(targetDirection);
+                        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
+
+                        transform.rotation = targetRotation;
+                    }
+                    else
+                    {
+                        Vector3 rotationDirection = _movDirection;
+                        rotationDirection = _cameraHandler.CurrentLockOnTarget.transform.position - transform.position;
+                        rotationDirection.y = 0;
+                        rotationDirection.Normalize();
+                        Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, _rotationSpeed * Time.deltaTime);
+                        transform.rotation = targetRotation;
+                    }
                 }
+                else
+                {
+                    Vector3 targetDir = Vector3.zero;
+                    float moveOverride = _inputHandler.MoveAmount;
 
-                float rs = _rotationSpeed;
+                    targetDir = _cameraRoot.forward * _inputHandler.VerticalMovement;
+                    targetDir += _cameraRoot.right * _inputHandler.HorizontalMovement;
 
-                Quaternion tr = Quaternion.LookRotation(targetDir);
-                Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
+                    targetDir.Normalize();
+                    targetDir.y = 0;
 
-                _myTransform.rotation = targetRotation;
+                    if (targetDir == Vector3.zero)
+                    {
+                        targetDir = _myTransform.forward;
+                    }
+
+                    float rs = _rotationSpeed;
+
+                    Quaternion tr = Quaternion.LookRotation(targetDir);
+                    Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
+
+                    _myTransform.rotation = targetRotation;
+                }
             }
         }
     }
@@ -225,7 +234,7 @@ public class PlayerLocomotionManager : MonoBehaviour
     {
         _playerManager.IsGrounded = false;
         RaycastHit hit;
-        Vector3 origin = transform.position;
+        Vector3 origin = _myTransform.position;
         origin.y += _groundDetectionRayStartPoint;
 
         Vector3 leftFootOrigin = _leftFoot.transform.position;
@@ -234,7 +243,7 @@ public class PlayerLocomotionManager : MonoBehaviour
         Vector3 rightFootOrigin = _rightFoot.transform.position;
         rightFootOrigin.y += _groundDetectionRayStartPoint;
 
-        if(Physics.Raycast(origin, transform.forward, out hit, 0.4f))
+        if(Physics.Raycast(origin, _myTransform.forward, out hit, 0.4f))
         {
             moveDirection = Vector3.zero;
         }
