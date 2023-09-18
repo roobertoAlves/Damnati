@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class PlayerManager : CharacterManager
 {
-    private InputHandler _inputHandler;
     private Animator _animator;
     private CameraHandler _cameraHandler;
+
+    private InputHandler _inputHandler;
     private PlayerLocomotionManager _playerLocomotionManager;
+    private PlayerWeaponSlotManager _playerWeaponSlotManager;
+    private PlayerCombatManager _playerCombatManager;
     private PlayerStatsManager _playerStatsManager;
     private PlayerAnimatorManager _playerAnimatorManager;
     private PlayerEffectsManager _playerEffectsManager;
+    private PlayerInventoryManager _playerInventoryManager;
+    private PlayerEquipmentManager _playerEquipmentManager;
 
     [Header("Item Collect Components")]
     [Space(15)] 
@@ -22,6 +27,15 @@ public class PlayerManager : CharacterManager
 
     public GameObject ItemInteractableGameObject {get { return _itemInteractableGameObject; } set { _itemInteractableGameObject = value; }}
 
+    public PlayerAnimatorManager PlayerAnimator { get { return _playerAnimatorManager; }}
+    public InputHandler PlayerInput { get { return _inputHandler; }}
+    public PlayerWeaponSlotManager PlayerWeaponSlot { get { return _playerWeaponSlotManager; }}
+    public PlayerInventoryManager PlayerInventory { get { return _playerInventoryManager; }}
+    public PlayerLocomotionManager PlayerLocomotion { get { return _playerLocomotionManager; }}
+    public PlayerStatsManager PlayerStats { get { return _playerStatsManager; }}
+    public PlayerCombatManager PlayerCombat { get { return _playerCombatManager; }}
+    public PlayerEffectsManager PlayerEffects { get { return _playerEffectsManager; }}
+    public PlayerEquipmentManager PlayerEquipment { get { return _playerEquipmentManager; }}
     #endregion  
 
     protected override void Awake() 
@@ -31,11 +45,14 @@ public class PlayerManager : CharacterManager
         _inputHandler = FindObjectOfType<InputHandler>();
         _animator = GetComponent<Animator>();
         _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
-        _interactableUI = FindObjectOfType<InteractableUI>();
         _playerStatsManager = GetComponent<PlayerStatsManager>();
         _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         _playerEffectsManager = GetComponent<PlayerEffectsManager>();
-
+        _playerCombatManager = GetComponent<PlayerCombatManager>();
+        _playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
+        _playerInventoryManager = GetComponent<PlayerInventoryManager>();
+        _playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+        _interactableUI = FindObjectOfType<InteractableUI>();
     }
     private void Update()
     {
@@ -43,8 +60,6 @@ public class PlayerManager : CharacterManager
 
         IsInteracting = _animator.GetBool("IsInteracting");
         CanDoCombo = _animator.GetBool("CanDoCombo");
-        IsUsingRightHand = _animator.GetBool("IsUsingRightHand");
-        IsUsingLeftHand = _animator.GetBool("IsUsingLeftHand");
         IsInvulnerable = _animator.GetBool("IsInvulnerable");
         IsHoldingArrow = _animator.GetBool("IsHoldingArrow");
         _animator.SetBool("IsTwoHandingWeapon", IsTwoHandingWeapon);

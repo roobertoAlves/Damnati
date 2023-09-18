@@ -79,32 +79,4 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
         }
     }
 
-    #region Stamina & Rage Drain
-    public void DrainsStaminaLightAttack()
-    {
-        _playerStatsManager.StaminaDrain(Mathf.RoundToInt(AttackingWeapon.baseStamina * AttackingWeapon.lightAttackMultiplier));
-    }
-    public void DrainsStaminaHeavyAttack()
-    {
-        _playerStatsManager.StaminaDrain(Mathf.RoundToInt(AttackingWeapon.baseStamina * AttackingWeapon.heavyAttackMultiplier));
-    }
-
-
-    public void DrainRageLightAttack()
-    {
-        if(_inputHandler.IsInRage)
-        {
-            _playerStatsManager.RageDrain(Mathf.RoundToInt(AttackingWeapon.baseRage * AttackingWeapon.rageLightAttackMultiplier));
-        }
-    }
-    public void DrainRageHeavyAttack()
-    {
-        if(_inputHandler.IsInRage)
-        {
-            _playerStatsManager.RageDrain(Mathf.RoundToInt(AttackingWeapon.baseRage * AttackingWeapon.rageHeavyAttackMultiplier));
-        }
-    }
-
-    #endregion
-
 }

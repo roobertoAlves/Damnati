@@ -33,3 +33,11 @@ MonoBehaviour:
   baseRage: 15
   rageLightAttackMultiplier: 3
   rageHeavyAttackMultiplier: 5
+  tap_LB_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
+  hold_LB_Action: {fileID: 0}
+  tap_RB_Action: {fileID: 0}
+  hold_RB_Action: {fileID: 0}
+  tap_RT_Action: {fileID: 0}
+  hold_RT_Action: {fileID: 0}
+  tap_LT_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
+  hold_LT_Action: {fileID: 0}

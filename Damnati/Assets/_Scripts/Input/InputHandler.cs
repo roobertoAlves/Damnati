@@ -28,8 +28,8 @@ public class InputHandler : MonoBehaviour
 
     private bool _runInput;
     private bool _sbInput;
-    private bool _rbAttackInput;
-    private bool _lbAttackInput;
+    private bool _rbInput;
+    private bool _lbInput;
     private bool _ltInput;
     private bool _criticalAttackInput;
     private bool _thEquipInput;
@@ -41,7 +41,8 @@ public class InputHandler : MonoBehaviour
     private bool _lStickInput;
     private bool _caInput;
     private bool _blockInput;
-    private bool _aimingInput;
+    private bool _rbHoldInput;
+    private bool _lbHoldInput;
 
     #endregion
 
@@ -75,19 +76,21 @@ public class InputHandler : MonoBehaviour
 
     public bool SBFlag { get { return _sbInput; } set { _sbInput = value; }}
     public bool RunFlag { get { return _runInput; } set { _runInput = value; }}
-    public bool RBAttackFlag { get { return _rbAttackInput; } set { _rbAttackInput = value; }}
-    public bool LBAttackFlag { get { return _lbAttackInput; } set { _lbAttackInput = value; }}
+    public bool RBInput { get { return _rbInput; } set { _rbInput = value; }}
+    public bool LBInput { get { return _lbInput; } set { _lbInput = value; }}
     public bool THEquipFlag { get { return _thEquipInput; } set { _thEquipInput = value; }}
     public bool ComboFlag { get { return _comboFlag; } set { _comboFlag = value; }}
     public bool InteractInput { get { return _interactInput; } set { _interactInput = value; }}
     public bool PauseInput { get { return _pauseInput; } set { _pauseInput = value; }}
     public bool CriticalAttackFlag { get { return _criticalAttackInput; } set { _criticalAttackInput = value; }}
     public bool LockOnFlag { get { return _lockOnFlag; } set { _lockOnFlag = value; }}
+   
     public bool RightStickInput { get { return _rStickInput; } set { _rStickInput = value; }}
     public bool LeftStickInput { get { return _lStickInput; } set { _lStickInput = value; }}
+    public bool RBHoldInput { get { return _rbHoldInput; } set { _rbHoldInput = value; }}
+    public bool LBHoldInput { get { return _lbHoldInput; } set { _lbHoldInput = value; }}
     public bool CriticalAttackInput { get { return _caInput; } set { _caInput = value; }}
     public bool BlockInput { get { return _blockInput; } set { _blockInput = value; }}
-    public bool AimingInput { get { return _aimingInput; } set { _aimingInput = value; }}
     public bool TwoHandFlag { get { return _twoHandFlag; } set { _twoHandFlag = value; }}
     public bool IsDodge { get { return _isDodge; } set { _isDodge = value; }}
     public bool IsHitEnemy { get { return _isHitEnemy; } set { _isHitEnemy = value; }}
@@ -186,18 +189,25 @@ public class InputHandler : MonoBehaviour
             return;
         }
         
-        HandleMoveInput(delta);
+        HandleMoveInput();
+
+        HandleHoldRBInput();
+        HandleFireBowInput();
+
+        HandleHoldRBInput();
+        HandleHoldLBInput();
+        HandleTapLBInput();
+        HandleTapRBInput();
+        HandleTapLTInput();
+
         HandleLockOnInput();
-        HandleCombatInput(delta);
         HandleTwoHandWeapon();
         HandleCriticalAttack();
-        HandleLBInput();
-        HandleAimingInput();
-        HandleFireBowInput();
+
         //Debug.Log("Tick Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
     }
 
-    private void HandleMoveInput(float delta)
+    private void HandleMoveInput()
     {
         if(_playerManager.IsHoldingArrow)
         {
@@ -266,86 +276,84 @@ public class InputHandler : MonoBehaviour
 
         _cameraHandler.SetCameraHeight();
     }
-    private void HandleCombatInput(float delta)
+
+    private void HandleTapLBInput()
     {
-        if(_lbAttackInput)
+        if(_lbInput)
         {
-            _playerCombatManager.HandleLBAction();
+            _playerManager.UpdateWhichHandCharacterIsUsing(true);
+            _playerInventory.CurrentItemBeingUsed = _playerInventory.rightHandWeapon;
+            _playerInventory.rightHandWeapon.tap_LB_Action.PerformAction(_playerManager);
         }
-        if(_rbAttackInput)
+
+    }
+    private void HandleTapRBInput()
+    {
+        if(_rbInput)
         {
-            _playerCombatManager.HandleRBAction();
+            _playerManager.UpdateWhichHandCharacterIsUsing(true);
+            _playerInventory.CurrentItemBeingUsed = _playerInventory.rightHandWeapon;
+            _playerInventory.rightHandWeapon.tap_RB_Action.PerformAction(_playerManager);
         }
-        
+    }
+    private void HandleTapLTInput()
+    {
         if(_ltInput)
         {
-            if(_thEquipInput)
+            if(_playerManager.IsTwoHandingWeapon)
             {
-
+                _playerManager.UpdateWhichHandCharacterIsUsing(true);
+                _playerInventory.CurrentItemBeingUsed = _playerInventory.rightHandWeapon;
+                _playerInventory.rightHandWeapon.tap_LT_Action.PerformAction(_playerManager);
             }
             else
             {
-                _playerCombatManager.HandleLTAction();
+                _playerManager.UpdateWhichHandCharacterIsUsing(false);
+                _playerInventory.CurrentItemBeingUsed = _playerInventory.leftHandWeapon;
+                _playerInventory.leftHandWeapon.tap_LT_Action.PerformAction(_playerManager);
             }
         }
     }
-    private void HandleLBInput()
+    private void HandleHoldLBInput()
     {
         if(_playerManager.IsInAir || _playerManager.IsSprinting)
         {
-            _blockInput = false;
+            _rbInput = false;
             return;
         }
 
-        if(_blockInput)
+        if(_lbInput)
         {
-            _playerCombatManager.HandleRTAction();
-        }
-        else if(_blockInput == false)
-        {
-            _playerManager.IsBlocking = false;
-
-            if(_blockingCollider.BlockCollider.enabled)
+            if (_playerManager.IsTwoHandingWeapon)
             {
-                _blockingCollider.DisableBlockingCollider();
-            }
-        }
-        else if(_aimingInput == false)
-        {
-            _playerManager.IsAiming = false;
-            _uiManager.CrossHair.SetActive(false);
-            _cameraHandler.ResetAimCameraRotations();
-        }
-    }
-    private void HandleAimingInput()
-    {
-        if(_aimingInput)
-        {
-            if(_playerInventory.rightHandWeapon.weaponType == WeaponType.Bow)
-            {
-                _playerCombatManager.HandleArrowActions();
+                _playerManager.UpdateWhichHandCharacterIsUsing(true);
+                _playerInventory.CurrentItemBeingUsed = _playerInventory.rightHandWeapon;
+                _playerInventory.rightHandWeapon.hold_LB_Action.PerformAction(_playerManager);
             }
             else
             {
-                if(_playerManager.IsAiming)
-                {
-                    _aimingInput = false;
-                }
+                _playerManager.UpdateWhichHandCharacterIsUsing(false);
+                _playerInventory.CurrentItemBeingUsed = _playerInventory.leftHandWeapon;
+                _playerInventory.leftHandWeapon.hold_LB_Action.PerformAction(_playerManager);
             }
         }
-    }
-    private void HandleFireBowInput()
-    {
-        if(_fireFlag)
+        else if(_lbInput == false)
         {
-            if(_playerManager.IsHoldingArrow)
+            if(_playerManager.IsAiming)
             {
-                _fireFlag = false;
-                _playerCombatManager.FireArrowAction();
+                _playerManager.IsAiming = false;
+                _uiManager.CrossHair.SetActive(false);
+                _cameraHandler.ResetAimCameraRotations();
+            }
+            
+            if(_blockingCollider.BlockCollider.enabled)
+            {
+                _playerManager.IsBlocking = false;
+                _blockingCollider.DisableBlockingCollider();
             }
         }
     }
-    public void HandleTwoHandWeapon()
+    private void HandleTwoHandWeapon()
     {
         if(_thEquipInput)
         {
@@ -364,6 +372,31 @@ public class InputHandler : MonoBehaviour
                 _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.rightHandWeapon, false);
                 _playerWeaponSlotManager.LoadWeaponOnSlot(_playerInventory.leftHandWeapon, true);
                 _playerWeaponSlotManager.LoadTwoHandIKTargets(false);
+            }
+        }
+    } 
+    private void HandleHoldRBInput()
+    {
+        if(_rbHoldInput)
+        {
+            if(_playerInventory.rightHandWeapon.weaponType == WeaponType.Bow)
+            {
+                _playerCombatManager.HandleHoldRBAction();
+            }
+            else
+            {
+                _rbHoldInput = false;
+            }
+        }
+    }
+    private void HandleFireBowInput()
+    {
+        if(_fireFlag)
+        {
+            if(_playerManager.IsHoldingArrow)
+            {
+                _fireFlag = false;
+                _playerCombatManager.FireArrowAction();
             }
         }
     }
@@ -408,12 +441,12 @@ public class InputHandler : MonoBehaviour
 
     private void OnLightAttack(InputAction.CallbackContext ctx)
     {
-        _lbAttackInput = ctx.ReadValueAsButton();
+        _lbInput = ctx.ReadValueAsButton();
     }
 
     private void OnHeavyAttack(InputAction.CallbackContext ctx)
     {
-        _rbAttackInput = ctx.ReadValueAsButton();
+        _rbInput = ctx.ReadValueAsButton();
     }
     private void OnWeaponArt(InputAction.CallbackContext ctx)
     {
@@ -421,7 +454,7 @@ public class InputHandler : MonoBehaviour
     }
     private void OnAiming(InputAction.CallbackContext ctx)
     {
-        _aimingInput = ctx.ReadValueAsButton();
+        _rbHoldInput = ctx.ReadValueAsButton();
     }
     private void OnCriticalAttack(InputAction.CallbackContext ctx)
     {

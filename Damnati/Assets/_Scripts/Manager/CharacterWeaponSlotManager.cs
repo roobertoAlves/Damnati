@@ -25,9 +25,6 @@ public class CharacterWeaponSlotManager : MonoBehaviour
     public DamageCollider LeftHandDamageCollider;
     public DamageCollider RightHandDamageCollider;
 
-    [Header("Attacking Weapon")]
-    [Space(15)]
-    public WeaponItem AttackingWeapon;
 
     [Header("Hand IK Targets")]
     [Space(15)]
@@ -193,7 +190,8 @@ public class CharacterWeaponSlotManager : MonoBehaviour
     
     public virtual void GrantWeaponAttackingPoiseBonus()
     {
-        characterStatsManager.TotalPoiseDefense = characterStatsManager.TotalPoiseDefense + AttackingWeapon.offensivePoiseBonus;
+        WeaponItem currentWeaponBeingUsed = characterInventoryManager.CurrentItemBeingUsed as WeaponItem;
+        characterStatsManager.TotalPoiseDefense = characterStatsManager.TotalPoiseDefense + currentWeaponBeingUsed.offensivePoiseBonus;
     }
     public virtual void ResetWeaponAttackingPoiseBonus()
     {

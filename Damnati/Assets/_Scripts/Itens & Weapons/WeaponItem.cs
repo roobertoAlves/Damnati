@@ -49,4 +49,18 @@ public class WeaponItem : Item
     public float rageLightAttackMultiplier;
     public float rageHeavyAttackMultiplier;  
 
+    [Header("Item Actions")]
+    [Space(15)]
+    public ItemActions tap_LB_Action;
+    public ItemActions hold_LB_Action;
+
+    public ItemActions tap_RB_Action;
+    public ItemActions hold_RB_Action;
+
+    public ItemActions tap_RT_Action;
+    public ItemActions hold_RT_Action;
+    
+    public ItemActions tap_LT_Action;
+    public ItemActions hold_LT_Action;
+
 }

@@ -93,8 +93,6 @@ public class EnemyManager : CharacterManager
         HandleRecoveryTimer();
         HandleStateMachine();
         
-        IsUsingLeftHand = _enemyAnimatorManager.Anim.GetBool("IsUsingLeftHand");
-        IsUsingRightHand = _enemyAnimatorManager.Anim.GetBool("IsUsingRightHand");
         IsRotatingWithRootMotion = _enemyAnimatorManager.Anim.GetBool("IsRotatingWithRootMotion");
         IsInteracting = _enemyAnimatorManager.Anim.GetBool("IsInteracting");
         _isPhaseShifting = _enemyAnimatorManager.Anim.GetBool("IsPhaseShifting");

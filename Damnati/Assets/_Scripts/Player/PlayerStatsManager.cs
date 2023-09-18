@@ -172,12 +172,12 @@ public class PlayerStatsManager : CharacterStatsManager
         {
             _rageRegenerationTimer += Time.deltaTime;
 
-            if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.LBAttackFlag && _inputHandler.IsHitEnemy)
+            if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.LBInput && _inputHandler.IsHitEnemy)
             {
                 _currentRage += _rageRegenerationLAAmount * Time.deltaTime;
                 _rageBar.SetCurrentRage(Mathf.RoundToInt(_currentRage));
             }
-            else if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.RBAttackFlag && _inputHandler.IsHitEnemy)
+            else if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.RBInput && _inputHandler.IsHitEnemy)
             {
                 _currentRage += _rageRegenerationHAAmount * Time.deltaTime;
                 _rageBar.SetCurrentRage(Mathf.RoundToInt(_currentRage));

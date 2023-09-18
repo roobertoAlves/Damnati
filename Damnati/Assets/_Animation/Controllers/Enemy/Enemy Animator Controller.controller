@@ -924,6 +924,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e377b04ec0acad4a9cfff955f5fb1b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isUsingRightHandBool: IsUsingRightHand
+  _isUsingRightHandStatus: 0
+  _isUsingLeftHandBool: IsUsingLeftHand
+  _isUsingLeftHandStatus: 0
   _isInteractingBool: IsInteracting
   _isInteractingStatus: 0
   _isRotatingWithRootMotionBool: IsRotatingWithRootMotion
@@ -934,10 +938,6 @@ MonoBehaviour:
   _isMirroredStatus: 0
   _isInvulnerableBool: IsInvulnerable
   _isInvulnerableStatus: 0
-  _isUsingRightHandBool: IsUsingRightHand
-  _isUsingRightHandStatus: 0
-  _isUsingLeftHandBool: IsUsingLeftHand
-  _isUsingLeftHandStatus: 0
 --- !u!1107 &-3304233377766519155
 AnimatorStateMachine:
   serializedVersion: 6
@@ -1376,6 +1376,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3e1a2cd3bf68924fba60b4f9cd096cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isUsingRightHandBool: IsUsingRightHand
+  _isUsingRightHandStatus: 0
+  _isUsingLeftHandBool: IsUsingLeftHand
+  _isUsingLeftHandStatus: 0
   _isInteractingBool: IsInteracting
   _isInteractingStatus: 0
   _isRotatingWithRootMotionBool: IsRotatingWithRootMotion
@@ -1386,10 +1390,6 @@ MonoBehaviour:
   _isMirroredStatus: 0
   _isInvulnerableBool: IsInvulnerable
   _isInvulnerableStatus: 0
-  _isUsingRightHandBool: IsUsingRightHand
-  _isUsingRightHandStatus: 0
-  _isUsingLeftHandBool: IsUsingLeftHand
-  _isUsingLeftHandStatus: 0
   _isPhaseShifting: IsPhaseShifting
   _isPhaseShiftingStatus: 0
 --- !u!1101 &-1379560645899661615
@@ -1575,18 +1575,6 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: IsUsingRightHand
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: IsInvulnerable
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
   - m_Name: IsInAir
     m_Type: 4
     m_DefaultFloat: 0
@@ -1630,6 +1618,12 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: IsTwoHandingWeapon
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: IsInvulnerable
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
