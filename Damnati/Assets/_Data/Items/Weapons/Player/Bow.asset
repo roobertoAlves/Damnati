@@ -37,10 +37,10 @@ MonoBehaviour:
   hold_LB_Action: {fileID: 0}
   tap_RB_Action: {fileID: 0}
   hold_RB_Action: {fileID: 11400000, guid: 508f042036c97d148adcfa62ffd644f1, type: 2}
-  release_RB_Action: {fileID: 11400000, guid: e660abedddad1b74e8776f6dea371ecd, type: 2}
+  release_RB_Action: {fileID: 0}
   tap_RT_Action: {fileID: 0}
   hold_RT_Action: {fileID: 0}
   hold_LT_Action: {fileID: 0}
   hold_F_Action: {fileID: 0}
-  tap_Z_Action: {fileID: 0}
+  tap_Z_Action: {fileID: 11400000, guid: e660abedddad1b74e8776f6dea371ecd, type: 2}
   hold_G_Action: {fileID: 0}

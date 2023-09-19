@@ -259,13 +259,22 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Aiming"",
-                    ""type"": ""PassThrough"",
+                    ""name"": ""Hold RB "",
+                    ""type"": ""Value"",
                     ""id"": ""76762242-fad6-4775-a73d-1dc000898dd8"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Hold LB"",
+                    ""type"": ""Value"",
+                    ""id"": ""daf40032-7fc2-4d12-9b97-85ffddf99335"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -397,7 +406,18 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Aiming"",
+                    ""action"": ""Hold RB "",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f58aa2a-b991-4b74-a34d-deea157bd934"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold LB"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -425,7 +445,8 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_PlayerActions_Run = m_PlayerActions.FindAction("Run", throwIfNotFound: true);
         m_PlayerActions_CameraLockOn = m_PlayerActions.FindAction("CameraLockOn", throwIfNotFound: true);
         m_PlayerActions_Block = m_PlayerActions.FindAction("Block", throwIfNotFound: true);
-        m_PlayerActions_Aiming = m_PlayerActions.FindAction("Aiming", throwIfNotFound: true);
+        m_PlayerActions_HoldRB = m_PlayerActions.FindAction("Hold RB ", throwIfNotFound: true);
+        m_PlayerActions_HoldLB = m_PlayerActions.FindAction("Hold LB", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -553,7 +574,8 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Run;
     private readonly InputAction m_PlayerActions_CameraLockOn;
     private readonly InputAction m_PlayerActions_Block;
-    private readonly InputAction m_PlayerActions_Aiming;
+    private readonly InputAction m_PlayerActions_HoldRB;
+    private readonly InputAction m_PlayerActions_HoldLB;
     public struct PlayerActionsActions
     {
         private @GameControls m_Wrapper;
@@ -569,7 +591,8 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_PlayerActions_Run;
         public InputAction @CameraLockOn => m_Wrapper.m_PlayerActions_CameraLockOn;
         public InputAction @Block => m_Wrapper.m_PlayerActions_Block;
-        public InputAction @Aiming => m_Wrapper.m_PlayerActions_Aiming;
+        public InputAction @HoldRB => m_Wrapper.m_PlayerActions_HoldRB;
+        public InputAction @HoldLB => m_Wrapper.m_PlayerActions_HoldLB;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -612,9 +635,12 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Block.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
                 @Block.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
                 @Block.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
-                @Aiming.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAiming;
-                @Aiming.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAiming;
-                @Aiming.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAiming;
+                @HoldRB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
+                @HoldRB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
+                @HoldRB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
+                @HoldLB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
+                @HoldLB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
+                @HoldLB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -652,9 +678,12 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Block.started += instance.OnBlock;
                 @Block.performed += instance.OnBlock;
                 @Block.canceled += instance.OnBlock;
-                @Aiming.started += instance.OnAiming;
-                @Aiming.performed += instance.OnAiming;
-                @Aiming.canceled += instance.OnAiming;
+                @HoldRB.started += instance.OnHoldRB;
+                @HoldRB.performed += instance.OnHoldRB;
+                @HoldRB.canceled += instance.OnHoldRB;
+                @HoldLB.started += instance.OnHoldLB;
+                @HoldLB.performed += instance.OnHoldLB;
+                @HoldLB.canceled += instance.OnHoldLB;
             }
         }
     }
@@ -679,6 +708,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnCameraLockOn(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
-        void OnAiming(InputAction.CallbackContext context);
+        void OnHoldRB(InputAction.CallbackContext context);
+        void OnHoldLB(InputAction.CallbackContext context);
     }
 }

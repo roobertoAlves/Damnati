@@ -237,13 +237,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Aiming",
-                    "type": "PassThrough",
+                    "name": "Hold RB ",
+                    "type": "Value",
                     "id": "76762242-fad6-4775-a73d-1dc000898dd8",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Hold LB",
+                    "type": "Value",
+                    "id": "daf40032-7fc2-4d12-9b97-85ffddf99335",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -375,7 +384,18 @@
                     "interactions": "Hold",
                     "processors": "",
                     "groups": "",
-                    "action": "Aiming",
+                    "action": "Hold RB ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2f58aa2a-b991-4b74-a34d-deea157bd934",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hold LB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

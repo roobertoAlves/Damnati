@@ -6843,7 +6843,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080932704}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalPosition: {x: 0, y: 0, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8640,8 +8640,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentItemBeingUsed: {fileID: 0}
-  rightHandWeapon: {fileID: 0}
-  leftHandWeapon: {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}
+  rightHandWeapon: {fileID: 11400000, guid: 24474f8663adf6c4a8bc1463ae965641, type: 2}
+  leftHandWeapon: {fileID: 0}
   currentAmmo: {fileID: 11400000, guid: a39c7c93cf1873642a06b2be99ff0671, type: 2}
   weaponsInRightHandSlots:
   - {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}

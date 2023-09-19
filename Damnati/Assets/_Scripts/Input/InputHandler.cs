@@ -137,9 +137,9 @@ public class InputHandler : MonoBehaviour
             _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
             _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
 
-            _gameControls.PlayerActions.Aiming.performed += OnAiming;
-            _gameControls.PlayerActions.Aiming.canceled += OnAiming;
-            _gameControls.PlayerActions.Aiming.canceled += ctx => _fireFlag = true;
+            _gameControls.PlayerActions.HoldRB.performed += OnAiming;
+            _gameControls.PlayerActions.HoldRB.canceled += OnAiming;
+            _gameControls.PlayerActions.HoldRB.canceled += ctx => _fireFlag = true;
 
             _gameControls.PlayerMovement.Walk.performed += OnWalk;
             _gameControls.PlayerMovement.Walk.canceled += OnWalk;
@@ -195,7 +195,6 @@ public class InputHandler : MonoBehaviour
         
         HandleMoveInput();
 
-        HandleHoldRBInput();
         HandleTapRBInput();
         HandleReleaseRBInput();
         HandleTapLBInput();
@@ -203,6 +202,7 @@ public class InputHandler : MonoBehaviour
         HandleTapZInput();
         HandleTapGInput();
         HandleHoldFInput();
+        HandleHoldRBInput();
 
         HandleLockOnInput();
         HandleTwoHandInput();
