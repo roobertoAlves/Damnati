@@ -33,3 +33,14 @@ MonoBehaviour:
   baseRage: 15
   rageLightAttackMultiplier: 3
   rageHeavyAttackMultiplier: 5
+  tap_LB_Action: {fileID: 0}
+  hold_LB_Action: {fileID: 0}
+  tap_RB_Action: {fileID: 0}
+  hold_RB_Action: {fileID: 0}
+  release_RB_Action: {fileID: 0}
+  tap_RT_Action: {fileID: 0}
+  hold_RT_Action: {fileID: 0}
+  hold_LT_Action: {fileID: 0}
+  hold_F_Action: {fileID: 0}
+  tap_Z_Action: {fileID: 0}
+  hold_G_Action: {fileID: 0}

@@ -92,7 +92,7 @@ public class PlayerLocomotionManager : MonoBehaviour
 
     #region Player Actions
 
-    public void HandleRotation(float delta)
+    public void HandleRotation()
     {
         if (_playerAnimatorManager.canRotate)
         {
@@ -154,14 +154,14 @@ public class PlayerLocomotionManager : MonoBehaviour
                     float rs = _rotationSpeed;
 
                     Quaternion tr = Quaternion.LookRotation(targetDir);
-                    Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * delta);
+                    Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * Time.deltaTime);
 
                     _myTransform.rotation = targetRotation;
                 }
             }
         }
     }
-    public void HandleMovement(float delta)
+    public void HandleMovement()
     {
         if(_inputHandler.SBFlag || _playerManager.IsInteracting)
         {
@@ -199,7 +199,7 @@ public class PlayerLocomotionManager : MonoBehaviour
             _playerAnimatorManager.UpdateAnimatorValues(_inputHandler.MoveAmount, 0, _playerManager.IsSprinting);
         }
     }
-    public void HandleDodge(float delta)
+    public void HandleDodge()
     {
         if(_playerAnimatorManager.Anim.GetBool("IsInteracting") 
             || !_playerAnimatorManager.HasAnimator 
@@ -210,6 +210,8 @@ public class PlayerLocomotionManager : MonoBehaviour
 
         if(_inputHandler.SBFlag)
         {
+            _inputHandler.SBFlag = false; 
+
             _movDirection = _cameraRoot.forward * _inputHandler.VerticalMovement;
             _movDirection += _cameraRoot.right * _inputHandler.HorizontalMovement;
 
@@ -230,7 +232,7 @@ public class PlayerLocomotionManager : MonoBehaviour
             }
         }
     }
-    public void HandleGravity(float delta, Vector3 moveDirection)
+    public void HandleGravity(Vector3 moveDirection)
     {
         _playerManager.IsGrounded = false;
         RaycastHit hit;

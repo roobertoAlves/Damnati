@@ -13,12 +13,14 @@ public class LightAttackAction : ItemActions
         if(player.IsSprinting)
         {
             HandleRunningAttack(player);
+            Debug.Log("correndo");
             return;
         }
 
         if(player.CanDoCombo)
         {
             player.PlayerInput.ComboFlag = true;
+            Debug.Log("combo");
             HandleLightWeaponCombo(player);
             player.PlayerInput.ComboFlag = false;
         }
@@ -30,6 +32,7 @@ public class LightAttackAction : ItemActions
                 return;
             }
 
+            Debug.Log("ataque");
             HandleLightAttack(player);
         }
     }
@@ -47,11 +50,11 @@ public class LightAttackAction : ItemActions
                 player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Light_Attack_01, true);
                 player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Light_Attack_01;
             }
-        }
-        else
-        {
-            player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_01, true);
-            player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_01;
+            else
+            {
+                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_01, true);
+                player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_01;
+            }
         }
     }
     private void HandleRunningAttack(PlayerManager player)

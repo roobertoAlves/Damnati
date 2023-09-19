@@ -36,6 +36,7 @@ public class PlayerManager : CharacterManager
     public PlayerCombatManager PlayerCombat { get { return _playerCombatManager; }}
     public PlayerEffectsManager PlayerEffects { get { return _playerEffectsManager; }}
     public PlayerEquipmentManager PlayerEquipment { get { return _playerEquipmentManager; }}
+    public CameraHandler PlayerCamera { get { return _cameraHandler; }}
     #endregion  
 
     protected override void Awake() 
@@ -69,7 +70,7 @@ public class PlayerManager : CharacterManager
 
         _inputHandler.TickInput(delta);
         _playerAnimatorManager.canRotate = _animator.GetBool("CanRotate");
-        _playerLocomotionManager.HandleDodge(delta);
+        _playerLocomotionManager.HandleDodge();
         _playerStatsManager.RegenerateStamina();
 
         CheckForInteractableObject();
@@ -82,11 +83,10 @@ public class PlayerManager : CharacterManager
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        float delta = Time.fixedDeltaTime;
 
-        _playerLocomotionManager.HandleGravity(delta, _playerLocomotionManager.MoveDirection);
-        _playerLocomotionManager.HandleMovement(delta);
-        _playerLocomotionManager.HandleRotation(delta);
+        _playerLocomotionManager.HandleGravity(_playerLocomotionManager.MoveDirection);
+        _playerLocomotionManager.HandleMovement();
+        _playerLocomotionManager.HandleRotation();
         _playerEffectsManager.HandleAllBuildUpEffects();
     }
     
@@ -95,8 +95,6 @@ public class PlayerManager : CharacterManager
         _inputHandler.SBFlag = false;
 
         HandleSprinting();
-
-        float delta = Time.deltaTime;
         
         if (_cameraHandler != null)
         {

@@ -683,7 +683,7 @@ Transform:
   m_GameObject: {fileID: 171112048}
   m_LocalRotation: {x: -0, y: 0.7586332, z: -0, w: 0.6515179}
   m_LocalPosition: {x: 0.299, y: 0.364, z: 5.414}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 560812386}
@@ -735,7 +735,6 @@ MonoBehaviour:
   BackSlot: {fileID: 0}
   LeftHandDamageCollider: {fileID: 0}
   RightHandDamageCollider: {fileID: 0}
-  AttackingWeapon: {fileID: 0}
 --- !u!114 &171112052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,6 +884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4d5c4931afd85438fab750c0b91d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentItemBeingUsed: {fileID: 0}
   rightHandWeapon: {fileID: 11400000, guid: c66f05ab9756faa418aa77b412f23bb1, type: 2}
   leftHandWeapon: {fileID: 0}
   currentAmmo: {fileID: 0}
@@ -8615,7 +8615,6 @@ MonoBehaviour:
   BackSlot: {fileID: 0}
   LeftHandDamageCollider: {fileID: 0}
   RightHandDamageCollider: {fileID: 0}
-  AttackingWeapon: {fileID: 0}
 --- !u!114 &5079598194609435852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8640,7 +8639,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d8e6786f1c8724c8ad69042b09dfef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightHandWeapon: {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}
+  _currentItemBeingUsed: {fileID: 0}
+  rightHandWeapon: {fileID: 0}
   leftHandWeapon: {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}
   currentAmmo: {fileID: 11400000, guid: a39c7c93cf1873642a06b2be99ff0671, type: 2}
   weaponsInRightHandSlots:

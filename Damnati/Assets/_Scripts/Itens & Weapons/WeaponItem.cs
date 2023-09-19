@@ -53,14 +53,26 @@ public class WeaponItem : Item
     [Space(15)]
     public ItemActions tap_LB_Action;
     public ItemActions hold_LB_Action;
-
     public ItemActions tap_RB_Action;
     public ItemActions hold_RB_Action;
-
+    public ItemActions release_RB_Action;
     public ItemActions tap_RT_Action;
     public ItemActions hold_RT_Action;
-    
-    public ItemActions tap_LT_Action;
     public ItemActions hold_LT_Action;
+    public ItemActions hold_F_Action;
+    public ItemActions tap_Z_Action;
+    public ItemActions hold_G_Action;
+
+    
+    //[Header("TWO Handed Item Actions")]
+    //[Space(15)]
+    //public ItemActions th_hold_RB_Action;
+    //public ItemActions th_tap_RB_Action;
+    //public ItemActions th_tap_LB_Action;
+    //public ItemActions th_hold_LB_Action;
+    //public ItemActions th_tap_RT_Action;
+    //public ItemActions th_hold_RT_Action;
+    //public ItemActions th_tap_LT_Action;
+    //public ItemActions th_hold_LT_Action;
 
 }

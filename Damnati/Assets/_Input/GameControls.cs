@@ -383,7 +383,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""9ff47bc2-b219-466e-921b-732e1acf4879"",
                     ""path"": ""<Keyboard>/g"",
-                    ""interactions"": ""Tap"",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Critical Attack"",

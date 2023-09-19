@@ -35,9 +35,11 @@ MonoBehaviour:
   rageHeavyAttackMultiplier: 5
   tap_LB_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
   hold_LB_Action: {fileID: 0}
-  tap_RB_Action: {fileID: 0}
+  tap_RB_Action: {fileID: 11400000, guid: 55f88e159b0211a4db2ac5866580e058, type: 2}
   hold_RB_Action: {fileID: 0}
+  release_RB_Action: {fileID: 0}
   tap_RT_Action: {fileID: 0}
   hold_RT_Action: {fileID: 0}
-  tap_LT_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
   hold_LT_Action: {fileID: 0}
+  tap_Z_Action: {fileID: 0}
+  hold_G_Action: {fileID: 11400000, guid: 69957a617eba5ee4091abd7d5aaf0d1d, type: 2}
