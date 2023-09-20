@@ -51,28 +51,32 @@ public class WeaponItem : Item
 
     [Header("Item Actions")]
     [Space(15)]
-    public ItemActions tap_LB_Action;
-    public ItemActions hold_LB_Action;
-    public ItemActions tap_RB_Action;
-    public ItemActions hold_RB_Action;
-    public ItemActions release_RB_Action;
-    public ItemActions tap_RT_Action;
-    public ItemActions hold_RT_Action;
-    public ItemActions hold_LT_Action;
-    public ItemActions hold_F_Action;
-    public ItemActions tap_Z_Action;
-    public ItemActions hold_G_Action;
+    public ItemActions oh_tap_LB_Action;
+    public ItemActions oh_hold_LB_Action;
+    public ItemActions oh_tap_RB_Action;
+    public ItemActions oh_hold_RB_Action;
+    public ItemActions oh_release_RB_Action;
+    public ItemActions oh_tap_RT_Action;
+    public ItemActions oh_hold_RT_Action;
+    public ItemActions oh_hold_LT_Action;
+    public ItemActions oh_hold_F_Action;
+    public ItemActions oh_tap_Z_Action;
+    public ItemActions oh_hold_G_Action;
 
     
-    //[Header("TWO Handed Item Actions")]
-    //[Space(15)]
-    //public ItemActions th_hold_RB_Action;
-    //public ItemActions th_tap_RB_Action;
-    //public ItemActions th_tap_LB_Action;
-    //public ItemActions th_hold_LB_Action;
-    //public ItemActions th_tap_RT_Action;
-    //public ItemActions th_hold_RT_Action;
-    //public ItemActions th_tap_LT_Action;
-    //public ItemActions th_hold_LT_Action;
+    [Header("TWO Handed Item Actions")]
+    [Space(15)]
+    public ItemActions th_tap_LB_Action;
+    public ItemActions th_hold_LB_Action;
+    public ItemActions th_tap_RB_Action;
+    public ItemActions th_hold_RB_Action;
+    public ItemActions th_release_RB_Action;
+    public ItemActions th_tap_RT_Action;
+    public ItemActions th_hold_RT_Action;
+    public ItemActions th_hold_LT_Action;
+    public ItemActions th_hold_F_Action;
+    public ItemActions th_tap_Z_Action;
+    public ItemActions th_hold_G_Action;
+
 
 }

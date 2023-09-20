@@ -54,7 +54,7 @@ public class RangedProjectileDamageCollider : DamageCollider
                 }
                 else
                 {
-                    enemyStats.TakeDamage(PhysicalDamage, 0, currentDamageAnimation);
+                    enemyStats.TakeDamage(PhysicalDamage, 0, currentDamageAnimation, characterManager);
                 }
             }
         }

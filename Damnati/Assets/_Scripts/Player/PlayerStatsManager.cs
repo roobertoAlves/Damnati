@@ -54,14 +54,14 @@ public class PlayerStatsManager : CharacterStatsManager
     }
 
     #region Damage Functions
-    public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
+    public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation, CharacterManager enemyCharacterDamageMe)
     { 
         if(_player.IsInvulnerable)
         {
             return;
         }
 
-        base.TakeDamage(physicalDamage, fireDamage, damageAnimation);
+        base.TakeDamage(physicalDamage, fireDamage, damageAnimation, enemyCharacterDamageMe);
         _healthBar.SetCurrentHealth(CurrentHealth);
         _player.PlayerAnimator.PlayTargetAnimation(damageAnimation, true);
 

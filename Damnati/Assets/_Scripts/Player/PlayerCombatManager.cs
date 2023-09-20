@@ -35,6 +35,13 @@ public class PlayerCombatManager : MonoBehaviour
 
     private string oh_jumping_attack_01 = "OH_Jumping_Attack_01";
 
+    
+    private string oh_charge_attack_01 = "OH_Charge_Attack_01";
+    private string oh_charge_attack_02 = "OH_Charge_Attack_02";
+
+    private string th_charge_attack_01 = "TH_Charge_Attack_01";
+    private string th_charge_attack_02 = "TH_Charge_Attack_02";
+
     private string weapon_art = "Weapon_Art";
 
     #endregion
@@ -70,6 +77,11 @@ public class PlayerCombatManager : MonoBehaviour
     public string TH_Running_Attack_01 { get { return th_running_attack_01; }}
     public string TH_Jumping_Attack_01 { get { return th_jumping_attack_01; }}
 
+    public string OH_Charge_Attack_01 { get { return oh_charge_attack_01; }}
+    public string OH_Charge_Attack_02 { get { return oh_charge_attack_02; }}
+
+    public string TH_Charge_Attack_01 { get { return th_charge_attack_01; }}
+    public string TH_Charge_Attack_02 { get { return th_charge_attack_02; }}
     #endregion
 
     private void Awake() 

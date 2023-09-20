@@ -77,19 +77,18 @@ public class PlayerManager : CharacterManager
     }
     private void Update()
     {
-        float delta = Time.deltaTime;
-
         IsInteracting = Animator.GetBool("IsInteracting");
         CanDoCombo = Animator.GetBool("CanDoCombo");
         CanRotate = Animator.GetBool("CanRotate");
         IsInvulnerable = Animator.GetBool("IsInvulnerable");
         IsHoldingArrow = Animator.GetBool("IsHoldingArrow");
+        IsPerformingFullyChargedAttack = Animator.GetBool("IsPerformingFullyChargeAttack");
         Animator.SetBool("IsTwoHandingWeapon", IsTwoHandingWeapon);
         Animator.SetBool("IsInAir", IsInAir);
         Animator.SetBool("IsDead", IsDead);
         Animator.SetBool("IsBlocking", IsBlocking);
 
-        _inputHandler.TickInput(delta);
+        _inputHandler.TickInput();
         _playerLocomotionManager.HandleDodge();
         _playerStatsManager.RegenerateStamina();
 

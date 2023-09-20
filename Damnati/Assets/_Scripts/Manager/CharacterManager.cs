@@ -45,6 +45,7 @@ public class CharacterManager : MonoBehaviour
     private bool _isTwoHandingWeapon;
     private bool _isAiming;
     private bool _isHoldingArrow;
+    private bool _isPerformingFullyChargedAttack;
 
     [Header("Movement Flags")]
     [Space(15)]
@@ -88,6 +89,7 @@ public class CharacterManager : MonoBehaviour
     public bool IsHoldingArrow { get { return _isHoldingArrow; } set { _isHoldingArrow = value; }}
     public bool IsAiming { get { return _isAiming; } set { _isAiming = value; }}
     public bool IsDead { get { return _isDead; } set { _isDead = value; }}
+    public bool IsPerformingFullyChargedAttack { get { return _isPerformingFullyChargedAttack; } set { _isPerformingFullyChargedAttack = value; }}
     #endregion
 
     protected virtual void Awake()
