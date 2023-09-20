@@ -3,11 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : CharacterManager
-{
-    private Animator _animator;
+{   
+    [Header("Camera")]
+    [Space(15)]
     private CameraHandler _cameraHandler;
 
+    [Header("Input")]
+    [Space(15)]
     private InputHandler _inputHandler;
+    
+    [Header("UI")]
+    [Space(15)]
+    private UIManager _uiManager;
+
+    [Header("Colliders")]
+    [Space(15)]
+    private BlockingCollider _blockingCollider;
+
+    [Header("Player")]
+    [Space(15)]
     private PlayerLocomotionManager _playerLocomotionManager;
     private PlayerWeaponSlotManager _playerWeaponSlotManager;
     private PlayerCombatManager _playerCombatManager;
@@ -17,7 +31,7 @@ public class PlayerManager : CharacterManager
     private PlayerInventoryManager _playerInventoryManager;
     private PlayerEquipmentManager _playerEquipmentManager;
 
-    [Header("Item Collect Components")]
+    [Header("Interactables")]
     [Space(15)] 
     private InteractableUI _interactableUI;
     [SerializeField] private GameObject _interactableUIGameObject;
@@ -37,14 +51,21 @@ public class PlayerManager : CharacterManager
     public PlayerEffectsManager PlayerEffects { get { return _playerEffectsManager; }}
     public PlayerEquipmentManager PlayerEquipment { get { return _playerEquipmentManager; }}
     public CameraHandler PlayerCamera { get { return _cameraHandler; }}
+    public BlockingCollider BlockingCollider { get { return _blockingCollider; }}
+    public UIManager UIManager { get { return _uiManager; }}
     #endregion  
 
     protected override void Awake() 
     {
         base.Awake();
         _cameraHandler = FindObjectOfType<CameraHandler>();
+        _uiManager = FindObjectOfType<UIManager>();
+        _interactableUI = GetComponent<InteractableUI>();
         _inputHandler = FindObjectOfType<InputHandler>();
-        _animator = GetComponent<Animator>();
+        Animator = GetComponent<Animator>();
+
+        _blockingCollider = GetComponentInChildren<BlockingCollider>();
+
         _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
         _playerStatsManager = GetComponent<PlayerStatsManager>();
         _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -53,23 +74,22 @@ public class PlayerManager : CharacterManager
         _playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
         _playerInventoryManager = GetComponent<PlayerInventoryManager>();
         _playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
-        _interactableUI = FindObjectOfType<InteractableUI>();
     }
     private void Update()
     {
         float delta = Time.deltaTime;
 
-        IsInteracting = _animator.GetBool("IsInteracting");
-        CanDoCombo = _animator.GetBool("CanDoCombo");
-        IsInvulnerable = _animator.GetBool("IsInvulnerable");
-        IsHoldingArrow = _animator.GetBool("IsHoldingArrow");
-        _animator.SetBool("IsTwoHandingWeapon", IsTwoHandingWeapon);
-        _animator.SetBool("IsInAir", IsInAir);
-        _animator.SetBool("IsDead", _playerStatsManager.IsDead);
-        _animator.SetBool("IsBlocking", IsBlocking);
+        IsInteracting = Animator.GetBool("IsInteracting");
+        CanDoCombo = Animator.GetBool("CanDoCombo");
+        CanRotate = Animator.GetBool("CanRotate");
+        IsInvulnerable = Animator.GetBool("IsInvulnerable");
+        IsHoldingArrow = Animator.GetBool("IsHoldingArrow");
+        Animator.SetBool("IsTwoHandingWeapon", IsTwoHandingWeapon);
+        Animator.SetBool("IsInAir", IsInAir);
+        Animator.SetBool("IsDead", IsDead);
+        Animator.SetBool("IsBlocking", IsBlocking);
 
         _inputHandler.TickInput(delta);
-        _playerAnimatorManager.canRotate = _animator.GetBool("CanRotate");
         _playerLocomotionManager.HandleDodge();
         _playerStatsManager.RegenerateStamina();
 
@@ -107,6 +127,7 @@ public class PlayerManager : CharacterManager
         } 
     }
     
+    #region Player Interactions
     public void CheckForInteractableObject()
     {
         RaycastHit hit;
@@ -161,4 +182,6 @@ public class PlayerManager : CharacterManager
             IsSprinting = false;
         }
     }
+    
+    #endregion
 }

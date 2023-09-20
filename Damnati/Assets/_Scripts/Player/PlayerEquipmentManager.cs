@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class PlayerEquipmentManager : MonoBehaviour
 {
-    private InputHandler _inputHandler;
-    private PlayerInventoryManager _playerInverntory;
-    private PlayerStatsManager _playerStats;
+    private PlayerManager _player;
 
     [SerializeField] private BlockingCollider _blockingCollider;
 
+    [Header("Defensive Items Status")]
+    [Space(15)]
+
+    [SerializeField] private float _helmetPhysicalDefense;
+    [SerializeField] private float _legsPhysicalDefense;
+    [SerializeField] private float _bodyPhysicalDefense;
+    [SerializeField] private float _handsPhysicalDefense;
     private void Awake() 
     {
-        _inputHandler = FindObjectOfType<InputHandler>();
-        _playerInverntory = GetComponent<PlayerInventoryManager>();  
-        _playerStats = GetComponent<PlayerStatsManager>();  
+        _player = GetComponent<PlayerManager>();
     }
 
     private void Start() 
@@ -24,28 +27,28 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     private void PhysicalDamageAbsorption()
     {
-        _playerStats.PhysicalDamageAbsorptionHead = _playerInverntory.HelmetPhysicalDefense;
-        Debug.Log("Head Absorption is: " + _playerStats.PhysicalDamageAbsorptionHead + "%");
+        _player.PlayerStats.PhysicalDamageAbsorptionHead = _helmetPhysicalDefense;
+        //Debug.Log("Head Absorption is: " + _player.PlayerStats.PhysicalDamageAbsorptionHead + "%");
 
-        _playerStats.PhysicalDamageAbsorptionBody = _playerInverntory.ChesplatePhysicalDefense;
-        Debug.Log("Body Absorption is: " + _playerStats.PhysicalDamageAbsorptionBody + "%");
+        _player.PlayerStats.PhysicalDamageAbsorptionBody =_bodyPhysicalDefense;
+        //Debug.Log("Body Absorption is: " + _player.PlayerStats.PhysicalDamageAbsorptionBody + "%");
 
-        _playerStats.PhysicalDamageAbsorptionLegs = _playerInverntory.LegsPhysicalDefense;
-        Debug.Log("Legs Absorption is: " + _playerStats.PhysicalDamageAbsorptionLegs + "%");
+        _player.PlayerStats.PhysicalDamageAbsorptionLegs = _legsPhysicalDefense;
+        //Debug.Log("Legs Absorption is: " + _player.PlayerStats.PhysicalDamageAbsorptionLegs + "%");
 
-        _playerStats.PhysicalDamageAbsorptionHands = _playerInverntory.GlovesPhysicalDefense;
-        Debug.Log("Hands Absorption is: " + _playerStats.PhysicalDamageAbsorptionHands + "%");
+        _player.PlayerStats.PhysicalDamageAbsorptionHands = _handsPhysicalDefense;
+        //Debug.Log("Hands Absorption is: " + _player.PlayerStats.PhysicalDamageAbsorptionHands + "%");
     }
 
     public void OpenBlockingCollider()
     {
-        if(_inputHandler.THEquipFlag)
+        if(_player.PlayerInput.THEquipFlag)
         {
-            _blockingCollider.SetColliderDamageAbsorption(_playerInverntory.rightHandWeapon);
+            _blockingCollider.SetColliderDamageAbsorption(_player.PlayerInventory.rightHandWeapon);
         }
         else
         {
-            _blockingCollider.SetColliderDamageAbsorption(_playerInverntory.leftHandWeapon);
+            _blockingCollider.SetColliderDamageAbsorption(_player.PlayerInventory.leftHandWeapon);
         }
         _blockingCollider.EnableBlockingCollider();
     }

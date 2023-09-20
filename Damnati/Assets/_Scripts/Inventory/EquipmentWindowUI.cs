@@ -7,6 +7,11 @@ public class EquipmentWindowUI : MonoBehaviour
     private bool  _rightHandSlot01Selected;
     private bool _leftHandSlot01Selected;
 
+    #region GET & SET
+    public bool RightHandSlot01Selected { get { return _rightHandSlot01Selected; }}
+    public bool LeftHandSlot01Selected { get { return _leftHandSlot01Selected; }}
+    #endregion
+
     [SerializeField] private HandEquipmentSlotsUI[] _handEquipmentSlots;
     
     public void LoadWeaponsOnEquipmentScreen(PlayerInventoryManager playerInventoryManager)

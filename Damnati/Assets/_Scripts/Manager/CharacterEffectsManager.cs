@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CharacterEffectsManager : MonoBehaviour
 {
-    private CharacterStatsManager _characterStatsManager;
+    private CharacterManager _character;
+
     [Header("Current Range FX")]
     [Space(15)]
     [SerializeField] private GameObject _currentRangeFX;
@@ -27,7 +28,7 @@ public class CharacterEffectsManager : MonoBehaviour
     
     protected virtual void Awake()
     {
-        _characterStatsManager = GetComponent<CharacterStatsManager>();
+        _character = GetComponent<CharacterManager>();
     }
     public virtual void PlayWeaponFX(bool isLeft)
     {
@@ -56,7 +57,7 @@ public class CharacterEffectsManager : MonoBehaviour
 
     public virtual void HandleAllBuildUpEffects()
     {
-        if(_characterStatsManager.IsDead)
+        if(_character.IsDead)
         {
             return;
         }

@@ -6,6 +6,7 @@ public class EnemyManager : CharacterManager
 {
     [Header("A.I Scripts Components")]
     [Space(15)]
+    private EnemyBossManager _enemyBossManager;
     private EnemyLocomotionManager _enemyLocomotionManager;
     private EnemyAnimatorManager _enemyAnimatorManager;
     private EnemyStatsManager _enemyStatsManager;
@@ -48,6 +49,11 @@ public class EnemyManager : CharacterManager
     [SerializeField] private float _comboLikelyHood;
 
     #region Get & Set
+    public EnemyBossManager EnemyBossManager { get { return _enemyBossManager; }}
+    public EnemyLocomotionManager EnemyLocomotionManager { get { return _enemyLocomotionManager; }}
+    public EnemyAnimatorManager EnemyAnimatorManager { get { return _enemyAnimatorManager; }}
+    public EnemyStatsManager EnemyStatsManager { get { return _enemyStatsManager; }}
+    public EnemyEffectsManager EnemyEffectsManager { get { return _enemyEffectsManager; }}
 
     public float DetectionRadius { get { return _detectionRadius; } set { _detectionRadius = value; }}
 
@@ -75,6 +81,7 @@ public class EnemyManager : CharacterManager
     {
         base.Awake();
         _enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
+        _enemyBossManager = GetComponent<EnemyBossManager>();
         _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
         _enemyStatsManager = GetComponent<EnemyStatsManager>();
         _enemyEffectsManager = GetComponent<EnemyEffectsManager>();
@@ -93,18 +100,18 @@ public class EnemyManager : CharacterManager
         HandleRecoveryTimer();
         HandleStateMachine();
         
-        IsRotatingWithRootMotion = _enemyAnimatorManager.Anim.GetBool("IsRotatingWithRootMotion");
-        IsInteracting = _enemyAnimatorManager.Anim.GetBool("IsInteracting");
-        _isPhaseShifting = _enemyAnimatorManager.Anim.GetBool("IsPhaseShifting");
-        IsInvulnerable = _enemyAnimatorManager.Anim.GetBool("IsInvulnerable");
-        CanDoCombo = _enemyAnimatorManager.Anim.GetBool("CanDoCombo");
-        CanRotate = _enemyAnimatorManager.Anim.GetBool("CanRotate");
-        _enemyAnimatorManager.Anim.SetBool("IsDead", _enemyStatsManager.IsDead);
+        IsRotatingWithRootMotion = Animator.GetBool("IsRotatingWithRootMotion");
+        IsInteracting = Animator.GetBool("IsInteracting");
+        _isPhaseShifting = Animator.GetBool("IsPhaseShifting");
+        IsInvulnerable = Animator.GetBool("IsInvulnerable");
+        CanDoCombo = Animator.GetBool("CanDoCombo");
+        CanRotate = Animator.GetBool("CanRotate");
+        Animator.SetBool("IsDead", IsDead);
     }
     protected override void FixedUpdate() 
     {
         base.FixedUpdate();
-        //_enemyEffectsManager.HandleAllBuildUpEffects();    
+        _enemyEffectsManager.HandleAllBuildUpEffects();    
     }
     private void LateUpdate()
     {
@@ -116,7 +123,7 @@ public class EnemyManager : CharacterManager
     {
         if(_currentState != null)
         {
-            States nextState = _currentState.Tick(this, _enemyStatsManager, _enemyAnimatorManager);
+            States nextState = _currentState.Tick(this);
 
             if(nextState != null)
             {

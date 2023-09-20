@@ -6,10 +6,7 @@ using UnityEngine.TextCore.Text;
 
 public class CharacterAnimatorManager : MonoBehaviour
 { 
-    public Animator Anim;
-    protected CharacterManager _characterManager;
-    protected CharacterStatsManager _characterStatsManager;
-    public bool canRotate;  
+    protected CharacterManager _character;
 
     protected RigBuilder rigBuilder;
     [SerializeField] private TwoBoneIKConstraint _leftHandConstraint;
@@ -24,76 +21,75 @@ public class CharacterAnimatorManager : MonoBehaviour
     #endregion
     protected virtual void Awake()
     {
-        _characterManager = GetComponent<CharacterManager>();
-        _characterStatsManager = GetComponent<CharacterStatsManager>();
+        _character = GetComponent<CharacterManager>();
         rigBuilder = GetComponent<RigBuilder>();
     }
     
     public void PlayTargetAnimation(string targetAnim, bool isInteracting, bool canRotate = false, bool mirrorAnim = false)
     {
-        Anim.applyRootMotion = isInteracting;
-        Anim.SetBool("CanRotate", canRotate);
-        Anim.SetBool("IsInteracting", isInteracting);
-        Anim.SetBool("IsMirrored", mirrorAnim);
-        Anim.CrossFade(targetAnim, 0.2f);
-        Debug.Log(targetAnim);
+        _character.Animator.applyRootMotion = isInteracting;
+        _character.Animator.SetBool("CanRotate", canRotate);
+        _character.Animator.SetBool("IsInteracting", isInteracting);
+        _character.Animator.SetBool("IsMirrored", mirrorAnim);
+        _character.Animator.CrossFade(targetAnim, 0.2f);
+        Debug.Log("Target Animation: " + targetAnim + " Can Rotate Status: " + canRotate);
     }
     public void PlayerTargetAnimationWithRootRotation (string targetAnim, bool isInteracting)
     {
-        Anim.applyRootMotion = isInteracting;
-        Anim.SetBool("IsRotatingWithRootMotion", true);
-        Anim.SetBool("IsInteracting", isInteracting);
-        Anim.CrossFade(targetAnim, 0.2f);
+        _character.Animator.applyRootMotion = isInteracting;
+        _character.Animator.SetBool("IsRotatingWithRootMotion", true);
+        _character.Animator.SetBool("IsInteracting", isInteracting);
+        _character.Animator.CrossFade(targetAnim, 0.2f);
     }
 
     #region Combat and Animation Events
     
     public virtual void CanRotate()
     {
-        Anim.SetBool("CanRotate", true);
+        _character.Animator.SetBool("CanRotate", true);
     }
     public virtual void StopRotation()
     {
-        Anim.SetBool("CanRotate", false);
+        _character.Animator.SetBool("CanRotate", false);
     }
     public virtual void EnableCombo()
     {
-        Anim.SetBool("CanDoCombo", true);
+        _character.Animator.SetBool("CanDoCombo", true);
     }
     public virtual void DisableCombo()
     {
-        Anim.SetBool("CanDoCombo", false);
+        _character.Animator.SetBool("CanDoCombo", false);
     }
     public virtual void EnableIsInvulnerable()
     {
-        Anim.SetBool("IsInvulnerable", true);
+        _character.Animator.SetBool("IsInvulnerable", true);
     }
     public virtual void DisableIsInvulnerable()
     {
-        Anim.SetBool("IsInvulnerable", false);
+        _character.Animator.SetBool("IsInvulnerable", false);
     }
     public virtual void EnableIsParrying()
     {
-        _characterManager.IsParrying = true;
+        _character.IsParrying = true;
     }
     public virtual void DisableIsParrying()
     {
-        _characterManager.IsParrying = false;
+        _character.IsParrying = false;
     }
     public virtual void EnableCanBeRiposted()
     {
-        _characterManager.CanBeRiposted = true;
+        _character.CanBeRiposted = true;
     }
     public virtual void DisableCanBeRiposted()
     {
-        _characterManager.CanBeRiposted = false;
+        _character.CanBeRiposted = false;
     }
 
     #endregion 
     public virtual void TakeCriticalDamageAnimationEvent()
     {
-        _characterStatsManager.TakeDamageNoAnimation(_characterManager.PendingCriticalDamage, 0);
-        _characterManager.PendingCriticalDamage = 0;
+        _character.CharacterStats.TakeDamageNoAnimation(_character.PendingCriticalDamage, 0);
+        _character.PendingCriticalDamage = 0;
     }
     
     public virtual void SetHandIKForWeapon(RightHandIKTarget rightHandTarget, LeftHandIKTarget leftHandTarget, bool isTwoHandingWeapon)
@@ -123,7 +119,7 @@ public class CharacterAnimatorManager : MonoBehaviour
     }
     public virtual void CheckHandIKWeight(RightHandIKTarget rightHandIK, LeftHandIKTarget leftHandIK, bool isTwoHandingWeapon)
     {
-        if(_characterManager.IsInteracting)
+        if(_character.IsInteracting)
         {
             return;
         }

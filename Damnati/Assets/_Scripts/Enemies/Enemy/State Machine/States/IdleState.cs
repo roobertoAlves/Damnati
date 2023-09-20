@@ -6,10 +6,10 @@ public class IdleState : States
 {
     [SerializeField] private PursueTargetState _persueTarget;
     [SerializeField] private LayerMask _detectionLayer;
-    public override States Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
+    public override States Tick(EnemyManager enemy)
     {
         #region Handle Enemy Target Detection
-        Collider[] colliders = Physics.OverlapSphere(transform.position, enemyManager.DetectionRadius, _detectionLayer);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, enemy.DetectionRadius, _detectionLayer);
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -17,16 +17,16 @@ public class IdleState : States
 
             if(characterStats != null)
             {
-                if(characterStats.TeamIDNumber != enemyStats.TeamIDNumber)
+                if(characterStats.TeamIDNumber != enemy.EnemyStatsManager.TeamIDNumber)
                 {
                     Vector3 targetDirection = characterStats.transform.position - transform.position;
                     float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
-                    if(viewableAngle > enemyManager.MinimumDetectionAngle && viewableAngle < enemyManager.MaximumDetectionAngle)
+                    if(viewableAngle > enemy.MinimumDetectionAngle && viewableAngle < enemy.MaximumDetectionAngle)
                     {
-                        if(!characterStats.IsDead)
+                        if(!enemy.IsDead)
                         {
-                            enemyManager.CurrentTarget = characterStats;
+                            enemy.CurrentTarget = characterStats;
                         }
                     }
                 }
@@ -37,7 +37,7 @@ public class IdleState : States
 
 
         #region  Handle Switching To Next Statate
-        if(enemyManager.CurrentTarget != null)
+        if(enemy.CurrentTarget != null)
         {
             return _persueTarget;
         }

@@ -6,9 +6,7 @@ public class EnemyLocomotionManager : MonoBehaviour
 {
     [Header("Components")]
     [Space(15)]
-    private EnemyManager _enemyManager;
-    private EnemyAnimatorManager _enemyAnimatorManager;
-
+    private EnemyManager _enemy;
     [SerializeField] private CapsuleCollider _characterCollider;
     [SerializeField] private CapsuleCollider _characterCollisionBlockerCollider;
 
@@ -21,8 +19,7 @@ public class EnemyLocomotionManager : MonoBehaviour
     #endregion
     private void Awake()
     {
-        _enemyManager = GetComponent<EnemyManager>();
-        _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+        _enemy = GetComponent<EnemyManager>();
     }
     private void Start() 
     {

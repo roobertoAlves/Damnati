@@ -6,10 +6,10 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
 {
     public override void GrantWeaponAttackingPoiseBonus()
     {
-        characterStatsManager.TotalPoiseDefense = characterStatsManager.TotalPoiseDefense - characterStatsManager.OffensivePoiseBonus;
+        character.CharacterStats.TotalPoiseDefense = character.CharacterStats.TotalPoiseDefense - character.CharacterStats.OffensivePoiseBonus;
     }
     public override void ResetWeaponAttackingPoiseBonus()
     {
-        characterStatsManager.TotalPoiseDefense = characterStatsManager.ArmorPoiseBonus;
+        character.CharacterStats.TotalPoiseDefense = character.CharacterStats.ArmorPoiseBonus;
     }
 }

@@ -9,6 +9,7 @@ public class WeaponInventorySlot : MonoBehaviour
     private PlayerInventoryManager _playerInventoryManager;
     private PlayerWeaponSlotManager _playerWeaponSlotManager;
     private UIManager _uiManager;
+    
     [SerializeField] private Image _icon;
     private WeaponItem _item;
 

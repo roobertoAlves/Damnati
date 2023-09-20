@@ -747,8 +747,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7682ed7cec2414b48ac7a113e00355fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Anim: {fileID: 0}
-  canRotate: 0
   _leftHandConstraint: {fileID: 1218000701}
   _rightHandConstrait: {fileID: 1134641498}
 --- !u!114 &171112053
@@ -763,6 +761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2c691dd3336f26489ae3e7b9f06f621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterName: Nameless
   _teamIDNumber: 1
   _healthLevel: 5
   _maxHealth: 0
@@ -5040,7 +5039,7 @@ MonoBehaviour:
   _cameraPivotTransform: {fileID: 1794364}
   _ignoreLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2039
   _enviromentLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -8481,8 +8480,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7944dc4445dc5c14b9b270e7ecac461b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Anim: {fileID: 0}
-  canRotate: 1
   _leftHandConstraint: {fileID: 799197527}
   _rightHandConstrait: {fileID: 374988031}
 --- !u!114 &5079598194609435846
@@ -8577,6 +8574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea66d68268b84e2449567c9a89c7d1ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterName: Nameless
   _teamIDNumber: 0
   _healthLevel: 10
   _maxHealth: 0
@@ -8649,13 +8647,9 @@ MonoBehaviour:
   weaponsInLeftHandSlots:
   - {fileID: 11400000, guid: f0c0d693a4146524782fbf5879ec0e6b, type: 2}
   - {fileID: 11400000, guid: b3c07d4d8fffb8945841147b8114c785, type: 2}
-  currentRightWeaponIndex: 1
-  currentLeftWeaponIndex: 1
+  currentRightWeaponIndex: 0
+  currentLeftWeaponIndex: 0
   _weaponsInventory: []
-  _helmetPhysicalDefense: 4
-  _legsPhysicalDefense: 5
-  _bodyPhysicalDefense: 7
-  _handsPhysicalDefense: 2
 --- !u!114 &5079598194609435854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8669,6 +8663,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockingCollider: {fileID: 2036624567}
+  _helmetPhysicalDefense: 0
+  _legsPhysicalDefense: 0
+  _bodyPhysicalDefense: 0
+  _handsPhysicalDefense: 0
 --- !u!114 &5079598194609435855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8685,6 +8683,8 @@ MonoBehaviour:
   _bloodSplatterFX: {fileID: 6487492482581109093, guid: 5b4345b65737f754dbe5338d2ce25e58, type: 3}
   _rightWeaponFX: {fileID: 0}
   _leftWeaponFX: {fileID: 0}
+  _currentParticleFX: {fileID: 0}
+  _instantiatedFXModel: {fileID: 0}
 --- !u!114 &5079598194609435856
 MonoBehaviour:
   m_ObjectHideFlags: 0

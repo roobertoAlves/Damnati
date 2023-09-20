@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimatorManager : CharacterAnimatorManager
 {
-    private InputHandler _inputHandler;
-    private PlayerStatsManager _playerStatsManager;
-    private PlayerLocomotionManager _playerLocomotionManager;
-    private PlayerManager _playerManager;
-
+    private PlayerManager _player;
     private int _horizontalVelocity;
     private int _verticalVelocity;
 
@@ -24,12 +20,9 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
     {
 
         base.Awake();
-        _hasAnimator = TryGetComponent<Animator>(out Anim);
-        Anim = GetComponent<Animator>(); 
-        _playerManager = GetComponent<PlayerManager>();
-        _inputHandler = FindObjectOfType<InputHandler>();
-        _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
-        _playerStatsManager = GetComponent<PlayerStatsManager>();
+        _player = GetComponent<PlayerManager>();
+        _hasAnimator = _player.Animator;
+
         _horizontalVelocity = Animator.StringToHash("Horizontal");
         _verticalVelocity = Animator.StringToHash("Vertical");   
     }
@@ -86,38 +79,39 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
         }
         #endregion
 
-        if (isSprinting && _inputHandler.MoveAmount > 0)
+        if (isSprinting && _player.PlayerInput.MoveAmount > 0)
         {
             v = 2;
             h = horizontalMovement;
         }
 
-        Anim.SetFloat(_verticalVelocity, v, 0.1f, Time.deltaTime);
-        Anim.SetFloat(_horizontalVelocity, h, 0.1f, Time.deltaTime);
+        _player.Animator.SetFloat(_verticalVelocity, v, 0.1f, Time.deltaTime);
+        _player.Animator.SetFloat(_horizontalVelocity, h, 0.1f, Time.deltaTime);
     }
+   
     public void DisableCollision()
     {
-        _playerLocomotionManager.CharacterCollider.enabled = false;
-        _playerLocomotionManager.CharacterCollisionBlockerCollider.enabled = false;
+        _player.PlayerLocomotion.CharacterCollider.enabled = false;
+        _player.PlayerLocomotion.CharacterCollisionBlockerCollider.enabled = false;
     }
     public void EnableCollision()
     {
-        _playerLocomotionManager.CharacterCollider.enabled = true;
-        _playerLocomotionManager.CharacterCollisionBlockerCollider.enabled = true;
+        _player.PlayerLocomotion.CharacterCollider.enabled = true;
+        _player.PlayerLocomotion.CharacterCollisionBlockerCollider.enabled = true;
 
     }
     private void OnAnimationMove()
     {
-        if(!HasAnimator || _playerManager.IsInteracting == false)
+        if(!HasAnimator || _player.IsInteracting == false)
         {
             return;
         }
 
         float delta = Time.deltaTime;
-        _playerLocomotionManager.PlayerRB.drag = 0;
-        Vector3 deltaPos = Anim.deltaPosition;
+        _player.PlayerLocomotion.PlayerRB.drag = 0;
+        Vector3 deltaPos = _player.Animator.deltaPosition;
         deltaPos.y = 0;
         Vector3 velocity = deltaPos / delta;
-        _playerLocomotionManager.PlayerRB.velocity = velocity;
+        _player.PlayerLocomotion.PlayerRB.velocity = velocity;
     }
 }

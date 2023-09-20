@@ -8,24 +8,15 @@ public class PlayerLocomotionManager : MonoBehaviour
     [Header("Components")]
     [Space(15)]
     private Rigidbody _rb;
-    private InputHandler _inputHandler;
-    private PlayerAnimatorManager _playerAnimatorManager;
-    private PlayerManager _playerManager;
-    private PlayerStatsManager _playerStatsManager;
-    private CameraHandler _cameraHandler;
+    private PlayerManager _player;
 
     [SerializeField] private CapsuleCollider _characterCollider;
     [SerializeField] private CapsuleCollider _characterCollisionBlockerCollider;
-
-    private Transform _myTransform;
 
     [Header("Critical Attack Components")]
     [Space(15)]
     [SerializeField] private Transform _criticalAttackRayCastStartPoint;
 
-    [Header("Camera Components")]
-    [Space(15)]
-    private Transform _cameraRoot;
 
     [Header("Gravity Parameters")]
     [Space(15)]
@@ -75,18 +66,12 @@ public class PlayerLocomotionManager : MonoBehaviour
 
     private void Awake() 
     {
-        _cameraHandler = FindObjectOfType<CameraHandler>();
-        _inputHandler = FindObjectOfType<InputHandler>();
-        _playerManager = GetComponent<PlayerManager>();
-        _playerStatsManager = GetComponent<PlayerStatsManager>();
-        _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        _player = GetComponent<PlayerManager>();
         _rb = GetComponent<Rigidbody>();
     }
     private void Start() 
     {
-        _cameraRoot = Camera.main.transform;
-        _myTransform = transform;
-        _playerManager.IsGrounded = true;
+        _player.IsGrounded = true;
         Physics.IgnoreCollision(_characterCollider, _characterCollisionBlockerCollider, true);    
     }
 
@@ -94,23 +79,23 @@ public class PlayerLocomotionManager : MonoBehaviour
 
     public void HandleRotation()
     {
-        if (_playerAnimatorManager.canRotate)
+        if (_player.CanRotate)
         {
-            if (_playerManager.IsAiming)
+            if (_player.IsAiming)
             {
-                Quaternion targetRotation = Quaternion.Euler(0, _cameraHandler.CameraTransform.eulerAngles.y, 0);
+                Quaternion targetRotation = Quaternion.Euler(0, _player.PlayerCamera.CameraTransform.eulerAngles.y, 0);
                 Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
                 transform.rotation = playerRotation;
             }
             else
             {
-                if (_inputHandler.LockOnFlag)
+                if (_player.PlayerInput.LockOnFlag)
                 {
-                    if (_inputHandler.RunFlag || _inputHandler.SBFlag)
+                    if (_player.PlayerInput.RunFlag || _player.PlayerInput.SBFlag)
                     {
                         Vector3 targetDirection = Vector3.zero;
-                        targetDirection = _cameraHandler.CameraTransform.forward * _inputHandler.VerticalMovement;
-                        targetDirection += _cameraHandler.CameraTransform.right * _inputHandler.HorizontalMovement;
+                        targetDirection = _player.PlayerCamera.CameraTransform.forward * _player.PlayerInput.VerticalMovement;
+                        targetDirection += _player.PlayerCamera.CameraTransform.right * _player.PlayerInput.HorizontalMovement;
                         targetDirection.Normalize();
                         targetDirection.y = 0;
 
@@ -127,7 +112,7 @@ public class PlayerLocomotionManager : MonoBehaviour
                     else
                     {
                         Vector3 rotationDirection = _movDirection;
-                        rotationDirection = _cameraHandler.CurrentLockOnTarget.transform.position - transform.position;
+                        rotationDirection = _player.PlayerCamera.CurrentLockOnTarget.transform.position - transform.position;
                         rotationDirection.y = 0;
                         rotationDirection.Normalize();
                         Quaternion tr = Quaternion.LookRotation(rotationDirection);
@@ -138,49 +123,49 @@ public class PlayerLocomotionManager : MonoBehaviour
                 else
                 {
                     Vector3 targetDir = Vector3.zero;
-                    float moveOverride = _inputHandler.MoveAmount;
+                    float moveOverride = _player.PlayerInput.MoveAmount;
 
-                    targetDir = _cameraRoot.forward * _inputHandler.VerticalMovement;
-                    targetDir += _cameraRoot.right * _inputHandler.HorizontalMovement;
+                    targetDir = _player.PlayerCamera.CameraObject.transform.forward * _player.PlayerInput.VerticalMovement;
+                    targetDir += _player.PlayerCamera.CameraObject.transform.right * _player.PlayerInput.HorizontalMovement;
 
                     targetDir.Normalize();
                     targetDir.y = 0;
 
                     if (targetDir == Vector3.zero)
                     {
-                        targetDir = _myTransform.forward;
+                        targetDir = transform.forward;
                     }
 
                     float rs = _rotationSpeed;
 
                     Quaternion tr = Quaternion.LookRotation(targetDir);
-                    Quaternion targetRotation = Quaternion.Slerp(_myTransform.rotation, tr, rs * Time.deltaTime);
+                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rs * Time.deltaTime);
 
-                    _myTransform.rotation = targetRotation;
+                    transform.rotation = targetRotation;
                 }
             }
         }
     }
     public void HandleMovement()
     {
-        if(_inputHandler.SBFlag || _playerManager.IsInteracting)
+        if(_player.PlayerInput.SBFlag || _player.IsInteracting)
         {
             return;
         }
 
-        _movDirection = _cameraRoot.forward * _inputHandler.VerticalMovement;
-        _movDirection += _cameraRoot.right * _inputHandler.HorizontalMovement;
+        _movDirection = _player.PlayerCamera.CameraObject.transform.forward * _player.PlayerInput.VerticalMovement;
+        _movDirection += _player.PlayerCamera.CameraObject.transform.right * _player.PlayerInput.HorizontalMovement;
         _movDirection.Normalize();
         _movDirection.y = 0;
 
         float speed = _movSpeed;
 
-        if(_inputHandler.RunFlag && _inputHandler.MoveAmount > 0.5f)
+        if(_player.PlayerInput.RunFlag && _player.PlayerInput.MoveAmount > 0.5f)
         {
             speed = _runSpeed;
-            _playerManager.IsSprinting = true; 
+            _player.IsSprinting = true; 
             _movDirection *= speed;
-            _playerStatsManager.RunStaminaDrain(_sprintStaminaCost);
+            _player.PlayerStats.RunStaminaDrain(_sprintStaminaCost);
         }
         else
         {
@@ -190,53 +175,53 @@ public class PlayerLocomotionManager : MonoBehaviour
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_movDirection, _normalVector);
         _rb.velocity = projectedVelocity;
 
-        if(_inputHandler.LockOnFlag && _inputHandler.RunFlag == false)
+        if(_player.PlayerInput.LockOnFlag && _player.PlayerInput.RunFlag == false)
         {
-            _playerAnimatorManager.UpdateAnimatorValues(_inputHandler.VerticalMovement, _inputHandler.HorizontalMovement, _playerManager.IsSprinting);
+            _player.PlayerAnimator.UpdateAnimatorValues(_player.PlayerInput.VerticalMovement, _player.PlayerInput.HorizontalMovement, _player.IsSprinting);
         }
         else
         {
-            _playerAnimatorManager.UpdateAnimatorValues(_inputHandler.MoveAmount, 0, _playerManager.IsSprinting);
+            _player.PlayerAnimator.UpdateAnimatorValues(_player.PlayerInput.MoveAmount, 0, _player.IsSprinting);
         }
     }
     public void HandleDodge()
     {
-        if(_playerAnimatorManager.Anim.GetBool("IsInteracting") 
-            || !_playerAnimatorManager.HasAnimator 
-            || _playerStatsManager.CurrentStamina <= 0)
+        if(_player.Animator.GetBool("IsInteracting") 
+            || !_player.PlayerAnimator.HasAnimator 
+            || _player.PlayerStats.CurrentStamina <= 0)
         {
             return;
         }
 
-        if(_inputHandler.SBFlag)
+        if(_player.PlayerInput.SBFlag)
         {
-            _inputHandler.SBFlag = false; 
+            _player.PlayerInput.SBFlag = false; 
 
-            _movDirection = _cameraRoot.forward * _inputHandler.VerticalMovement;
-            _movDirection += _cameraRoot.right * _inputHandler.HorizontalMovement;
+            _movDirection = _player.PlayerCamera.CameraObject.transform.forward * _player.PlayerInput.VerticalMovement;
+            _movDirection += _player.PlayerCamera.CameraObject.transform.right * _player.PlayerInput.HorizontalMovement;
 
-            if(_inputHandler.MoveAmount > 0 && _playerStatsManager.CurrentStamina >= _rollStaminaCost)
+            if(_player.PlayerInput.MoveAmount > 0 && _player.PlayerStats.CurrentStamina >= _rollStaminaCost)
             {
-                _playerAnimatorManager.PlayTargetAnimation("Roll", true); 
-                _playerAnimatorManager.EraseHandIKForWeapon();
+                _player.PlayerAnimator.PlayTargetAnimation("Roll", true); 
+                _player.PlayerAnimator.EraseHandIKForWeapon();
                 _movDirection.y = 0;
                 Quaternion rollRotation = Quaternion.LookRotation(_movDirection);
-                _myTransform.rotation = rollRotation;
-                _playerStatsManager.StaminaDrain(_rollStaminaCost);
+                transform.rotation = rollRotation;
+                _player.PlayerStats.StaminaDrain(_rollStaminaCost);
             }
-            else if(_playerStatsManager.CurrentStamina >= _backstepStaminaCost)
+            else if(_player.PlayerStats.CurrentStamina >= _backstepStaminaCost)
             {
-                _playerAnimatorManager.PlayTargetAnimation("Backstep", true);
-                _playerAnimatorManager.EraseHandIKForWeapon();
-                _playerStatsManager.StaminaDrain(_backstepStaminaCost);
+                _player.PlayerAnimator.PlayTargetAnimation("Backstep", true);
+                _player.PlayerAnimator.EraseHandIKForWeapon();
+                _player.PlayerStats.StaminaDrain(_backstepStaminaCost);
             }
         }
     }
     public void HandleGravity(Vector3 moveDirection)
     {
-        _playerManager.IsGrounded = false;
+        _player.IsGrounded = false;
         RaycastHit hit;
-        Vector3 origin = _myTransform.position;
+        Vector3 origin = transform.position;
         origin.y += _groundDetectionRayStartPoint;
 
         Vector3 leftFootOrigin = _leftFoot.transform.position;
@@ -245,12 +230,12 @@ public class PlayerLocomotionManager : MonoBehaviour
         Vector3 rightFootOrigin = _rightFoot.transform.position;
         rightFootOrigin.y += _groundDetectionRayStartPoint;
 
-        if(Physics.Raycast(origin, _myTransform.forward, out hit, 0.4f))
+        if(Physics.Raycast(origin, transform.forward, out hit, 0.4f))
         {
             moveDirection = Vector3.zero;
         }
 
-        if(_playerManager.IsInAir)
+        if(_player.IsInAir)
         {
             _rb.AddForce(-Vector3.up * _fallingSpeed);
             _rb.AddForce(moveDirection * _fallingSpeed / 10f);
@@ -274,56 +259,56 @@ public class PlayerLocomotionManager : MonoBehaviour
         {
             _normalVector = hit.normal;
             Vector3 tp = hit.point;
-            _playerManager.IsGrounded = true;
+            _player.IsGrounded = true;
             _targetPosition.y = tp.y;
 
-            if(_playerManager.IsInAir)
+            if(_player.IsInAir)
             {
                 if(_inAirTimer > 0.5f)
                 {
                     Debug.Log("You were in the air for " + _inAirTimer);
-                    _playerAnimatorManager.PlayTargetAnimation("Land", true);
-                    _playerManager.IsInteracting = true;
+                    _player.PlayerAnimator.PlayTargetAnimation("Land", true);
+                    _player.IsInteracting = true;
                     _inAirTimer = 0;
                 }
                 else
                 {
-                   _playerManager.IsInteracting = false;
-                   _playerAnimatorManager.PlayTargetAnimation("Empty", false);
+                   _player.IsInteracting = false;
+                   _player.PlayerAnimator.PlayTargetAnimation("Empty", false);
                     _inAirTimer = 0;
                 }
 
-                _playerManager.IsInAir = false;
+                _player.IsInAir = false;
             }
         }
         else
         {
-            if(_playerManager.IsGrounded)
+            if(_player.IsGrounded)
             {
-                _playerManager.IsGrounded = false;
+                _player.IsGrounded = false;
             }
 
-            if(_playerManager.IsInAir == false)
+            if(_player.IsInAir == false)
             {
-                if(_playerManager.IsInteracting == false)
+                if(_player.IsInteracting == false)
                 {
-                    _playerAnimatorManager.PlayTargetAnimation("Fall", true);
+                    _player.PlayerAnimator.PlayTargetAnimation("Fall", true);
                 }
 
                 Vector3 vel = _rb.velocity;
                 vel.Normalize();
                 _rb.velocity = vel * (_movSpeed / 2);
-                _playerManager.IsInAir = true;
+                _player.IsInAir = true;
             }
         }
 
-        if (_playerManager.IsInteracting || _inputHandler.MoveAmount > 0)
+        if (_player.IsInteracting || _player.PlayerInput.MoveAmount > 0)
         {
-            _myTransform.position = Vector3.Lerp(_myTransform.position, _targetPosition, Time.deltaTime / 0.1f);
+            transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime / 0.1f);
         }
         else
         {
-            _myTransform.position = _targetPosition;
+            transform.position = _targetPosition;
         }
     }
 

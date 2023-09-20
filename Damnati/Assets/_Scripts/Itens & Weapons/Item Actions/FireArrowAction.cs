@@ -19,7 +19,7 @@ public class FireArrowAction : ItemActions
 
         //reseta o player segurando a flecha
         player.PlayerAnimator.PlayTargetAnimation("Bow Fire", true);
-        player.PlayerAnimator.Anim.SetBool("IsHoldingArrow", false);
+        player.Animator.SetBool("IsHoldingArrow", false);
 
         //Criando e atirando a flecha
 

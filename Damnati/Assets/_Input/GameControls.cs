@@ -169,6 +169,15 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Hold LB"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""daf40032-7fc2-4d12-9b97-85ffddf99335"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""RB"",
                     ""type"": ""Button"",
                     ""id"": ""8a851730-728c-43d5-a69a-cdf00e11bb73"",
@@ -176,6 +185,15 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hold RB "",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""76762242-fad6-4775-a73d-1dc000898dd8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Critical Attack"",
@@ -257,24 +275,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Hold RB "",
-                    ""type"": ""Value"",
-                    ""id"": ""76762242-fad6-4775-a73d-1dc000898dd8"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Hold LB"",
-                    ""type"": ""Value"",
-                    ""id"": ""daf40032-7fc2-4d12-9b97-85ffddf99335"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -435,7 +435,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         // Player Actions
         m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
         m_PlayerActions_LB = m_PlayerActions.FindAction("LB", throwIfNotFound: true);
+        m_PlayerActions_HoldLB = m_PlayerActions.FindAction("Hold LB", throwIfNotFound: true);
         m_PlayerActions_RB = m_PlayerActions.FindAction("RB", throwIfNotFound: true);
+        m_PlayerActions_HoldRB = m_PlayerActions.FindAction("Hold RB ", throwIfNotFound: true);
         m_PlayerActions_CriticalAttack = m_PlayerActions.FindAction("Critical Attack", throwIfNotFound: true);
         m_PlayerActions_LT = m_PlayerActions.FindAction("LT", throwIfNotFound: true);
         m_PlayerActions_TH = m_PlayerActions.FindAction("TH", throwIfNotFound: true);
@@ -445,8 +447,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_PlayerActions_Run = m_PlayerActions.FindAction("Run", throwIfNotFound: true);
         m_PlayerActions_CameraLockOn = m_PlayerActions.FindAction("CameraLockOn", throwIfNotFound: true);
         m_PlayerActions_Block = m_PlayerActions.FindAction("Block", throwIfNotFound: true);
-        m_PlayerActions_HoldRB = m_PlayerActions.FindAction("Hold RB ", throwIfNotFound: true);
-        m_PlayerActions_HoldLB = m_PlayerActions.FindAction("Hold LB", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -564,7 +564,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerActions;
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
     private readonly InputAction m_PlayerActions_LB;
+    private readonly InputAction m_PlayerActions_HoldLB;
     private readonly InputAction m_PlayerActions_RB;
+    private readonly InputAction m_PlayerActions_HoldRB;
     private readonly InputAction m_PlayerActions_CriticalAttack;
     private readonly InputAction m_PlayerActions_LT;
     private readonly InputAction m_PlayerActions_TH;
@@ -574,14 +576,14 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Run;
     private readonly InputAction m_PlayerActions_CameraLockOn;
     private readonly InputAction m_PlayerActions_Block;
-    private readonly InputAction m_PlayerActions_HoldRB;
-    private readonly InputAction m_PlayerActions_HoldLB;
     public struct PlayerActionsActions
     {
         private @GameControls m_Wrapper;
         public PlayerActionsActions(@GameControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @LB => m_Wrapper.m_PlayerActions_LB;
+        public InputAction @HoldLB => m_Wrapper.m_PlayerActions_HoldLB;
         public InputAction @RB => m_Wrapper.m_PlayerActions_RB;
+        public InputAction @HoldRB => m_Wrapper.m_PlayerActions_HoldRB;
         public InputAction @CriticalAttack => m_Wrapper.m_PlayerActions_CriticalAttack;
         public InputAction @LT => m_Wrapper.m_PlayerActions_LT;
         public InputAction @TH => m_Wrapper.m_PlayerActions_TH;
@@ -591,8 +593,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_PlayerActions_Run;
         public InputAction @CameraLockOn => m_Wrapper.m_PlayerActions_CameraLockOn;
         public InputAction @Block => m_Wrapper.m_PlayerActions_Block;
-        public InputAction @HoldRB => m_Wrapper.m_PlayerActions_HoldRB;
-        public InputAction @HoldLB => m_Wrapper.m_PlayerActions_HoldLB;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -605,9 +605,15 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @LB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
                 @LB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
                 @LB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
+                @HoldLB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
+                @HoldLB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
+                @HoldLB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
                 @RB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
                 @RB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
                 @RB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRB;
+                @HoldRB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
+                @HoldRB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
+                @HoldRB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
                 @CriticalAttack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
                 @CriticalAttack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
                 @CriticalAttack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCriticalAttack;
@@ -635,12 +641,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Block.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
                 @Block.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
                 @Block.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBlock;
-                @HoldRB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
-                @HoldRB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
-                @HoldRB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
-                @HoldLB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
-                @HoldLB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
-                @HoldLB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -648,9 +648,15 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @LB.started += instance.OnLB;
                 @LB.performed += instance.OnLB;
                 @LB.canceled += instance.OnLB;
+                @HoldLB.started += instance.OnHoldLB;
+                @HoldLB.performed += instance.OnHoldLB;
+                @HoldLB.canceled += instance.OnHoldLB;
                 @RB.started += instance.OnRB;
                 @RB.performed += instance.OnRB;
                 @RB.canceled += instance.OnRB;
+                @HoldRB.started += instance.OnHoldRB;
+                @HoldRB.performed += instance.OnHoldRB;
+                @HoldRB.canceled += instance.OnHoldRB;
                 @CriticalAttack.started += instance.OnCriticalAttack;
                 @CriticalAttack.performed += instance.OnCriticalAttack;
                 @CriticalAttack.canceled += instance.OnCriticalAttack;
@@ -678,12 +684,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Block.started += instance.OnBlock;
                 @Block.performed += instance.OnBlock;
                 @Block.canceled += instance.OnBlock;
-                @HoldRB.started += instance.OnHoldRB;
-                @HoldRB.performed += instance.OnHoldRB;
-                @HoldRB.canceled += instance.OnHoldRB;
-                @HoldLB.started += instance.OnHoldLB;
-                @HoldLB.performed += instance.OnHoldLB;
-                @HoldLB.canceled += instance.OnHoldLB;
             }
         }
     }
@@ -698,7 +698,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     public interface IPlayerActionsActions
     {
         void OnLB(InputAction.CallbackContext context);
+        void OnHoldLB(InputAction.CallbackContext context);
         void OnRB(InputAction.CallbackContext context);
+        void OnHoldRB(InputAction.CallbackContext context);
         void OnCriticalAttack(InputAction.CallbackContext context);
         void OnLT(InputAction.CallbackContext context);
         void OnTH(InputAction.CallbackContext context);
@@ -708,7 +710,5 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnCameraLockOn(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
-        void OnHoldRB(InputAction.CallbackContext context);
-        void OnHoldLB(InputAction.CallbackContext context);
     }
 }

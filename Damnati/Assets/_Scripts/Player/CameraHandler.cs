@@ -105,17 +105,14 @@ public class CameraHandler : MonoBehaviour
         if(_inputHandler.LockOnFlag && _currentLockOnTarget != null)
         {
             HandleLockedCameraRotation();
-            Debug.Log("Locked Rotations");
         }
         else if(_playerManager.IsAiming)
         {
             HandleAimedCameraRotation();
-            Debug.Log("Aim Rotations");
         }
         else
         {
             HandleStandardCameraRotation();
-            Debug.Log("Standard Rotations");
         }
     }
 
@@ -183,22 +180,31 @@ public class CameraHandler : MonoBehaviour
     }
     private void HandleCameraCollisions()
     {
-        _targetPosition = _defaultPosition;
-        RaycastHit hit;
-        Vector3 direction = _cameraTransform.position - _cameraPivotTransform.position;
-        direction.Normalize();
+        // Determine a direção na qual a câmera está olhando
+        Vector3 cameraForward = _cameraTransform.forward;
 
-        if (Physics.SphereCast(_cameraPivotTransform.position, _cameraSphereRadius, direction, out hit, Mathf.Abs(_targetPosition), _ignoreLayers))
+        // Lance um raio na direção da câmera
+        if (Physics.SphereCast(_cameraPivotTransform.position, _cameraSphereRadius, cameraForward, out RaycastHit hit, Mathf.Abs(_defaultPosition), _ignoreLayers))
         {
-            float dis = Vector3.Distance(_cameraPivotTransform.position, hit.point);
-            _targetPosition = -(dis - _cameraCollisionOffSet);
+            // Verifique se o objeto atingido não está na camada de ambiente
+            if (hit.transform.gameObject.layer == _enviromentLayer)
+            {
+                float dis = Vector3.Distance(_cameraPivotTransform.position, hit.point);
+                _targetPosition = -(dis - _cameraCollisionOffSet);
+            }
+        }
+        else
+        {
+            _targetPosition = _defaultPosition; // Nenhum objeto atingido, use a posição padrão
         }
 
+        // Limite o valor mínimo de deslocamento da câmera
         if (Mathf.Abs(_targetPosition) < _minimumCollisionOffset)
         {
             _targetPosition = -_minimumCollisionOffset;
         }
 
+        // Interpola a posição da câmera para suavizar os movimentos
         _cameraTransformPosition.z = Mathf.Lerp(_cameraTransform.localPosition.z, _targetPosition, Time.deltaTime / 0.2f);
         _cameraTransform.localPosition = _cameraTransformPosition;
     }

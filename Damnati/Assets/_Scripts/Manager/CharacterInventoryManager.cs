@@ -19,8 +19,8 @@ public class CharacterInventoryManager : MonoBehaviour
     public WeaponItem[] weaponsInRightHandSlots = new WeaponItem[1];
     public WeaponItem[] weaponsInLeftHandSlots = new WeaponItem[1];
 
-    public int currentRightWeaponIndex = -1;
-    public int currentLeftWeaponIndex = -1;
+    public int currentRightWeaponIndex = 0;
+    public int currentLeftWeaponIndex = 0;
 
     #region GET & SET
     public Item CurrentItemBeingUsed { get { return _currentItemBeingUsed; } set { _currentItemBeingUsed = value; }}

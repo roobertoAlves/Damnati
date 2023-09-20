@@ -20,20 +20,20 @@ public class CombatStanceState : States
     public PursueTargetState PersueTarget { get { return _persueTargetState; }}
     public EnemyAttackAction[] EnemyAtttackActions { get { return _enemyAttackAction; }}
     #endregion
-    public override States Tick(EnemyManager enemyManager, EnemyStatsManager enemyStatsManager, EnemyAnimatorManager enemyAnimatorManager)
+    public override States Tick(EnemyManager enemy)
     {
-        float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
-        enemyAnimatorManager.Anim.SetFloat("Vertical", _verticalMoveValue, 0.2f, Time.deltaTime);
-        enemyAnimatorManager.Anim.SetFloat("Horizontal", _horizontalMoveValue, 0.2f, Time.deltaTime);
+        float distanceFromTarget = Vector3.Distance(enemy.CurrentTarget.transform.position, enemy.transform.position);
+        enemy.Animator.SetFloat("Vertical", _verticalMoveValue, 0.2f, Time.deltaTime);
+        enemy.Animator.SetFloat("Horizontal", _horizontalMoveValue, 0.2f, Time.deltaTime);
         _attackState.HasPerformedAttack = false;
 
-        if(enemyManager.IsInteracting)
+        if(enemy.IsInteracting)
         {
-            enemyAnimatorManager.Anim.SetFloat("Vertical", 0);
-            enemyAnimatorManager.Anim.SetFloat("Horizontal", 0);
+            enemy.Animator.SetFloat("Vertical", 0);
+            enemy.Animator.SetFloat("Horizontal", 0);
             return this;
         }
-        if(distanceFromTarget > enemyManager.MaximumAggroRadius)
+        if(distanceFromTarget > enemy.MaximumAggroRadius)
         {
             return _persueTargetState;
         }
@@ -41,20 +41,20 @@ public class CombatStanceState : States
         if(_rangeDestinationSet)
         {
             _rangeDestinationSet = true;
-            DecideCirclingAction(enemyAnimatorManager);
+            DecideCirclingAction(enemy.EnemyAnimatorManager);
         }
 
-        HandleRotateTowardsTarget(enemyManager);
+        HandleRotateTowardsTarget(enemy);
 
-        if(enemyManager.CurrentTarget.IsDead)
+        if(enemy.IsDead)
         {
-            enemyAnimatorManager.Anim.SetFloat("Vertical", 0);
-            enemyAnimatorManager.Anim.SetFloat("Horizontal", 0);
-            enemyManager.CurrentTarget = null;
+            enemy.Animator.SetFloat("Vertical", 0);
+            enemy.Animator.SetFloat("Horizontal", 0);
+            enemy.CurrentTarget = null;
             return _idleState;
         }
         
-        if(enemyManager.CurrentRecoveryTime <= 0 && _attackState.CurrentAttack != null)
+        if(enemy.CurrentRecoveryTime <= 0 && _attackState.CurrentAttack != null)
         {
             _rangeDestinationSet = false;
             return _attackState;
@@ -62,18 +62,18 @@ public class CombatStanceState : States
     
         else
         {
-            GetNewAttack(enemyManager);
+            GetNewAttack(enemy);
         }
 
         return this;
     }
 
-    protected void HandleRotateTowardsTarget(EnemyManager enemyManager)
+    protected void HandleRotateTowardsTarget(EnemyManager enemy)
     {
         //Rotate manually
-        if(enemyManager.IsPerfomingAction)
+        if(enemy.IsPerfomingAction)
         {
-            Vector3 direction = enemyManager.CurrentTarget.transform.position - enemyManager.transform.position;
+            Vector3 direction = enemy.CurrentTarget.transform.position - enemy.transform.position;
             direction.y = 0;
             direction.Normalize();
 
@@ -83,19 +83,19 @@ public class CombatStanceState : States
             }
 
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, targetRotation, enemyManager.RotationSpeed / Time.deltaTime);
+            enemy.transform.rotation = Quaternion.Slerp(enemy.transform.rotation, targetRotation, enemy.RotationSpeed / Time.deltaTime);
         }
 
         //Rotate with pathfinding (navmesh)
         else
         {
-            Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.EnemyNavMeshAgent.desiredVelocity);
-            Vector3 targetVelocity = enemyManager.EnemyRb.velocity;
+            Vector3 relativeDirection = transform.InverseTransformDirection(enemy.EnemyNavMeshAgent.desiredVelocity);
+            Vector3 targetVelocity = enemy.EnemyRb.velocity;
 
-            enemyManager.EnemyNavMeshAgent.enabled = true;
-            enemyManager.EnemyNavMeshAgent.SetDestination(enemyManager.CurrentTarget.transform.position);
-            enemyManager.EnemyRb.velocity = targetVelocity;
-            enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.EnemyNavMeshAgent.transform.rotation, enemyManager.RotationSpeed / Time.deltaTime);
+            enemy.EnemyNavMeshAgent.enabled = true;
+            enemy.EnemyNavMeshAgent.SetDestination(enemy.CurrentTarget.transform.position);
+            enemy.EnemyRb.velocity = targetVelocity;
+            enemy.transform.rotation = Quaternion.Slerp(enemy.transform.rotation, enemy.EnemyNavMeshAgent.transform.rotation, enemy.RotationSpeed / Time.deltaTime);
         }
     }
     protected void DecideCirclingAction(EnemyAnimatorManager enemyAnimatorManager)
@@ -116,11 +116,11 @@ public class CombatStanceState : States
             _horizontalMoveValue = -0.5f;
         }
     }
-    protected virtual void GetNewAttack(EnemyManager enemyManager)
+    protected virtual void GetNewAttack(EnemyManager enemy)
     {
-        Vector3 targetsDirection = enemyManager.CurrentTarget.transform.position -  enemyManager.transform.position;
-        float viewableAngle = Vector3.Angle(targetsDirection,  enemyManager.transform.forward);
-        float distanceFromTarget = Vector3.Distance(enemyManager.CurrentTarget.transform.position, enemyManager.transform.position);
+        Vector3 targetsDirection = enemy.CurrentTarget.transform.position -  enemy.transform.position;
+        float viewableAngle = Vector3.Angle(targetsDirection,  enemy.transform.forward);
+        float distanceFromTarget = Vector3.Distance(enemy.CurrentTarget.transform.position, enemy.transform.position);
 
         int maxScore = 0;
 

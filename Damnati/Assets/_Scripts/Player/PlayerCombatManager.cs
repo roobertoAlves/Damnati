@@ -5,16 +5,7 @@ using UnityEngine;
 
 public class PlayerCombatManager : MonoBehaviour
 {
-    private InputHandler _inputHandler;
-    private CameraHandler _cameraHandler;
-    private PlayerManager _playerManager;
-    private PlayerAnimatorManager _playerAnimatorManager;
-    private PlayerEquipmentManager _playerEquipmentManager;
-    private PlayerStatsManager _playerStatsManager;
-    private PlayerWeaponSlotManager _playerWeaponSlotManager;
-    private PlayerLocomotionManager _playerLocomotionManger;
-    private PlayerInventoryManager _playerInventoryManager;
-    private PlayerEffectsManager _playerEffectsManager;
+    private PlayerManager _player;
 
     #region Attack Animations
 
@@ -83,53 +74,44 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void Awake() 
     {
-        _cameraHandler = FindObjectOfType<CameraHandler>();
-        _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
-        _playerManager = GetComponent<PlayerManager>();
-        _playerLocomotionManger = GetComponent<PlayerLocomotionManager>();
-        _playerStatsManager = GetComponent<PlayerStatsManager>();
-        _playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
-        _inputHandler = FindObjectOfType<InputHandler>();
-        _playerInventoryManager = GetComponent<PlayerInventoryManager>();
-        _playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
-        _playerEffectsManager = GetComponent<PlayerEffectsManager>();
+        _player = GetComponent<PlayerManager>();
     }
     
     public void AttemptRiposte()
     {
-        if(_playerStatsManager.CurrentStamina <= 0)
+        if(_player.PlayerStats.CurrentStamina <= 0)
         {
             return; 
         }
         
         RaycastHit hit;
 
-        if(Physics.Raycast(_playerLocomotionManger.CriticalAttackRayCastStartPoint.position, 
+        if(Physics.Raycast(_player.PlayerLocomotion.CriticalAttackRayCastStartPoint.position, 
         transform.TransformDirection(Vector3.forward), out hit, 0.7f, _riposteLayer))
         {
             //Debug.Log("Step 1");
             CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
             //Debug.Log("Enemy Character Manager: " + enemyCharacterManager.transform.name);
-            DamageCollider rightWeapon = _playerWeaponSlotManager.RightHandDamageCollider;
+            DamageCollider rightWeapon = _player.PlayerWeaponSlot.RightHandDamageCollider;
             //Debug.Log("Right Weapon Collider: " +  rightWeapon.transform.name);
            
             if(enemyCharacterManager != null && enemyCharacterManager.CanBeRiposted)
             {
                 //Debug.Log("Step 2");
-                _playerManager.transform.position = enemyCharacterManager.CriticalDamageCollider.CriticalDamagerStandPosition.position;
+                _player.transform.position = enemyCharacterManager.RiposteDamageCollider.CriticalDamagerStandPosition.position;
 
-                Vector3 rotationDirection = _playerManager.transform.eulerAngles;
-                rotationDirection = hit.transform.position - _playerManager.transform.position;
+                Vector3 rotationDirection = _player.transform.eulerAngles;
+                rotationDirection = hit.transform.position - _player.transform.position;
                 rotationDirection.y = 0;
                 rotationDirection.Normalize();
                 Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                Quaternion targetRotation = Quaternion.Slerp(_playerManager.transform.rotation, tr, 500 * Time.deltaTime);
-                _playerManager.transform.rotation = targetRotation;
+                Quaternion targetRotation = Quaternion.Slerp(_player.transform.rotation, tr, 500 * Time.deltaTime);
+                _player.transform.rotation = targetRotation;
 
-                int criticalDamage = _playerInventoryManager.rightHandWeapon.criticalDamageMultiplier * rightWeapon.PhysicalDamage;
+                int criticalDamage = _player.PlayerInventory.rightHandWeapon.criticalDamageMultiplier * rightWeapon.PhysicalDamage;
                 enemyCharacterManager.PendingCriticalDamage = criticalDamage;
 
-                _playerAnimatorManager.PlayTargetAnimation("Riposte", true);
+                _player.PlayerAnimator.PlayTargetAnimation("Riposte", true);
                 enemyCharacterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Riposted", true);
             }
         }

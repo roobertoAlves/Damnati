@@ -77,14 +77,14 @@ public class HeavyAttackAction : ItemActions
     }
     private void HandleHeavyWeaponCombo(PlayerManager player)
     {
-        if(player.PlayerAnimator.Anim.GetBool("IsInteracting") == true && player.PlayerAnimator.Anim.GetBool("CanDoCombo") == false)
+        if(player.Animator.GetBool("IsInteracting") == true && player.Animator.GetBool("CanDoCombo") == false)
         {
             return;
         }
 
         if(player.PlayerInput.ComboFlag)
         {
-            player.PlayerAnimator.Anim.SetBool("CanDoCombo", false);
+            player.Animator.SetBool("CanDoCombo", false);
             
             if(player.IsUsingLeftHand)
             {

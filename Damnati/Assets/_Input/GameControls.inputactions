@@ -147,6 +147,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Hold LB",
+                    "type": "PassThrough",
+                    "id": "daf40032-7fc2-4d12-9b97-85ffddf99335",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "RB",
                     "type": "Button",
                     "id": "8a851730-728c-43d5-a69a-cdf00e11bb73",
@@ -154,6 +163,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Hold RB ",
+                    "type": "PassThrough",
+                    "id": "76762242-fad6-4775-a73d-1dc000898dd8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Critical Attack",
@@ -235,24 +253,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Hold RB ",
-                    "type": "Value",
-                    "id": "76762242-fad6-4775-a73d-1dc000898dd8",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Hold LB",
-                    "type": "Value",
-                    "id": "daf40032-7fc2-4d12-9b97-85ffddf99335",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [

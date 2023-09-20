@@ -25,6 +25,14 @@ public class ResetAnimatorBool : StateMachineBehaviour
     [SerializeField] private string _isInvulnerableBool = "IsInvulnerable";
     [SerializeField] private bool _isInvulnerableStatus = false;
 
+    #region GET & SET
+
+    public string IsUsingRightHandBool { get { return _isUsingRightHandBool; } set { _isUsingRightHandBool = value;}}
+    public bool IsUsingRightHandStatus { get { return _isUsingRightHandStatus; } set { _isUsingRightHandStatus = value; }}
+    public string IsUsingLeftHandBool { get { return _isUsingLeftHandBool; } set { _isUsingLeftHandBool = value;}}
+    public bool IsUsingLeftHandStatus { get { return _isUsingLeftHandStatus; } set { _isUsingLeftHandStatus = value; }}
+    #endregion
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         CharacterManager character = animator.GetComponent<CharacterManager>();

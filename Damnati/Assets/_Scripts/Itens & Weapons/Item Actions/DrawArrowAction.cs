@@ -12,7 +12,7 @@ public class DrawArrowAction : ItemActions
             return;
         }
 
-        player.PlayerAnimator.Anim.SetBool("IsHoldingArrow", true);
+        player.Animator.SetBool("IsHoldingArrow", true);
         player.PlayerAnimator.PlayTargetAnimation("Draw Arrow", true);
 
 

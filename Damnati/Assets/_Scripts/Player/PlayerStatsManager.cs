@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class PlayerStatsManager : CharacterStatsManager
 {
-    private PlayerAnimatorManager _playerAnimatorManager;
-    private PlayerManager _playerManager;
-    private InputHandler _inputHandler;
-    
+    private PlayerManager _player;
+
     [Header("Health Parameters")]
     [Space(15)]
     private HealthBar _healthBar;
@@ -28,16 +26,14 @@ public class PlayerStatsManager : CharacterStatsManager
     [SerializeField] private float _rageRegenerationTimer = 0;
     [SerializeField] private float _rageRegenerationLAAmount = 3;
     [SerializeField] private float _rageRegenerationHAAmount = 5;
+
     protected override void Awake() 
     {  
         base.Awake();
-        _playerManager = GetComponent<PlayerManager>();
-        _inputHandler = FindObjectOfType<InputHandler>();
-
+        _player = GetComponent<PlayerManager>();
         _healthBar = FindObjectOfType<HealthBar>();
         _staminaBar = FindObjectOfType<StaminaBar>();
         _rageBar = FindObjectOfType<RageBar>();
-        _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();  
     }
     private void Start() 
     {
@@ -46,7 +42,7 @@ public class PlayerStatsManager : CharacterStatsManager
         _healthBar.SetMaxhHealth(MaxHealth);
         _healthBar.SetCurrentHealth(CurrentHealth);
 
-        MaxStamina = SetMaxStaminaFromHealthLevel();
+        MaxStamina = SetMaxStaminaFromStaminaLevel();
         CurrentStamina = MaxStamina;
         _staminaBar.SetMaxStamina(MaxStamina);
         _staminaBar.SetCurrentStamina(CurrentStamina);
@@ -57,48 +53,17 @@ public class PlayerStatsManager : CharacterStatsManager
         _rageBar.SetCurrentRage(_currentRage);
     }
 
-    #region Set Stats from Level
-    public override void HandlePoiseResetTimer()
-    {
-        if(PoiseResetTimer > 0)
-        {
-            PoiseResetTimer = PoiseResetTimer - Time.deltaTime;
-        }
-        else if(PoiseResetTimer <= 0 && !_playerManager.IsInteracting)
-        {
-            TotalPoiseDefense = ArmorPoiseBonus;
-        }
-    }
-    private int SetMaxHealthFromHealthLevel()
-    {
-        MaxHealth = HealthLevel * 10;
-        return MaxHealth;
-    }
-    private float SetMaxStaminaFromHealthLevel()
-    {
-        MaxStamina = StaminaLevel * 10;
-        return MaxStamina;
-    }
-
-    private float SetMaxRageFromRageLevel()
-    {
-        _maxRage = _rageLevel * 10;
-        return _maxRage;
-    }
-
-    #endregion
-
     #region Damage Functions
     public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
     { 
-        if(_playerManager.IsInvulnerable)
+        if(_player.IsInvulnerable)
         {
             return;
         }
 
         base.TakeDamage(physicalDamage, fireDamage, damageAnimation);
         _healthBar.SetCurrentHealth(CurrentHealth);
-        _playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
+        _player.PlayerAnimator.PlayTargetAnimation(damageAnimation, true);
 
         if(CurrentHealth <= 0)
         {
@@ -113,11 +78,17 @@ public class PlayerStatsManager : CharacterStatsManager
     private void HandleDeath()
     {
         CurrentHealth = 0;
-        _playerAnimatorManager.PlayTargetAnimation("Death_01", true);
-        IsDead = true;
+        _player.IsDead = true;
+        _player.PlayerAnimator.PlayTargetAnimation("Death_01", true);
     }
 
     #endregion
+
+    public float SetMaxRageFromRageLevel()
+    {
+        _maxRage = _rageLevel * 10;
+        return _maxRage;
+    }
 
     #region Combat Stamina Actions Drain
     public void StaminaDrain(int drain)
@@ -142,7 +113,7 @@ public class PlayerStatsManager : CharacterStatsManager
     }
     public void RegenerateStamina()
     {
-        if(_playerManager.IsInteracting)
+        if(_player.IsInteracting)
         {
             _staminaRegenerationTimer = 0;
         }
@@ -164,7 +135,7 @@ public class PlayerStatsManager : CharacterStatsManager
     }
     public void RegenerateRage()
     {
-        if(_inputHandler.IsInRage)
+        if(_player.PlayerInput.IsInRage)
         {
             _rageRegenerationTimer = 0;
         }
@@ -172,17 +143,18 @@ public class PlayerStatsManager : CharacterStatsManager
         {
             _rageRegenerationTimer += Time.deltaTime;
 
-            if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.LBInput && _inputHandler.IsHitEnemy)
+            if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _player.PlayerInput.LBInput && _player.PlayerInput.IsHitEnemy)
             {
                 _currentRage += _rageRegenerationLAAmount * Time.deltaTime;
                 _rageBar.SetCurrentRage(Mathf.RoundToInt(_currentRage));
             }
-            else if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _inputHandler.RBInput && _inputHandler.IsHitEnemy)
+            else if(_currentRage < _maxRage && _rageRegenerationTimer > 1f && _player.PlayerInput.RBInput && _player.PlayerInput.IsHitEnemy)
             {
                 _currentRage += _rageRegenerationHAAmount * Time.deltaTime;
                 _rageBar.SetCurrentRage(Mathf.RoundToInt(_currentRage));
             }
         }
     }
+    
     #endregion
 }

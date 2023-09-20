@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class PlayerEffectsManager : CharacterEffectsManager
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private PlayerManager _player;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private GameObject _currentParticleFX;
+    [SerializeField] private GameObject _instantiatedFXModel;
+
+    protected override void Awake()
     {
-        
+        base.Awake();
+        _player = GetComponent<PlayerManager>();
     }
 }

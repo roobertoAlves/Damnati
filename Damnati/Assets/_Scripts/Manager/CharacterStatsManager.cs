@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class CharacterStatsManager : MonoBehaviour
 {
-    private CharacterAnimatorManager _characterAnimatorManager;
+    private CharacterManager _character;
+
+    [Header("Name")]
+    [Space(15)]
+    [SerializeField] private string _characterName = "Nameless";
 
     [Header("Team I.D")]
     [Space(15)]
@@ -41,22 +46,19 @@ public class CharacterStatsManager : MonoBehaviour
     [SerializeField] private float _totalPoiseResetTime = 15;
     [SerializeField] private float _poiseResetTimer;
 
-    private bool _isDead;
-
 
     #region Get & Set
+
+    public string CharacterName { get { return _characterName; } set { _characterName = value; }}
     public int TeamIDNumber { get { return _teamIDNumber; } set { _teamIDNumber = value; }}
     public int HealthLevel { get { return _healthLevel; } set { _healthLevel = value; }}
     public int MaxHealth { get { return _maxHealth; } set { _maxHealth = value; }}
     public int CurrentHealth { get { return _currentHealth; } set { _currentHealth = value; }}
 
-
     public int StaminaLevel { get { return _staminaLevel; } set { _staminaLevel = value; }}
     public float MaxStamina { get { return _maxStamina; } set { _maxStamina = value; }}
     public float CurrentStamina { get { return _currentStamina; } set { _currentStamina = value; }}
 
-    public bool IsDead { get { return _isDead; } set { _isDead = value; }}
-    
     public float PhysicalDamageAbsorptionBody { get { return _physicalDamageAbsorptionBody; } set { _physicalDamageAbsorptionBody = value; }}
     public float PhysicalDamageAbsorptionLegs { get { return _physicalDamageAbsorptionLegs; } set { _physicalDamageAbsorptionLegs = value; }}
     public float PhysicalDamageAbsorptionHands { get { return _physicalDamageAbsorptionHands; } set { _physicalDamageAbsorptionHands = value; }}
@@ -78,7 +80,7 @@ public class CharacterStatsManager : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+        _character = GetComponent<CharacterManager>();
     }
     protected virtual void Update()
     {
@@ -91,12 +93,12 @@ public class CharacterStatsManager : MonoBehaviour
 
     public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
     {
-        if(_isDead)
+        if(_character.IsDead)
         {
             return;
         }
 
-        _characterAnimatorManager.EraseHandIKForWeapon();
+        _character.CharacterAnimator.EraseHandIKForWeapon();
 
         float totalPhysicalDamageAbsorption = 1 -
         (1 - _physicalDamageAbsorptionHead / 100) *
@@ -122,12 +124,12 @@ public class CharacterStatsManager : MonoBehaviour
         if (_currentHealth <= 0)
         {
             _currentHealth = 0;
-            _isDead = true;
+            _character.IsDead = true;
         }
     }
     public virtual void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
     {
-        if(_isDead)
+        if(_character.IsDead)
         {
             return;
         }
@@ -156,7 +158,7 @@ public class CharacterStatsManager : MonoBehaviour
         if(CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            _isDead = true;
+            _character.IsDead = true;
         }
     }
     public virtual void HandlePoiseResetTimer()
@@ -179,4 +181,15 @@ public class CharacterStatsManager : MonoBehaviour
     {
         
     }
+    public int SetMaxHealthFromHealthLevel()
+    {
+        _maxHealth = _healthLevel * 10;
+        return _maxHealth;
+    }
+    public float SetMaxStaminaFromStaminaLevel()
+    {
+        _maxStamina = _staminaLevel * 10;
+        return _maxStamina;
+    }
+
 }

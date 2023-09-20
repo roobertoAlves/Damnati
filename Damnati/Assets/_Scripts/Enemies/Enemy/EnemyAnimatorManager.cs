@@ -4,43 +4,36 @@ using UnityEngine;
 
 public class EnemyAnimatorManager : CharacterAnimatorManager
 {
-    private EnemyManager _enemyManager;
-    private EnemyBossManager _enemyBossManager;
-    private EnemyEffectsManager _enemyEffectsManager;
-
-
+    private EnemyManager _enemy;
     protected override void Awake() 
     {
         base.Awake();
-        Anim = GetComponent<Animator>();
-        _enemyBossManager = GetComponent<EnemyBossManager>();
-        _enemyManager = GetComponent<EnemyManager>();
-        _enemyEffectsManager = GetComponent<EnemyEffectsManager>();   
+        _enemy = GetComponent<EnemyManager>();
     }
     
     public void InstantiateBossParticleFX()
     {
         BossFXTransform bossFXTransform = GetComponentInChildren<BossFXTransform>();
-        GameObject phaseFX = Instantiate(_enemyBossManager.ParticleFX, bossFXTransform.transform);
+        GameObject phaseFX = Instantiate(_enemy.EnemyBossManager.ParticleFX, bossFXTransform.transform);
     }
 
     public void PlayWeaponTrailFX()
     {
-        _enemyEffectsManager.PlayWeaponFX(false);
+        _enemy.EnemyEffectsManager.PlayWeaponFX(false);
     }
 
     private void OnAnimatorMove()
     {
         float delta = Time.deltaTime;
-        _enemyManager.EnemyRb.drag = 0;
-        Vector3 deltaPosition = Anim.deltaPosition;
+        _enemy.EnemyRb.drag = 0;
+        Vector3 deltaPosition = _enemy.Animator.deltaPosition;
         deltaPosition.y = 0;
         Vector3 velocity = deltaPosition / delta;
-        _enemyManager.EnemyRb.velocity = velocity;
+        _enemy.EnemyRb.velocity = velocity;
 
-        if(_enemyManager.IsRotatingWithRootMotion)
+        if(_enemy.IsRotatingWithRootMotion)
         {
-            _enemyManager.transform.rotation *= Anim.deltaRotation;
+            _enemy.transform.rotation *= _enemy.Animator.deltaRotation;
         }
     }
 }
