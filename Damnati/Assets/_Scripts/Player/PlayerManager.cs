@@ -53,6 +53,7 @@ public class PlayerManager : CharacterManager
     public CameraHandler PlayerCamera { get { return _cameraHandler; }}
     public BlockingCollider BlockingCollider { get { return _blockingCollider; }}
     public UIManager UIManager { get { return _uiManager; }}
+    
     #endregion  
 
     protected override void Awake() 
