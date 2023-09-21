@@ -50,6 +50,7 @@ public class PlayerManager : CharacterManager
     public CameraHandler PlayerCamera { get { return _cameraHandler; }}
 
     public UIManager UIManager { get { return _uiManager; }}
+    
     #endregion  
 
     protected override void Awake() 
