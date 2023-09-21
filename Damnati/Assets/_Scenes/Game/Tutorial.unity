@@ -661,6 +661,7 @@ GameObject:
   - component: {fileID: 171112055}
   - component: {fileID: 171112054}
   - component: {fileID: 171112053}
+  - component: {fileID: 171112061}
   - component: {fileID: 171112052}
   - component: {fileID: 171112051}
   - component: {fileID: 171112050}
@@ -805,6 +806,9 @@ MonoBehaviour:
   _allowAIToPerformCombos: 1
   _isPhaseShifting: 0
   _comboLikelyHood: 100
+  _distanceFromTarget: 0
+  _viewableAngle: 0
+  _targetsDirection: {x: 0, y: 0, z: 0}
 --- !u!136 &171112055
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -909,6 +913,19 @@ MonoBehaviour:
   - m_Rig: {fileID: 1169484754}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &171112061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171112048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086f504dbb736784e99cdc48ae4cea56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentAttackType: 0
 --- !u!1 &181630586
 GameObject:
   m_ObjectHideFlags: 0
@@ -5623,7 +5640,6 @@ Transform:
   m_Children:
   - {fileID: 522750930}
   - {fileID: 1856611411}
-  - {fileID: 2036624566}
   m_Father: {fileID: 1197525880861421246}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6621,64 +6637,6 @@ Transform:
   m_Father: {fileID: 1794364}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2036624565
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2036624566}
-  - component: {fileID: 2036624568}
-  - component: {fileID: 2036624567}
-  m_Layer: 0
-  m_Name: Block Collider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2036624566
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2036624565}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1721379691}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2036624567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2036624565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e71028fa124ac6841a3f71662a6bcb82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!65 &2036624568
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2036624565}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2.5134122, z: 0.17664254}
-  m_Center: {x: 0, y: 1.2585607, z: 0.53714246}
 --- !u!1 &2063965218
 GameObject:
   m_ObjectHideFlags: 0
@@ -8579,7 +8537,7 @@ MonoBehaviour:
   _healthLevel: 10
   _maxHealth: 0
   _currentHealth: 0
-  _staminaLevel: 10
+  _staminaLevel: 25
   _maxStamina: 0
   _currentStamina: 0
   _totalPoiseDefense: 0
@@ -8625,6 +8583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393a27cde12143f4cb72e29acd05a724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentAttackType: 0
 --- !u!114 &5079598194609435853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8638,8 +8597,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentItemBeingUsed: {fileID: 0}
-  rightHandWeapon: {fileID: 11400000, guid: 24474f8663adf6c4a8bc1463ae965641, type: 2}
-  leftHandWeapon: {fileID: 0}
+  rightHandWeapon: {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}
+  leftHandWeapon: {fileID: 11400000, guid: b3c07d4d8fffb8945841147b8114c785, type: 2}
   currentAmmo: {fileID: 11400000, guid: a39c7c93cf1873642a06b2be99ff0671, type: 2}
   weaponsInRightHandSlots:
   - {fileID: 11400000, guid: 105ae646c4d3fb74385f054b0f667992, type: 2}
@@ -8662,7 +8621,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a79308eb8e6ccf42b0cfadb2f2bcabf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blockingCollider: {fileID: 2036624567}
   _helmetPhysicalDefense: 0
   _legsPhysicalDefense: 0
   _bodyPhysicalDefense: 0

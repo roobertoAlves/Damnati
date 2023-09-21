@@ -10,6 +10,7 @@ public class CharacterManager : MonoBehaviour
     private CharacterStatsManager _characterStatsManager;
     private CharacterInventoryManager _characterInventoryManager;
     private CharacterEffectsManager _characterEffectsManager;
+    private CharacterCombatManager _characterCombatManager;
 
     [Header("Lock On Transform")]
     [Space(15)]
@@ -64,7 +65,7 @@ public class CharacterManager : MonoBehaviour
     public CharacterStatsManager CharacterStats { get { return _characterStatsManager; }}
     public CharacterInventoryManager CharacterInventory { get { return _characterInventoryManager;}}
     public CharacterEffectsManager CharacterEffects { get { return _characterEffectsManager; }}
-
+    public CharacterCombatManager CharacterCombat { get { return _characterCombatManager; } set { _characterCombatManager = value;}}
     public int PendingCriticalDamage { get { return _pendingCriticalDamage; } set { _pendingCriticalDamage = value; }}
     
     public Transform LockOnTransform { get { return _lockOnTransform; } set { _lockOnTransform = value; }}
@@ -100,6 +101,7 @@ public class CharacterManager : MonoBehaviour
         _characterStatsManager = GetComponent<CharacterStatsManager>();
         _characterInventoryManager = GetComponent<CharacterInventoryManager>();
         _characterEffectsManager = GetComponent<CharacterEffectsManager>();
+        _characterCombatManager = GetComponent<CharacterCombatManager>();
     }
     protected virtual void FixedUpdate()
     {

@@ -9,7 +9,6 @@ public class InputHandler : MonoBehaviour
 {
     private GameControls _gameControls;
     private PlayerManager _player;
-    private EnemyStatsManager _enemyStats;
 
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -70,7 +69,7 @@ public class InputHandler : MonoBehaviour
     public float MoveAmount { get { return _moveAmount; } set { _moveAmount = value; }}
 
 
-    public bool SBFlag { get { return _sbInput; } set { _sbInput = value; }}
+    public bool DogdeFlag { get { return _sbInput; } set { _sbInput = value; }}
     public bool RunFlag { get { return _runInput; } set { _runInput = value; }}
     public bool RBInput { get { return _rbInput; } set { _rbInput = value; }}
     public bool LBInput { get { return _lbInput; } set { _lbInput = value; }}
@@ -98,7 +97,6 @@ public class InputHandler : MonoBehaviour
     private void Awake() 
     {
         _player = FindObjectOfType<PlayerManager>();
-        _enemyStats = FindObjectOfType<EnemyStatsManager>();
     }
     
     #region Input Management
@@ -118,6 +116,9 @@ public class InputHandler : MonoBehaviour
 
             _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
             _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
+            
+            _gameControls.PlayerActions.StepBack.performed += OnDodge;
+            _gameControls.PlayerActions.StepBack.canceled += OnDodge;
 
             _gameControls.PlayerActions.HoldRB.performed += OnAiming;
             _gameControls.PlayerActions.HoldRB.canceled += OnAiming;
@@ -149,9 +150,6 @@ public class InputHandler : MonoBehaviour
 
             _gameControls.PlayerActions.TH.performed += OnTwoHandEquiped;
             _gameControls.PlayerActions.TH.canceled += OnTwoHandEquiped;
-
-            _gameControls.PlayerActions.StepBack.performed += OnDodge;
-            _gameControls.PlayerActions.StepBack.canceled += OnDodge;
 
             _gameControls.PlayerActions.Interact.performed += OnInteract;
             _gameControls.PlayerActions.Interact.canceled += OnInteract;
@@ -411,10 +409,9 @@ public class InputHandler : MonoBehaviour
                 _player.UIManager.CrossHair.SetActive(false);
                 _player.PlayerCamera.ResetAimCameraRotations();
             }
-            if(_player.BlockingCollider.BlockCollider.enabled)
+            if(_player.IsBlocking)
             {
                 _player.IsBlocking = false;
-                _player.BlockingCollider.DisableBlockingCollider();
             }
         }
     }

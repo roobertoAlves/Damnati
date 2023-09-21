@@ -17,29 +17,47 @@ MonoBehaviour:
   modelPrefab: {fileID: 6944629568366627670, guid: 158285e5eecf3a14abd8140e5c1f1508, type: 3}
   isUnarmed: 0
   weaponController: {fileID: 22100000, guid: bffa122e5cd95014ca310104b17ac570, type: 2}
-  offHandIdleAnimation: Left_Arm_Idle_01
   weaponType: 2
   PhysicalDamage: 25
   FireDamage: 0
   criticalDamageMultiplier: 3
+  guardBreakModifier: 1
+  lightAttackDamageModifier: 1
+  heavyAttackDamageModifier: 1.5
+  runningAttackDamageModifier: 2.2
+  jumpingAttackDamageModifier: 2
   poiseBreak: 25
   offensivePoiseBonus: 10
-  physicalDamageAbsorption: 0
-  baseStamina: 20
-  lightAttackMultiplier: 1
-  heavyAttackMultiplier: 2
-  thLightAttackMutiplier: 2
-  thHeavyAttackMultiplier: 3
+  physicalBlockingDamageAbsorption: 15
+  fireBlockingDamageAbsorption: 15
+  stability: 67
+  baseStaminaCost: 25
+  lightAttackStaminaMultiplier: 1
+  heavyAttackStaminaMultiplier: 1
+  jumpingAttackStaminaMultiplier: 2.2
+  runningAttackStaminaMultiplier: 2
   baseRage: 15
   rageLightAttackMultiplier: 3
   rageHeavyAttackMultiplier: 5
-  tap_LB_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
-  hold_LB_Action: {fileID: 0}
-  tap_RB_Action: {fileID: 11400000, guid: 55f88e159b0211a4db2ac5866580e058, type: 2}
-  hold_RB_Action: {fileID: 0}
-  release_RB_Action: {fileID: 0}
-  tap_RT_Action: {fileID: 0}
-  hold_RT_Action: {fileID: 0}
-  hold_LT_Action: {fileID: 0}
-  tap_Z_Action: {fileID: 0}
-  hold_G_Action: {fileID: 11400000, guid: 69957a617eba5ee4091abd7d5aaf0d1d, type: 2}
+  oh_tap_LB_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
+  oh_hold_LB_Action: {fileID: 11400000, guid: 6e0a5a110090ccd48801f87c02478420, type: 2}
+  oh_tap_RB_Action: {fileID: 11400000, guid: 55f88e159b0211a4db2ac5866580e058, type: 2}
+  oh_hold_RB_Action: {fileID: 0}
+  oh_release_RB_Action: {fileID: 0}
+  oh_tap_RT_Action: {fileID: 0}
+  oh_hold_RT_Action: {fileID: 0}
+  oh_hold_LT_Action: {fileID: 0}
+  oh_hold_F_Action: {fileID: 0}
+  oh_tap_Z_Action: {fileID: 0}
+  oh_hold_G_Action: {fileID: 0}
+  th_tap_LB_Action: {fileID: 0}
+  th_hold_LB_Action: {fileID: 0}
+  th_tap_RB_Action: {fileID: 0}
+  th_hold_RB_Action: {fileID: 0}
+  th_release_RB_Action: {fileID: 0}
+  th_tap_RT_Action: {fileID: 0}
+  th_hold_RT_Action: {fileID: 0}
+  th_hold_LT_Action: {fileID: 0}
+  th_hold_F_Action: {fileID: 0}
+  th_tap_Z_Action: {fileID: 0}
+  th_hold_G_Action: {fileID: 0}

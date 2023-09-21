@@ -147,6 +147,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "StepBack",
+                    "type": "Button",
+                    "id": "e025971e-66bd-49c0-86b2-a854f6483260",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Hold LB",
                     "type": "PassThrough",
                     "id": "daf40032-7fc2-4d12-9b97-85ffddf99335",
@@ -201,15 +210,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "StepBack",
-                    "type": "Button",
-                    "id": "e025971e-66bd-49c0-86b2-a854f6483260",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "5ff80b07-f118-4cc4-ab06-b55c61aa5578",
@@ -247,7 +247,7 @@
                 },
                 {
                     "name": "Block",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "3adf00dd-63c6-444d-837d-d00b99fe7737",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -308,17 +308,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2bd47597-e11a-4b9b-b869-0d552d6684e4",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "StepBack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -396,6 +385,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Hold LB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2bd47597-e11a-4b9b-b869-0d552d6684e4",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StepBack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

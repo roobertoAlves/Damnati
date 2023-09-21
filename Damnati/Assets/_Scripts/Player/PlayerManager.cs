@@ -16,9 +16,6 @@ public class PlayerManager : CharacterManager
     [Space(15)]
     private UIManager _uiManager;
 
-    [Header("Colliders")]
-    [Space(15)]
-    private BlockingCollider _blockingCollider;
 
     [Header("Player")]
     [Space(15)]
@@ -51,7 +48,7 @@ public class PlayerManager : CharacterManager
     public PlayerEffectsManager PlayerEffects { get { return _playerEffectsManager; }}
     public PlayerEquipmentManager PlayerEquipment { get { return _playerEquipmentManager; }}
     public CameraHandler PlayerCamera { get { return _cameraHandler; }}
-    public BlockingCollider BlockingCollider { get { return _blockingCollider; }}
+
     public UIManager UIManager { get { return _uiManager; }}
     #endregion  
 
@@ -63,8 +60,6 @@ public class PlayerManager : CharacterManager
         _interactableUI = GetComponent<InteractableUI>();
         _inputHandler = FindObjectOfType<InputHandler>();
         Animator = GetComponent<Animator>();
-
-        _blockingCollider = GetComponentInChildren<BlockingCollider>();
 
         _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
         _playerStatsManager = GetComponent<PlayerStatsManager>();
@@ -111,8 +106,6 @@ public class PlayerManager : CharacterManager
     
     private void LateUpdate() 
     {
-        _inputHandler.SBFlag = false;
-
         HandleSprinting();
         
         if (_cameraHandler != null)

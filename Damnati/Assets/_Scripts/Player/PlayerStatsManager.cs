@@ -14,6 +14,7 @@ public class PlayerStatsManager : CharacterStatsManager
     [Space(15)]
 
     [SerializeField] private float _staminaRegenerationAmount = 1;
+    [SerializeField] private float _staminaRegenerationAmountWhilstBlocking = 0.1f;
     [SerializeField] private float _staminaRegenerationTimer = 0;
     private StaminaBar _staminaBar;
 
@@ -27,6 +28,9 @@ public class PlayerStatsManager : CharacterStatsManager
     [SerializeField] private float _rageRegenerationLAAmount = 3;
     [SerializeField] private float _rageRegenerationHAAmount = 5;
 
+    #region GET & SET
+    public StaminaBar StaminaBar { get { return _staminaBar; }}
+    #endregion
     protected override void Awake() 
     {  
         base.Awake();
@@ -91,25 +95,10 @@ public class PlayerStatsManager : CharacterStatsManager
     }
 
     #region Combat Stamina Actions Drain
-    public void StaminaDrain(int drain)
+    public override void DeductStamina(float staminaToDeduct)
     {
-        CurrentStamina = CurrentStamina - drain;
-        _staminaBar.SetCurrentStamina(CurrentStamina);
-
-        if(CurrentStamina <= -1)
-        {
-            CurrentStamina = 0;
-        }
-    }
-    public void RunStaminaDrain(float drain)
-    {
-        CurrentStamina = CurrentStamina - drain;
-        _staminaBar.SetCurrentStamina(CurrentStamina);
-
-        if(CurrentStamina <= -1)
-        {
-            CurrentStamina = 0;
-        }
+        base.DeductStamina(staminaToDeduct);
+        _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina));
     }
     public void RegenerateStamina()
     {
@@ -123,8 +112,16 @@ public class PlayerStatsManager : CharacterStatsManager
 
             if(CurrentStamina < MaxStamina && _staminaRegenerationTimer > 1f)
             {
-                CurrentStamina += _staminaRegenerationAmount * Time.deltaTime;
-                _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina));
+                if(_player.IsBlocking)
+                {
+                    CurrentStamina += _staminaRegenerationAmountWhilstBlocking * Time.deltaTime;
+                    _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina));
+                }
+                else
+                {
+                    CurrentStamina += _staminaRegenerationAmount * Time.deltaTime;
+                    _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina)); 
+                }
             }
         }
     }

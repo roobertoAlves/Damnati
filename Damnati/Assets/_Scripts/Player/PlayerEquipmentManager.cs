@@ -6,8 +6,6 @@ public class PlayerEquipmentManager : MonoBehaviour
 {
     private PlayerManager _player;
 
-    [SerializeField] private BlockingCollider _blockingCollider;
-
     [Header("Defensive Items Status")]
     [Space(15)]
 
@@ -38,23 +36,5 @@ public class PlayerEquipmentManager : MonoBehaviour
 
         _player.PlayerStats.PhysicalDamageAbsorptionHands = _handsPhysicalDefense;
         //Debug.Log("Hands Absorption is: " + _player.PlayerStats.PhysicalDamageAbsorptionHands + "%");
-    }
-
-    public void OpenBlockingCollider()
-    {
-        if(_player.PlayerInput.THEquipFlag)
-        {
-            _blockingCollider.SetColliderDamageAbsorption(_player.PlayerInventory.rightHandWeapon);
-        }
-        else
-        {
-            _blockingCollider.SetColliderDamageAbsorption(_player.PlayerInventory.leftHandWeapon);
-        }
-        _blockingCollider.EnableBlockingCollider();
-    }
-
-    public void CloseBlockingCollider()
-    {
-        _blockingCollider.DisableBlockingCollider();
     }
 }

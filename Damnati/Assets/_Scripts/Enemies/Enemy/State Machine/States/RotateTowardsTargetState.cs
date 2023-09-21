@@ -10,15 +10,12 @@ public class RotateTowardsTargetState : States
         enemy.Animator.SetFloat("Vertical", 0);
         enemy.Animator.SetFloat("Horizontal", 0);
 
-        Vector3 targetDirection = enemy.CurrentTarget.transform.position - enemy.transform.position;
-        float viewableAngle = Vector3.SignedAngle(targetDirection, enemy.transform.forward, Vector3.up);
-
         if(enemy.IsInteracting)
         {
             return this; 
         }
 
-        if(viewableAngle >= 100 && viewableAngle <= 180
+        if(enemy.ViewableAngle >= 100 && enemy.ViewableAngle <= 180
         && !enemy.IsInteracting)
         {
             enemy.EnemyAnimatorManager.PlayerTargetAnimationWithRootRotation("Turn Behind", true);
@@ -26,7 +23,7 @@ public class RotateTowardsTargetState : States
             return _combatStanceState;
         }
 
-        else if(viewableAngle <= -101 && viewableAngle >= -180
+        else if(enemy.ViewableAngle <= -101 && enemy.ViewableAngle >= -180
         && !enemy.IsInteracting)
         {
             enemy.EnemyAnimatorManager.PlayerTargetAnimationWithRootRotation("Turn Behind", true);
@@ -34,7 +31,7 @@ public class RotateTowardsTargetState : States
             return _combatStanceState;
         }
 
-        else if(viewableAngle <= -45 && viewableAngle >= -100
+        else if(enemy.ViewableAngle <= -45 && enemy.ViewableAngle >= -100
         && !enemy.IsInteracting)
         {
             enemy.EnemyAnimatorManager.PlayerTargetAnimationWithRootRotation("Turn Right", true);
@@ -42,7 +39,7 @@ public class RotateTowardsTargetState : States
             return _combatStanceState;
         }
         
-        else if(viewableAngle >= 45 && viewableAngle <= 100
+        else if(enemy.ViewableAngle >= 45 && enemy.ViewableAngle <= 100
         && !enemy.IsInteracting)
         {
             enemy.EnemyAnimatorManager.PlayerTargetAnimationWithRootRotation("Turn Left", true);

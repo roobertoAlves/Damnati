@@ -169,6 +169,15 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""StepBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""e025971e-66bd-49c0-86b2-a854f6483260"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Hold LB"",
                     ""type"": ""PassThrough"",
                     ""id"": ""daf40032-7fc2-4d12-9b97-85ffddf99335"",
@@ -223,15 +232,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""StepBack"",
-                    ""type"": ""Button"",
-                    ""id"": ""e025971e-66bd-49c0-86b2-a854f6483260"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""5ff80b07-f118-4cc4-ab06-b55c61aa5578"",
@@ -269,7 +269,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Block"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""3adf00dd-63c6-444d-837d-d00b99fe7737"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -330,17 +330,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2bd47597-e11a-4b9b-b869-0d552d6684e4"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""StepBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -420,6 +409,17 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""action"": ""Hold LB"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2bd47597-e11a-4b9b-b869-0d552d6684e4"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StepBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -435,13 +435,13 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         // Player Actions
         m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
         m_PlayerActions_LB = m_PlayerActions.FindAction("LB", throwIfNotFound: true);
+        m_PlayerActions_StepBack = m_PlayerActions.FindAction("StepBack", throwIfNotFound: true);
         m_PlayerActions_HoldLB = m_PlayerActions.FindAction("Hold LB", throwIfNotFound: true);
         m_PlayerActions_RB = m_PlayerActions.FindAction("RB", throwIfNotFound: true);
         m_PlayerActions_HoldRB = m_PlayerActions.FindAction("Hold RB ", throwIfNotFound: true);
         m_PlayerActions_CriticalAttack = m_PlayerActions.FindAction("Critical Attack", throwIfNotFound: true);
         m_PlayerActions_LT = m_PlayerActions.FindAction("LT", throwIfNotFound: true);
         m_PlayerActions_TH = m_PlayerActions.FindAction("TH", throwIfNotFound: true);
-        m_PlayerActions_StepBack = m_PlayerActions.FindAction("StepBack", throwIfNotFound: true);
         m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Run = m_PlayerActions.FindAction("Run", throwIfNotFound: true);
@@ -564,13 +564,13 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerActions;
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
     private readonly InputAction m_PlayerActions_LB;
+    private readonly InputAction m_PlayerActions_StepBack;
     private readonly InputAction m_PlayerActions_HoldLB;
     private readonly InputAction m_PlayerActions_RB;
     private readonly InputAction m_PlayerActions_HoldRB;
     private readonly InputAction m_PlayerActions_CriticalAttack;
     private readonly InputAction m_PlayerActions_LT;
     private readonly InputAction m_PlayerActions_TH;
-    private readonly InputAction m_PlayerActions_StepBack;
     private readonly InputAction m_PlayerActions_Pause;
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_Run;
@@ -581,13 +581,13 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         private @GameControls m_Wrapper;
         public PlayerActionsActions(@GameControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @LB => m_Wrapper.m_PlayerActions_LB;
+        public InputAction @StepBack => m_Wrapper.m_PlayerActions_StepBack;
         public InputAction @HoldLB => m_Wrapper.m_PlayerActions_HoldLB;
         public InputAction @RB => m_Wrapper.m_PlayerActions_RB;
         public InputAction @HoldRB => m_Wrapper.m_PlayerActions_HoldRB;
         public InputAction @CriticalAttack => m_Wrapper.m_PlayerActions_CriticalAttack;
         public InputAction @LT => m_Wrapper.m_PlayerActions_LT;
         public InputAction @TH => m_Wrapper.m_PlayerActions_TH;
-        public InputAction @StepBack => m_Wrapper.m_PlayerActions_StepBack;
         public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @Run => m_Wrapper.m_PlayerActions_Run;
@@ -605,6 +605,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @LB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
                 @LB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
                 @LB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
+                @StepBack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnStepBack;
+                @StepBack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnStepBack;
+                @StepBack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnStepBack;
                 @HoldLB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
                 @HoldLB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
                 @HoldLB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldLB;
@@ -623,9 +626,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @TH.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTH;
                 @TH.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTH;
                 @TH.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTH;
-                @StepBack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnStepBack;
-                @StepBack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnStepBack;
-                @StepBack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnStepBack;
                 @Pause.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
@@ -648,6 +648,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @LB.started += instance.OnLB;
                 @LB.performed += instance.OnLB;
                 @LB.canceled += instance.OnLB;
+                @StepBack.started += instance.OnStepBack;
+                @StepBack.performed += instance.OnStepBack;
+                @StepBack.canceled += instance.OnStepBack;
                 @HoldLB.started += instance.OnHoldLB;
                 @HoldLB.performed += instance.OnHoldLB;
                 @HoldLB.canceled += instance.OnHoldLB;
@@ -666,9 +669,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @TH.started += instance.OnTH;
                 @TH.performed += instance.OnTH;
                 @TH.canceled += instance.OnTH;
-                @StepBack.started += instance.OnStepBack;
-                @StepBack.performed += instance.OnStepBack;
-                @StepBack.canceled += instance.OnStepBack;
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
@@ -698,13 +698,13 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     public interface IPlayerActionsActions
     {
         void OnLB(InputAction.CallbackContext context);
+        void OnStepBack(InputAction.CallbackContext context);
         void OnHoldLB(InputAction.CallbackContext context);
         void OnRB(InputAction.CallbackContext context);
         void OnHoldRB(InputAction.CallbackContext context);
         void OnCriticalAttack(InputAction.CallbackContext context);
         void OnLT(InputAction.CallbackContext context);
         void OnTH(InputAction.CallbackContext context);
-        void OnStepBack(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);

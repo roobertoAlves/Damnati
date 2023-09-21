@@ -12,8 +12,8 @@ public class BlockingAction : ItemActions
             return;
         }
 
-        player.PlayerAnimator.PlayTargetAnimation("Block Start", false, true);
-        player.PlayerEquipment.OpenBlockingCollider();
+        player.PlayerCombat.SetBlockingAbsorptionsFromBlockingWeapon();
+
         player.IsBlocking = true;
     }
 }

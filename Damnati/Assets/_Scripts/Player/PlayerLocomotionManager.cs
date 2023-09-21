@@ -91,7 +91,7 @@ public class PlayerLocomotionManager : MonoBehaviour
             {
                 if (_player.PlayerInput.LockOnFlag)
                 {
-                    if (_player.PlayerInput.RunFlag || _player.PlayerInput.SBFlag)
+                    if (_player.PlayerInput.RunFlag || _player.PlayerInput.DogdeFlag)
                     {
                         Vector3 targetDirection = Vector3.zero;
                         targetDirection = _player.PlayerCamera.CameraTransform.forward * _player.PlayerInput.VerticalMovement;
@@ -148,7 +148,7 @@ public class PlayerLocomotionManager : MonoBehaviour
     }
     public void HandleMovement()
     {
-        if(_player.PlayerInput.SBFlag || _player.IsInteracting)
+        if(_player.PlayerInput.DogdeFlag || _player.IsInteracting)
         {
             return;
         }
@@ -165,7 +165,7 @@ public class PlayerLocomotionManager : MonoBehaviour
             speed = _runSpeed;
             _player.IsSprinting = true; 
             _movDirection *= speed;
-            _player.PlayerStats.RunStaminaDrain(_sprintStaminaCost);
+            _player.PlayerStats.DeductStamina(_sprintStaminaCost);
         }
         else
         {
@@ -187,15 +187,14 @@ public class PlayerLocomotionManager : MonoBehaviour
     public void HandleDodge()
     {
         if(_player.Animator.GetBool("IsInteracting") 
-            || !_player.PlayerAnimator.HasAnimator 
             || _player.PlayerStats.CurrentStamina <= 0)
         {
             return;
         }
 
-        if(_player.PlayerInput.SBFlag)
+        if(_player.PlayerInput.DogdeFlag)
         {
-            _player.PlayerInput.SBFlag = false; 
+            _player.PlayerInput.DogdeFlag = false; 
 
             _movDirection = _player.PlayerCamera.CameraObject.transform.forward * _player.PlayerInput.VerticalMovement;
             _movDirection += _player.PlayerCamera.CameraObject.transform.right * _player.PlayerInput.HorizontalMovement;
@@ -207,13 +206,13 @@ public class PlayerLocomotionManager : MonoBehaviour
                 _movDirection.y = 0;
                 Quaternion rollRotation = Quaternion.LookRotation(_movDirection);
                 transform.rotation = rollRotation;
-                _player.PlayerStats.StaminaDrain(_rollStaminaCost);
+                _player.PlayerStats.DeductStamina(_rollStaminaCost);
             }
             else if(_player.PlayerStats.CurrentStamina >= _backstepStaminaCost)
             {
                 _player.PlayerAnimator.PlayTargetAnimation("Backstep", true);
                 _player.PlayerAnimator.EraseHandIKForWeapon();
-                _player.PlayerStats.StaminaDrain(_backstepStaminaCost);
+                _player.PlayerStats.DeductStamina(_backstepStaminaCost);
             }
         }
     }

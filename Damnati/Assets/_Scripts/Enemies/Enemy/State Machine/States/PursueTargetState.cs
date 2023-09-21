@@ -8,10 +8,6 @@ public class PursueTargetState : States
     [SerializeField] private RotateTowardsTargetState _rotateTowardsTargetState;
     public override States Tick(EnemyManager enemy)
     {
-        Vector3 targetDirection = enemy.CurrentTarget.transform.position - enemy.transform.position;
-        float distanceFromTarget = Vector3.Distance(enemy.CurrentTarget.transform.position, enemy.transform.position);
-        float viewableAngle = Vector3.SignedAngle(targetDirection, enemy.transform.forward, Vector3.up);
-
         HandleRotateTowardsTarget(enemy);
 
         if(enemy.IsInteracting)
@@ -24,12 +20,12 @@ public class PursueTargetState : States
             enemy.Animator.SetFloat("Vertical", 0 , 0.1f, Time.deltaTime);
             return this;
         }
-        if(distanceFromTarget > enemy.MaximumAggroRadius)
+        if(enemy.DistanceFromTarget > enemy.MaximumAggroRadius)
         {
             enemy.Animator.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
         }
 
-        if(distanceFromTarget <= enemy.MaximumAggroRadius)
+        if(enemy.DistanceFromTarget <= enemy.MaximumAggroRadius)
         {
             return _combatStanceState;
         }

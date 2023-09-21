@@ -9,19 +9,12 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
     private int _verticalVelocity;
 
 
-    private bool _hasAnimator;
-
-    #region  GET & SET
-    public bool HasAnimator { get { return _hasAnimator; } set { _hasAnimator = value; }}
-    
-    #endregion
 
     protected override void Awake() 
     {
 
         base.Awake();
         _player = GetComponent<PlayerManager>();
-        _hasAnimator = _player.Animator;
 
         _horizontalVelocity = Animator.StringToHash("Horizontal");
         _verticalVelocity = Animator.StringToHash("Vertical");   
@@ -102,7 +95,7 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
     }
     private void OnAnimationMove()
     {
-        if(!HasAnimator || _player.IsInteracting == false)
+        if(_player.IsInteracting == false)
         {
             return;
         }

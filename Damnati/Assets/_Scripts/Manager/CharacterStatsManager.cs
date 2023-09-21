@@ -33,10 +33,17 @@ public class CharacterStatsManager : MonoBehaviour
     private float _physicalDamageAbsorptionBody;
     private float _physicalDamageAbsorptionLegs;
     private float _physicalDamageAbsorptionHands;
+
     private float _fireDamageAbsorptionHead;
     private float _fireDamageAbsorptionBody;
     private float _fireDamageAbsorptionLegs;
     private float _fireDamageAbsorptionHands;
+
+    [Header("Blocking Absorptions")]
+    [Space(15)]
+    private float _blockingPhysicalDamageAbsorption;
+    private float _blockingFireDamageAbsorption;
+    private float _blockingStabilityRating;
 
     [Header("Poise")]
     [Space(15)]
@@ -69,7 +76,9 @@ public class CharacterStatsManager : MonoBehaviour
     public float FireDamageAbsorptionHands { get { return _fireDamageAbsorptionHands; } set { _fireDamageAbsorptionHands = value; }}
     public float FireDamageAbsorptionHead { get { return _fireDamageAbsorptionHead; } set { _fireDamageAbsorptionHead = value; }}
     
-
+    public float BlockingPhysicalDamageAbsorption { get { return _blockingPhysicalDamageAbsorption; } set { _blockingPhysicalDamageAbsorption = value; }}
+    public float BlockingFireDamageAbsorption { get { return _blockingFireDamageAbsorption; } set { _blockingFireDamageAbsorption = value; }}
+    public float BlockingStabilityRating { get { return _blockingStabilityRating; } set { _blockingStabilityRating = value; }}
 
     public float TotalPoiseDefense { get { return _totalPoiseDefense; } set { _totalPoiseDefense = value; }}
     public float OffensivePoiseBonus { get { return _offensivePoiseBonus; } set { _offensivePoiseBonus = value; }}
@@ -92,6 +101,47 @@ public class CharacterStatsManager : MonoBehaviour
     }
 
     public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation, CharacterManager enemyCharacterDamagingMe)
+    {
+        if(_character.IsDead)
+        {
+            return;
+        }
+
+        _character.CharacterAnimator.EraseHandIKForWeapon();
+
+        float totalPhysicalDamageAbsorption = 1 -
+        (1 - _physicalDamageAbsorptionHead / 100) *
+        (1 - _physicalDamageAbsorptionBody / 100) *
+        (1 - _physicalDamageAbsorptionLegs / 100) *
+        (1 - _physicalDamageAbsorptionHands / 100);
+
+        physicalDamage = Mathf.RoundToInt( physicalDamage - (physicalDamage * totalPhysicalDamageAbsorption));
+        
+        float totalFireDamageAbsorption = 1 -
+        (1 - _fireDamageAbsorptionHead / 100) *
+        (1 - _fireDamageAbsorptionBody / 100) *
+        (1 - _fireDamageAbsorptionLegs / 100) *
+        (1 - _fireDamageAbsorptionHands / 100);
+
+        fireDamage = Mathf.RoundToInt(fireDamage - (fireDamage * totalFireDamageAbsorption));
+
+
+        float finalDamage = physicalDamage + fireDamage;// + others type of damage;
+
+        if(enemyCharacterDamagingMe.IsPerformingFullyChargedAttack)
+        {
+            finalDamage = finalDamage * 2;
+        }
+        
+        CurrentHealth = Mathf.RoundToInt(CurrentHealth - finalDamage);
+
+        if (_currentHealth <= 0)
+        {
+            _currentHealth = 0;
+            _character.IsDead = true;
+        }
+    }
+    public virtual void TakeDamageAfterBlock(int physicalDamage, int fireDamage, CharacterManager enemyCharacterDamagingMe)
     {
         if(_character.IsDead)
         {
@@ -178,11 +228,16 @@ public class CharacterStatsManager : MonoBehaviour
         }
     }
 
-    public void DrainStaminaBasedOnAttackType()
-    {
+    public virtual void DeductStamina(float staminaToDeduct)
+    {   
+        _currentStamina = _currentStamina - staminaToDeduct;
 
+        if(_currentStamina <= -1)
+        {
+            _currentStamina = 0;
+        }
     }
-    public void DrainRageBasedOnAttackType()
+    public void DrainRage()
     {
         
     }

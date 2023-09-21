@@ -22,14 +22,40 @@ MonoBehaviour:
   PhysicalDamage: 0
   FireDamage: 0
   criticalDamageMultiplier: 3
+  lightAttackDamageModifier: 0
+  heavyAttackDamageModifier: 0
+  runningAttackDamageModifier: 0
+  jumpingAttackDamageModifier: 0
   poiseBreak: 0
   offensivePoiseBonus: 0
   physicalDamageAbsorption: 0
-  baseStamina: 0
-  lightAttackMultiplier: 0
-  heavyAttackMultiplier: 0
-  thLightAttackMutiplier: 0
-  thHeavyAttackMultiplier: 0
+  baseStaminaCost: 25
+  lightAttackStaminaMultiplier: 1
+  heavyAttackStaminaMultiplier: 1
+  jumpingAttackStaminaMultiplier: 2.2
+  runningAttackStaminaMultiplier: 2
   baseRage: 0
   rageLightAttackMultiplier: 0
   rageHeavyAttackMultiplier: 0
+  oh_tap_LB_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
+  oh_hold_LB_Action: {fileID: 0}
+  oh_tap_RB_Action: {fileID: 11400000, guid: 55f88e159b0211a4db2ac5866580e058, type: 2}
+  oh_hold_RB_Action: {fileID: 0}
+  oh_release_RB_Action: {fileID: 0}
+  oh_tap_RT_Action: {fileID: 0}
+  oh_hold_RT_Action: {fileID: 0}
+  oh_hold_LT_Action: {fileID: 0}
+  oh_hold_F_Action: {fileID: 0}
+  oh_tap_Z_Action: {fileID: 0}
+  oh_hold_G_Action: {fileID: 0}
+  th_tap_LB_Action: {fileID: 0}
+  th_hold_LB_Action: {fileID: 0}
+  th_tap_RB_Action: {fileID: 0}
+  th_hold_RB_Action: {fileID: 0}
+  th_release_RB_Action: {fileID: 0}
+  th_tap_RT_Action: {fileID: 0}
+  th_hold_RT_Action: {fileID: 0}
+  th_hold_LT_Action: {fileID: 0}
+  th_hold_F_Action: {fileID: 0}
+  th_tap_Z_Action: {fileID: 0}
+  th_hold_G_Action: {fileID: 0}

@@ -13,6 +13,7 @@ public class HeavyAttackAction : ItemActions
         if(player.IsSprinting)
         {
             HandleJumpingAttack(player);
+            player.PlayerCombat.CurrentAttackType = AttackType.JumpingHeavyAttack;
             return;
         }
 
@@ -21,6 +22,7 @@ public class HeavyAttackAction : ItemActions
             player.PlayerInput.ComboFlag = true;
             HandleHeavyWeaponCombo(player);
             player.PlayerInput.ComboFlag = false;
+            player.PlayerCombat.CurrentAttackType = AttackType.HeavyAttack;
         }
 
         else
@@ -31,6 +33,7 @@ public class HeavyAttackAction : ItemActions
             }
 
             HandleHeavyAttack(player);
+            player.PlayerCombat.CurrentAttackType = AttackType.HeavyAttack;
         }
     }
     private void HandleHeavyAttack(PlayerManager player)

@@ -23,6 +23,10 @@ public class DamageCollider : MonoBehaviour
     [SerializeField] private int _physicalDamage;
     [SerializeField] private int _fireDamage;
 
+    [Header("Guard Break Multiplier")]
+    [Space(15)]
+    [SerializeField] private float _guardBreakModifier = 1;
+
     protected bool shieldHasBeenHit;
     protected bool hasBeenParried;
     protected string currentDamageAnimation;
@@ -40,7 +44,8 @@ public class DamageCollider : MonoBehaviour
 
     public float PoiseBreak { get { return _poiseBreak; } set { _poiseBreak = value; }}
     public float OffensivePoiseBonus { get { return _offensivePoiseBonus; } set { _offensivePoiseBonus = value; }}
-
+    
+    public float GuardBreakModifier { get { return _guardBreakModifier; } set { _guardBreakModifier = value; }}
     #endregion
 
 
@@ -71,8 +76,7 @@ public class DamageCollider : MonoBehaviour
             CharacterStatsManager enemyStats = collision.GetComponent<CharacterStatsManager>();
             CharacterManager enemyManager = collision.GetComponent<CharacterManager>();
             CharacterEffectsManager enemyEffects = collision.GetComponent<CharacterEffectsManager>();
-            BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
-           
+
             if(enemyManager != null)
             {
                 if(enemyStats.TeamIDNumber == _teamIDNumber)
@@ -81,7 +85,7 @@ public class DamageCollider : MonoBehaviour
                 }
 
                 CheckForParry(enemyManager);
-                CheckForBlock(enemyManager, enemyStats, shield);
+                CheckForBlock(enemyManager);
             }
 
             if(enemyStats != null)
@@ -101,14 +105,7 @@ public class DamageCollider : MonoBehaviour
                 ChooseWhichDirectionDamageCameFrom(directionHitFrom);
                 enemyEffects.PlayerBloodSplatterFX(contactPoint);
 
-                if(enemyStats.TotalPoiseDefense > _poiseBreak)
-                {
-                    enemyStats.TakeDamageNoAnimation(_physicalDamage, 0);
-                }
-                else
-                {
-                    enemyStats.TakeDamage(_physicalDamage, 0, currentDamageAnimation, _characterManager);
-                }
+                DealDamage(enemyStats);
             }
         }
     }
@@ -121,18 +118,72 @@ public class DamageCollider : MonoBehaviour
             hasBeenParried = true;
         }
     }
-    protected virtual void CheckForBlock(CharacterManager enemyManager, CharacterStatsManager enemyStats, BlockingCollider shield)
+    protected virtual void CheckForBlock(CharacterManager enemyManager)
     {
-        if(shield != null && enemyManager.IsBlocking)
+        CharacterStatsManager enemyShield = enemyManager.CharacterStats;
+        Vector3 directionFromPlayerToEnemy = (_characterManager.transform.position - enemyManager.transform.position);
+        float dotValueFromPlayerToEnemy = Vector3.Dot(directionFromPlayerToEnemy, enemyManager.transform.forward);
+
+        if(enemyManager.IsBlocking && dotValueFromPlayerToEnemy > 0.3f)
         {
-            float physicalDamageAfterBlock = _physicalDamage - (_physicalDamage * shield.BlockingPhysicalDamageAbsorption) / 100;
-            float fireDamageAfterBlock = _fireDamage - (_fireDamage * shield.BlockingFireDamageAbsorption) / 100;
-        
-            if(enemyStats != null)
+            shieldHasBeenHit = true;
+            float physicalDamageAfterBlock = _physicalDamage - (_physicalDamage * enemyShield.BlockingPhysicalDamageAbsorption) / 100;
+            float fireDamageAfterBlock = _fireDamage - (_fireDamage * enemyShield.BlockingFireDamageAbsorption) / 100;
+
+            enemyManager.CharacterCombat.AttemptBlock(this, _physicalDamage, _fireDamage, "Block_01");
+            enemyShield.TakeDamageAfterBlock(Mathf.RoundToInt(physicalDamageAfterBlock), Mathf.RoundToInt(fireDamageAfterBlock) , _characterManager);
+        }
+    }
+    protected virtual void DealDamage(CharacterStatsManager enemyStats)
+    {
+        float finalPhysicalDamage = PhysicalDamage;
+
+        if(characterManager.IsUsingRightHand)
+        {
+            if(characterManager.CharacterCombat.CurrentAttackType == AttackType.LightAttack)
             {
-                enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), 0, "Block Idle", _characterManager);
-                shieldHasBeenHit = true;
+                finalPhysicalDamage = characterManager.CharacterInventory.rightHandWeapon.lightAttackDamageModifier;
             }
+            else if(characterManager.CharacterCombat.CurrentAttackType == AttackType.HeavyAttack)
+            {
+                finalPhysicalDamage = characterManager.CharacterInventory.rightHandWeapon.heavyAttackDamageModifier;
+            }   
+            else if(characterManager.CharacterCombat.CurrentAttackType == AttackType.JumpingHeavyAttack)
+            {
+                finalPhysicalDamage = characterManager.CharacterInventory.rightHandWeapon.jumpingAttackDamageModifier;
+            }
+            else if(characterManager.CharacterCombat.CurrentAttackType == AttackType.RunningLightAttack)
+            {
+                finalPhysicalDamage = characterManager.CharacterInventory.rightHandWeapon.runningAttackDamageModifier;
+            }
+        }
+        else if(characterManager.IsUsingLeftHand)
+        {
+            if(characterManager.CharacterCombat.CurrentAttackType == AttackType.LightAttack)
+            {
+                finalPhysicalDamage = characterManager.CharacterInventory.leftHandWeapon.lightAttackDamageModifier;
+            }
+            else if(characterManager.CharacterCombat.CurrentAttackType == AttackType.HeavyAttack)
+            {
+                finalPhysicalDamage = characterManager.CharacterInventory.leftHandWeapon.heavyAttackDamageModifier;
+            }   
+            else if(characterManager.CharacterCombat.CurrentAttackType == AttackType.JumpingHeavyAttack)
+            {
+                finalPhysicalDamage = characterManager.CharacterInventory.leftHandWeapon.jumpingAttackDamageModifier;
+            }
+            else if(characterManager.CharacterCombat.CurrentAttackType == AttackType.RunningLightAttack)
+            {
+                finalPhysicalDamage = characterManager.CharacterInventory.leftHandWeapon.runningAttackDamageModifier;
+            }
+        }
+
+        if(enemyStats.TotalPoiseDefense > _poiseBreak)
+        {
+            enemyStats.TakeDamageNoAnimation(Mathf.RoundToInt(finalPhysicalDamage), 0);
+        }
+        else
+        {
+            enemyStats.TakeDamage(Mathf.RoundToInt(finalPhysicalDamage), 0, currentDamageAnimation, _characterManager);
         }
     }
     protected virtual void ChooseWhichDirectionDamageCameFrom(float direction)

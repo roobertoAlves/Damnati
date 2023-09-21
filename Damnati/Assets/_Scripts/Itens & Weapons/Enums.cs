@@ -15,6 +15,14 @@ public enum AmmoType
 {
     Arrow
 }
+public enum AttackType
+{
+    LightAttack,
+    RunningLightAttack,
+    HeavyAttack,
+    JumpingHeavyAttack
+}
+
 public class Enums : MonoBehaviour
 {
 

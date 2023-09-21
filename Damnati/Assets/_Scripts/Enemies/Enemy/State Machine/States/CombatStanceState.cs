@@ -22,7 +22,6 @@ public class CombatStanceState : States
     #endregion
     public override States Tick(EnemyManager enemy)
     {
-        float distanceFromTarget = Vector3.Distance(enemy.CurrentTarget.transform.position, enemy.transform.position);
         enemy.Animator.SetFloat("Vertical", _verticalMoveValue, 0.2f, Time.deltaTime);
         enemy.Animator.SetFloat("Horizontal", _horizontalMoveValue, 0.2f, Time.deltaTime);
         _attackState.HasPerformedAttack = false;
@@ -33,7 +32,7 @@ public class CombatStanceState : States
             enemy.Animator.SetFloat("Horizontal", 0);
             return this;
         }
-        if(distanceFromTarget > enemy.MaximumAggroRadius)
+        if(enemy.DistanceFromTarget > enemy.MaximumAggroRadius)
         {
             return _persueTargetState;
         }
@@ -118,19 +117,15 @@ public class CombatStanceState : States
     }
     protected virtual void GetNewAttack(EnemyManager enemy)
     {
-        Vector3 targetsDirection = enemy.CurrentTarget.transform.position -  enemy.transform.position;
-        float viewableAngle = Vector3.Angle(targetsDirection,  enemy.transform.forward);
-        float distanceFromTarget = Vector3.Distance(enemy.CurrentTarget.transform.position, enemy.transform.position);
-
         int maxScore = 0;
 
         for (int i = 0; i < _enemyAttackAction.Length; i++)
         {
             EnemyAttackAction enemyAttackAction = _enemyAttackAction[i];
 
-            if(distanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack && distanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
+            if(enemy.DistanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack && enemy.DistanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
             {
-                if(viewableAngle <= enemyAttackAction.MaximumAttackAngle && viewableAngle >= enemyAttackAction.MinimumAttackAngle)
+                if(enemy.ViewableAngle <= enemyAttackAction.MaximumAttackAngle && enemy.ViewableAngle >= enemyAttackAction.MinimumAttackAngle)
                 {
                     maxScore += enemyAttackAction.AttackScore;
                 }
@@ -144,11 +139,11 @@ public class CombatStanceState : States
         {
             EnemyAttackAction enemyAttackAction = _enemyAttackAction[i];
 
-            if(distanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack 
-                && distanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
+            if(enemy.DistanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack 
+                && enemy.DistanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
             {
-                if(viewableAngle <= enemyAttackAction.MaximumAttackAngle 
-                && viewableAngle >= enemyAttackAction.MinimumAttackAngle)
+                if(enemy.ViewableAngle <= enemyAttackAction.MaximumAttackAngle 
+                && enemy.ViewableAngle >= enemyAttackAction.MinimumAttackAngle)
                 {
                    if(_attackState.CurrentAttack != null)
                    {

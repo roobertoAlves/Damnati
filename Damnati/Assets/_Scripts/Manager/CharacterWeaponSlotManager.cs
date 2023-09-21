@@ -77,7 +77,7 @@ public class CharacterWeaponSlotManager : MonoBehaviour
                 LeftHandSlot.CurrentWeapon = weaponItem;
                 LeftHandSlot.LoadWeaponModel(weaponItem);
                 LoadLeftWeaponDamageCollider();
-                character.CharacterAnimator.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
+                //character.CharacterAnimator.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
             }
             else
             {
@@ -110,7 +110,7 @@ public class CharacterWeaponSlotManager : MonoBehaviour
                 LeftHandSlot.CurrentWeapon = weaponItem;
                 LeftHandSlot.LoadWeaponModel(weaponItem);
                 LoadLeftWeaponDamageCollider();
-                character.CharacterAnimator.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
+                //character.CharacterAnimator.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
             }
             else
             {

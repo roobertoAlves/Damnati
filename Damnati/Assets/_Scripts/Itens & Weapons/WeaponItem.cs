@@ -11,7 +11,7 @@ public class WeaponItem : Item
     [Header("Animator Replacer")]
     [Space(15)]
     public AnimatorOverrideController weaponController;
-    public string offHandIdleAnimation = "Left Arm Idle 01";
+    //public string offHandIdleAnimation = "Left Arm Idle 01";
     
     [Header("Weapon Type")]
     [Space(5)]
@@ -22,6 +22,14 @@ public class WeaponItem : Item
     public int PhysicalDamage;
     public int FireDamage;
     public int criticalDamageMultiplier = 3;
+    public float guardBreakModifier = 1;
+
+    [Header("Damage Modifiers")]
+    [Space(15)]
+    public float lightAttackDamageModifier;
+    public float heavyAttackDamageModifier;
+    public float runningAttackDamageModifier;
+    public float jumpingAttackDamageModifier;
 
     [Header("Poise")]
     [Space(15)]
@@ -31,16 +39,21 @@ public class WeaponItem : Item
 
     [Header("Absorption")]
     [Space(15)]
-    public float physicalDamageAbsorption;
+    public float physicalBlockingDamageAbsorption;
+    public float fireBlockingDamageAbsorption;
+
+    [Header("Stability")]
+    [Space(15)]
+    public int stability = 67;
     
     [Header("Stamina Costs")]
     [Space(15)]
 
-    public int baseStamina;
-    public float lightAttackMultiplier;
-    public float heavyAttackMultiplier;
-    public float thLightAttackMutiplier;
-    public float thHeavyAttackMultiplier;
+    public int baseStaminaCost;
+    public float lightAttackStaminaMultiplier = 1;
+    public float heavyAttackStaminaMultiplier = 1;
+    public float jumpingAttackStaminaMultiplier = 1;
+    public float runningAttackStaminaMultiplier = 1;
 
     [Header("Rage Costs")]
     [Space(15)]

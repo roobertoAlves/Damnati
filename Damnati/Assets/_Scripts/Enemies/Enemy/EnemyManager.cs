@@ -48,6 +48,12 @@ public class EnemyManager : CharacterManager
     [SerializeField] private bool _isPhaseShifting;
     [SerializeField] private float _comboLikelyHood;
 
+    [Header("A.I Target Information")]
+    [Space(15)]
+    [SerializeField] private float _distanceFromTarget;
+    [SerializeField] private float _viewableAngle; 
+    [SerializeField] private Vector3 _targetsDirection;
+
     #region Get & Set
     public EnemyBossManager EnemyBossManager { get { return _enemyBossManager; }}
     public EnemyLocomotionManager EnemyLocomotionManager { get { return _enemyLocomotionManager; }}
@@ -75,6 +81,10 @@ public class EnemyManager : CharacterManager
     public float RotationSpeed { get { return _rotationSpeed; } set { _rotationSpeed = value; }}
     public float MaximumAggroRadius { get { return _maximumAggroRadius; } set { _maximumAggroRadius = value; }}
     public float ComboLikelyHood { get { return _comboLikelyHood; } set { _comboLikelyHood = value; }}
+    
+    public float DistanceFromTarget { get { return _distanceFromTarget; } set { _distanceFromTarget = value; }}
+    public float ViewableAngle { get { return _viewableAngle; } set { _viewableAngle = value; }}
+    public Vector3 TargetsDirection { get { return _targetsDirection; } set { _targetsDirection = value; }}
     #endregion
 
     protected override void Awake() 
@@ -107,6 +117,14 @@ public class EnemyManager : CharacterManager
         CanDoCombo = Animator.GetBool("CanDoCombo");
         CanRotate = Animator.GetBool("CanRotate");
         Animator.SetBool("IsDead", IsDead);
+
+        if(_currentTarget != null)
+        {
+            _distanceFromTarget = Vector3.Distance(_currentTarget.transform.position, transform.position);
+            _targetsDirection = _currentTarget.transform.position - transform.position;
+            _viewableAngle = Vector3.Angle(_targetsDirection,  transform.forward);
+
+        }
     }
     protected override void FixedUpdate() 
     {
