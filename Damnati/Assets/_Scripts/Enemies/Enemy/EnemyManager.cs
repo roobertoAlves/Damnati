@@ -13,7 +13,7 @@ public class EnemyManager : CharacterManager
     private EnemyEffectsManager _enemyEffectsManager;
 
     [SerializeField] private States _currentState;
-    [SerializeField] private CharacterStatsManager _currentTarget;
+    [SerializeField] private CharacterManager _currentTarget;
 
     private bool _isPerformingAction;
 
@@ -71,7 +71,7 @@ public class EnemyManager : CharacterManager
     public bool AllowAIToPerformCombos { get { return _allowAIToPerformCombos; } set { _allowAIToPerformCombos = value; }}
     public bool IsPhaseShifting { get { return _isPhaseShifting; } set { _isPhaseShifting = value; }}
 
-    public CharacterStatsManager CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; }}
+    public CharacterManager CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; }}
 
     public States CurrentState { get { return _currentState; } set { _currentState = value; }}
     
