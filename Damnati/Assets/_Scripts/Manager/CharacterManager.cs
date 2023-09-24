@@ -56,7 +56,9 @@ public class CharacterManager : MonoBehaviour
     private bool _isInAir;
     private bool _isGrounded;
 
-
+    [Header("Critical Attack Components")]
+    [Space(15)]
+    [SerializeField] private Transform _criticalAttackRayCastStartPoint;
 
     #region GET & SET
     public Animator Animator { get { return _animator; } set { _animator = value; }}
@@ -69,7 +71,7 @@ public class CharacterManager : MonoBehaviour
     public int PendingCriticalDamage { get { return _pendingCriticalDamage; } set { _pendingCriticalDamage = value; }}
     
     public Transform LockOnTransform { get { return _lockOnTransform; } set { _lockOnTransform = value; }}
-    
+    public Transform CriticalAttackRayCastStartPoint { get { return _criticalAttackRayCastStartPoint; } set{ _criticalAttackRayCastStartPoint = value; }}
     public CriticalDamageCollider RiposteDamageCollider { get { return _riposteDamageCollider; } set { _riposteDamageCollider = value; }}
 
     public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; }}

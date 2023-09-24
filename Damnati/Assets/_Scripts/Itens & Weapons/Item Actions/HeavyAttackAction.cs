@@ -5,144 +5,143 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item Actions/Heavy Attack Action")]
 public class HeavyAttackAction : ItemActions
 {
-    public override void PerformAction(PlayerManager player)
+    public override void PerformAction(CharacterManager character)
     {
-        player.PlayerAnimator.EraseHandIKForWeapon();
-        player.PlayerEffects.PlayWeaponFX(false);
+        character.CharacterAnimator.EraseHandIKForWeapon();
+        character.CharacterEffects.PlayWeaponFX(false);
 
-        if(player.IsSprinting)
+        if(character.IsSprinting)
         {
-            HandleJumpingAttack(player);
-            player.PlayerCombat.CurrentAttackType = AttackType.JumpingHeavyAttack;
+            HandleJumpingAttack(character);
+            character.CharacterCombat.CurrentAttackType = AttackType.JumpingHeavyAttack;
             return;
         }
 
-        if(player.CanDoCombo)
+        if(character.CanDoCombo)
         {
-            player.PlayerInput.ComboFlag = true;
-            HandleHeavyWeaponCombo(player);
-            player.PlayerInput.ComboFlag = false;
-            player.PlayerCombat.CurrentAttackType = AttackType.HeavyAttack;
+            HandleHeavyWeaponCombo(character);
+            character.CharacterCombat.CurrentAttackType = AttackType.HeavyAttack;
+            character.CanDoCombo = false;
         }
 
         else
         {
-            if(player.IsInteracting || player.CanDoCombo)
+            if(character.IsInteracting || character.CanDoCombo)
             {
                 return;
             }
 
-            HandleHeavyAttack(player);
-            player.PlayerCombat.CurrentAttackType = AttackType.HeavyAttack;
+            HandleHeavyAttack(character);
+            character.CharacterCombat.CurrentAttackType = AttackType.HeavyAttack;
         }
     }
-    private void HandleHeavyAttack(PlayerManager player)
+    private void HandleHeavyAttack(CharacterManager character)
     {
-        if(player.IsUsingLeftHand)
+        if(character.IsUsingLeftHand)
         {
-            player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Heavy_Attack_01, true, false, true);
-            player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Heavy_Attack_01;
+            character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Heavy_Attack_01, true, false, true);
+            character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Heavy_Attack_01;
         }
-        else if(player.IsUsingRightHand)
+        else if(character.IsUsingRightHand)
         {
-            if(player.PlayerInput.TwoHandFlag)
+            if(character.IsTwoHandingWeapon)
             {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Heavy_Attack_01, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Heavy_Attack_01;
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Heavy_Attack_01, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Heavy_Attack_01;
             }
             else
             {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Heavy_Attack_01, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Heavy_Attack_01;
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Heavy_Attack_01, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Heavy_Attack_01;
             }
         }
     }
-    private void HandleJumpingAttack(PlayerManager player)
+    private void HandleJumpingAttack(CharacterManager character)
     {
-        if(player.IsUsingLeftHand)
+        if(character.IsUsingLeftHand)
         {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Jumping_Attack_01, true, false, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Jumping_Attack_01;  
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Jumping_Attack_01, true, false, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Jumping_Attack_01;  
         }
-        else if(player.IsUsingRightHand)
+        else if(character.IsUsingRightHand)
         {
-            if(player.PlayerInput.TwoHandFlag)
+            if(character.IsTwoHandingWeapon)
             {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Jumping_Attack_01, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Jumping_Attack_01;
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Jumping_Attack_01, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Jumping_Attack_01;
             }
             else
             {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Jumping_Attack_01, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Jumping_Attack_01;
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Jumping_Attack_01, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Jumping_Attack_01;
             }
         }
     }
-    private void HandleHeavyWeaponCombo(PlayerManager player)
+    private void HandleHeavyWeaponCombo(CharacterManager character)
     {
-        if(player.Animator.GetBool("IsInteracting") == true && player.Animator.GetBool("CanDoCombo") == false)
+        if(character.Animator.GetBool("IsInteracting") == true && character.Animator.GetBool("CanDoCombo") == false)
         {
             return;
         }
 
-        if(player.PlayerInput.ComboFlag)
+        if(character.CanDoCombo)
         {
-            player.Animator.SetBool("CanDoCombo", false);
+            character.Animator.SetBool("CanDoCombo", false);
             
-            if(player.IsUsingLeftHand)
+            if(character.IsUsingLeftHand)
             {
-                if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Heavy_Attack_01)
+                if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Heavy_Attack_01)
                 {
-                    player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Heavy_Attack_02, true, false, true);
-                    player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Heavy_Attack_02;
+                    character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Heavy_Attack_02, true, false, true);
+                    character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Heavy_Attack_02;
                 }
-                else if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Heavy_Attack_02)
+                else if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Heavy_Attack_02)
                 {
-                    player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Heavy_Attack_03, true, false, true);
-                    player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Heavy_Attack_03;
+                    character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Heavy_Attack_03, true, false, true);
+                    character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Heavy_Attack_03;
                 }
-                else if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Heavy_Attack_03)
+                else if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Heavy_Attack_03)
                 {
-                    player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Heavy_Attack_01, true, false, true);
-                    player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Heavy_Attack_01;
+                    character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Heavy_Attack_01, true, false, true);
+                    character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Heavy_Attack_01;
                 }
             }
-            else if(player.IsUsingRightHand)
+            else if(character.IsUsingRightHand)
             {
-                if(player.IsTwoHandingWeapon)
+                if(character.IsTwoHandingWeapon)
                 {
-                    if(player.PlayerCombat.LastAttack == player.PlayerCombat.TH_Heavy_Attack_01)
+                    if(character.CharacterCombat.LastAttack == character.CharacterCombat.TH_Heavy_Attack_01)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Heavy_Attack_02, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Heavy_Attack_02;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Heavy_Attack_02, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Heavy_Attack_02;
                     }
-                    else if(player.PlayerCombat.LastAttack == player.PlayerCombat.TH_Heavy_Attack_02)
+                    else if(character.CharacterCombat.LastAttack == character.CharacterCombat.TH_Heavy_Attack_02)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Heavy_Attack_03, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Heavy_Attack_03;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Heavy_Attack_03, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Heavy_Attack_03;
                     }
-                    else if(player.PlayerCombat.LastAttack == player.PlayerCombat.TH_Heavy_Attack_03)
+                    else if(character.CharacterCombat.LastAttack == character.CharacterCombat.TH_Heavy_Attack_03)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Heavy_Attack_01, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Heavy_Attack_01;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Heavy_Attack_01, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Heavy_Attack_01;
                     }
                 }
                 else
                 {
-                    if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Heavy_Attack_01)
+                    if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Heavy_Attack_01)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Heavy_Attack_02, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Heavy_Attack_02;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Heavy_Attack_02, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Heavy_Attack_02;
                     }
-                    else if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Heavy_Attack_02)
+                    else if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Heavy_Attack_02)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Heavy_Attack_03, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Heavy_Attack_03;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Heavy_Attack_03, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Heavy_Attack_03;
                     }
-                    else if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Heavy_Attack_03)
+                    else if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Heavy_Attack_03)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Heavy_Attack_01, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Heavy_Attack_01;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Heavy_Attack_01, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Heavy_Attack_01;
                     }
                 }
             }

@@ -13,10 +13,6 @@ public class PlayerLocomotionManager : MonoBehaviour
     [SerializeField] private CapsuleCollider _characterCollider;
     [SerializeField] private CapsuleCollider _characterCollisionBlockerCollider;
 
-    [Header("Critical Attack Components")]
-    [Space(15)]
-    [SerializeField] private Transform _criticalAttackRayCastStartPoint;
-
 
     [Header("Gravity Parameters")]
     [Space(15)]
@@ -58,8 +54,6 @@ public class PlayerLocomotionManager : MonoBehaviour
     public Vector3 MoveDirection { get { return _movDirection; } set { _movDirection = value; }}
     public float MoveDirectionY { get { return _movDirection.y; } set { _movDirection.y = value; }}
     
-    public Transform CriticalAttackRayCastStartPoint { get { return _criticalAttackRayCastStartPoint; } set { _criticalAttackRayCastStartPoint = value; }}
-   
     public CapsuleCollider CharacterCollider { get { return _characterCollider; } set { _characterCollider = value; }}
     public CapsuleCollider CharacterCollisionBlockerCollider { get { return _characterCollisionBlockerCollider; } set { _characterCollisionBlockerCollider = value; }}
     #endregion

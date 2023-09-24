@@ -5,22 +5,22 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item Actions/Draw Arrow Action")]
 public class DrawArrowAction : ItemActions
 {
-    public override void PerformAction(PlayerManager player)
+    public override void PerformAction(CharacterManager character)
     {
-        if(player.IsInteracting || player.IsHoldingArrow)
+        if(character.IsInteracting || character.IsHoldingArrow)
         {
             return;
         }
 
-        player.Animator.SetBool("IsHoldingArrow", true);
-        player.PlayerAnimator.PlayTargetAnimation("Draw Arrow", true);
+        character.Animator.SetBool("IsHoldingArrow", true);
+        character.CharacterAnimator.PlayTargetAnimation("Draw Arrow", true);
 
 
-        GameObject loadedArrow = Instantiate(player.PlayerInventory.currentAmmo.loadedItemModel, player.PlayerWeaponSlot.LeftHandSlot.transform);
-        player.PlayerEffects.CurrentRangeFX = loadedArrow;
+        GameObject loadedArrow = Instantiate(character.CharacterInventory.currentAmmo.loadedItemModel, character.CharacterWeaponSlot.LeftHandSlot.transform);
+        character.CharacterEffects.CurrentRangeFX = loadedArrow;
 
 
-        Animator bowAnimator = player.PlayerWeaponSlot.RightHandSlot.GetComponentInChildren<Animator>();
+        Animator bowAnimator = character.CharacterWeaponSlot.RightHandSlot.GetComponentInChildren<Animator>();
         bowAnimator.SetBool("IsDrawn", true);
         bowAnimator.Play("Draw Arrow");
         

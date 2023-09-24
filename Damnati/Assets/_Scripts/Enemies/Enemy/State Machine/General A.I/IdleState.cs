@@ -6,27 +6,35 @@ public class IdleState : States
 {
     [SerializeField] private PursueTargetState _persueTarget;
     [SerializeField] private LayerMask _detectionLayer;
-    public override States Tick(EnemyManager enemy)
+    [SerializeField] private LayerMask _layersThatBlockLineOffSight;
+    public override States Tick(EnemyManager aiCharacter)
     {
-        #region Handle Enemy Target Detection
-        Collider[] colliders = Physics.OverlapSphere(transform.position, enemy.DetectionRadius, _detectionLayer);
+        #region Handle AI Character Target Detection
+        Collider[] colliders = Physics.OverlapSphere(transform.position, aiCharacter.DetectionRadius, _detectionLayer);
 
         for (int i = 0; i < colliders.Length; i++)
         {
-            CharacterStatsManager characterStats = colliders[i].transform.GetComponent<CharacterStatsManager>();
+            CharacterManager targetCharacter = colliders[i].transform.GetComponent<CharacterManager>();
 
-            if(characterStats != null)
+            if(targetCharacter != null)
             {
-                if(characterStats.TeamIDNumber != enemy.EnemyStatsManager.TeamIDNumber)
+                if(targetCharacter.CharacterStats.TeamIDNumber != aiCharacter.CharacterStats.TeamIDNumber)
                 {
-                    Vector3 targetDirection = characterStats.transform.position - transform.position;
+                    Vector3 targetDirection = targetCharacter.transform.position - transform.position;
                     float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
-                    if(viewableAngle > enemy.MinimumDetectionAngle && viewableAngle < enemy.MaximumDetectionAngle)
+                    if(viewableAngle > aiCharacter.MinimumDetectionAngle && viewableAngle < aiCharacter.MaximumDetectionAngle)
                     {
-                        if(!enemy.IsDead)
+                        if(!aiCharacter.IsDead)
                         {
-                            enemy.CurrentTarget = characterStats;
+                            if(Physics.Linecast(aiCharacter.LockOnTransform.position, targetCharacter.LockOnTransform.position, _layersThatBlockLineOffSight))
+                            {
+                                return this;
+                            }
+                            else
+                            {
+                                aiCharacter.CurrentTarget = targetCharacter;
+                            }
                         }
                     }
                 }
@@ -37,7 +45,7 @@ public class IdleState : States
 
 
         #region  Handle Switching To Next Statate
-        if(enemy.CurrentTarget != null)
+        if(aiCharacter.CurrentTarget != null)
         {
             return _persueTarget;
         }

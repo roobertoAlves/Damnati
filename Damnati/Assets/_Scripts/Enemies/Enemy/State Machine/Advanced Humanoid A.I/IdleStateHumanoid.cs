@@ -1,24 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class IdleStateHumanoid : States
 {
-    [SerializeField] private PursueTargetState _persueTarget;
+    [SerializeField] private PursueTargetStateHumanoid _persueTarget;
     [SerializeField] private LayerMask _detectionLayer;
-    [SerializeField] private LayerMask _layersToIgnoreForLineSight;
+    [SerializeField] private LayerMask _layersThatBlockLineOffSight;
     public override States Tick(EnemyManager aiCharacter)
     {
-        #region Handle aiCharacter Target Detection
+        #region Handle AI Character Target Detection
         Collider[] colliders = Physics.OverlapSphere(transform.position, aiCharacter.DetectionRadius, _detectionLayer);
 
         for (int i = 0; i < colliders.Length; i++)
         {
-            CharacterManager targetCharacter = colliders[i].transform.GetComponent<CharaterManager>();
+            CharacterManager targetCharacter = colliders[i].transform.GetComponent<CharacterManager>();
 
             if(targetCharacter != null)
             {
-                if(targetCharacter.CharacterStatsManager.TeamIDNumber != aiCharacter.aitargetCharacterManager.TeamIDNumber)
+                if(targetCharacter.CharacterStats.TeamIDNumber != aiCharacter.CharacterStats.TeamIDNumber)
                 {
                     Vector3 targetDirection = targetCharacter.transform.position - transform.position;
                     float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
@@ -27,7 +28,7 @@ public class IdleStateHumanoid : States
                     {
                         if(!aiCharacter.IsDead)
                         {
-                            if(PhysicalAddress.Linecast(aiCharacter.LockOnTransform, targetCharacter.LockOnTransform.position, _layersToIgnoreForLineSight))
+                            if(Physics.Linecast(aiCharacter.LockOnTransform.position, targetCharacter.LockOnTransform.position, _layersThatBlockLineOffSight))
                             {
                                 return this;
                             }

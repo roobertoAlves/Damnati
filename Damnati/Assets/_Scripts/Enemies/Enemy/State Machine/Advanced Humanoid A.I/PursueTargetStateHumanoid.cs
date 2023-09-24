@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PursueTargetState : States
+public class PursueTargetStateHumanoid : States
 {
-    [SerializeField] private CombatStanceState _combatStanceState;
-
+    [SerializeField] private CombatStanceStateHumanoid _combatStanceState;
+    
     public override States Tick(EnemyManager aiCharacter)
     {
         HandleRotateTowardsTarget(aiCharacter);

@@ -22,7 +22,16 @@ public enum AttackType
     HeavyAttack,
     JumpingHeavyAttack
 }
-
+public enum AICombatStyle
+{
+    SwordAndShield,
+    Archer
+}
+public enum AIAttackActionType
+{
+    MeleeAttackAction,
+    RangedAttackAction
+}
 public class Enums : MonoBehaviour
 {
 

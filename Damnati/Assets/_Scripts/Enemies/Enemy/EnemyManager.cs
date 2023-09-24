@@ -47,6 +47,16 @@ public class EnemyManager : CharacterManager
     [SerializeField] private bool _allowAIToPerformCombos;
     [SerializeField] private bool _isPhaseShifting;
     [SerializeField] private float _comboLikelyHood;
+    private AICombatStyle _combatSyle;
+    
+    //estas configurações apenas afetam as A.I com os "HumanoidStates"
+    [Header("Advanced A.I Settings")]
+    private bool _allowAIToPerformBlock;
+    private int _blockLikelyHood = 50; //Numero de 0-100, 100 ele irá bloquear a todo momento, 0 ele bloqueara 0% do tempo;
+    private bool _allowAIToPerformDodge;
+    private int _dodgeLikelyHood = 50;
+    private bool _allowAIToPerformParry;
+    private int _parryLikelyHood;
 
     [Header("A.I Target Information")]
     [Space(15)]
@@ -60,7 +70,7 @@ public class EnemyManager : CharacterManager
     public EnemyAnimatorManager EnemyAnimatorManager { get { return _enemyAnimatorManager; }}
     public EnemyStatsManager EnemyStatsManager { get { return _enemyStatsManager; }}
     public EnemyEffectsManager EnemyEffectsManager { get { return _enemyEffectsManager; }}
-
+    public AICombatStyle CombatStyle { get { return _combatSyle; }}
     public float DetectionRadius { get { return _detectionRadius; } set { _detectionRadius = value; }}
 
     public float MinimumDetectionAngle {get { return _minimumDetectionAngle; } set { _minimumDetectionAngle = value; }}
@@ -85,6 +95,13 @@ public class EnemyManager : CharacterManager
     public float DistanceFromTarget { get { return _distanceFromTarget; } set { _distanceFromTarget = value; }}
     public float ViewableAngle { get { return _viewableAngle; } set { _viewableAngle = value; }}
     public Vector3 TargetsDirection { get { return _targetsDirection; } set { _targetsDirection = value; }}
+    
+    public bool AllowAIToPerformBlock { get { return _allowAIToPerformBlock; } set {_allowAIToPerformBlock = value; }}
+    public bool AllowAIToPerformDodge { get { return _allowAIToPerformDodge; } set {_allowAIToPerformDodge = value; }}
+    public bool AllowAIToPerformParry { get { return _allowAIToPerformParry; } set {_allowAIToPerformParry = value; }}
+    public int ParryLikelyHood { get { return _parryLikelyHood; } set { _parryLikelyHood = value; }}
+    public int DodgeLikelyHood { get { return _dodgeLikelyHood; } set { _dodgeLikelyHood = value; }}
+    public int BlockLikelyHood { get { return _blockLikelyHood; } set { _blockLikelyHood = value; }}
     #endregion
 
     protected override void Awake() 

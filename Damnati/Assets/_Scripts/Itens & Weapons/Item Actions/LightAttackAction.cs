@@ -5,149 +5,146 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item Actions/Light Attack Actions")]
 public class LightAttackAction : ItemActions
 {
-    public override void PerformAction(PlayerManager player)
+    public override void PerformAction(CharacterManager character)
     {
-        player.PlayerAnimator.EraseHandIKForWeapon();
-        player.PlayerEffects.PlayWeaponFX(false);
+        character.CharacterAnimator.EraseHandIKForWeapon();
+        character.CharacterEffects.PlayWeaponFX(false);
 
-        if(player.IsSprinting)
+        if(character.IsSprinting)
         {
-            HandleRunningAttack(player);
+            HandleRunningAttack(character);
             //Debug.Log("correndo");
-            player.PlayerCombat.CurrentAttackType = AttackType.RunningLightAttack;
+            character.CharacterCombat.CurrentAttackType = AttackType.RunningLightAttack;
             return;
             
         }
 
-        if(player.CanDoCombo)
+        if(character.CanDoCombo)
         {
-            player.PlayerInput.ComboFlag = true;
-            //Debug.Log("combo");
-            HandleLightWeaponCombo(player);
-            player.PlayerInput.ComboFlag = false;
-            player.PlayerCombat.CurrentAttackType = AttackType.LightAttack;
+            HandleLightWeaponCombo(character);
+            character.CharacterCombat.CurrentAttackType = AttackType.LightAttack;
+            character.CanDoCombo = false;
         }
-
         else
         {
-            if(player.IsInteracting || player.CanDoCombo)
+            if(character.IsInteracting || character.CanDoCombo)
             {
                 return;
             }
 
             //Debug.Log("ataque");
-            HandleLightAttack(player);
-            player.PlayerCombat.CurrentAttackType = AttackType.LightAttack;
+            HandleLightAttack(character);
+            character.CharacterCombat.CurrentAttackType = AttackType.LightAttack;
         }
 
     }
-    private void HandleLightAttack(PlayerManager player)
+    private void HandleLightAttack(CharacterManager character)
     {
-        if(player.IsUsingLeftHand)
+        if(character.IsUsingLeftHand)
         {
-            player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_01, true, false, true);   
-            player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_01; 
+            character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Light_Attack_01, true, false, true);   
+            character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Light_Attack_01; 
         }
-        else if(player.IsUsingRightHand)
+        else if(character.IsUsingRightHand)
         {
-            if(player.PlayerInput.TwoHandFlag)
+            if(character.IsTwoHandingWeapon)
             {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Light_Attack_01, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Light_Attack_01;
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Light_Attack_01, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Light_Attack_01;
             }
             else
             {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_01, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_01;
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Light_Attack_01, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Light_Attack_01;
             }
         }
     }
-    private void HandleRunningAttack(PlayerManager player)
+    private void HandleRunningAttack(CharacterManager character)
     {
-        if(player.IsUsingLeftHand)
+        if(character.IsUsingLeftHand)
         {
-            player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Running_Attack_01, true, false, true);
-            player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Running_Attack_01;
+            character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Running_Attack_01, true, false, true);
+            character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Running_Attack_01;
         }
-        else if(player.IsUsingRightHand)
+        else if(character.IsUsingRightHand)
         {
-            if(player.PlayerInput.TwoHandFlag)
+            if(character.IsTwoHandingWeapon)
             {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Running_Attack_01, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Running_Attack_01;
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Running_Attack_01, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Running_Attack_01;
             }
             else
             {
-                player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Running_Attack_01, true);
-                player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Running_Attack_01;
+                character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Running_Attack_01, true);
+                character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Running_Attack_01;
             }
         }
     }
-    public void HandleLightWeaponCombo(PlayerManager player)
+    public void HandleLightWeaponCombo(CharacterManager character)
     {
-        if(player.Animator.GetBool("IsInteracting") == true && player.Animator.GetBool("CanDoCombo") == false)
+        if(character.Animator.GetBool("IsInteracting") == true && character.Animator.GetBool("CanDoCombo") == false)
         {
             return;
         }
 
-        if(player.PlayerInput.ComboFlag)
+        if(character.CanDoCombo)
         {
-            player.Animator.SetBool("CanDoCombo", false);
+            character.Animator.SetBool("CanDoCombo", false);
             
-            if(player.IsUsingLeftHand)
+            if(character.IsUsingLeftHand)
             {
-                if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Light_Attack_01)
+                if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Light_Attack_01)
                 {
-                    player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_02, true, false, true);
-                    player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_02;
+                    character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Light_Attack_02, true, false, true);
+                    character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Light_Attack_02;
                 }
-                else if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Light_Attack_02)
+                else if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Light_Attack_02)
                 {
-                    player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_03, true, false, true);
-                    player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_03;
+                    character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Light_Attack_03, true, false, true);
+                    character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Light_Attack_03;
                 }
-                else if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Light_Attack_03)
+                else if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Light_Attack_03)
                 {
-                    player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_01, true, false, true);
-                    player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_01;
+                    character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Light_Attack_01, true, false, true);
+                    character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Light_Attack_01;
                 }
             }
-            else if(player.IsUsingRightHand)
+            else if(character.IsUsingRightHand)
             {
-                if(player.IsTwoHandingWeapon)
+                if(character.IsTwoHandingWeapon)
                 {
-                    if(player.PlayerCombat.LastAttack == player.PlayerCombat.TH_Light_Attack_01)
+                    if(character.CharacterCombat.LastAttack == character.CharacterCombat.TH_Light_Attack_01)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Light_Attack_02, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Light_Attack_02;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Light_Attack_02, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Light_Attack_02;
                     }
-                    else if(player.PlayerCombat.LastAttack == player.PlayerCombat.TH_Light_Attack_02)
+                    else if(character.CharacterCombat.LastAttack == character.CharacterCombat.TH_Light_Attack_02)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Light_Attack_03, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Light_Attack_03;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Light_Attack_03, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Light_Attack_03;
                     }
-                    else if(player.PlayerCombat.LastAttack == player.PlayerCombat.TH_Light_Attack_03)
+                    else if(character.CharacterCombat.LastAttack == character.CharacterCombat.TH_Light_Attack_03)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.TH_Light_Attack_01, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.TH_Light_Attack_01;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.TH_Light_Attack_01, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.TH_Light_Attack_01;
                     }
                 }
                 else
                 {
-                    if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Light_Attack_01)
+                    if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Light_Attack_01)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_02, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_02;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Light_Attack_02, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Light_Attack_02;
                     }
-                    else if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Light_Attack_02)
+                    else if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Light_Attack_02)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_03, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_03;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Light_Attack_03, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Light_Attack_03;
                     }
-                    else if(player.PlayerCombat.LastAttack == player.PlayerCombat.OH_Light_Attack_03)
+                    else if(character.CharacterCombat.LastAttack == character.CharacterCombat.OH_Light_Attack_03)
                     {
-                        player.PlayerAnimator.PlayTargetAnimation(player.PlayerCombat.OH_Light_Attack_01, true);
-                        player.PlayerCombat.LastAttack = player.PlayerCombat.OH_Light_Attack_01;
+                        character.CharacterAnimator.PlayTargetAnimation(character.CharacterCombat.OH_Light_Attack_01, true);
+                        character.CharacterCombat.LastAttack = character.CharacterCombat.OH_Light_Attack_01;
                     }
                 }
             }

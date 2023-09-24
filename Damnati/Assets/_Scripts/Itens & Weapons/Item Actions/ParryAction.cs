@@ -5,22 +5,22 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item Actions/Parry Action")]
 public class ParryAction : ItemActions
 {
-    public override void PerformAction(PlayerManager player)
+    public override void PerformAction(CharacterManager character)
     {
-        if(player.IsInteracting)
+        if(character.IsInteracting)
         {
             return;
         }
 
-        player.PlayerAnimator.EraseHandIKForWeapon();
+        character.CharacterAnimator.EraseHandIKForWeapon();
 
-        WeaponItem parryingWeapon = player.PlayerInventory.CurrentItemBeingUsed as WeaponItem;
+        WeaponItem parryingWeapon = character.CharacterInventory.CurrentItemBeingUsed as WeaponItem;
 
         //checando se a arma realizando parry e uma rapida, media ou pesada
 
         if(parryingWeapon.weaponType == WeaponType.Shield)
         {
-            player.PlayerAnimator.PlayTargetAnimation("Parry", true);
+            character.CharacterAnimator.PlayTargetAnimation("Parry", true);
         }
     }
 }

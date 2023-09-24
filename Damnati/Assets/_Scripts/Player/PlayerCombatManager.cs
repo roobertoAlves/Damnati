@@ -7,99 +7,21 @@ public class PlayerCombatManager : CharacterCombatManager
 {
     private PlayerManager _player;
 
-    #region Attack Animations
-
-    [Header("Attack Animations")]
-    [Space(15)]
-    private string oh_light_attack_01 = "OH_Light_Attack_01";
-    private string oh_light_attack_02 = "OH_Light_Attack_02";
-    private string oh_light_attack_03 = "OH_Light_Attack_03";
-    
-    private string oh_heavy_attack_01 = "OH_Heavy_Attack_01";
-    private string oh_heavy_attack_02 = "OH_Heavy_Attack_02";
-    private string oh_heavy_attack_03 = "OH_Heavy_Attack_02";
-
-    private string th_light_attack_01 = "TH_Light_Attack_01";
-    private string th_light_attack_02 = "TH_Light_Attack_02";
-    private string th_light_attack_03 = "TH_Light_Attack_03";
-
-    private string th_heavy_attack_01 = "TH_Heavy_Attack_01";
-    private string th_heavy_attack_02 = "TH_Heavy_Attack_02";
-    private string th_heavy_attack_03 = "TH_Heavy_Attack_03";
-
-    private string th_running_attack_01 = "TH_Running_Attack_01";
-    
-    private string oh_running_attack_01 = "OH_Running_Attack_01";
-
-    private string th_jumping_attack_01 = "TH_Jumping_Attack_01";
-
-    private string oh_jumping_attack_01 = "OH_Jumping_Attack_01";
-
-    
-    private string oh_charge_attack_01 = "OH_Charge_Attack_01";
-    private string oh_charge_attack_02 = "OH_Charge_Attack_02";
-
-    private string th_charge_attack_01 = "TH_Charge_Attack_01";
-    private string th_charge_attack_02 = "TH_Charge_Attack_02";
-
-    private string weapon_art = "Weapon_Art";
-
-    #endregion
 
     private LayerMask _riposteLayer = 1 << 9;
-
-    private string _lastAttack;
-
-    #region GET & SET
-    public string LastAttack {get { return _lastAttack; } set { _lastAttack = value; }}
-    public string Weapon_Art { get { return weapon_art; }}
-    
-    public string OH_Light_Attack_01 { get { return oh_light_attack_01; }}
-    public string OH_Light_Attack_02 { get { return oh_light_attack_02; }}
-    public string OH_Light_Attack_03 { get { return oh_light_attack_03; }}
-
-    public string OH_Heavy_Attack_01 { get { return oh_heavy_attack_01; }}
-    public string OH_Heavy_Attack_02 { get { return oh_heavy_attack_02; }}
-    public string OH_Heavy_Attack_03 { get { return oh_heavy_attack_03; }}
-
-    public string OH_Running_Attack_01 { get { return oh_running_attack_01; }}
-    public string OH_Jumping_Attack_01 { get { return oh_jumping_attack_01; }}
-
-    public string TH_Light_Attack_01 { get { return th_light_attack_01; }}
-    public string TH_Light_Attack_02 { get { return th_light_attack_02; }}
-    public string TH_Light_Attack_03 { get { return th_light_attack_03; }}
-    
-
-    public string TH_Heavy_Attack_01 { get { return th_heavy_attack_01; }}
-    public string TH_Heavy_Attack_02 { get { return th_heavy_attack_02; }}
-    public string TH_Heavy_Attack_03 { get { return th_heavy_attack_03; }}
-    
-    public string TH_Running_Attack_01 { get { return th_running_attack_01; }}
-    public string TH_Jumping_Attack_01 { get { return th_jumping_attack_01; }}
-
-    public string OH_Charge_Attack_01 { get { return oh_charge_attack_01; }}
-    public string OH_Charge_Attack_02 { get { return oh_charge_attack_02; }}
-
-    public string TH_Charge_Attack_01 { get { return th_charge_attack_01; }}
-    public string TH_Charge_Attack_02 { get { return th_charge_attack_02; }}
-    #endregion
-
+   
     protected override void Awake() 
     {
         base.Awake();
         _player = GetComponent<PlayerManager>();
     }
     
-    public void AttemptRiposte()
+    public override void AttemptRiposte()
     {
-        if(_player.PlayerStats.CurrentStamina <= 0)
-        {
-            return; 
-        }
-        
+        base.AttemptRiposte();
         RaycastHit hit;
 
-        if(Physics.Raycast(_player.PlayerLocomotion.CriticalAttackRayCastStartPoint.position, 
+        if(Physics.Raycast(_player.CriticalAttackRayCastStartPoint.position, 
         transform.TransformDirection(Vector3.forward), out hit, 0.7f, _riposteLayer))
         {
             //Debug.Log("Step 1");
@@ -129,7 +51,12 @@ public class PlayerCombatManager : CharacterCombatManager
             }
         }
     }
+    public override void AttemptBlock(DamageCollider attackingWeapon, float physicalDamage, float fireDamage, string blockingAnimation)
+    {
+        base.AttemptBlock(attackingWeapon, physicalDamage, fireDamage, blockingAnimation);
+        _player.PlayerStats.StaminaBar.SetCurrentStamina(Mathf.RoundToInt(_player.PlayerStats.CurrentStamina));
 
+    }
     public override void DrainStaminaBaseOnAttack()
     {
         if(_player.IsUsingRightHand)
@@ -211,10 +138,5 @@ public class PlayerCombatManager : CharacterCombatManager
                 
             }
         }
-    }
-    public override void AttemptBlock(DamageCollider attackingWeapon, float physicalDamage, float fireDamage, string blockAnimation)
-    {
-        base.AttemptBlock(attackingWeapon, physicalDamage,  fireDamage, blockAnimation);
-        _player.PlayerStats.StaminaBar.SetCurrentStamina(Mathf.RoundToInt(_player.PlayerStats.CurrentStamina));
     }
 }
