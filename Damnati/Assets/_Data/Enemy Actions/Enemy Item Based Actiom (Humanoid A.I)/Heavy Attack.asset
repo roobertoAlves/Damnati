@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc06bd15448c9864aaadfaf3e3de3313, type: 3}
+  m_Name: Heavy Attack
+  m_EditorClassIdentifier: 
+  _actionAttackType: 0
+  _attackType: 2
+  _actionCanCombo: 1
+  _attackScore: 3
+  _recoveryTime: 2
+  _maximumAttackAngle: 35
+  _minimumAttackAngle: -35
+  _minimumDistanceNeededToAttack: 0
+  _maximumDistanceNeededToAttack: 3

@@ -9,14 +9,6 @@ AnimatorOverrideController:
   m_Name: Straight Sword Controller
   m_Controller: {fileID: 9100000, guid: 2b6956df7276cd74198d42b95f560cde, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 8ab38b91704d5184b9adc9398de41e9c, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 8ab38b91704d5184b9adc9398de41e9c, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 309889b036b833146b988a8c2ec962d2, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 309889b036b833146b988a8c2ec962d2, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: b813172e93afdf54da670cff45ec2642, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: b813172e93afdf54da670cff45ec2642, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 58a956388006a964abc660f847d2ec39, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 58a956388006a964abc660f847d2ec39, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 031164dfd08d08b4f8d9c0bf0a083171, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 3b204d196e7b39b4e9c86bb4ef2dd105, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 789cbe765be1abf4991895ede25f8f9d, type: 2}
@@ -27,8 +19,6 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: 37049a8ee7cd90543a5dadb31ed8b5f4, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: ba741e13a3bc6014bbb3290db54aa216, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: ba741e13a3bc6014bbb3290db54aa216, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 27cd57a0a79ff344290d1b03b81121ba, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 27cd57a0a79ff344290d1b03b81121ba, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 40a07f987e1dc284b91d90ae252b1853, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: ec04f11f9da0fd94e8548075e861e175, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 3ad98ee825174da4597d4303266e6d00, type: 2}
@@ -41,3 +31,15 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: 351886af045385d47bd473abbb6669b5, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 622176e68f5121943b941fef40d22aac, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 622176e68f5121943b941fef40d22aac, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 40f1d8cbad75ceb428782216bdfe03c8, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8ab38b91704d5184b9adc9398de41e9c, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 3d16bfb4e0b625242bd9b4919d125c2b, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 309889b036b833146b988a8c2ec962d2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f6cd32145bce7da4ab3aa7f7091a945f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b813172e93afdf54da670cff45ec2642, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 50d8bc76ba207ca4eb91f2dfec9a78e4, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8ab38b91704d5184b9adc9398de41e9c, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c9fabc404e582a942adc90ff80f1422f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 309889b036b833146b988a8c2ec962d2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 269129b424208964291f51dc773dcb4e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 58a956388006a964abc660f847d2ec39, type: 2}

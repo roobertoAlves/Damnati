@@ -36,7 +36,7 @@ public class FireArrowAction : ItemActions
             Rigidbody rb = liveArrow.GetComponentInChildren<Rigidbody>();
             RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
 
-            if(player.IsAiming)
+            if(character.IsAiming)
             {
                 Ray ray = player.PlayerCamera.CameraObject.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
                 RaycastHit hitPoint;
@@ -82,11 +82,44 @@ public class FireArrowAction : ItemActions
             damageCollider.characterManager = character;
             damageCollider.AmmoItem = player.PlayerInventory.currentAmmo;
             damageCollider.PhysicalDamage = player.PlayerInventory.currentAmmo.physicalDamage;
-            }
+            damageCollider.TeamIDNumber = player.PlayerStats.TeamIDNumber;
+        }
         //Atirando como Inimigo
         else
         {
+            EnemyManager enemy = character as EnemyManager;
+            //Criando e atirando a flecha
 
+            GameObject liveArrow = Instantiate
+            (character.CharacterInventory.currentAmmo.liveAmmoModel, 
+            arrowInstantiationLocation.transform.position, 
+            Quaternion.identity);
+            
+            Rigidbody rb = liveArrow.GetComponentInChildren<Rigidbody>();
+            RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
+            
+            //Dando velocidade a flecha
+
+            if(enemy.CurrentTarget != null)
+            {
+                //Enquanto "lockado" sempre irá olhar para o inimigo, podendo copiar a direção que a flecha tomar quando disparada
+
+                Quaternion arrowRotation = Quaternion.LookRotation
+                    (enemy.CurrentTarget.LockOnTransform.position - liveArrow.gameObject.transform.position);
+                liveArrow.transform.rotation = arrowRotation;
+            }
+
+            rb.AddForce(liveArrow.transform.forward * enemy.CharacterInventory.currentAmmo.forwardVelocity);
+            rb.AddForce(liveArrow.transform.up * enemy.CharacterInventory.currentAmmo.upwardVelocity);
+            rb.useGravity = enemy.CharacterInventory.currentAmmo.useGravity;
+            rb.mass = enemy.CharacterInventory.currentAmmo.ammoMass;
+            liveArrow.transform.parent = null;
+
+            //fazendo que a flecha inflija dano
+            damageCollider.characterManager = character;
+            damageCollider.AmmoItem = enemy.CharacterInventory.currentAmmo;
+            damageCollider.PhysicalDamage = enemy.CharacterInventory.currentAmmo.physicalDamage;
+            damageCollider.TeamIDNumber = enemy.CharacterStats.TeamIDNumber;
         }
     }
 }

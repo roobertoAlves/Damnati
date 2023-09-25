@@ -7,6 +7,7 @@ public class HeavyAttackAction : ItemActions
 {
     public override void PerformAction(CharacterManager character)
     {
+        character.IsAttacking = true;
         character.CharacterAnimator.EraseHandIKForWeapon();
         character.CharacterEffects.PlayWeaponFX(false);
 

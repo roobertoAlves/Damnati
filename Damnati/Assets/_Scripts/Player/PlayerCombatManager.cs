@@ -6,9 +6,6 @@ using UnityEngine;
 public class PlayerCombatManager : CharacterCombatManager
 {
     private PlayerManager _player;
-
-
-    private LayerMask _riposteLayer = 1 << 9;
    
     protected override void Awake() 
     {
@@ -16,41 +13,6 @@ public class PlayerCombatManager : CharacterCombatManager
         _player = GetComponent<PlayerManager>();
     }
     
-    public override void AttemptRiposte()
-    {
-        base.AttemptRiposte();
-        RaycastHit hit;
-
-        if(Physics.Raycast(_player.CriticalAttackRayCastStartPoint.position, 
-        transform.TransformDirection(Vector3.forward), out hit, 0.7f, _riposteLayer))
-        {
-            //Debug.Log("Step 1");
-            CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
-            //Debug.Log("Enemy Character Manager: " + enemyCharacterManager.transform.name);
-            DamageCollider rightWeapon = _player.PlayerWeaponSlot.RightHandDamageCollider;
-            //Debug.Log("Right Weapon Collider: " +  rightWeapon.transform.name);
-           
-            if(enemyCharacterManager != null && enemyCharacterManager.CanBeRiposted)
-            {
-                //Debug.Log("Step 2");
-                _player.transform.position = enemyCharacterManager.RiposteDamageCollider.CriticalDamagerStandPosition.position;
-
-                Vector3 rotationDirection = _player.transform.eulerAngles;
-                rotationDirection = hit.transform.position - _player.transform.position;
-                rotationDirection.y = 0;
-                rotationDirection.Normalize();
-                Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                Quaternion targetRotation = Quaternion.Slerp(_player.transform.rotation, tr, 500 * Time.deltaTime);
-                _player.transform.rotation = targetRotation;
-
-                int criticalDamage = _player.PlayerInventory.rightHandWeapon.criticalDamageMultiplier * rightWeapon.PhysicalDamage;
-                enemyCharacterManager.PendingCriticalDamage = criticalDamage;
-
-                _player.PlayerAnimator.PlayTargetAnimation("Riposte", true);
-                enemyCharacterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Riposted", true);
-            }
-        }
-    }
     public override void AttemptBlock(DamageCollider attackingWeapon, float physicalDamage, float fireDamage, string blockingAnimation)
     {
         base.AttemptBlock(attackingWeapon, physicalDamage, fireDamage, blockingAnimation);

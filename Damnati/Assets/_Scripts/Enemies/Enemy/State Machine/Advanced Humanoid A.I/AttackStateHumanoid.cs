@@ -6,10 +6,10 @@ public class AttackStateHumanoid : States
 {
     [Header("A.I Scripts Components")]
     [Space(15)]
-    [SerializeField] private CombatStanceStateHumanoid _combatStanceState;
-    [SerializeField] private PursueTargetStateHumanoid _pursueTargetState;
-    [SerializeField] private RotateTowardsTargetState _rotateTowardsTargetState;
-    [SerializeField] private ItemBasedAttackAction _currentAttack;
+    private CombatStanceStateHumanoid _combatStanceState;
+    private PursueTargetStateHumanoid _pursueTargetState;
+    private RotateTowardsTargetStateHumanoid _rotateTowardsTargetState;
+    private ItemBasedAttackAction _currentAttack;
 
     private bool _willDoComboOnNextAttack = false;
     [SerializeField] private bool _hasPerformedAttack = false;
@@ -19,13 +19,33 @@ public class AttackStateHumanoid : States
     public ItemBasedAttackAction CurrentAttack { get { return _currentAttack; } set { _currentAttack = value; }}
     public bool HasPerformedAttack { get { return _hasPerformedAttack; } set { _hasPerformedAttack = value; }}
     #endregion
+    private void Awake()
+    {
+        _combatStanceState = GetComponent<CombatStanceStateHumanoid>();
+        _rotateTowardsTargetState = GetComponent<RotateTowardsTargetStateHumanoid>();
+        _pursueTargetState = GetComponent<PursueTargetStateHumanoid>();
+    }
     public override States Tick(EnemyManager enemy)
     {
-       float distanceFromTarget = Vector3.Distance(enemy.CurrentTarget.transform.position, enemy.transform.position);
+        if(enemy.CombatStyle == AICombatStyle.SwordAndShield)
+        {
+            return ProcessSwordAndShieldCombatySyle(enemy);
+        }
+        else if(enemy.CombatStyle == AICombatStyle.Archer)
+        {
+            return ProcessArcherCombatStyle(enemy);
+        }
+        else
+        {
+            return this;
+        }
+    }
 
+    private States ProcessSwordAndShieldCombatySyle(EnemyManager enemy)
+    {       
         RotateTowardsTargetWhilstAttacking(enemy);
 
-        if(distanceFromTarget > enemy.MaximumAggroRadius)
+        if(enemy.DistanceFromTarget > enemy.MaximumAggroRadius)
         {
             return _pursueTargetState;
         }
@@ -46,9 +66,54 @@ public class AttackStateHumanoid : States
             return this;
         }
 
+        ResetStatesFlag(); 
         return _rotateTowardsTargetState;
     }
+    private States ProcessArcherCombatStyle(EnemyManager enemy)
+    {
+        Debug.Log("Attack 1");
+        RotateTowardsTargetWhilstAttacking(enemy);
 
+        if(enemy.IsInteracting)
+        {
+            return this;
+        }
+
+        if(!enemy.IsHoldingArrow)
+        {
+            ResetStatesFlag();
+            return _combatStanceState;
+        }
+
+        Debug.Log("Attack 2");
+
+        if(enemy.CurrentTarget.IsDead)
+        {
+            ResetStatesFlag();
+            enemy.CurrentTarget = null;
+            return this;
+        }
+
+        Debug.Log("Attack 3");
+
+        if(enemy.DistanceFromTarget > enemy.MaximumAggroRadius)
+        {
+            ResetStatesFlag();
+            return _pursueTargetState;
+        }
+
+        Debug.Log("Attack 4");
+
+        if(!_hasPerformedAttack)
+        {
+            FireAmmo(enemy);
+        }
+
+        Debug.Log("Attack 5");
+
+        ResetStatesFlag();
+        return _rotateTowardsTargetState;
+    }
     private void AttackTarget(EnemyManager enemy)
     {
         _currentAttack.PerformAttackAction(enemy);
@@ -95,6 +160,20 @@ public class AttackStateHumanoid : States
                 _currentAttack = null;
             }
         }
+    }
+    private void FireAmmo(EnemyManager enemy)
+    {
+        if(enemy.IsHoldingArrow)
+        {
+            _hasPerformedAttack = true;
+            enemy.CharacterInventory.CurrentItemBeingUsed = enemy.CharacterInventory.rightHandWeapon;
+            enemy.CharacterInventory.rightHandWeapon.th_release_RB_Action.PerformAction(enemy);
+        }
+    }
+    private void ResetStatesFlag()
+    {
+        _willDoComboOnNextAttack = false;
+        _hasPerformedAttack = false;   
     }
 }
 

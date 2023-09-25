@@ -6,9 +6,9 @@ public class CharacterEffectsManager : MonoBehaviour
 {
     private CharacterManager _character;
 
-    [Header("Current Range FX")]
+    [Header("Current FX")]
     [Space(15)]
-    [SerializeField] private GameObject _currentRangeFX;
+    [SerializeField] private GameObject _instatiateFXModel;
 
     [Header("Damage FX")]
     [Space(15)]
@@ -23,7 +23,7 @@ public class CharacterEffectsManager : MonoBehaviour
     public WeaponFX RightWeaponFX { get { return _rightWeaponFX; } set { _rightWeaponFX = value; }}
     public WeaponFX LeftWeaponFX { get { return _leftWeaponFX; } set { _leftWeaponFX = value; }}
     public GameObject BloodSplatterFX { get { return _bloodSplatterFX; } set { _bloodSplatterFX = value; }}
-    public GameObject CurrentRangeFX { get { return _currentRangeFX; } set { _currentRangeFX = value; }}
+    public GameObject CurrentRangeFX { get { return _instatiateFXModel; } set { _instatiateFXModel = value; }}
     #endregion
     
     protected virtual void Awake()
@@ -60,6 +60,31 @@ public class CharacterEffectsManager : MonoBehaviour
         if(_character.IsDead)
         {
             return;
+        }
+    }
+    public virtual void InterruptEffect()
+    {
+        //Pode ser usado para destruir os modelos (flechas, etc..)
+        if(_instatiateFXModel != null)
+        {
+            Destroy(_instatiateFXModel);
+        }
+
+        if(_character.IsHoldingArrow)
+        {
+            _character.Animator.SetBool("IsHoldingArrow", false);
+            Animator rangedWeaponAnimator = _character.CharacterWeaponSlot.RightHandSlot.currentWeaponModel.GetComponentInChildren<Animator>();
+
+            if(rangedWeaponAnimator != null)
+            {
+                rangedWeaponAnimator.SetBool("IsDrawn", false);
+                rangedWeaponAnimator.Play("Bow Fire");
+            }
+        }
+
+        if(_character.IsAiming)
+        {
+            _character.Animator.SetBool("IsAiming", false);
         }
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CombatStanceStateHumanoid : States
 {
-    [SerializeField] private AttackStateHumanoid _attackState;
-    [SerializeField] private IdleState _idleState;
-    [SerializeField] private PursueTargetStateHumanoid _persueTargetState;
+    private AttackStateHumanoid _attackState;
+    private IdleStateHumanoid _idleState;
+    private PursueTargetStateHumanoid _pursueTargetState;
 
     [SerializeField] private ItemBasedAttackAction[] _enemyAttackAction;
 
@@ -14,17 +14,31 @@ public class CombatStanceStateHumanoid : States
     protected float _verticalMoveValue = 0;
     protected float _horizontalMoveValue = 0;
 
+    private Quaternion _targetDodgeDirection;
+
     [Header("State Flags")]
     [Space(15)]
     private bool _willPerformBlock = false;
     private bool _willPerformParry = false;
     private bool _willPerformDodge = false;
 
+    private bool _hasPerformedDodge = false;
+    private bool _hasPerformedParry = false;
+    private bool _hasRandomDodgeDirection = false;
+    private bool _hasAmmoLoaded = false;
+
     #region GET & SET
     public AttackStateHumanoid AttackingState { get { return _attackState; }}
-    public PursueTargetStateHumanoid PersueTarget { get { return _persueTargetState; }}
+    public PursueTargetStateHumanoid PersueTarget { get { return _pursueTargetState; }}
     public ItemBasedAttackAction[] EnemyAtttackActions { get { return _enemyAttackAction; }}
     #endregion
+
+    private void Awake()
+    {
+        _attackState = GetComponent<AttackStateHumanoid>();
+        _idleState = GetComponent<IdleStateHumanoid>();
+        _pursueTargetState = GetComponent<PursueTargetStateHumanoid>();
+    }
     public override States Tick(EnemyManager enemy)
     {
         if(enemy.CombatStyle == AICombatStyle.SwordAndShield)
@@ -40,7 +54,6 @@ public class CombatStanceStateHumanoid : States
             return this;
         }
     }
-
     private States ProcessSwordAndShieldCombatStyle(EnemyManager enemy)
     {
         enemy.Animator.SetFloat("Vertical", _verticalMoveValue, 0.2f, Time.deltaTime);
@@ -55,7 +68,7 @@ public class CombatStanceStateHumanoid : States
 
         if(enemy.DistanceFromTarget > enemy.MaximumAggroRadius)
         {
-            return _persueTargetState;
+            return _pursueTargetState;
         }
 
         if(!_rangeDestinationSet)
@@ -63,8 +76,6 @@ public class CombatStanceStateHumanoid : States
             _rangeDestinationSet = true;
             DecideCirclingAction(enemy.EnemyAnimatorManager);
         }
-
-        HandleRotateTowardsTarget(enemy);
 
         if(enemy.IsDead)
         {
@@ -74,6 +85,14 @@ public class CombatStanceStateHumanoid : States
             return _idleState;
         }
 
+        if(enemy.AllowAIToPerformParry)
+        {
+            if(enemy.CurrentTarget.CanBeRiposted)
+            {
+                CheckForRiposte(enemy);
+                return this;
+            }
+        }
         if(enemy.AllowAIToPerformBlock)
         {
             RollForBlockChance(enemy);
@@ -89,20 +108,24 @@ public class CombatStanceStateHumanoid : States
 
         if(_willPerformBlock)
         {
-
+            BlockUsingOffHand(enemy);
         }
-        if(_willPerformDodge)
+        if(_willPerformDodge && enemy.CurrentTarget.IsAttacking)
         {
-
+            Dodge(enemy);
         }
-        if(_willPerformParry)
+        if(enemy.CurrentTarget.IsAttacking)
         {
-
+            if(_willPerformParry && !_hasPerformedParry)
+            {
+                ParryCurrentTarget(enemy);
+                return this;
+            }
         }
         
         if(enemy.CurrentRecoveryTime <= 0 && _attackState.CurrentAttack != null)
         {
-            _rangeDestinationSet = false;
+            ResetStatesFlag();
             return _attackState;
         }
     
@@ -116,6 +139,64 @@ public class CombatStanceStateHumanoid : States
     }
     private States ProcessArcherCombatStyle(EnemyManager enemy)
     {
+       enemy.Animator.SetFloat("Vertical", _verticalMoveValue, 0.2f, Time.deltaTime);
+        enemy.Animator.SetFloat("Horizontal", _horizontalMoveValue, 0.2f, Time.deltaTime);
+
+        if(!enemy.IsGrounded || enemy.IsInteracting)
+        {
+            enemy.Animator.SetFloat("Vertical", 0);
+            enemy.Animator.SetFloat("Horizontal", 0);
+            return this;
+        }
+
+        if(enemy.DistanceFromTarget > enemy.MaximumAggroRadius)
+        {
+            ResetStatesFlag();
+            return _pursueTargetState;
+        }
+
+        if(!_rangeDestinationSet)
+        {
+            _rangeDestinationSet = true;
+            DecideCirclingAction(enemy.EnemyAnimatorManager);
+        }
+
+        if(enemy.IsDead)
+        {
+            enemy.Animator.SetFloat("Vertical", 0);
+            enemy.Animator.SetFloat("Horizontal", 0);
+            enemy.CurrentTarget = null;
+            return _idleState;
+        }
+
+        if(enemy.AllowAIToPerformDodge)
+        {
+            RollForDodgeChance(enemy);
+        }
+
+        if(_willPerformDodge && enemy.CurrentTarget.IsAttacking)
+        {
+            Dodge(enemy);
+        }
+
+        HandleRotateTowardsTarget(enemy);
+
+        if(!_hasAmmoLoaded)
+        {
+            DrawArrow(enemy);
+            AimAtTargetBeforeFiring(enemy);
+        }
+        else
+        {
+
+        }
+
+        if(enemy.CurrentRecoveryTime <= 0 && _attackState.CurrentAttack != null)
+        {
+            ResetStatesFlag();
+            return _attackState;
+        }
+
         return this;
     }
     protected void HandleRotateTowardsTarget(EnemyManager enemy)
@@ -174,9 +255,11 @@ public class CombatStanceStateHumanoid : States
         {
             ItemBasedAttackAction enemyAttackAction = _enemyAttackAction[i];
 
-            if(enemy.DistanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack && enemy.DistanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
+            if(enemy.DistanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack 
+                && enemy.DistanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
             {
-                if(enemy.ViewableAngle <= enemyAttackAction.MaximumAttackAngle && enemy.ViewableAngle >= enemyAttackAction.MinimumAttackAngle)
+                if(enemy.ViewableAngle <= enemyAttackAction.MaximumAttackAngle
+                     && enemy.ViewableAngle >= enemyAttackAction.MinimumAttackAngle)
                 {
                     maxScore += enemyAttackAction.AttackScore;
                 }
@@ -250,8 +333,116 @@ public class CombatStanceStateHumanoid : States
             _willPerformParry = false;
         }
     }
+    private void BlockUsingOffHand(EnemyManager enemy)
+    {
+        if(enemy.IsBlocking == false)
+        {
+            if(enemy.AllowAIToPerformBlock)
+            {
+                enemy.IsBlocking = true;
+                enemy.CharacterInventory.CurrentItemBeingUsed = enemy.CharacterInventory.leftHandWeapon;
+                enemy.CharacterCombat.SetBlockingAbsorptionsFromBlockingWeapon();
+
+            }
+        }
+    }
+    private void Dodge(EnemyManager enemy)
+    {
+        if(!_hasPerformedDodge)
+        {
+            if(!_hasRandomDodgeDirection)
+            {
+                float randomDodgeDirection;
+
+                _hasRandomDodgeDirection = true;
+                randomDodgeDirection = Random.Range(0, 160);
+                _targetDodgeDirection = Quaternion.Euler(enemy.transform.eulerAngles.x, randomDodgeDirection, enemy.transform.eulerAngles.z);
+            }
+
+            if(enemy.transform.rotation != _targetDodgeDirection)
+            {
+                Quaternion targetRotation = Quaternion.Slerp(enemy.transform.rotation, _targetDodgeDirection, 1f);
+                enemy.transform.rotation = targetRotation;
+
+                float targetYRotation = _targetDodgeDirection.eulerAngles.y;
+                float currentYRotation = enemy.transform.eulerAngles.y;
+                float rotationDifference = Mathf.Abs(targetYRotation - currentYRotation);
+
+                if(rotationDifference <= 5)
+                {
+                    _hasPerformedDodge = true;
+                    enemy.transform.rotation = _targetDodgeDirection;
+                    enemy.EnemyAnimatorManager.PlayTargetAnimation("Roll", true);
+                }
+            }
+        }
+    }
+    private void DrawArrow(EnemyManager enemy)
+    {
+        if(!enemy.IsTwoHandingWeapon)
+        {
+            enemy.IsTwoHandingWeapon = true;
+            enemy.CharacterWeaponSlot.LoadBothWeaponsOnSlots();
+        }
+        else
+        {
+            _hasAmmoLoaded = true;
+            enemy.CharacterInventory.CurrentItemBeingUsed = enemy.CharacterInventory.rightHandWeapon;
+            enemy.CharacterInventory.rightHandWeapon.th_tap_R_Action.PerformAction(enemy);
+        }
+    }
+    private void AimAtTargetBeforeFiring(EnemyManager enemy)
+    {
+        float timeUntilAmmoIsShotAtTarget = Random.Range(enemy.MinimumTimeToAimAtTarget, enemy.MaximumTimeToAimAtTarget);
+        enemy.CurrentRecoveryTime = timeUntilAmmoIsShotAtTarget;
+    }
+    private void ParryCurrentTarget(EnemyManager enemy)
+    {
+        if(enemy.CurrentTarget.CanBeParried)
+        {
+            if(enemy.DistanceFromTarget <= 2)
+            {
+                _hasPerformedParry = true;
+                enemy.IsParrying = true;
+                enemy.EnemyAnimatorManager.PlayTargetAnimation("Parry", true);
+            }
+        }
+    }
+    private void CheckForRiposte(EnemyManager enemy)
+    {
+        if(enemy.IsInteracting)
+        {
+            enemy.Animator.SetFloat("Hor", 0, 0.2f, Time.deltaTime);
+            enemy.Animator.SetFloat("Vertical", 0, 0.2f, Time.deltaTime);
+            return;
+        }
+
+        if(enemy.DistanceFromTarget >= 1.0)
+        {
+            HandleRotateTowardsTarget(enemy);
+            enemy.Animator.SetFloat("Hor", 0, 0.2f, Time.deltaTime);
+            enemy.Animator.SetFloat("Vertical", 1, 0.2f, Time.deltaTime);
+        }
+        else
+        {
+            enemy.IsBlocking = false;
+
+            if(!enemy.IsInteracting && !enemy.CurrentTarget.IsBeingRiposted)
+            {
+                enemy.EnemyRb.velocity = Vector3.zero;
+                enemy.Animator.SetFloat("Vertical", 0);
+                
+                enemy.CharacterCombat.AttemptRiposte();
+            }
+        }
+    }
     private void ResetStatesFlag()
     {
+        _hasRandomDodgeDirection = false;
+        _hasPerformedDodge = false;
+        _hasAmmoLoaded = false;
+        _hasPerformedParry = false;
+        _rangeDestinationSet = false;
         _willPerformBlock = false;
         _willPerformDodge = false;
         _willPerformParry = false;

@@ -47,16 +47,21 @@ public class EnemyManager : CharacterManager
     [SerializeField] private bool _allowAIToPerformCombos;
     [SerializeField] private bool _isPhaseShifting;
     [SerializeField] private float _comboLikelyHood;
-    private AICombatStyle _combatSyle;
+    [SerializeField] private AICombatStyle _combatSyle;
     
     //estas configurações apenas afetam as A.I com os "HumanoidStates"
     [Header("Advanced A.I Settings")]
-    private bool _allowAIToPerformBlock;
-    private int _blockLikelyHood = 50; //Numero de 0-100, 100 ele irá bloquear a todo momento, 0 ele bloqueara 0% do tempo;
-    private bool _allowAIToPerformDodge;
-    private int _dodgeLikelyHood = 50;
-    private bool _allowAIToPerformParry;
-    private int _parryLikelyHood;
+    [SerializeField] private bool _allowAIToPerformBlock;
+    [SerializeField] private int _blockLikelyHood = 50; //Numero de 0-100, 100 ele irá bloquear a todo momento, 0 ele bloqueara 0% do tempo;
+    [SerializeField] private bool _allowAIToPerformDodge;
+    [SerializeField] private int _dodgeLikelyHood = 50;
+    [SerializeField] private bool _allowAIToPerformParry;
+    [SerializeField] private int _parryLikelyHood;
+    
+    [Header("A.I Archery Information")]
+    [Space(15)]
+    [SerializeField] private float _minimumTimeToAimAtTarget = 3;
+    [SerializeField] private float _maximumTimeToAimAtTarget = 6;
 
     [Header("A.I Target Information")]
     [Space(15)]
@@ -96,6 +101,8 @@ public class EnemyManager : CharacterManager
     public float ViewableAngle { get { return _viewableAngle; } set { _viewableAngle = value; }}
     public Vector3 TargetsDirection { get { return _targetsDirection; } set { _targetsDirection = value; }}
     
+    public float MinimumTimeToAimAtTarget { get { return _minimumTimeToAimAtTarget; } set { _minimumTimeToAimAtTarget = value; }}
+    public float MaximumTimeToAimAtTarget { get { return _maximumTimeToAimAtTarget; } set { _maximumTimeToAimAtTarget = value; }}
     public bool AllowAIToPerformBlock { get { return _allowAIToPerformBlock; } set {_allowAIToPerformBlock = value; }}
     public bool AllowAIToPerformDodge { get { return _allowAIToPerformDodge; } set {_allowAIToPerformDodge = value; }}
     public bool AllowAIToPerformParry { get { return _allowAIToPerformParry; } set {_allowAIToPerformParry = value; }}
@@ -131,9 +138,12 @@ public class EnemyManager : CharacterManager
         IsInteracting = Animator.GetBool("IsInteracting");
         _isPhaseShifting = Animator.GetBool("IsPhaseShifting");
         IsInvulnerable = Animator.GetBool("IsInvulnerable");
+        IsHoldingArrow = Animator.GetBool("IsHoldingArrow");
         CanDoCombo = Animator.GetBool("CanDoCombo");
         CanRotate = Animator.GetBool("CanRotate");
         Animator.SetBool("IsDead", IsDead);
+        Animator.SetBool("IsTwoHandingWeapon", IsTwoHandingWeapon);
+        Animator.SetBool("IsBlocking", IsBlocking);
 
         if(_currentTarget != null)
         {

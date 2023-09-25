@@ -49,7 +49,7 @@ MonoBehaviour:
   oh_hold_LT_Action: {fileID: 0}
   oh_hold_F_Action: {fileID: 0}
   oh_tap_Z_Action: {fileID: 0}
-  oh_hold_G_Action: {fileID: 0}
+  oh_hold_G_Action: {fileID: 11400000, guid: 69957a617eba5ee4091abd7d5aaf0d1d, type: 2}
   th_tap_LB_Action: {fileID: 0}
   th_hold_LB_Action: {fileID: 0}
   th_tap_RB_Action: {fileID: 0}
@@ -61,3 +61,4 @@ MonoBehaviour:
   th_hold_F_Action: {fileID: 0}
   th_tap_Z_Action: {fileID: 0}
   th_hold_G_Action: {fileID: 0}
+  th_tap_R_Action: {fileID: 0}

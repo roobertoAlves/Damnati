@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PursueTargetStateHumanoid : States
 {
-    [SerializeField] private CombatStanceStateHumanoid _combatStanceState;
-    
+    private CombatStanceStateHumanoid _combatStanceState;
+    private void Awake() 
+    {
+        _combatStanceState = GetComponent<CombatStanceStateHumanoid>();
+    }
     public override States Tick(EnemyManager aiCharacter)
     {
         HandleRotateTowardsTarget(aiCharacter);

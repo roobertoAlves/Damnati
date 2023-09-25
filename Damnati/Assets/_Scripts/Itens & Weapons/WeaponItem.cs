@@ -90,6 +90,5 @@ public class WeaponItem : Item
     public ItemActions th_hold_F_Action;
     public ItemActions th_tap_Z_Action;
     public ItemActions th_hold_G_Action;
-
-
+    public ItemActions th_tap_R_Action;
 }

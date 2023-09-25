@@ -6,6 +6,13 @@ public class CharacterCombatManager : MonoBehaviour
 {
     private CharacterManager _character;
 
+    [Header("Critical Attack Settings")]
+    [Space(15)]
+    [SerializeField] private LayerMask _characterLayer;
+    [SerializeField] private float _criticalAttackRange = 0.7f;
+    [SerializeField] private Transform _riposteReceiverTransform;
+
+
     [Header("Attack Type")]
     [Space(15)]
     [SerializeField] private AttackType _currentAttackType;
@@ -46,14 +53,17 @@ public class CharacterCombatManager : MonoBehaviour
     [SerializeField] private string th_charge_attack_02 = "TH_Charge_Attack_02";
 
     [SerializeField] private string weapon_art = "Weapon_Art";
-
+    [SerializeField] private int _pendingCriticalDamage;
     #endregion
 
-    private LayerMask _riposteLayer = 1 << 9;
 
     private string _lastAttack;
 
     #region GET & SET
+
+    public LayerMask CharacterLayer  { get { return _characterLayer; }}
+    public float CriticalAttackRange { get { return _criticalAttackRange; }}
+    public Transform RiposteReceiverTransform { get { return _riposteReceiverTransform; } set { _riposteReceiverTransform = value; }}
     public AttackType CurrentAttackType { get { return _currentAttackType; } set { _currentAttackType = value; }}
 
     public string LastAttack {get { return _lastAttack; } set { _lastAttack = value; }}
@@ -88,11 +98,31 @@ public class CharacterCombatManager : MonoBehaviour
     public string TH_Charge_Attack_01 { get { return th_charge_attack_01; }}
     public string TH_Charge_Attack_02 { get { return th_charge_attack_02; }}
     
+    public int PendingCriticalDamage { get { return _pendingCriticalDamage; } set { _pendingCriticalDamage = value; }}
     #endregion
 
     protected virtual void Awake()
     {
         _character = GetComponent<CharacterManager>();
+    }
+    public virtual void AttemptBlock(DamageCollider attackingWeapon, float physicalDamage, float fireDamage, string blockingAnimation)
+    {
+        float staminaDamageAbsorption = ((physicalDamage + fireDamage) * attackingWeapon.GuardBreakModifier) 
+            * (_character.CharacterStats.BlockingStabilityRating / 100);
+
+        float staminaDamage = ((physicalDamage + fireDamage) * attackingWeapon.GuardBreakModifier) - staminaDamageAbsorption;
+
+        _character.CharacterStats.CurrentStamina = _character.CharacterStats.CurrentStamina - staminaDamage;
+
+        if(_character.CharacterStats.CurrentStamina <= 0)
+        {
+            _character.IsBlocking = false;
+            _character.CharacterAnimator.PlayTargetAnimation("Guard Break 01", true);
+        }
+        else
+        {
+            _character.CharacterAnimator.PlayTargetAnimation(blockingAnimation, true);
+        }
     }
 
     public virtual void SetBlockingAbsorptionsFromBlockingWeapon()
@@ -118,62 +148,92 @@ public class CharacterCombatManager : MonoBehaviour
     {
         
     }
-    public virtual void AttemptRiposte()
+    private IEnumerator ForceMoveCharacterToEnemyRipostePosition(CharacterManager characterPerfomingRiposte)
     {
-        if(_character.CharacterStats.CurrentStamina <= 0)
+        for (float timer = 0.05f; timer < 0.5f; timer = timer + 0.05f)
         {
-            return; 
-        }
+            Quaternion riposteRotation = Quaternion.LookRotation(characterPerfomingRiposte.transform.forward);
+            transform.rotation = Quaternion.Slerp(transform.rotation, riposteRotation, 1);
+            transform.parent = characterPerfomingRiposte.CharacterCombat.RiposteReceiverTransform;
+            transform.localPosition = characterPerfomingRiposte.CharacterCombat.RiposteReceiverTransform.localPosition;
+            transform.parent = null;
+            Debug.Log("Running Coroutine");
+            yield return new WaitForSeconds(0.05f);
+        } 
+    }
+    public void GetRiposted(CharacterManager characterPerfomingRiposte)
+    {
+        _character.IsBeingRiposted = true;
+
+        StartCoroutine(ForceMoveCharacterToEnemyRipostePosition(characterPerfomingRiposte));
         
+        _character.CharacterAnimator.PlayTargetAnimation("Riposted", true);
+    }
+    public void AttemptRiposte()
+    {
+        if(_character.IsInteracting || _character.CharacterStats.CurrentStamina <= 0)
+        {
+            return;
+        }
+
         RaycastHit hit;
 
-        if(Physics.Raycast(_character.CriticalAttackRayCastStartPoint.position, 
-        transform.TransformDirection(Vector3.forward), out hit, 0.7f, _riposteLayer))
+        if(Physics.Raycast(_character.CriticalAttackRayCastStartPoint.transform.position, _character.transform.TransformDirection(Vector3.forward), out hit, _criticalAttackRange, _characterLayer))
         {
-            //Debug.Log("Step 1");
-            CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
-            //Debug.Log("Enemy Character Manager: " + enemyCharacterManager.transform.name);
-            DamageCollider rightWeapon = _character.CharacterWeaponSlot.RightHandDamageCollider;
-            //Debug.Log("Right Weapon Collider: " +  rightWeapon.transform.name);
-           
-            if(enemyCharacterManager != null && enemyCharacterManager.CanBeRiposted)
+            CharacterManager enemyCharacter = hit.transform.GetComponent<CharacterManager>();
+            Vector3 directionFromCharacterToEnemy = transform.position - enemyCharacter.transform.position;
+            float dotValue = Vector3.Dot(directionFromCharacterToEnemy, enemyCharacter.transform.forward);
+
+            Debug.Log("Current Dot value is: " + dotValue);
+            
+            if(enemyCharacter.CanBeRiposted)
             {
-                //Debug.Log("Step 2");
-                _character.transform.position = enemyCharacterManager.RiposteDamageCollider.CriticalDamagerStandPosition.position;
-
-                Vector3 rotationDirection = _character.transform.eulerAngles;
-                rotationDirection = hit.transform.position - _character.transform.position;
-                rotationDirection.y = 0;
-                rotationDirection.Normalize();
-                Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                Quaternion targetRotation = Quaternion.Slerp(_character.transform.rotation, tr, 500 * Time.deltaTime);
-                _character.transform.rotation = targetRotation;
-
-                int criticalDamage = _character.CharacterInventory.rightHandWeapon.criticalDamageMultiplier * rightWeapon.PhysicalDamage;
-                enemyCharacterManager.PendingCriticalDamage = criticalDamage;
-
-                _character.CharacterAnimator.PlayTargetAnimation("Riposte", true);
-                enemyCharacterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Riposted", true);
+                if(dotValue <= 1.2f && dotValue >= 0.6f)
+                {
+                    Riposte(hit);
+                    return;
+                }
             }
         }
     }
-    public virtual void AttemptBlock(DamageCollider attackingWeapon, float physicalDamage, float fireDamage, string blockingAnimation)
+    private void Riposte(RaycastHit hit)
     {
-        float staminaDamageAbsorption = ((physicalDamage + fireDamage) * attackingWeapon.GuardBreakModifier) 
-            * (_character.CharacterStats.BlockingStabilityRating / 100);
-
-        float staminaDamage = ((physicalDamage + fireDamage) * attackingWeapon.GuardBreakModifier) - staminaDamageAbsorption;
-
-        _character.CharacterStats.CurrentStamina = _character.CharacterStats.CurrentStamina - staminaDamage;
-
-        if(_character.CharacterStats.CurrentStamina <= 0)
+        CharacterManager enemyCharacter = hit.transform.GetComponent<CharacterManager>();
+    
+        if(enemyCharacter != null)
         {
-            _character.IsBlocking = false;
-            _character.CharacterAnimator.PlayTargetAnimation("Guard Break 01", true);
+            if(!enemyCharacter.IsBeingRiposted)
+            {
+                EnableIsInvulnerable();
+                _character.IsPerformingRiposte = true;
+                _character.CharacterAnimator.EraseHandIKForWeapon();
+
+                _character.CharacterAnimator.PlayTargetAnimation("Riposte", true);
+
+                float criticalDamage = (_character.CharacterInventory.rightHandWeapon.criticalDamageMultiplier *
+                    (_character.CharacterInventory.rightHandWeapon.PhysicalDamage * 
+                    _character.CharacterInventory.rightHandWeapon.FireDamage));
+                
+                int roundedCriticalDamage = Mathf.RoundToInt(criticalDamage);
+                enemyCharacter.CharacterCombat._pendingCriticalDamage = roundedCriticalDamage;
+                enemyCharacter.CharacterCombat.GetRiposted(_character);
+            }
         }
-        else
-        {
-            _character.CharacterAnimator.PlayTargetAnimation(blockingAnimation, true);
-        }
+    }
+    private void EnableIsInvulnerable()
+    {
+        _character.Animator.SetBool("IsInvulnerable", true);
+    }
+    public void ApllyPendingDamage()
+    {
+        _character.CharacterStats.TakeDamageNoAnimation(_pendingCriticalDamage, 0);
+    }
+    public void EnableCanBeParried()
+    {
+        _character.CanBeParried = true;
+    }
+    public void DisableCanBeParried()
+    {
+        _character.CanBeParried = false;
     }
 }

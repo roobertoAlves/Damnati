@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class IdleStateHumanoid : States
 {
-    [SerializeField] private PursueTargetStateHumanoid _persueTarget;
+    private PursueTargetStateHumanoid _persueTarget;
     [SerializeField] private LayerMask _detectionLayer;
     [SerializeField] private LayerMask _layersThatBlockLineOffSight;
+
+    private void Awake() 
+    {
+        _persueTarget = GetComponent<PursueTargetStateHumanoid>();
+    }
+    
     public override States Tick(EnemyManager aiCharacter)
     {
         #region Handle AI Character Target Detection

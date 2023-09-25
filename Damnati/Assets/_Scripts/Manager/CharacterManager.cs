@@ -19,11 +19,10 @@ public class CharacterManager : MonoBehaviour
     [Header("Critical Damage")]
     [Space(15)]
     [SerializeField] private int _pendingCriticalDamage;
-
-    [Header("Combat Colliders")]
+    
+    [Header("Ray Cast")]
     [Space(15)]
-    [SerializeField] private CriticalDamageCollider _riposteDamageCollider;
-
+    [SerializeField] private Transform _criticalAttackRayCastStartPoint;
 
     [Header("Interaction")]
     [Space(15)]
@@ -47,6 +46,9 @@ public class CharacterManager : MonoBehaviour
     private bool _isAiming;
     private bool _isHoldingArrow;
     private bool _isPerformingFullyChargedAttack;
+    private bool _isAttacking;
+    private bool _isBeingRiposted;
+    private bool _isPerfomingRiposte;
 
     [Header("Movement Flags")]
     [Space(15)]
@@ -55,10 +57,6 @@ public class CharacterManager : MonoBehaviour
     private bool _isSprinting;
     private bool _isInAir;
     private bool _isGrounded;
-
-    [Header("Critical Attack Components")]
-    [Space(15)]
-    [SerializeField] private Transform _criticalAttackRayCastStartPoint;
 
     #region GET & SET
     public Animator Animator { get { return _animator; } set { _animator = value; }}
@@ -72,8 +70,6 @@ public class CharacterManager : MonoBehaviour
     
     public Transform LockOnTransform { get { return _lockOnTransform; } set { _lockOnTransform = value; }}
     public Transform CriticalAttackRayCastStartPoint { get { return _criticalAttackRayCastStartPoint; } set{ _criticalAttackRayCastStartPoint = value; }}
-    public CriticalDamageCollider RiposteDamageCollider { get { return _riposteDamageCollider; } set { _riposteDamageCollider = value; }}
-
     public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; }}
     public bool IsInAir { get { return _isInAir; } set { _isInAir = value; }}
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; }}
@@ -93,6 +89,10 @@ public class CharacterManager : MonoBehaviour
     public bool IsAiming { get { return _isAiming; } set { _isAiming = value; }}
     public bool IsDead { get { return _isDead; } set { _isDead = value; }}
     public bool IsPerformingFullyChargedAttack { get { return _isPerformingFullyChargedAttack; } set { _isPerformingFullyChargedAttack = value; }}
+    public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; }}
+
+    public bool IsBeingRiposted { get { return _isBeingRiposted; } set { _isBeingRiposted = value; }}    
+    public bool IsPerformingRiposte { get { return _isPerfomingRiposte; } set { _isPerfomingRiposte = value; }}
     #endregion
 
     protected virtual void Awake()

@@ -10,38 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ecea1fa952931494c8d39ef06388e9a2, type: 3}
-  m_Name: Enemy Sword
+  m_Name: Enemy Bow
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: 21300000, guid: 9c0d6ec706e01ce448aea81584af092b, type: 3}
-  itemName: Sword
-  modelPrefab: {fileID: 6944629568366627670, guid: 158285e5eecf3a14abd8140e5c1f1508, type: 3}
+  itemIcon: {fileID: 0}
+  itemName: 
+  modelPrefab: {fileID: 1124222977789396218, guid: 260d32216b706d945aae93bf5079a8aa, type: 3}
   isUnarmed: 0
-  weaponController: {fileID: 22100000, guid: b1ea83f08589476488dae926f710ba52, type: 2}
-  weaponType: 2
-  PhysicalDamage: 25
+  weaponController: {fileID: 22100000, guid: 23be881a74a634042a8b0a4f2a040573, type: 2}
+  weaponType: 4
+  PhysicalDamage: 15
   FireDamage: 0
   criticalDamageMultiplier: 3
   guardBreakModifier: 1
-  lightAttackDamageModifier: 1
-  heavyAttackDamageModifier: 1.5
-  runningAttackDamageModifier: 2
-  jumpingAttackDamageModifier: 2.2
-  poiseBreak: 25
-  offensivePoiseBonus: 10
+  lightAttackDamageModifier: 0
+  heavyAttackDamageModifier: 0
+  runningAttackDamageModifier: 0
+  jumpingAttackDamageModifier: 0
+  poiseBreak: 0
+  offensivePoiseBonus: 0
   physicalBlockingDamageAbsorption: 0
   fireBlockingDamageAbsorption: 0
   stability: 67
   baseStaminaCost: 0
-  lightAttackStaminaMultiplier: 0
-  heavyAttackStaminaMultiplier: 0
-  jumpingAttackStaminaMultiplier: 0
-  runningAttackStaminaMultiplier: 0
-  baseRage: 15
-  rageLightAttackMultiplier: 3
-  rageHeavyAttackMultiplier: 5
-  oh_tap_LB_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
+  lightAttackStaminaMultiplier: 1
+  heavyAttackStaminaMultiplier: 1
+  jumpingAttackStaminaMultiplier: 1
+  runningAttackStaminaMultiplier: 1
+  baseRage: 0
+  rageLightAttackMultiplier: 0
+  rageHeavyAttackMultiplier: 0
+  oh_tap_LB_Action: {fileID: 0}
   oh_hold_LB_Action: {fileID: 0}
-  oh_tap_RB_Action: {fileID: 11400000, guid: 55f88e159b0211a4db2ac5866580e058, type: 2}
+  oh_tap_RB_Action: {fileID: 0}
   oh_hold_RB_Action: {fileID: 0}
   oh_release_RB_Action: {fileID: 0}
   oh_tap_RT_Action: {fileID: 0}
@@ -52,12 +52,13 @@ MonoBehaviour:
   oh_hold_G_Action: {fileID: 0}
   th_tap_LB_Action: {fileID: 0}
   th_hold_LB_Action: {fileID: 0}
-  th_tap_RB_Action: {fileID: 0}
+  th_tap_RB_Action: {fileID: 11400000, guid: 508f042036c97d148adcfa62ffd644f1, type: 2}
   th_hold_RB_Action: {fileID: 0}
-  th_release_RB_Action: {fileID: 0}
+  th_release_RB_Action: {fileID: 11400000, guid: e660abedddad1b74e8776f6dea371ecd, type: 2}
   th_tap_RT_Action: {fileID: 0}
   th_hold_RT_Action: {fileID: 0}
   th_hold_LT_Action: {fileID: 0}
   th_hold_F_Action: {fileID: 0}
   th_tap_Z_Action: {fileID: 0}
   th_hold_G_Action: {fileID: 0}
+  th_tap_R_Action: {fileID: 11400000, guid: 00af05f8c5c036f4d9968c98639f3560, type: 2}

@@ -56,7 +56,6 @@ public class DamageCollider : MonoBehaviour
         damageCollider.isTrigger = true;
         damageCollider.enabled = _enabledDamageColliderOnStartUp;
     }
-
     public void EnableDamageCollider()
     {
         damageCollider.enabled = true;
@@ -65,7 +64,6 @@ public class DamageCollider : MonoBehaviour
     {
         damageCollider.enabled = false;
     }
-
     protected virtual void OnTriggerEnter(Collider collision) 
     {
         if(collision.tag == "Character")
@@ -104,12 +102,13 @@ public class DamageCollider : MonoBehaviour
                 float directionHitFrom = (Vector3.SignedAngle(characterManager.transform.forward, enemyManager.transform.forward, Vector3.up));
                 ChooseWhichDirectionDamageCameFrom(directionHitFrom);
                 enemyEffects.PlayerBloodSplatterFX(contactPoint);
+                enemyEffects.InterruptEffect();
 
+                
                 DealDamage(enemyStats);
             }
         }
     }
-
     protected virtual void CheckForParry(CharacterManager enemyManager)
     {
         if(enemyManager.IsParrying)
