@@ -334,6 +334,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 167a068de94538245ace6c630fcfd0d1, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 167a068de94538245ace6c630fcfd0d1, type: 3}
 --- !u!4 &2400990549290247321 stripped
@@ -371,7 +375,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025b5c63eb7e6e34db1afcc94674c3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enabledDamageColliderOnStartUp: 0
   _teamIDNumber: 0
   _poiseBreak: 0
   _offensivePoiseBonus: 0
   _physicalDamage: 0
+  _fireDamage: 0
+  _guardBreakModifier: 1

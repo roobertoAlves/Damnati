@@ -31,6 +31,8 @@ public class DamageCollider : MonoBehaviour
     protected bool hasBeenParried;
     protected string currentDamageAnimation;
 
+    private List<CharacterManager> _characterDamagedDuringThisCalculation = new List<CharacterManager>();
+
     #region GET & SET
     public int TeamIDNumber { get { return _teamIDNumber; } set { _teamIDNumber = value; }}
     
@@ -58,26 +60,36 @@ public class DamageCollider : MonoBehaviour
     }
     public void EnableDamageCollider()
     {
+        _characterDamagedDuringThisCalculation = new List<CharacterManager>();
         damageCollider.enabled = true;
     }
     public void DisableDamageCollider()
     {
+        if(_characterDamagedDuringThisCalculation.Count > 0)
+        {
+            _characterDamagedDuringThisCalculation.Clear();
+        }
         damageCollider.enabled = false;
     }
     protected virtual void OnTriggerEnter(Collider collision) 
     {
-        if(collision.tag == "Character")
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Damageble Character"))
         {
             shieldHasBeenHit = false;
             hasBeenParried = false;
              
-            CharacterStatsManager enemyStats = collision.GetComponent<CharacterStatsManager>();
-            CharacterManager enemyManager = collision.GetComponent<CharacterManager>();
-            CharacterEffectsManager enemyEffects = collision.GetComponent<CharacterEffectsManager>();
+            CharacterManager enemyManager = collision.GetComponentInParent<CharacterManager>();
 
             if(enemyManager != null)
             {
-                if(enemyStats.TeamIDNumber == _teamIDNumber)
+                if(_characterDamagedDuringThisCalculation.Contains(enemyManager))
+                {
+                    return;
+                }
+
+                _characterDamagedDuringThisCalculation.Add(enemyManager);
+
+                if(enemyManager.CharacterStats.TeamIDNumber == _teamIDNumber)
                 {
                     return;
                 }
@@ -86,26 +98,26 @@ public class DamageCollider : MonoBehaviour
                 CheckForBlock(enemyManager);
             }
 
-            if(enemyStats != null)
+            if(enemyManager.CharacterStats != null)
             {
-                if(enemyStats.TeamIDNumber == _teamIDNumber || hasBeenParried || shieldHasBeenHit)
+                if(enemyManager.CharacterStats.TeamIDNumber == _teamIDNumber || hasBeenParried || shieldHasBeenHit)
                 {
                     return;
                 }
 
-                enemyStats.PoiseResetTimer = enemyStats.TotalPoiseResetTime;
-                enemyStats.TotalPoiseDefense = enemyStats.TotalPoiseDefense - _poiseBreak;
+                enemyManager.CharacterStats.PoiseResetTimer = enemyManager.CharacterStats.TotalPoiseResetTime;
+                enemyManager.CharacterStats.TotalPoiseDefense = enemyManager.CharacterStats.TotalPoiseDefense - _poiseBreak;
 
                 //Detecta onde o colisor da arma fez o primeiro contato
 
                 Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
                 float directionHitFrom = (Vector3.SignedAngle(characterManager.transform.forward, enemyManager.transform.forward, Vector3.up));
                 ChooseWhichDirectionDamageCameFrom(directionHitFrom);
-                enemyEffects.PlayerBloodSplatterFX(contactPoint);
-                enemyEffects.InterruptEffect();
+                enemyManager.CharacterEffects.PlayerBloodSplatterFX(contactPoint);
+                enemyManager.CharacterEffects.InterruptEffect();
 
                 
-                DealDamage(enemyStats);
+                DealDamage(enemyManager.CharacterStats);
             }
         }
     }
@@ -182,7 +194,7 @@ public class DamageCollider : MonoBehaviour
         }
         else
         {
-            enemyStats.TakeDamage(Mathf.RoundToInt(finalPhysicalDamage), 0, currentDamageAnimation, _characterManager);
+           enemyStats.TakeDamage(Mathf.RoundToInt(finalPhysicalDamage), 0, currentDamageAnimation, _characterManager);
         }
     }
     protected virtual void ChooseWhichDirectionDamageCameFrom(float direction)

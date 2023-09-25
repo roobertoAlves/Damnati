@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Interactable
   - Character
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -16,12 +17,12 @@ TagManager:
   - Character Collision Blocker
   - Character
   - Player
-  - Riposte
+  - 
   - Environment
   - 
-  - 
-  - 
-  - 
+  - Damageble Character
+  - Damageble Collider
+  - Projectile
   - 
   - 
   - 

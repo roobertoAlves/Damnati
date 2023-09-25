@@ -33,8 +33,8 @@ public class FireArrowAction : ItemActions
             arrowInstantiationLocation.transform.position, 
             player.PlayerCamera.CameraPivotTransform.rotation);
             
-            Rigidbody rb = liveArrow.GetComponentInChildren<Rigidbody>();
-            RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
+            Rigidbody rb = liveArrow.GetComponent<Rigidbody>();
+            RangedProjectileDamageCollider damageCollider = liveArrow.GetComponent<RangedProjectileDamageCollider>();
 
             if(character.IsAiming)
             {
@@ -87,7 +87,7 @@ public class FireArrowAction : ItemActions
         //Atirando como Inimigo
         else
         {
-            EnemyManager enemy = character as EnemyManager;
+            AICharacterManager aICharacterManager = character as AICharacterManager;
             //Criando e atirando a flecha
 
             GameObject liveArrow = Instantiate
@@ -95,31 +95,31 @@ public class FireArrowAction : ItemActions
             arrowInstantiationLocation.transform.position, 
             Quaternion.identity);
             
-            Rigidbody rb = liveArrow.GetComponentInChildren<Rigidbody>();
-            RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
+            Rigidbody rb = liveArrow.GetComponent<Rigidbody>();
+            RangedProjectileDamageCollider damageCollider = liveArrow.GetComponent<RangedProjectileDamageCollider>();
             
             //Dando velocidade a flecha
 
-            if(enemy.CurrentTarget != null)
+            if(aICharacterManager.CurrentTarget != null)
             {
                 //Enquanto "lockado" sempre irá olhar para o inimigo, podendo copiar a direção que a flecha tomar quando disparada
 
                 Quaternion arrowRotation = Quaternion.LookRotation
-                    (enemy.CurrentTarget.LockOnTransform.position - liveArrow.gameObject.transform.position);
+                    (aICharacterManager.CurrentTarget.LockOnTransform.position - liveArrow.gameObject.transform.position);
                 liveArrow.transform.rotation = arrowRotation;
             }
 
-            rb.AddForce(liveArrow.transform.forward * enemy.CharacterInventory.currentAmmo.forwardVelocity);
-            rb.AddForce(liveArrow.transform.up * enemy.CharacterInventory.currentAmmo.upwardVelocity);
-            rb.useGravity = enemy.CharacterInventory.currentAmmo.useGravity;
-            rb.mass = enemy.CharacterInventory.currentAmmo.ammoMass;
+            rb.AddForce(liveArrow.transform.forward * aICharacterManager.CharacterInventory.currentAmmo.forwardVelocity);
+            rb.AddForce(liveArrow.transform.up * aICharacterManager.CharacterInventory.currentAmmo.upwardVelocity);
+            rb.useGravity = aICharacterManager.CharacterInventory.currentAmmo.useGravity;
+            rb.mass = aICharacterManager.CharacterInventory.currentAmmo.ammoMass;
             liveArrow.transform.parent = null;
 
             //fazendo que a flecha inflija dano
             damageCollider.characterManager = character;
-            damageCollider.AmmoItem = enemy.CharacterInventory.currentAmmo;
-            damageCollider.PhysicalDamage = enemy.CharacterInventory.currentAmmo.physicalDamage;
-            damageCollider.TeamIDNumber = enemy.CharacterStats.TeamIDNumber;
+            damageCollider.AmmoItem = aICharacterManager.CharacterInventory.currentAmmo;
+            damageCollider.PhysicalDamage = aICharacterManager.CharacterInventory.currentAmmo.physicalDamage;
+            damageCollider.TeamIDNumber = aICharacterManager.CharacterStats.TeamIDNumber;
         }
     }
 }

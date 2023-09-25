@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 3537899605479661558}
   - component: {fileID: 1524667599676145118}
   - component: {fileID: 5719143795072343390}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,11 +147,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025b5c63eb7e6e34db1afcc94674c3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enabledDamageColliderOnStartUp: 0
   _teamIDNumber: 0
   _poiseBreak: 0
   _offensivePoiseBonus: 0
   _physicalDamage: 0
   _fireDamage: 0
+  _guardBreakModifier: 1
 --- !u!1 &6944629568366627670
 GameObject:
   m_ObjectHideFlags: 0
