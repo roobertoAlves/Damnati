@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class IdleStateHumanoid : States
 {
-    private PursueTargetStateHumanoid _persueTarget;
+    private PursueTargetStateHumanoid _pursueTargetState;
     [SerializeField] private LayerMask _detectionLayer;
     [SerializeField] private LayerMask _layersThatBlockLineOffSight;
 
     private void Awake() 
     {
-        _persueTarget = GetComponent<PursueTargetStateHumanoid>();
+        _pursueTargetState = GetComponent<PursueTargetStateHumanoid>();
     }
     
     public override States Tick(AICharacterManager aiCharacterManager)
@@ -54,7 +54,7 @@ public class IdleStateHumanoid : States
         #region  Handle Switching To Next Statate
         if(aiCharacterManager.CurrentTarget != null)
         {
-            return _persueTarget;
+            return _pursueTargetState;
         }
         else
         {

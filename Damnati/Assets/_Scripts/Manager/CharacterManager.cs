@@ -54,9 +54,9 @@ public class CharacterManager : MonoBehaviour
     [Space(15)]
     [SerializeField] private bool _isRotatingWithRootMotion;
     [SerializeField] private bool _canRotate;
+    [SerializeField] private bool _isGrounded;
     private bool _isSprinting;
     private bool _isInAir;
-    private bool _isGrounded;
 
     #region GET & SET
     public Animator Animator { get { return _animator; } set { _animator = value; }}

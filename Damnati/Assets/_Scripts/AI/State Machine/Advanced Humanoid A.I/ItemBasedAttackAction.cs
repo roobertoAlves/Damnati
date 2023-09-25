@@ -63,10 +63,11 @@ public class ItemBasedAttackAction : ScriptableObject
     {
         if(actionAttackType == AIAttackActionType.MeleeAttackAction)
         {
+
         }
         else if(actionAttackType == AIAttackActionType.RangedAttackAction)
         {
-
+            
         }
     }
     private void PerformLeftHandItemActionBasedOnAttackType(AICharacterManager aiCharacterManager)

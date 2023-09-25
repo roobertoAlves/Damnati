@@ -43,6 +43,7 @@ public class CombatStanceStateHumanoid : States
     {
         if(aiCharacterManager.CombatStyle == AICombatStyle.SwordAndShield)
         {
+            Debug.Log("Call function");
             return ProcessSwordAndShieldCombatStyle(aiCharacterManager);
         }
         else if(aiCharacterManager.CombatStyle == AICombatStyle.Archer)
@@ -56,8 +57,10 @@ public class CombatStanceStateHumanoid : States
     }
     private States ProcessSwordAndShieldCombatStyle(AICharacterManager aiCharacterManager)
     {
+        Debug.Log("function 1");
         if(!aiCharacterManager.IsGrounded || aiCharacterManager.IsInteracting)
         {
+            Debug.Log("function 2");
             aiCharacterManager.Animator.SetFloat("Vertical", 0);
             aiCharacterManager.Animator.SetFloat("Horizontal", 0);
             return this;
@@ -65,11 +68,13 @@ public class CombatStanceStateHumanoid : States
 
         if(aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
         {
+            Debug.Log("function 3");
             return _pursueTargetState;
         }
 
         if(!_rangeDestinationSet)
         {
+            Debug.Log("function 4");
             _rangeDestinationSet = true;
             DecideCirclingAction(aiCharacterManager.AICharacterAnimatorManager);
         }
@@ -92,14 +97,17 @@ public class CombatStanceStateHumanoid : States
         }
         if(aiCharacterManager.AllowAIToPerformBlock)
         {
+            Debug.Log("AI Block");
             RollForBlockChance(aiCharacterManager);
         }
         if(aiCharacterManager.AllowAIToPerformDodge)
         {
+            Debug.Log("AI Dodge");
             RollForDodgeChance(aiCharacterManager);
         }
         if(aiCharacterManager.AllowAIToPerformParry)
         {
+            Debug.Log("AI Parry");
             RollForParryChance(aiCharacterManager);
         }
 
@@ -120,14 +128,15 @@ public class CombatStanceStateHumanoid : States
             }
         }
         
+        Debug.Log("function 5");
         if(aiCharacterManager.CurrentRecoveryTime <= 0 && _attackState.CurrentAttack != null)
         {
             ResetStatesFlag();
             return _attackState;
         }
-    
         else
         {
+            Debug.Log("Attacking new");
             GetNewAttack(aiCharacterManager);
         }
 
@@ -259,6 +268,7 @@ public class CombatStanceStateHumanoid : States
 
         for (int i = 0; i < _enemyAttackAction.Length; i++)
         {
+            Debug.Log("New attack func");
             ItemBasedAttackAction enemyAttackAction = _enemyAttackAction[i];
 
             if(aiCharacterManager.DistanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack 

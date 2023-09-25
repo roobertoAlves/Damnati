@@ -42,7 +42,8 @@ public class AttackStateHumanoid : States
     }
 
     private States ProcessSwordAndShieldCombatySyle(AICharacterManager aiCharacterManager)
-    {       
+    {   
+        Debug.Log("Attack 1");
         RotateTowardsTargetWhilstAttacking(aiCharacterManager);
 
         if(aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
@@ -50,6 +51,7 @@ public class AttackStateHumanoid : States
             return _pursueTargetState;
         }
         
+        Debug.Log("Attack 2");
         if(_willDoComboOnNextAttack && aiCharacterManager.CanDoCombo)
         {
             AttackTargetWithCombo(aiCharacterManager);
@@ -61,11 +63,15 @@ public class AttackStateHumanoid : States
             RollForComboChance(aiCharacterManager);
         }
 
+        Debug.Log("Attack 3");
+
         if(_willDoComboOnNextAttack && _hasPerformedAttack)
         {
             return this;
         }
 
+
+        Debug.Log("Attack 4");
         ResetStatesFlag(); 
         return _rotateTowardsTargetState;
     }
