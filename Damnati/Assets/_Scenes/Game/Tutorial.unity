@@ -6831,7 +6831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9119030878210845507, guid: 075b97a1137d5e847b2d2bb52bcb6471, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9119030878210845510, guid: 075b97a1137d5e847b2d2bb52bcb6471, type: 3}
       propertyPath: _detectionLayer.m_Bits
@@ -6867,11 +6867,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9119030878576814809, guid: 075b97a1137d5e847b2d2bb52bcb6471, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9119030878576814809, guid: 075b97a1137d5e847b2d2bb52bcb6471, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 075b97a1137d5e847b2d2bb52bcb6471, type: 3}
@@ -7170,11 +7170,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8367181995521967604, guid: f59993b52ce95754aac48bf2aae72e39, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8367181995521967604, guid: f59993b52ce95754aac48bf2aae72e39, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8367181996171019374, guid: f59993b52ce95754aac48bf2aae72e39, type: 3}
       propertyPath: m_Name
@@ -7182,7 +7182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8367181996171019374, guid: f59993b52ce95754aac48bf2aae72e39, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8367181996171019375, guid: f59993b52ce95754aac48bf2aae72e39, type: 3}
       propertyPath: m_RootOrder
