@@ -10,6 +10,7 @@ public class RotateTowardsTargetStateHumanoid : States
     {
         _combatStanceState = GetComponent<CombatStanceStateHumanoid>();
     }
+    
     public override States Tick(AICharacterManager aiCharacterManager)
     {
         aiCharacterManager.Animator.SetFloat("Vertical", 0);

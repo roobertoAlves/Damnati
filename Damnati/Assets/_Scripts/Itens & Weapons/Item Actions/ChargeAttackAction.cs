@@ -18,7 +18,7 @@ public class ChargeAttackAction : ItemActions
 
         else
         {
-            if(character.IsInteracting ||character.CanDoCombo)
+            if(character.IsInteracting || character.CanDoCombo)
             {
                 return;
             }

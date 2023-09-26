@@ -115,7 +115,7 @@ public class FireArrowAction : ItemActions
             rb.mass = aICharacterManager.CharacterInventory.currentAmmo.ammoMass;
             liveArrow.transform.parent = null;
 
-            //fazendo que a flecha inflija dano
+            //fazendo que a flecha inflinja dano
             damageCollider.characterManager = character;
             damageCollider.AmmoItem = aICharacterManager.CharacterInventory.currentAmmo;
             damageCollider.PhysicalDamage = aICharacterManager.CharacterInventory.currentAmmo.physicalDamage;

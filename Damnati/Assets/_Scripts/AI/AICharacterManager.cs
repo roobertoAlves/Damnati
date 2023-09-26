@@ -127,12 +127,10 @@ public class AICharacterManager : CharacterManager
         _navMeshAgent = GetComponentInChildren<NavMeshAgent>();
         _navMeshAgent.enabled = false;
     }
-
     private void Start() 
     {
         _enemyRb.isKinematic = false;
     }
-
     private void Update() 
     {
         HandleRecoveryTimer();
@@ -180,13 +178,10 @@ public class AICharacterManager : CharacterManager
             }
         }
     }
-
     private void SwitchToNextState(States state)
     {
         _currentState = state;
     }
-
-
     private void HandleRecoveryTimer()
     {
         if(_currentRecoveryTime > 0)
@@ -201,5 +196,4 @@ public class AICharacterManager : CharacterManager
             }
         }
     }
-
 }

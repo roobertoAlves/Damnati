@@ -23,9 +23,9 @@ public class InputHandler : MonoBehaviour
     private bool _rtInput;
 
     private bool _runInput;
-    private bool _sbInput;
+    private bool _dodgeInput;
 
-    private bool _criticalAttackInput;
+    private bool _gHoldInput;
     private bool _comboFlag;
     private bool _blockInput;
 
@@ -39,6 +39,17 @@ public class InputHandler : MonoBehaviour
     private bool _lStickInput;
 
 
+    #endregion
+
+    #region Input Qued Flags
+    private bool _inputHasBeenQued;
+    private float _currentQuedInputTimer;
+    private float _defaultQuedInputTime = .36f;
+
+    private bool _quedRBInput;
+    private bool _quedHoldRBInput;
+    private bool _quedLBInput;
+    private bool _quedHoldLBInput;
     #endregion
 
     #region Player Flags
@@ -69,7 +80,7 @@ public class InputHandler : MonoBehaviour
     public float MoveAmount { get { return _moveAmount; } set { _moveAmount = value; }}
 
 
-    public bool DogdeFlag { get { return _sbInput; } set { _sbInput = value; }}
+    public bool DogdeFlag { get { return _dodgeInput; } set { _dodgeInput = value; }}
     public bool RunFlag { get { return _runInput; } set { _runInput = value; }}
     public bool RBInput { get { return _rbInput; } set { _rbInput = value; }}
     public bool LBInput { get { return _lbInput; } set { _lbInput = value; }}
@@ -77,7 +88,7 @@ public class InputHandler : MonoBehaviour
     public bool ComboFlag { get { return _comboFlag; } set { _comboFlag = value; }}
     public bool InteractInput { get { return _interactInput; } set { _interactInput = value; }}
     public bool PauseInput { get { return _pauseInput; } set { _pauseInput = value; }}
-    public bool CriticalAttackFlag { get { return _criticalAttackInput; } set { _criticalAttackInput = value; }}
+    public bool CriticalAttackFlag { get { return _gHoldInput; } set { _gHoldInput = value; }}
     public bool LockOnFlag { get { return _lockOnFlag; } set { _lockOnFlag = value; }}
    
     public bool RightStickInput { get { return _rStickInput; } set { _rStickInput = value; }}
@@ -117,8 +128,8 @@ public class InputHandler : MonoBehaviour
             _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
             _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
             
-            _gameControls.PlayerActions.StepBack.performed += OnDodge;
-            _gameControls.PlayerActions.StepBack.canceled += OnDodge;
+            _gameControls.PlayerActions.Dodge.performed += OnDodge;
+            _gameControls.PlayerActions.Dodge.canceled += OnDodge;
 
             _gameControls.PlayerActions.HoldRB.performed += OnAiming;
             _gameControls.PlayerActions.HoldRB.canceled += OnAiming;
@@ -139,14 +150,14 @@ public class InputHandler : MonoBehaviour
             _gameControls.PlayerActions.RB.performed += OnHeavyAttack;
             _gameControls.PlayerActions.RB.canceled += OnHeavyAttack;
 
-            _gameControls.PlayerActions.LT.performed += OnWeaponArt;
-            _gameControls.PlayerActions.LT.canceled += OnWeaponArt;
+            _gameControls.PlayerActions.WeaponArt.performed += OnWeaponArt;
+            _gameControls.PlayerActions.WeaponArt.canceled += OnWeaponArt;
 
             _gameControls.PlayerActions.Block.performed += OnDefense;
             _gameControls.PlayerActions.Block.canceled += OnDefense;
 
-            _gameControls.PlayerActions.CriticalAttack.performed += OnCriticalAttack;
-            _gameControls.PlayerActions.CriticalAttack.canceled += OnCriticalAttack;
+            _gameControls.PlayerActions.Critical.performed += OnCriticalAttack;
+            _gameControls.PlayerActions.Critical.canceled += OnCriticalAttack;
 
             _gameControls.PlayerActions.TH.performed += OnTwoHandEquiped;
             _gameControls.PlayerActions.TH.canceled += OnTwoHandEquiped;
@@ -159,6 +170,15 @@ public class InputHandler : MonoBehaviour
 
             _gameControls.PlayerActions.CameraLockOn.performed += OnCameraLockOn;
 
+
+            #region Qued Input Actions
+
+            _gameControls.PlayerActions.QuedRB.performed += ctx => QuedInput(ref _quedRBInput);
+            _gameControls.PlayerActions.QuedHoldRB.performed += ctx => QuedInput(ref _quedHoldRBInput);
+            _gameControls.PlayerActions.QuedLB.performed += ctx => QuedInput(ref _quedLBInput);
+            _gameControls.PlayerActions.QuedHoldLB.performed += ctx => QuedInput(ref _quedHoldLBInput);
+            _gameControls.PlayerActions.QuedRB.performed += ctx => QuedInput(ref _quedRBInput);
+            #endregion
         }
         _gameControls.Enable();    
     }
@@ -176,6 +196,7 @@ public class InputHandler : MonoBehaviour
             return;
         }
         
+        HandleQuedInput();
         HandleMoveInput();
 
         HandleTapRBInput();
@@ -192,9 +213,9 @@ public class InputHandler : MonoBehaviour
         HandleLockOnInput();
         HandleTwoHandInput();
 
+
         //Debug.Log("Tick Input: _lockOnInput = " + _lockOnInput + ", _lockOnFlag = " + _lockOnFlag);
     }
-
     private void HandleMoveInput()
     {
         if(_player.IsHoldingArrow)
@@ -489,7 +510,7 @@ public class InputHandler : MonoBehaviour
     }
     private void HandleTapGInput()
     {
-        if(_criticalAttackInput)
+        if(_gHoldInput)
         {
             if(_player.PlayerInventory.rightHandWeapon.oh_hold_G_Action != null)
             {
@@ -505,6 +526,58 @@ public class InputHandler : MonoBehaviour
             }
         }
     }  
+    private void QuedInput(ref bool quedInput)
+    {
+        _quedRBInput = false;
+        _quedHoldRBInput = false;
+        _quedLBInput = false;
+        _quedHoldLBInput = false;
+
+        //Se o jogador estiver interagindo ele pode colocar um input na fila, de outra forma não é necessário armazenar dentro
+        if(_player.IsInteracting)
+        {
+            quedInput = true;
+            _currentQuedInputTimer = _defaultQuedInputTime;
+            _inputHasBeenQued = true;
+        }   
+    }
+
+    private void HandleQuedInput()
+    {
+        if(_inputHasBeenQued)
+        {
+            if(_currentQuedInputTimer > 0)
+            {
+                _currentQuedInputTimer = _currentQuedInputTimer - Time.deltaTime;
+                ProcessQuedInput();
+            }
+            else
+            {
+                _inputHasBeenQued = false;
+                _currentQuedInputTimer = 0;
+            }
+        }
+    }
+
+    private void ProcessQuedInput()
+    {
+        if(_quedRBInput)
+        {
+            _rbInput = true;
+        }
+        else if(_quedHoldRBInput)
+        {
+            _rbHoldInput = true;
+        }
+        else if(_quedLBInput)
+        {
+            _lbInput = true;
+        }
+        else if(_quedHoldLBInput)
+        {
+            _lbHoldInput = true;
+        }
+    }
 
     #region Input Methods
     public void CameraView(InputAction.CallbackContext ctx)
@@ -526,7 +599,7 @@ public class InputHandler : MonoBehaviour
 
     private void OnDodge(InputAction.CallbackContext ctx)
     {
-       _sbInput = ctx.ReadValueAsButton();
+       _dodgeInput = ctx.ReadValueAsButton();
     }
 
     private void OnInteract(InputAction.CallbackContext ctx)
@@ -553,7 +626,7 @@ public class InputHandler : MonoBehaviour
     }
     private void OnCriticalAttack(InputAction.CallbackContext ctx)
     {
-        _criticalAttackInput = ctx.ReadValueAsButton();
+        _gHoldInput = ctx.ReadValueAsButton();
     }
     private void OnDefense(InputAction.CallbackContext ctx)
     {

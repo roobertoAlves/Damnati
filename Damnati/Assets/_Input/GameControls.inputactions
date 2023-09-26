@@ -138,18 +138,72 @@
             "id": "f27feaa6-3293-496d-b528-e39532529f70",
             "actions": [
                 {
-                    "name": "LB",
+                    "name": "Qued LB",
                     "type": "Button",
-                    "id": "4603bbc8-697a-4cac-b674-66b67d33c146",
+                    "id": "cb667026-9291-4e2e-8edd-323807ec6b45",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "StepBack",
+                    "name": "Qued RB",
                     "type": "Button",
-                    "id": "e025971e-66bd-49c0-86b2-a854f6483260",
+                    "id": "c6cc33e8-0049-4c34-8dd3-c2cb7756e287",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Qued Hold LB",
+                    "type": "PassThrough",
+                    "id": "c5c6c176-9a21-44e1-8616-81b2f0913a6b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Qued Hold RB",
+                    "type": "PassThrough",
+                    "id": "4af4fe8d-5c13-40c4-b87e-72c2636caafa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Qued Critical",
+                    "type": "PassThrough",
+                    "id": "620f559c-8fe4-48cd-b743-0b3eedf4baff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Qued WeaponArt",
+                    "type": "Button",
+                    "id": "f61a41c9-3300-418a-96c5-370939eeaa74",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Qued Dodge",
+                    "type": "Button",
+                    "id": "d20e48fd-aa69-435e-b62e-98ca1e03be31",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LB",
+                    "type": "Button",
+                    "id": "4603bbc8-697a-4cac-b674-66b67d33c146",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -183,7 +237,16 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Critical Attack",
+                    "name": "Dodge",
+                    "type": "Button",
+                    "id": "e025971e-66bd-49c0-86b2-a854f6483260",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Critical",
                     "type": "PassThrough",
                     "id": "4393c9d9-48d4-44a6-8776-01bc7f527209",
                     "expectedControlType": "Button",
@@ -192,7 +255,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LT",
+                    "name": "WeaponArt",
                     "type": "Button",
                     "id": "53e96dcf-ed23-4c74-91c6-ab674af4e7a3",
                     "expectedControlType": "Button",
@@ -256,17 +319,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "332803ed-c334-43f4-acd4-98950910740d",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LB",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "5592f20e-3517-4e1a-b3f1-64ea5d5f19c0",
@@ -340,7 +392,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LT",
+                    "action": "WeaponArt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -362,7 +414,7 @@
                     "interactions": "Hold",
                     "processors": "",
                     "groups": "",
-                    "action": "Critical Attack",
+                    "action": "Critical",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -374,6 +426,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Hold RB ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e262937c-926d-460e-a158-8cf89b4f76c1",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Qued RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f809d00a-6281-4b80-b66f-cb791dd93aeb",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Qued Hold RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "332803ed-c334-43f4-acd4-98950910740d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -395,7 +480,62 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "StepBack",
+                    "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2154413e-134d-421f-a0c9-8f0e2fe08ecb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Qued LB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75ae4230-9aec-45c8-9c4e-a47840a184e4",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Qued Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f809cc41-3aa8-4fb0-bde7-829d646d8dd1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Qued Hold LB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e25ad712-7156-4e63-bb4e-f3c44494cbc6",
+                    "path": "<Keyboard>/g",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Qued Critical",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ee6c23f0-66da-4fd6-99b1-301b5e0ce1d1",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Qued WeaponArt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

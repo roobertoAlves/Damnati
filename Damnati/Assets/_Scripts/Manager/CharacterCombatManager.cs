@@ -105,6 +105,7 @@ public class CharacterCombatManager : MonoBehaviour
     {
         _character = GetComponent<CharacterManager>();
     }
+    
     public virtual void AttemptBlock(DamageCollider attackingWeapon, float physicalDamage, float fireDamage, string blockingAnimation)
     {
         float staminaDamageAbsorption = ((physicalDamage + fireDamage) * attackingWeapon.GuardBreakModifier) 
@@ -124,7 +125,6 @@ public class CharacterCombatManager : MonoBehaviour
             _character.CharacterAnimator.PlayTargetAnimation(blockingAnimation, true);
         }
     }
-
     public virtual void SetBlockingAbsorptionsFromBlockingWeapon()
     {
         if(_character.IsUsingRightHand)
@@ -140,6 +140,7 @@ public class CharacterCombatManager : MonoBehaviour
             _character.CharacterStats.BlockingStabilityRating = _character.CharacterInventory.leftHandWeapon.stability;
         }
     }
+   
     public virtual void DrainStaminaBaseOnAttack()
     {
 
@@ -148,6 +149,7 @@ public class CharacterCombatManager : MonoBehaviour
     {
         
     }
+    
     private IEnumerator ForceMoveCharacterToEnemyRipostePosition(CharacterManager characterPerfomingRiposte)
     {
         for (float timer = 0.05f; timer < 0.5f; timer = timer + 0.05f)
@@ -224,6 +226,7 @@ public class CharacterCombatManager : MonoBehaviour
     {
         _character.Animator.SetBool("IsInvulnerable", true);
     }
+    
     public void ApllyPendingDamage()
     {
         _character.CharacterStats.TakeDamageNoAnimation(_pendingCriticalDamage, 0);

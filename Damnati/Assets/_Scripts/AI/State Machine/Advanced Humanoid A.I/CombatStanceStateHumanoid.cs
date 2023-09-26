@@ -57,28 +57,13 @@ public class CombatStanceStateHumanoid : States
     }
     private States ProcessSwordAndShieldCombatStyle(AICharacterManager aiCharacterManager)
     {
-        Debug.Log("function 1");
         if(!aiCharacterManager.IsGrounded || aiCharacterManager.IsInteracting)
         {
-            Debug.Log("function 2");
             aiCharacterManager.Animator.SetFloat("Vertical", 0);
             aiCharacterManager.Animator.SetFloat("Horizontal", 0);
             return this;
         }
-
-        if(aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
-        {
-            Debug.Log("function 3");
-            return _pursueTargetState;
-        }
-
-        if(!_rangeDestinationSet)
-        {
-            Debug.Log("function 4");
-            _rangeDestinationSet = true;
-            DecideCirclingAction(aiCharacterManager.AICharacterAnimatorManager);
-        }
-
+        
         if(aiCharacterManager.IsDead)
         {
             aiCharacterManager.Animator.SetFloat("Vertical", 0);
@@ -87,6 +72,35 @@ public class CombatStanceStateHumanoid : States
             return _idleState;
         }
 
+        if(aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
+        {
+            return _pursueTargetState;
+        }
+
+        if(!_rangeDestinationSet)
+        {
+            _rangeDestinationSet = true;
+            DecideCirclingAction(aiCharacterManager.AICharacterAnimatorManager);
+        }
+
+        if(aiCharacterManager.AllowAIToPerformBlock)
+        {
+            Debug.Log("AI Block");
+            RollForBlockChance(aiCharacterManager);
+        }
+
+        if(aiCharacterManager.AllowAIToPerformDodge)
+        {
+            Debug.Log("AI Dodge");
+            RollForDodgeChance(aiCharacterManager);
+        }
+
+        if(aiCharacterManager.AllowAIToPerformParry)
+        {
+            Debug.Log("AI Parry");
+            RollForParryChance(aiCharacterManager);
+        }
+        
         if(aiCharacterManager.AllowAIToPerformParry)
         {
             if(aiCharacterManager.CurrentTarget.CanBeRiposted)
@@ -95,30 +109,17 @@ public class CombatStanceStateHumanoid : States
                 return this;
             }
         }
-        if(aiCharacterManager.AllowAIToPerformBlock)
-        {
-            Debug.Log("AI Block");
-            RollForBlockChance(aiCharacterManager);
-        }
-        if(aiCharacterManager.AllowAIToPerformDodge)
-        {
-            Debug.Log("AI Dodge");
-            RollForDodgeChance(aiCharacterManager);
-        }
-        if(aiCharacterManager.AllowAIToPerformParry)
-        {
-            Debug.Log("AI Parry");
-            RollForParryChance(aiCharacterManager);
-        }
 
         if(_willPerformBlock)
         {
             BlockUsingOffHand(aiCharacterManager);
         }
+
         if(_willPerformDodge && aiCharacterManager.CurrentTarget.IsAttacking)
         {
             Dodge(aiCharacterManager);
         }
+        
         if(aiCharacterManager.CurrentTarget.IsAttacking)
         {
             if(_willPerformParry && !_hasPerformedParry)
@@ -127,8 +128,7 @@ public class CombatStanceStateHumanoid : States
                 return this;
             }
         }
-        
-        Debug.Log("function 5");
+
         if(aiCharacterManager.CurrentRecoveryTime <= 0 && _attackState.CurrentAttack != null)
         {
             ResetStatesFlag();
@@ -136,7 +136,6 @@ public class CombatStanceStateHumanoid : States
         }
         else
         {
-            Debug.Log("Attacking new");
             GetNewAttack(aiCharacterManager);
         }
 
@@ -196,7 +195,7 @@ public class CombatStanceStateHumanoid : States
 
         }
 
-        if(aiCharacterManager.CurrentRecoveryTime <= 0 && _attackState.CurrentAttack != null)
+        if(aiCharacterManager.CurrentRecoveryTime <= 0 && _hasAmmoLoaded)
         {
             ResetStatesFlag();
             return _attackState;
@@ -268,14 +267,13 @@ public class CombatStanceStateHumanoid : States
 
         for (int i = 0; i < _enemyAttackAction.Length; i++)
         {
-            Debug.Log("New attack func");
             ItemBasedAttackAction enemyAttackAction = _enemyAttackAction[i];
 
             if(aiCharacterManager.DistanceFromTarget <= enemyAttackAction.MaximumDistanceNeededToAttack 
                 && aiCharacterManager.DistanceFromTarget >= enemyAttackAction.MinimumDistanceNeededToAttack)
             {
                 if(aiCharacterManager.ViewableAngle <= enemyAttackAction.MaximumAttackAngle
-                     && aiCharacterManager.ViewableAngle >= enemyAttackAction.MinimumAttackAngle)
+                    && aiCharacterManager.ViewableAngle >= enemyAttackAction.MinimumAttackAngle)
                 {
                     maxScore += enemyAttackAction.AttackScore;
                 }
@@ -371,7 +369,7 @@ public class CombatStanceStateHumanoid : States
                 float randomDodgeDirection;
 
                 _hasRandomDodgeDirection = true;
-                randomDodgeDirection = Random.Range(0, 160);
+                randomDodgeDirection = Random.Range(0, 360);
                 _targetDodgeDirection = Quaternion.Euler(aiCharacterManager.transform.eulerAngles.x, randomDodgeDirection, aiCharacterManager.transform.eulerAngles.z);
             }
 
@@ -428,7 +426,7 @@ public class CombatStanceStateHumanoid : States
     {
         if(aiCharacterManager.IsInteracting)
         {
-            aiCharacterManager.Animator.SetFloat("Hor", 0, 0.2f, Time.deltaTime);
+            aiCharacterManager.Animator.SetFloat("Horizontal", 0, 0.2f, Time.deltaTime);
             aiCharacterManager.Animator.SetFloat("Vertical", 0, 0.2f, Time.deltaTime);
             return;
         }
@@ -436,7 +434,7 @@ public class CombatStanceStateHumanoid : States
         if(aiCharacterManager.DistanceFromTarget >= 1.0)
         {
             HandleRotateTowardsTarget(aiCharacterManager);
-            aiCharacterManager.Animator.SetFloat("Hor", 0, 0.2f, Time.deltaTime);
+            aiCharacterManager.Animator.SetFloat("Horizontal", 0, 0.2f, Time.deltaTime);
             aiCharacterManager.Animator.SetFloat("Vertical", 1, 0.2f, Time.deltaTime);
         }
         else
@@ -470,9 +468,12 @@ public class CombatStanceStateHumanoid : States
     {
         _hasRandomDodgeDirection = false;
         _hasPerformedDodge = false;
+
         _hasAmmoLoaded = false;
+
         _hasPerformedParry = false;
         _rangeDestinationSet = false;
+
         _willPerformBlock = false;
         _willPerformDodge = false;
         _willPerformParry = false;

@@ -63,17 +63,19 @@ public class ItemBasedAttackAction : ScriptableObject
     {
         if(actionAttackType == AIAttackActionType.MeleeAttackAction)
         {
-
+            PerformRightHandMeleeAction(aiCharacterManager);
         }
         else if(actionAttackType == AIAttackActionType.RangedAttackAction)
         {
             
         }
     }
+
     private void PerformLeftHandItemActionBasedOnAttackType(AICharacterManager aiCharacterManager)
     {
         if(actionAttackType == AIAttackActionType.MeleeAttackAction)
         {
+            PerformLeftHandMeleeAction(aiCharacterManager);
         }
         else if(actionAttackType == AIAttackActionType.RangedAttackAction)
         {
@@ -110,7 +112,31 @@ public class ItemBasedAttackAction : ScriptableObject
     #endregion
 
     #region  Left Hand Actions
-
+    private void PerformLeftHandMeleeAction(AICharacterManager aiCharacterManager)
+    {
+        if(aiCharacterManager.IsTwoHandingWeapon)
+        {
+            if(attackType == AttackType.LightAttack)
+            {
+                aiCharacterManager.CharacterInventory.leftHandWeapon.th_tap_LB_Action.PerformAction(aiCharacterManager);
+            }
+            else if(attackType == AttackType.HeavyAttack)
+            {
+                aiCharacterManager.CharacterInventory.leftHandWeapon.th_tap_RB_Action.PerformAction(aiCharacterManager);
+            }
+        }
+        else
+        {
+            if(attackType == AttackType.LightAttack)
+            {
+                aiCharacterManager.CharacterInventory.leftHandWeapon.oh_tap_LB_Action.PerformAction(aiCharacterManager);
+            }
+            else if(attackType == AttackType.HeavyAttack)
+            {
+                aiCharacterManager.CharacterInventory.leftHandWeapon.oh_tap_RB_Action.PerformAction(aiCharacterManager);
+            }
+        }
+    }
     #endregion
 
 }

@@ -29,7 +29,7 @@ public class AttackStateHumanoid : States
     {
         if(aiCharacterManager.CombatStyle == AICombatStyle.SwordAndShield)
         {
-            return ProcessSwordAndShieldCombatySyle(aiCharacterManager);
+            return ProcessSwordAndShieldCombatStyle(aiCharacterManager);
         }
         else if(aiCharacterManager.CombatStyle == AICombatStyle.Archer)
         {
@@ -41,7 +41,7 @@ public class AttackStateHumanoid : States
         }
     }
 
-    private States ProcessSwordAndShieldCombatySyle(AICharacterManager aiCharacterManager)
+    private States ProcessSwordAndShieldCombatStyle(AICharacterManager aiCharacterManager)
     {   
         Debug.Log("Attack 1");
         RotateTowardsTargetWhilstAttacking(aiCharacterManager);
@@ -113,11 +113,10 @@ public class AttackStateHumanoid : States
         if(!_hasPerformedAttack)
         {
             FireAmmo(aiCharacterManager);
-        }
-
-        Debug.Log("Attack 5");
+        }  
 
         ResetStatesFlag();
+
         return _rotateTowardsTargetState;
     }
     private void AttackTarget(AICharacterManager aiCharacterManager)
