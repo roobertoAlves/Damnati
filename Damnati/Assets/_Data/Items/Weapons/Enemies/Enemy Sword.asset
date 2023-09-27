@@ -32,10 +32,10 @@ MonoBehaviour:
   fireBlockingDamageAbsorption: 0
   stability: 67
   baseStaminaCost: 0
-  lightAttackStaminaMultiplier: 0
-  heavyAttackStaminaMultiplier: 0
-  jumpingAttackStaminaMultiplier: 0
-  runningAttackStaminaMultiplier: 0
+  lightAttackStaminaMultiplier: 1
+  heavyAttackStaminaMultiplier: 1
+  jumpingAttackStaminaMultiplier: 2.2
+  runningAttackStaminaMultiplier: 2
   baseRage: 15
   rageLightAttackMultiplier: 3
   rageHeavyAttackMultiplier: 5
@@ -61,3 +61,4 @@ MonoBehaviour:
   th_hold_F_Action: {fileID: 0}
   th_tap_Z_Action: {fileID: 0}
   th_hold_G_Action: {fileID: 0}
+  th_tap_R_Action: {fileID: 0}

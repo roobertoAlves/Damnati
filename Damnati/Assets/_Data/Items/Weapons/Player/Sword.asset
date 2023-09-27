@@ -28,8 +28,8 @@ MonoBehaviour:
   jumpingAttackDamageModifier: 2
   poiseBreak: 25
   offensivePoiseBonus: 10
-  physicalBlockingDamageAbsorption: 15
-  fireBlockingDamageAbsorption: 15
+  physicalBlockingDamageAbsorption: 0
+  fireBlockingDamageAbsorption: 0
   stability: 67
   baseStaminaCost: 25
   lightAttackStaminaMultiplier: 1

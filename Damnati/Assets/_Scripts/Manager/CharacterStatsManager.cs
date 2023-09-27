@@ -29,21 +29,21 @@ public class CharacterStatsManager : MonoBehaviour
 
     [Header("Armor Absorptions")]
     [Space(15)]
-    private float _physicalDamageAbsorptionHead;
-    private float _physicalDamageAbsorptionBody;
-    private float _physicalDamageAbsorptionLegs;
-    private float _physicalDamageAbsorptionHands;
+    [SerializeField] private float _physicalDamageAbsorptionHead;
+    [SerializeField] private float _physicalDamageAbsorptionBody;
+    [SerializeField] private float _physicalDamageAbsorptionLegs;
+    [SerializeField] private float _physicalDamageAbsorptionHands;
 
-    private float _fireDamageAbsorptionHead;
-    private float _fireDamageAbsorptionBody;
-    private float _fireDamageAbsorptionLegs;
-    private float _fireDamageAbsorptionHands;
+    [SerializeField] private float _fireDamageAbsorptionHead;
+    [SerializeField] private float _fireDamageAbsorptionBody;
+    [SerializeField] private float _fireDamageAbsorptionLegs;
+    [SerializeField] private float _fireDamageAbsorptionHands;
 
     [Header("Blocking Absorptions")]
     [Space(15)]
-    private float _blockingPhysicalDamageAbsorption;
-    private float _blockingFireDamageAbsorption;
-    private float _blockingStabilityRating;
+    [SerializeField] private float _blockingPhysicalDamageAbsorption;
+    [SerializeField] private float _blockingFireDamageAbsorption;
+    [SerializeField] private float _blockingStabilityRating;
 
     [Header("Poise")]
     [Space(15)]
@@ -114,9 +114,9 @@ public class CharacterStatsManager : MonoBehaviour
         (1 - _physicalDamageAbsorptionBody / 100) *
         (1 - _physicalDamageAbsorptionLegs / 100) *
         (1 - _physicalDamageAbsorptionHands / 100);
-
+        Debug.Log("TKD ABS: " + totalPhysicalDamageAbsorption);
         physicalDamage = Mathf.RoundToInt( physicalDamage - (physicalDamage * totalPhysicalDamageAbsorption));
-        
+        Debug.Log("TKD TOTAL: " + physicalDamage);
         float totalFireDamageAbsorption = 1 -
         (1 - _fireDamageAbsorptionHead / 100) *
         (1 - _fireDamageAbsorptionBody / 100) *
@@ -127,6 +127,7 @@ public class CharacterStatsManager : MonoBehaviour
 
 
         float finalDamage = physicalDamage + fireDamage;// + others type of damage;
+
 
         if(enemyCharacterDamagingMe.IsPerformingFullyChargedAttack)
         {

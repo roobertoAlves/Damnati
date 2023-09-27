@@ -147,7 +147,7 @@ public class DamageCollider : MonoBehaviour
     }
     protected virtual void DealDamage(CharacterStatsManager enemyStats)
     {
-        float finalPhysicalDamage = PhysicalDamage;
+        float finalPhysicalDamage = _physicalDamage;
 
         if(characterManager.IsUsingRightHand)
         {
@@ -195,6 +195,7 @@ public class DamageCollider : MonoBehaviour
         else
         {
            enemyStats.TakeDamage(Mathf.RoundToInt(finalPhysicalDamage), 0, currentDamageAnimation, _characterManager);
+           Debug.Log("TKD TOTAL DMGC: " + finalPhysicalDamage);
         }
     }
     protected virtual void ChooseWhichDirectionDamageCameFrom(float direction)
