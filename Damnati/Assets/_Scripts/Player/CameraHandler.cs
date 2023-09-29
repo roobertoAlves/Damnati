@@ -26,7 +26,8 @@ public class CameraHandler : MonoBehaviour
 
     [SerializeField] private float _horizontalLookSpeed = 25f;
     [SerializeField] private float _verticalLookSpeed = 25f;
-    [SerializeField] private float _followSpeed = 1f;
+    [SerializeField] private float _groundedFollowSpeed = 20f;
+    [SerializeField] private float _aerialFollowSpeed = 10f;
     [SerializeField] private float _horizontalAimingLookSpeed = 5f;
     [SerializeField] private float _verticalAimingLookSpeed = 5f;
 
@@ -88,13 +89,21 @@ public class CameraHandler : MonoBehaviour
     {
         if(_playerManager.IsAiming)
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransformWhileAiming.position, ref _cameraFollowVelocity, Time.deltaTime * _followSpeed);
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransformWhileAiming.position, ref _cameraFollowVelocity,_groundedFollowSpeed * Time.deltaTime );
             transform.position = targetPosition;
         }
         else
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransform.position, ref _cameraFollowVelocity, Time.deltaTime * _followSpeed);
-            transform.position = targetPosition;
+            if(_playerManager.IsGrounded)
+            {
+                Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransform.position, ref _cameraFollowVelocity, _groundedFollowSpeed * Time.deltaTime );
+                transform.position = targetPosition;
+            }
+            else
+            {
+                Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransform.position, ref _cameraFollowVelocity, _aerialFollowSpeed * Time.deltaTime );
+                transform.position = targetPosition;
+            }
         }
 
         HandleCameraCollisions();

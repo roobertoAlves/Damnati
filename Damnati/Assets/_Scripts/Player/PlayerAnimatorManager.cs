@@ -81,30 +81,5 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
         _player.Animator.SetFloat(_verticalVelocity, v, 0.1f, Time.deltaTime);
         _player.Animator.SetFloat(_horizontalVelocity, h, 0.1f, Time.deltaTime);
     }
-   
-    public void DisableCollision()
-    {
-        _player.PlayerLocomotion.CharacterCollider.enabled = false;
-        _player.PlayerLocomotion.CharacterCollisionBlockerCollider.enabled = false;
-    }
-    public void EnableCollision()
-    {
-        _player.PlayerLocomotion.CharacterCollider.enabled = true;
-        _player.PlayerLocomotion.CharacterCollisionBlockerCollider.enabled = true;
-
-    }
-    private void OnAnimationMove()
-    {
-        if(_player.IsInteracting == false)
-        {
-            return;
-        }
-
-        float delta = Time.deltaTime;
-        _player.PlayerLocomotion.PlayerRB.drag = 0;
-        Vector3 deltaPos = _player.Animator.deltaPosition;
-        deltaPos.y = 0;
-        Vector3 velocity = deltaPos / delta;
-        _player.PlayerLocomotion.PlayerRB.velocity = velocity;
-    }
+    
 }

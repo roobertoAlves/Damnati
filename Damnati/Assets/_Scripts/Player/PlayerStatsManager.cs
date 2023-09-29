@@ -16,6 +16,7 @@ public class PlayerStatsManager : CharacterStatsManager
     [SerializeField] private float _staminaRegenerationAmount = 1;
     [SerializeField] private float _staminaRegenerationAmountWhilstBlocking = 0.1f;
     [SerializeField] private float _staminaRegenerationTimer = 0;
+    private float _sprintingTimer = 0;
     private StaminaBar _staminaBar;
 
     [Header("Rage Parameters")]
@@ -100,9 +101,27 @@ public class PlayerStatsManager : CharacterStatsManager
         base.DeductStamina(staminaToDeduct);
         _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina));
     }
+    public void DeductSprintingStamina(float staminaToDeduct)
+    {
+        if(_player.IsSprinting)
+        {
+            _sprintingTimer = _sprintingTimer + Time.deltaTime;
+
+            if(_sprintingTimer > 0.1f)
+            {
+                _sprintingTimer = 0;
+                CurrentStamina = CurrentStamina - staminaToDeduct;
+                _staminaBar.SetCurrentStamina(Mathf.RoundToInt(CurrentStamina));
+            }
+        }
+        else
+        {
+            _sprintingTimer = 0;
+        }
+    }
     public void RegenerateStamina()
     {
-        if(_player.IsInteracting)
+        if(_player.IsInteracting || _player.IsSprinting)
         {
             _staminaRegenerationTimer = 0;
         }

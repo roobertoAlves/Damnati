@@ -159,4 +159,15 @@ public class CharacterAnimatorManager : MonoBehaviour
             _leftHandConstraint.data.targetRotationWeight = 0;
         }
     }
+    public virtual void OnAnimatorMove()
+    {
+        if(_character.IsInteracting == false)
+        {
+            return;
+        }
+
+        Vector3 velocity = _character.Animator.deltaPosition;
+        _character.CharacterController.Move(velocity);
+        _character.transform.rotation *= _character.Animator.deltaRotation;
+    }
 }

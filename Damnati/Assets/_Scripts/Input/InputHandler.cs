@@ -293,7 +293,7 @@ public class InputHandler : MonoBehaviour
     }
     private void HandleHoldRBInput()
     {
-        if(_player.IsInAir || _player.IsSprinting)
+        if(!_player.IsGrounded || _player.IsSprinting)
         {
             _rbHoldInput = false;
             return;
@@ -332,7 +332,7 @@ public class InputHandler : MonoBehaviour
     }
     private void HandleReleaseRBInput()
     {
-        if(_player.IsSprinting || _player.IsInAir)
+        if(_player.IsSprinting || !_player.IsGrounded)
         {
             _fireFlag = false;
             return;
@@ -395,7 +395,7 @@ public class InputHandler : MonoBehaviour
     }
     private void HandleHoldFInput()
     {
-        if(_player.IsInAir || _player.IsSprinting)
+        if(!_player.IsGrounded || _player.IsSprinting)
         {
             _blockInput = false;
             return;

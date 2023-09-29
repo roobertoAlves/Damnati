@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
+    private CharacterController _characterController;
     private Animator _animator;
     private CharacterAnimatorManager _characterAnimatorManager;
     private CharacterWeaponSlotManager _characterWeaponSlotManager;
@@ -56,9 +57,9 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private bool _canRotate;
     [SerializeField] private bool _isGrounded;
     private bool _isSprinting;
-    private bool _isInAir;
 
     #region GET & SET
+    public CharacterController CharacterController { get { return _characterController; } set { _characterController = value; }}
     public Animator Animator { get { return _animator; } set { _animator = value; }}
     public CharacterAnimatorManager CharacterAnimator { get { return _characterAnimatorManager; }}
     public CharacterWeaponSlotManager CharacterWeaponSlot { get { return _characterWeaponSlotManager; }}
@@ -71,7 +72,6 @@ public class CharacterManager : MonoBehaviour
     public Transform LockOnTransform { get { return _lockOnTransform; } set { _lockOnTransform = value; }}
     public Transform CriticalAttackRayCastStartPoint { get { return _criticalAttackRayCastStartPoint; } set{ _criticalAttackRayCastStartPoint = value; }}
     public bool IsSprinting { get { return _isSprinting; } set { _isSprinting = value; }}
-    public bool IsInAir { get { return _isInAir; } set { _isInAir = value; }}
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; }}
     public bool IsInteracting { get { return _isInteracting; } set { _isInteracting = value; }}
     public bool IsParrying { get { return _isParrying; } set { _isParrying = value; }}
@@ -90,13 +90,13 @@ public class CharacterManager : MonoBehaviour
     public bool IsDead { get { return _isDead; } set { _isDead = value; }}
     public bool IsPerformingFullyChargedAttack { get { return _isPerformingFullyChargedAttack; } set { _isPerformingFullyChargedAttack = value; }}
     public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; }}
-
     public bool IsBeingRiposted { get { return _isBeingRiposted; } set { _isBeingRiposted = value; }}    
     public bool IsPerformingRiposte { get { return _isPerfomingRiposte; } set { _isPerfomingRiposte = value; }}
     #endregion
 
     protected virtual void Awake()
     {
+        _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
         _characterWeaponSlotManager = GetComponent<CharacterWeaponSlotManager>();

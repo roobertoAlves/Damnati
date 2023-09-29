@@ -22,18 +22,19 @@ public class AICharacterAnimatorManager : CharacterAnimatorManager
         _aiCharacterManager.AICharacterEffectsManager.PlayWeaponFX(false);
     }
 
-    private void OnAnimatorMove()
+    public override void OnAnimatorMove()
     {
-        float delta = Time.deltaTime;
-        _aiCharacterManager.EnemyRb.drag = 0;
-        Vector3 deltaPosition = _aiCharacterManager.Animator.deltaPosition;
-        deltaPosition.y = 0;
-        Vector3 velocity = deltaPosition / delta;
-        _aiCharacterManager.EnemyRb.velocity = velocity;
+        if(_character.IsInteracting)
+        {
+            return;
+        }
+
+        Vector3 velocity = _character.Animator.deltaPosition;
+        _character.CharacterController.Move(velocity);
 
         if(_aiCharacterManager.IsRotatingWithRootMotion)
         {
-            _aiCharacterManager.transform.rotation *= _aiCharacterManager.Animator.deltaRotation;
+            _character.transform.rotation *= _character.Animator.deltaRotation;
         }
     }
 }

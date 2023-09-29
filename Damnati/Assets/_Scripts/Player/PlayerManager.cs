@@ -80,13 +80,14 @@ public class PlayerManager : CharacterManager
         IsHoldingArrow = Animator.GetBool("IsHoldingArrow");
         IsPerformingFullyChargedAttack = Animator.GetBool("IsPerformingFullyChargeAttack");
         Animator.SetBool("IsTwoHandingWeapon", IsTwoHandingWeapon);
-        Animator.SetBool("IsInAir", IsInAir);
         Animator.SetBool("IsDead", IsDead);
         Animator.SetBool("IsBlocking", IsBlocking);
 
         _inputHandler.TickInput();
         _playerLocomotionManager.HandleDodge();
         _playerStatsManager.RegenerateStamina();
+        _playerLocomotionManager.HandleGroundedMovement();
+        _playerLocomotionManager.HandleRotation();
 
         CheckForInteractableObject();
 
@@ -98,10 +99,6 @@ public class PlayerManager : CharacterManager
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-
-        _playerLocomotionManager.HandleGravity(_playerLocomotionManager.MoveDirection);
-        _playerLocomotionManager.HandleMovement();
-        _playerLocomotionManager.HandleRotation();
         _playerEffectsManager.HandleAllBuildUpEffects();
     }
     
@@ -114,7 +111,7 @@ public class PlayerManager : CharacterManager
             _cameraHandler.FollowTarget();
            _cameraHandler.HandleCameraRotation();
         }   
-        if(IsInAir)
+        if(!IsGrounded)
         {
             _playerLocomotionManager.InAirTimer = _playerLocomotionManager.InAirTimer + Time.deltaTime;
         } 
@@ -125,7 +122,7 @@ public class PlayerManager : CharacterManager
     {
         RaycastHit hit;
 
-        if(Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, _playerLocomotionManager.IgnoreForGroundCheck))
+        if(Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, _playerLocomotionManager.GroundLayer))
         {
             if(hit.collider.tag == "Interactable")
             {

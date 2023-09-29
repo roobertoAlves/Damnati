@@ -1266,8 +1266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2734609690218750306}
   - component: {fileID: 8292083295121423128}
-  - component: {fileID: 8292083295121423125}
-  - component: {fileID: 8292083295121423124}
+  - component: {fileID: 8613396130505644897}
   - component: {fileID: 8292083295121423130}
   - component: {fileID: 8292083295121423131}
   - component: {fileID: 8292083295121423126}
@@ -1300,7 +1299,6 @@ Transform:
   - {fileID: 9098192574235942072}
   - {fileID: 7611958353527964150}
   - {fileID: 3849801941307677971}
-  - {fileID: 3849801939782640823}
   - {fileID: 3849801941364862686}
   - {fileID: 3849801940820395545}
   - {fileID: 3849801940827490294}
@@ -1327,24 +1325,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!54 &8292083295121423125
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3366609680278502360}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 1
---- !u!136 &8292083295121423124
-CapsuleCollider:
+--- !u!143 &8613396130505644897
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1353,10 +1335,14 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.38
-  m_Height: 2.3
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.78, z: 0}
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8292083295121423130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,8 +1376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c39d9bfe4cf174097fe83aeac6f59d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterCollider: {fileID: 8292083295121423124}
-  _characterCollisionBlockerCollider: {fileID: 3849801941285078031}
+  _characterCollider: {fileID: 0}
+  _characterCollisionBlockerCollider: {fileID: 0}
   _fallingSpeed: 45
   _runSpeed: 5
   _movSpeed: 2
@@ -1427,6 +1413,17 @@ MonoBehaviour:
   _staminaLevel: 25
   _maxStamina: 0
   _currentStamina: 0
+  _physicalDamageAbsorptionHead: 0
+  _physicalDamageAbsorptionBody: 0
+  _physicalDamageAbsorptionLegs: 0
+  _physicalDamageAbsorptionHands: 0
+  _fireDamageAbsorptionHead: 0
+  _fireDamageAbsorptionBody: 0
+  _fireDamageAbsorptionLegs: 0
+  _fireDamageAbsorptionHands: 0
+  _blockingPhysicalDamageAbsorption: 0
+  _blockingFireDamageAbsorption: 0
+  _blockingStabilityRating: 0
   _totalPoiseDefense: 0
   _offensivePoiseBonus: 0
   _armorPoiseBonus: 0
@@ -1698,38 +1695,6 @@ Transform:
   m_Father: {fileID: 3849801940820395545}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3849801939782640822
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3849801939782640823}
-  m_Layer: 0
-  m_Name: Combat Colliders
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3849801939782640823
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3849801939782640822}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3849801941285078030}
-  m_Father: {fileID: 2734609690218750306}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3849801939852355380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1995,7 +1960,7 @@ Transform:
   - {fileID: 3849801940027788522}
   - {fileID: 3849801939689147581}
   m_Father: {fileID: 2734609690218750306}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3849801940827490293
 GameObject:
@@ -2029,7 +1994,7 @@ Transform:
   - {fileID: 3849801941128925986}
   - {fileID: 3849801941007877770}
   m_Father: {fileID: 2734609690218750306}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3849801940827490295
 MonoBehaviour:
@@ -2219,69 +2184,6 @@ MonoBehaviour:
     m_HintWeight: 1
     m_MaintainTargetPositionOffset: 0
     m_MaintainTargetRotationOffset: 0
---- !u!1 &3849801941285078029
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3849801941285078030}
-  - component: {fileID: 3849801941285078024}
-  - component: {fileID: 3849801941285078031}
-  m_Layer: 0
-  m_Name: Character Collider Blocker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3849801941285078030
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3849801941285078029}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3849801939782640823}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &3849801941285078024
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3849801941285078029}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!136 &3849801941285078031
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3849801941285078029}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.38
-  m_Height: 2.3
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.78, z: 0}
 --- !u!1 &3849801941307677970
 GameObject:
   m_ObjectHideFlags: 0
@@ -2344,7 +2246,7 @@ Transform:
   - {fileID: 3849801939909952233}
   - {fileID: 3849801940736055491}
   m_Father: {fileID: 2734609690218750306}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3871279905851373058
 GameObject:
