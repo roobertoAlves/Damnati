@@ -22,8 +22,8 @@ MonoBehaviour:
   FireDamage: 0
   criticalDamageMultiplier: 3
   guardBreakModifier: 1
-  lightAttackDamageModifier: 1
-  heavyAttackDamageModifier: 1.5
+  lightAttackDamageModifier: 25
+  heavyAttackDamageModifier: 30
   runningAttackDamageModifier: 2.2
   jumpingAttackDamageModifier: 2
   poiseBreak: 25

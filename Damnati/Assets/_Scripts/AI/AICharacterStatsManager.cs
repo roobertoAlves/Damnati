@@ -9,6 +9,7 @@ public class AICharacterStatsManager : CharacterStatsManager
     [SerializeField] private UIAICharacterHealthBar _aiCharacterManagerHealthBar;
 
     [SerializeField] private bool _isBoss;
+    private WaveSpawner _waveSpawner;
 
     #region  GET & SET
     public bool IsBoss { get { return _isBoss;}}
@@ -19,6 +20,7 @@ public class AICharacterStatsManager : CharacterStatsManager
         _aiCharacterManager = GetComponent<AICharacterManager>();
         MaxHealth = SetMaxHealthFromHealthLevel();
         CurrentHealth = MaxHealth;
+        _waveSpawner = FindObjectOfType<WaveSpawner>();
     }
     private void Start() 
     {
@@ -70,6 +72,7 @@ public class AICharacterStatsManager : CharacterStatsManager
     }
     private void HandleDeath()
     {
+        _waveSpawner.EnemyDefeated();
         CurrentHealth = 0;
         _aiCharacterManager.IsDead = true;
         _aiCharacterManager.AICharacterAnimatorManager.PlayTargetAnimation("Death_01", true);

@@ -195,7 +195,7 @@ public class DamageCollider : MonoBehaviour
         else
         {
            enemyStats.TakeDamage(Mathf.RoundToInt(finalPhysicalDamage), 0, currentDamageAnimation, _characterManager);
-           Debug.Log("TKD TOTAL DMGC: " + finalPhysicalDamage);
+           //Debug.Log("TKD TOTAL DMGC: " + finalPhysicalDamage);
         }
     }
     protected virtual void ChooseWhichDirectionDamageCameFrom(float direction)
