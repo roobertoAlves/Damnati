@@ -25,14 +25,15 @@ public class CharacterAnimatorManager : MonoBehaviour
         rigBuilder = GetComponent<RigBuilder>();
     }
     
-    public void PlayTargetAnimation(string targetAnim, bool isInteracting, bool canRotate = false, bool mirrorAnim = false)
+    public void PlayTargetAnimation(string targetAnim, bool isInteracting, bool canRotate = false, bool mirrorAnim = false, bool canRoll = false)
     {
         _character.Animator.applyRootMotion = isInteracting;
         _character.Animator.SetBool("CanRotate", canRotate);
         _character.Animator.SetBool("IsInteracting", isInteracting);
         _character.Animator.SetBool("IsMirrored", mirrorAnim);
         _character.Animator.CrossFade(targetAnim, 0.2f);
-        Debug.Log("Target Animation: " + targetAnim + " Can Rotate Status: " + canRotate);
+        _character.CanRoll = canRoll;
+        //Debug.Log("Target Animation: " + targetAnim + " Can Rotate Status: " + canRotate);
     }
     public void PlayerTargetAnimationWithRootRotation (string targetAnim, bool isInteracting)
     {
@@ -51,6 +52,10 @@ public class CharacterAnimatorManager : MonoBehaviour
     public virtual void StopRotation()
     {
         _character.Animator.SetBool("CanRotate", false);
+    }
+    public virtual void EnableCanRoll()
+    {
+        _character.CanRoll = true;
     }
     public virtual void EnableCombo()
     {

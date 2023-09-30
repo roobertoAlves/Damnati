@@ -140,8 +140,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
     }
     public void HandleDodge()
     {
-        if(_player.Animator.GetBool("IsInteracting") 
-            || _player.PlayerStats.CurrentStamina <= 0)
+        if(_player.PlayerStats.CurrentStamina <= 0)
         {
             return;
         }
@@ -149,6 +148,11 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         if(_player.PlayerInput.DogdeFlag)
         {
             _player.PlayerInput.DogdeFlag = false; 
+
+            if(!_player.CanRoll)
+            {
+                return;
+            }
 
             MoveDirection = _player.PlayerCamera.CameraObject.transform.forward * _player.PlayerInput.VerticalMovement;
             MoveDirection += _player.PlayerCamera.CameraObject.transform.right * _player.PlayerInput.HorizontalMovement;

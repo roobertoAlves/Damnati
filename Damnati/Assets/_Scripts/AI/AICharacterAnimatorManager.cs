@@ -24,11 +24,6 @@ public class AICharacterAnimatorManager : CharacterAnimatorManager
 
     public override void OnAnimatorMove()
     {
-        if(_character.IsInteracting)
-        {
-            return;
-        }
-
         Vector3 velocity = _character.Animator.deltaPosition;
         _character.CharacterController.Move(velocity);
 

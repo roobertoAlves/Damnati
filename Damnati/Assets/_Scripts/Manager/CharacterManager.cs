@@ -36,6 +36,7 @@ public class CharacterManager : MonoBehaviour
     [Header("Combat Flags")]
     [Space(15)]
     [SerializeField] private bool _canBeRiposted;
+    private bool _canRoll = true;
     private bool _canBeParried;
     private bool _canDoCombo;
     private bool _isParrying;
@@ -92,6 +93,7 @@ public class CharacterManager : MonoBehaviour
     public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; }}
     public bool IsBeingRiposted { get { return _isBeingRiposted; } set { _isBeingRiposted = value; }}    
     public bool IsPerformingRiposte { get { return _isPerfomingRiposte; } set { _isPerfomingRiposte = value; }}
+    public bool CanRoll { get { return _canRoll; } set { _canRoll = value; }}
     #endregion
 
     protected virtual void Awake()

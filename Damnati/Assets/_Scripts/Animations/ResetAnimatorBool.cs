@@ -44,6 +44,7 @@ public class ResetAnimatorBool : StateMachineBehaviour
         character.IsPerformingRiposte = false;
         character.CanBeParried = false;
         character.CanBeRiposted = false;
+        character.CanRoll = true;
         
         animator.SetBool(_isInteractingBool, _isInteractingStatus);
         animator.SetBool(_isRotatingWithRootMotionBool, _isRotatingWithRootMotionStatus);
