@@ -25,13 +25,10 @@ public static class SaveSystem
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
         using (MemoryStream memoryStream = new MemoryStream())
-
         {
-
             binaryFormatter.Serialize(memoryStream, LocalData);
 
             binaryData = memoryStream.ToArray();
-
         }
 
         // Salvando o arquivo binário no sistema do usuário
@@ -83,135 +80,63 @@ public static class SaveSystem
    
 
     // SISTEMA DE SAVE COM JSON
-
     /*//Diretório de onde o arquivo de save ficará salvo
-
     private static readonly string SAVE_FOLDER = (Application.persistentDataPath + "/Saves");
-
-
-
 
     //Referencia da classe que reúne os atributos do sistema de save
 
     public static SaveData LocalData { get; private set; }
 
-
-
-
     public static void Save()
-
     {
-
         //Convertendo o conteúdo da classe em Json
 
         string json = JsonUtility.ToJson(LocalData);
 
-
-
-
         //Salvando o arquivo Json no sistema do usuário
-
         File.WriteAllText(SAVE_FOLDER + "/save.json", json);
-
     }
-
-
-
-
     //Sistema que carrega os dados salvos no arquivo Json
 
     public static SaveData Load()
-
     {
-
         //Verificando se o diretório onde o arquivo esta localizado existe
-
         //Nesse caso, se o diretório não existir ele será criado
-
         if (!Directory.Exists(SAVE_FOLDER))
-
         {
-
-
-
-
             //Criando o diretório
-
             Directory.CreateDirectory(SAVE_FOLDER);
-
         }
 
-
-
-
         //Verificando se o arquivo Json com os dados salvos já existe
-
         //Caso o arquivo exista, ele será convertido para o formato de classe
-
         //Nesse caso ele será convertido para uma classe SaveData
-
         //Dessa forma, podemos acessar os dados e carrega-los nos itens onde
-
         //Forem necessários
-
+        
         if (File.Exists(SAVE_FOLDER + "/save.json"))
-
         {
-
-
-
-
             //Armazenando o arquivo Json em uma variável
-
             string saveString = File.ReadAllText(SAVE_FOLDER + "/save.json");
 
-
-
-
             //Concertendo o arquivo Json para a classe SaveData
-
             //E armazenando essa classe na variável LocalData
 
             LocalData = JsonUtility.FromJson<SaveData>(saveString);
-
         }
-
-
-
-
         //Caso o arquivo Json não exista, iremos criá-lo
-
         else
-
         {
-
-           
-
             //Criando uma nova instância da classe SaveData
-
             LocalData = new SaveData();
 
-
-
-
             //Criando um arquivo Json
-
             File.Create(SAVE_FOLDER + "/save.json").Dispose();
 
-
-
-
             //Salvando os dados criados
-
             Save();
-
         }
 
-
-
-
         //Retornando o arquivo com os dados carregados e armazenados dentro da variável LocalData
-
         return LocalData;
-
     }*/
