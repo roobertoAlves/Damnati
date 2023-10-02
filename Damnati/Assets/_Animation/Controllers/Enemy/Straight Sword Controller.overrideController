@@ -9,12 +9,6 @@ AnimatorOverrideController:
   m_Name: Straight Sword Controller
   m_Controller: {fileID: 9100000, guid: 2b6956df7276cd74198d42b95f560cde, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 031164dfd08d08b4f8d9c0bf0a083171, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 3b204d196e7b39b4e9c86bb4ef2dd105, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 789cbe765be1abf4991895ede25f8f9d, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 2edf3ac741b981641af8e1ec45b29ada, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 9abf8f23402794c4d9d2c4ec8ba66b46, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 82144feb3426b984f8e2c7120757c1a7, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 37049a8ee7cd90543a5dadb31ed8b5f4, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 37049a8ee7cd90543a5dadb31ed8b5f4, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: ba741e13a3bc6014bbb3290db54aa216, type: 2}
@@ -43,3 +37,5 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: 309889b036b833146b988a8c2ec962d2, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 269129b424208964291f51dc773dcb4e, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 58a956388006a964abc660f847d2ec39, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a637050e468a54a4e9238a0379a9927f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a637050e468a54a4e9238a0379a9927f, type: 2}

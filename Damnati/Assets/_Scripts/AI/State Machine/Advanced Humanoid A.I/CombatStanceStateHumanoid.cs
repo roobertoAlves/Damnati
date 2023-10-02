@@ -167,6 +167,7 @@ public class CombatStanceStateHumanoid : States
 
         if(aiCharacterManager.IsDead)
         {
+            ResetStatesFlag();
             aiCharacterManager.Animator.SetFloat("Vertical", 0);
             aiCharacterManager.Animator.SetFloat("Horizontal", 0);
             aiCharacterManager.CurrentTarget = null;

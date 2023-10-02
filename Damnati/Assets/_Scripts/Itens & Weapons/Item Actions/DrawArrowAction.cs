@@ -15,10 +15,8 @@ public class DrawArrowAction : ItemActions
         character.Animator.SetBool("IsHoldingArrow", true);
         character.CharacterAnimator.PlayTargetAnimation("Draw Arrow", true);
 
-
         GameObject loadedArrow = Instantiate(character.CharacterInventory.currentAmmo.loadedItemModel, character.CharacterWeaponSlot.LeftHandSlot.transform);
         character.CharacterEffects.CurrentRangeFX = loadedArrow;
-
 
         Animator bowAnimator = character.CharacterWeaponSlot.RightHandSlot.GetComponentInChildren<Animator>();
         bowAnimator.SetBool("IsDrawn", true);

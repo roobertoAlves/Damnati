@@ -75,7 +75,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7261912589073002966}
   m_Layer: 0
-  m_Name: Shield Prefab
+  m_Name: Enemy Shield Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,15 +120,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6294261652666812074}
-  m_LocalRotation: {x: -0.35441256, y: 0.16354895, z: 0.7706743, w: 0.5036911}
-  m_LocalPosition: {x: 0.029, y: 0.196, z: 0.228}
-  m_LocalScale: {x: 4, y: 5, z: 15}
+  m_LocalRotation: {x: -0.3390472, y: 0.11713964, z: 0.6200919, w: 0.69771874}
+  m_LocalPosition: {x: 0.006, y: 0.183, z: 0.226}
+  m_LocalScale: {x: 2, y: 3, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5559989783164031397}
   m_Father: {fileID: 7261912589073002966}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -37.526, y: -28.754, z: 123.618}
+  m_LocalEulerAnglesHint: {x: -38.199, y: -19.09, z: 89.922}
 --- !u!1001 &5378340578036971086
 PrefabInstance:
   m_ObjectHideFlags: 0

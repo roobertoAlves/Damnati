@@ -4,34 +4,37 @@ using UnityEngine;
 
 public class AttackStateHumanoid : States
 {
-    [Header("A.I Scripts Components")]
+    [Header("AI Scripts Components")]
     [Space(15)]
-    private CombatStanceStateHumanoid _combatStanceState;
-    private PursueTargetStateHumanoid _pursueTargetState;
-    private RotateTowardsTargetStateHumanoid _rotateTowardsTargetState;
-    private ItemBasedAttackAction _currentAttack;
+    private CombatStanceStateHumanoid combatStanceState;
+    private PursueTargetStateHumanoid pursueTargetState;
+    private RotateTowardsTargetStateHumanoid rotateTowardsTargetState;
+    private IdleStateHumanoid _idleState;
+    private ItemBasedAttackAction currentAttack;
 
-    private bool _willDoComboOnNextAttack = false;
-    [SerializeField] private bool _hasPerformedAttack = false;
-
+    private bool willDoComboOnNextAttack = false;
+    [SerializeField] private bool hasPerformedAttack = false;
 
     #region GET & SET
-    public ItemBasedAttackAction CurrentAttack { get { return _currentAttack; } set { _currentAttack = value; }}
-    public bool HasPerformedAttack { get { return _hasPerformedAttack; } set { _hasPerformedAttack = value; }}
+    public ItemBasedAttackAction CurrentAttack { get { return currentAttack; } set { currentAttack = value; }}
+    public bool HasPerformedAttack { get { return hasPerformedAttack; } set { hasPerformedAttack = value; }}
     #endregion
+
     private void Awake()
     {
-        _combatStanceState = GetComponent<CombatStanceStateHumanoid>();
-        _rotateTowardsTargetState = GetComponent<RotateTowardsTargetStateHumanoid>();
-        _pursueTargetState = GetComponent<PursueTargetStateHumanoid>();
+        _idleState = GetComponent<IdleStateHumanoid>();
+        combatStanceState = GetComponent<CombatStanceStateHumanoid>();
+        rotateTowardsTargetState = GetComponent<RotateTowardsTargetStateHumanoid>();
+        pursueTargetState = GetComponent<PursueTargetStateHumanoid>();
     }
+
     public override States Tick(AICharacterManager aiCharacterManager)
     {
-        if(aiCharacterManager.CombatStyle == AICombatStyle.SwordAndShield)
+        if (aiCharacterManager.CombatStyle == AICombatStyle.SwordAndShield)
         {
             return ProcessSwordAndShieldCombatStyle(aiCharacterManager);
         }
-        else if(aiCharacterManager.CombatStyle == AICombatStyle.Archer)
+        else if (aiCharacterManager.CombatStyle == AICombatStyle.Archer)
         {
             return ProcessArcherCombatStyle(aiCharacterManager);
         }
@@ -43,104 +46,107 @@ public class AttackStateHumanoid : States
 
     private States ProcessSwordAndShieldCombatStyle(AICharacterManager aiCharacterManager)
     {   
-        Debug.Log("Attack 1");
         RotateTowardsTargetWhilstAttacking(aiCharacterManager);
 
-        if(aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
+        if (aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
         {
-            return _pursueTargetState;
+            ResetStatesFlags();
+            return pursueTargetState;
         }
-        
-        Debug.Log("Attack 2");
-        if(_willDoComboOnNextAttack && aiCharacterManager.CanDoCombo)
+
+        if (willDoComboOnNextAttack && aiCharacterManager.CanDoCombo)
         {
             AttackTargetWithCombo(aiCharacterManager);
         }
 
-        if(!_hasPerformedAttack)
+        if (!hasPerformedAttack)
         {
             AttackTarget(aiCharacterManager);
             RollForComboChance(aiCharacterManager);
         }
-
-        Debug.Log("Attack 3");
-
-        if(_willDoComboOnNextAttack && _hasPerformedAttack)
+        if (aiCharacterManager.CurrentTarget.IsDead)
         {
+            ResetStatesFlags();
+            aiCharacterManager.Animator.SetFloat("Vertical", 0);
+            aiCharacterManager.Animator.SetFloat("Horizontal", 0);
+            aiCharacterManager.CurrentTarget = null;
+            return _idleState;
+        }
+
+        if (willDoComboOnNextAttack && hasPerformedAttack)
+        {
+            ResetStatesFlags();
             return this;
         }
 
-
-        Debug.Log("Attack 4");
-        ResetStatesFlag(); 
-        return _rotateTowardsTargetState;
+        ResetStatesFlags(); 
+        return rotateTowardsTargetState;
     }
+
     private States ProcessArcherCombatStyle(AICharacterManager aiCharacterManager)
     {
-        Debug.Log("Attack 1");
         RotateTowardsTargetWhilstAttacking(aiCharacterManager);
 
-        if(aiCharacterManager.IsInteracting)
+        if (aiCharacterManager.IsInteracting)
         {
+            ResetStatesFlags(); // Adicione essa linha para redefinir as flags quando estiver interagindo
             return this;
         }
 
-        if(!aiCharacterManager.IsHoldingArrow)
+        if (!aiCharacterManager.IsHoldingArrow)
         {
-            ResetStatesFlag();
-            return _combatStanceState;
+            ResetStatesFlags();
+            return combatStanceState;
         }
 
-        Debug.Log("Attack 2");
-
-        if(aiCharacterManager.CurrentTarget.IsDead)
+        if (aiCharacterManager.CurrentTarget.IsDead)
         {
-            ResetStatesFlag();
+            ResetStatesFlags();
+            aiCharacterManager.Animator.SetFloat("Vertical", 0);
+            aiCharacterManager.Animator.SetFloat("Horizontal", 0);
             aiCharacterManager.CurrentTarget = null;
-            return this;
+            return _idleState;
         }
 
-        Debug.Log("Attack 3");
-
-        if(aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
+        if (aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
         {
-            ResetStatesFlag();
-            return _pursueTargetState;
+            ResetStatesFlags();
+            return pursueTargetState;
         }
 
-        Debug.Log("Attack 4");
-
-        if(!_hasPerformedAttack)
+        if (!hasPerformedAttack)
         {
             FireAmmo(aiCharacterManager);
         }  
 
-        ResetStatesFlag();
-
-        return _rotateTowardsTargetState;
+        ResetStatesFlags();
+        return rotateTowardsTargetState;
     }
+
     private void AttackTarget(AICharacterManager aiCharacterManager)
     {
-        _currentAttack.PerformAttackAction(aiCharacterManager);
-        aiCharacterManager.CurrentRecoveryTime = _currentAttack.RecoveryTime;
-        _hasPerformedAttack = true;
+        currentAttack.PerformAttackAction(aiCharacterManager);
+        aiCharacterManager.CurrentRecoveryTime = currentAttack.RecoveryTime;
+        hasPerformedAttack = true;
     }
+
     private void AttackTargetWithCombo(AICharacterManager aiCharacterManager)
     {
-        _currentAttack.PerformAttackAction(aiCharacterManager);
-        _willDoComboOnNextAttack = false;
-        aiCharacterManager.CurrentRecoveryTime = _currentAttack.RecoveryTime;
-        _currentAttack = null;
+        currentAttack.PerformAttackAction(aiCharacterManager);
+        willDoComboOnNextAttack = false;
+        aiCharacterManager.CurrentRecoveryTime = currentAttack.RecoveryTime;
+        currentAttack = null;
     }
+
     private void RotateTowardsTargetWhilstAttacking(AICharacterManager aiCharacterManager)
     {
-        if(aiCharacterManager.CanRotate && aiCharacterManager.IsInteracting)
+        if (aiCharacterManager.CanRotate && aiCharacterManager.IsInteracting)
         {
             Vector3 direction = aiCharacterManager.CurrentTarget.transform.position - transform.position;
             direction.y = 0;
             direction.Normalize();
 
-            if(direction == Vector3.zero)
+            if (direction == Vector3.zero)
             {
                 direction = transform.forward;
             }
@@ -149,36 +155,38 @@ public class AttackStateHumanoid : States
             aiCharacterManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, aiCharacterManager.RotationSpeed / Time.deltaTime);
         }
     }
+
     private void RollForComboChance(AICharacterManager aiCharacterManager)
     {
         float comboChance = Random.Range(0, 100);
 
-        if(aiCharacterManager.AllowAIToPerformCombos && comboChance <= aiCharacterManager.ComboLikelyHood)
+        if (aiCharacterManager.AllowAIToPerformCombos && comboChance <= aiCharacterManager.ComboLikelyHood)
         {
-            if(_currentAttack.ActionCanCombo)
+            if (currentAttack.ActionCanCombo)
             {
-                _willDoComboOnNextAttack = true;
+                willDoComboOnNextAttack = true;
             }
             else
             {
-                _willDoComboOnNextAttack = false;
-                _currentAttack = null;
+                willDoComboOnNextAttack = false;
+                currentAttack = null;
             }
         }
     }
+
     private void FireAmmo(AICharacterManager aiCharacterManager)
     {
-        if(aiCharacterManager.IsHoldingArrow)
+        if (aiCharacterManager.IsHoldingArrow)
         {
-            _hasPerformedAttack = true;
+            hasPerformedAttack = true;
             aiCharacterManager.CharacterInventory.CurrentItemBeingUsed = aiCharacterManager.CharacterInventory.rightHandWeapon;
             aiCharacterManager.CharacterInventory.rightHandWeapon.th_release_RB_Action.PerformAction(aiCharacterManager);
         }
     }
-    private void ResetStatesFlag()
+
+    private void ResetStatesFlags()
     {
-        _willDoComboOnNextAttack = false;
-        _hasPerformedAttack = false;   
+        willDoComboOnNextAttack = false;
+        hasPerformedAttack = false;   
     }
 }
-

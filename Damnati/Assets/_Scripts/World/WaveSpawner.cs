@@ -14,8 +14,11 @@ public class WaveSpawner : MonoBehaviour
 
     [Header("Spawn Settings")]
     [SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private Transform[] _bossSpawnPoints; // Novo array para "spawners" de chefes
     private float _timeBetweenSpawns = 0f;
     private int _enemiesRemaining;
+
+    private int _lastBossSpawnIndex = -1; // Índice do "spawner" de chefe usado na última onda
 
     private void Awake()
     {
@@ -51,17 +54,26 @@ public class WaveSpawner : MonoBehaviour
             }
         }
     }
+
     private void SpawnBossWave()
     {
         Wave currentWave = _waves[_currentWaveIndex];
 
         GameObject waveParent = _waveParent;
 
-        int spawnPointIndex = Random.Range(0, _spawnPoints.Length);
+        int spawnPointIndex;
+        
+        // Garanta que o "spawner" de chefe não seja o mesmo da última onda
+        do
+        {
+            spawnPointIndex = Random.Range(0, _bossSpawnPoints.Length);
+        } while (spawnPointIndex == _lastBossSpawnIndex);
+
+        _lastBossSpawnIndex = spawnPointIndex;
 
         // Instancie o chefe diretamente da última onda
         GameObject boss = Instantiate(currentWave.EnemiesInWave[currentWave.EnemiesInWave.Length - 1],
-            _spawnPoints[spawnPointIndex].position, _spawnPoints[spawnPointIndex].rotation);
+            _bossSpawnPoints[spawnPointIndex].position, _bossSpawnPoints[spawnPointIndex].rotation);
 
         boss.transform.parent = waveParent.transform;
 
@@ -73,6 +85,7 @@ public class WaveSpawner : MonoBehaviour
         _worldEventManager.ActivateBossFight();
         _bossWaveStarted = true;
     }
+
     private void SpawnWave()
     {
         Wave currentWave = _waves[_currentWaveIndex];

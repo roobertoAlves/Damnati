@@ -183,24 +183,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Qued WeaponArt",
-                    "type": "Button",
-                    "id": "f61a41c9-3300-418a-96c5-370939eeaa74",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Qued Dodge",
-                    "type": "Button",
-                    "id": "d20e48fd-aa69-435e-b62e-98ca1e03be31",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "LB",
                     "type": "Button",
                     "id": "4603bbc8-697a-4cac-b674-66b67d33c146",
@@ -213,10 +195,10 @@
                     "name": "Hold LB",
                     "type": "PassThrough",
                     "id": "daf40032-7fc2-4d12-9b97-85ffddf99335",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
                     "name": "RB",
@@ -231,10 +213,19 @@
                     "name": "Hold RB ",
                     "type": "PassThrough",
                     "id": "76762242-fad6-4775-a73d-1dc000898dd8",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Reload",
+                    "type": "PassThrough",
+                    "id": "711bdb49-4c2d-4e30-bcae-8f2b9893d434",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Dodge",
@@ -497,17 +488,6 @@
                 },
                 {
                     "name": "",
-                    "id": "75ae4230-9aec-45c8-9c4e-a47840a184e4",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Qued Dodge",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f809cc41-3aa8-4fb0-bde7-829d646d8dd1",
                     "path": "<Mouse>/leftButton",
                     "interactions": "Hold",
@@ -530,12 +510,12 @@
                 },
                 {
                     "name": "",
-                    "id": "ee6c23f0-66da-4fd6-99b1-301b5e0ce1d1",
-                    "path": "<Keyboard>/z",
+                    "id": "660a6adf-727a-499e-ab2e-85be22c8d334",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Qued WeaponArt",
+                    "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

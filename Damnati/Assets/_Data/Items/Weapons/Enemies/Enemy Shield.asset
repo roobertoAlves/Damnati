@@ -10,32 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ecea1fa952931494c8d39ef06388e9a2, type: 3}
-  m_Name: Bow
+  m_Name: Enemy Shield
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: 0}
-  itemName: Bow
-  modelPrefab: {fileID: 1124222977789396218, guid: 260d32216b706d945aae93bf5079a8aa, type: 3}
+  itemIcon: {fileID: 21300000, guid: 8c13c2fc02573e94ba294d9603257460, type: 3}
+  itemName: Shield
+  modelPrefab: {fileID: 4595261067920268434, guid: 11a5a6cc99d421e489c08733f51c347e, type: 3}
   isUnarmed: 0
-  weaponController: {fileID: 22100000, guid: f99ba15e6f92ec54b992d4d8c0131b7c, type: 2}
-  weaponType: 4
-  PhysicalDamage: 5
+  weaponController: {fileID: 0}
+  weaponType: 1
+  PhysicalDamage: 0
   FireDamage: 0
-  criticalDamageMultiplier: 4
+  criticalDamageMultiplier: 3
   guardBreakModifier: 1
   lightAttackDamageModifier: 0
   heavyAttackDamageModifier: 0
   runningAttackDamageModifier: 0
   jumpingAttackDamageModifier: 0
   poiseBreak: 25
-  offensivePoiseBonus: 10
-  physicalBlockingDamageAbsorption: 0
+  offensivePoiseBonus: 0
+  physicalBlockingDamageAbsorption: 50
   fireBlockingDamageAbsorption: 0
   stability: 67
   baseStaminaCost: 0
-  lightAttackStaminaMultiplier: 1
-  heavyAttackStaminaMultiplier: 1
-  jumpingAttackStaminaMultiplier: 1
-  runningAttackStaminaMultiplier: 1
+  lightAttackStaminaMultiplier: 0
+  heavyAttackStaminaMultiplier: 0
+  jumpingAttackStaminaMultiplier: 0
+  runningAttackStaminaMultiplier: 0
   baseRage: 0
   rageLightAttackMultiplier: 0
   rageHeavyAttackMultiplier: 0
@@ -47,18 +47,18 @@ MonoBehaviour:
   oh_tap_RT_Action: {fileID: 0}
   oh_hold_RT_Action: {fileID: 0}
   oh_hold_LT_Action: {fileID: 0}
-  oh_hold_F_Action: {fileID: 0}
-  oh_tap_Z_Action: {fileID: 0}
+  oh_hold_F_Action: {fileID: 11400000, guid: f24f0529e156b0f428b411abe9aa28b6, type: 2}
+  oh_tap_Z_Action: {fileID: 11400000, guid: 06997278ed35ff0449544586924c71dc, type: 2}
   oh_hold_G_Action: {fileID: 0}
   th_tap_LB_Action: {fileID: 0}
   th_hold_LB_Action: {fileID: 0}
   th_tap_RB_Action: {fileID: 0}
-  th_hold_RB_Action: {fileID: 11400000, guid: 508f042036c97d148adcfa62ffd644f1, type: 2}
-  th_release_RB_Action: {fileID: 11400000, guid: e660abedddad1b74e8776f6dea371ecd, type: 2}
+  th_hold_RB_Action: {fileID: 0}
+  th_release_RB_Action: {fileID: 0}
   th_tap_RT_Action: {fileID: 0}
   th_hold_RT_Action: {fileID: 0}
   th_hold_LT_Action: {fileID: 0}
   th_hold_F_Action: {fileID: 0}
   th_tap_Z_Action: {fileID: 0}
   th_hold_G_Action: {fileID: 0}
-  th_tap_R_Action: {fileID: 11400000, guid: 00af05f8c5c036f4d9968c98639f3560, type: 2}
+  th_tap_R_Action: {fileID: 0}

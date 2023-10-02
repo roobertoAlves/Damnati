@@ -6,6 +6,7 @@ public class RangedProjectileDamageCollider : DamageCollider
 {
     public RangedAmmoItem AmmoItem;
     protected bool hasAlredyPenetratedASurface;
+    private bool hasCollided = false;
 
     private Rigidbody _arrowRigidbody;
     private CapsuleCollider _arrowCapsuleCollider;
@@ -18,16 +19,17 @@ public class RangedProjectileDamageCollider : DamageCollider
         _arrowCapsuleCollider = GetComponent<CapsuleCollider>();
         _arrowRigidbody = GetComponent<Rigidbody>();
     }
-    private void OnCollisionEnter(Collision collision) 
+
+    private void OnCollisionEnter(Collision collision)
     {
         shieldHasBeenHit = false;
         hasBeenParried = false;
 
         CharacterManager enemyManager = collision.gameObject.GetComponentInParent<CharacterManager>();
-            
-        if(enemyManager != null)
+
+        if (enemyManager != null)
         {
-            if(enemyManager.CharacterStats.TeamIDNumber == TeamIDNumber)
+            if (enemyManager.CharacterStats.TeamIDNumber == TeamIDNumber)
             {
                 return;
             }
@@ -35,7 +37,7 @@ public class RangedProjectileDamageCollider : DamageCollider
             CheckForParry(enemyManager);
             CheckForBlock(enemyManager);
 
-            if(hasBeenParried || shieldHasBeenHit)
+            if (hasBeenParried || shieldHasBeenHit)
             {
                 return;
             }
@@ -43,14 +45,12 @@ public class RangedProjectileDamageCollider : DamageCollider
             enemyManager.CharacterStats.PoiseResetTimer = enemyManager.CharacterStats.TotalPoiseResetTime;
             enemyManager.CharacterStats.TotalPoiseDefense = enemyManager.CharacterStats.TotalPoiseDefense - PoiseBreak;
 
-            //Detecta onde o colisor da arma fez o primeiro contato
-
             Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
             float directionHitFrom = (Vector3.SignedAngle(characterManager.transform.forward, enemyManager.transform.forward, Vector3.up));
             ChooseWhichDirectionDamageCameFrom(directionHitFrom);
             enemyManager.CharacterEffects.PlayerBloodSplatterFX(contactPoint);
 
-            if(enemyManager.CharacterStats.TotalPoiseDefense > PoiseBreak)
+            if (enemyManager.CharacterStats.TotalPoiseDefense > PoiseBreak)
             {
                 enemyManager.CharacterStats.TakeDamageNoAnimation(PhysicalDamage, 0);
             }
@@ -60,9 +60,9 @@ public class RangedProjectileDamageCollider : DamageCollider
             }
         }
 
-        if(!hasAlredyPenetratedASurface)
+        if (!hasAlredyPenetratedASurface)
         {
-            hasAlredyPenetratedASurface = true;
+            hasCollided = true;
             _arrowRigidbody.isKinematic = true;
             _arrowCapsuleCollider.enabled = false;
 
@@ -72,11 +72,11 @@ public class RangedProjectileDamageCollider : DamageCollider
         }
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
-        if(_arrowRigidbody.velocity != Vector3.zero)
+        if (_arrowRigidbody.velocity != Vector3.zero)
         {
             _arrowRigidbody.rotation = Quaternion.LookRotation(_arrowRigidbody.velocity);
-        }    
+        }
     }
 }

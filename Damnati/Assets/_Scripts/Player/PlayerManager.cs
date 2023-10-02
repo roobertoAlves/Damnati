@@ -70,6 +70,12 @@ public class PlayerManager : CharacterManager
         _playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
         _playerInventoryManager = GetComponent<PlayerInventoryManager>();
         _playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+
+        if(_playerInventoryManager.rightHandWeapon.weaponType == WeaponType.Bow)
+        {
+            IsTwoHandingWeapon = true;
+            //_playerInventoryManager.leftHandWeapon.weaponType = WeaponType.Unarmed;
+        }
     }
     private void Update()
     {
@@ -90,6 +96,7 @@ public class PlayerManager : CharacterManager
         _playerLocomotionManager.HandleRotation();
 
         CheckForInteractableObject();
+
 
         if(_inputHandler.IsHitEnemy && !_inputHandler.IsInRage)
         {

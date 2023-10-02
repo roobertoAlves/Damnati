@@ -87,26 +87,25 @@ public class CameraHandler : MonoBehaviour
 
     public void FollowTarget()
     {
-        if(_playerManager.IsAiming)
+        Vector3 targetPosition;
+
+        if (_playerManager.IsAiming)
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransformWhileAiming.position, ref _cameraFollowVelocity,_groundedFollowSpeed * Time.deltaTime );
-            transform.position = targetPosition;
+            targetPosition = _targetTransformWhileAiming.position;
+        }
+        else if (_playerManager.IsGrounded)
+        {
+            targetPosition = _targetTransform.position;
         }
         else
         {
-            if(_playerManager.IsGrounded)
-            {
-                Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransform.position, ref _cameraFollowVelocity, _groundedFollowSpeed * Time.deltaTime );
-                transform.position = targetPosition;
-            }
-            else
-            {
-                Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _targetTransform.position, ref _cameraFollowVelocity, _aerialFollowSpeed * Time.deltaTime );
-                transform.position = targetPosition;
-            }
+            targetPosition = _targetTransform.position;
         }
 
-        HandleCameraCollisions();
+        Vector3 smoothPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref _cameraFollowVelocity, _groundedFollowSpeed * Time.deltaTime);
+        transform.position = smoothPosition;
+
+        HandleCameraCollisions(); // Chame o método para lidar com colisões após posicionar a câmera.
     }
 
     public void HandleCameraRotation()

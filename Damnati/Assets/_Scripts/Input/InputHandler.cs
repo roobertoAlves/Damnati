@@ -21,7 +21,8 @@ public class InputHandler : MonoBehaviour
     private bool _lbHoldInput;
     private bool _zInput;
     private bool _rtInput;
-
+    private bool _rInput;
+    
     private bool _runInput;
     private bool _dodgeInput;
 
@@ -150,6 +151,9 @@ public class InputHandler : MonoBehaviour
             _gameControls.PlayerActions.RB.performed += OnHeavyAttack;
             _gameControls.PlayerActions.RB.canceled += OnHeavyAttack;
 
+            _gameControls.PlayerActions.Reload.performed += OnDrawArrow;
+            _gameControls.PlayerActions.Reload.canceled += OnDrawArrow;
+
             _gameControls.PlayerActions.WeaponArt.performed += OnWeaponArt;
             _gameControls.PlayerActions.WeaponArt.canceled += OnWeaponArt;
 
@@ -205,6 +209,7 @@ public class InputHandler : MonoBehaviour
         HandleReleaseRBInput();
 
         HandleTapZInput();
+        HandleTapRInput();
         HandleTapGInput();
         HandleHoldFInput();
         HandleHoldRBInput();
@@ -352,20 +357,7 @@ public class InputHandler : MonoBehaviour
             }
         }
     }
-    private void HandleTapRTInput()
-    {
-        if(_rtInput)
-        {
-            _rtInput = false;
 
-            if(_player.PlayerInventory.rightHandWeapon.oh_tap_RT_Action != null)
-            {
-                _player.UpdateWhichHandCharacterIsUsing(true);
-                _player.PlayerInventory.CurrentItemBeingUsed = _player.PlayerInventory.rightHandWeapon;
-                _player.PlayerInventory.rightHandWeapon.oh_tap_RT_Action.PerformAction(_player);
-            }
-        }
-    }
     private void HandleTapZInput()
     {
         if (_zInput)
@@ -487,8 +479,15 @@ public class InputHandler : MonoBehaviour
     }
     private void HandleTwoHandInput()
     {
+        if(_thEquipInput && _player.PlayerInventory.rightHandWeapon.weaponType != WeaponType.Spear)
+        {
+            Debug.Log("Não é lança");
+            return;
+        }
+
         if(_thEquipInput)
         {
+            Debug.Log("É uma lança");
             _thEquipInput = false;
 
             _twoHandFlag = !_twoHandFlag;
@@ -526,6 +525,18 @@ public class InputHandler : MonoBehaviour
             }
         }
     }  
+    private void HandleTapRInput()
+    {
+        if(_rInput)
+        {
+            if(_player.PlayerInventory.rightHandWeapon.th_tap_R_Action != null)
+            {
+                _player.UpdateWhichHandCharacterIsUsing(true);
+                _player.PlayerInventory.CurrentItemBeingUsed = _player.PlayerInventory.rightHandWeapon;
+                _player.PlayerInventory.rightHandWeapon.th_tap_R_Action.PerformAction(_player);
+            }
+        }
+    }
     private void QuedInput(ref bool quedInput)
     {
         _quedRBInput = false;
@@ -623,6 +634,10 @@ public class InputHandler : MonoBehaviour
     private void OnAiming(InputAction.CallbackContext ctx)
     {
         _rbHoldInput = ctx.ReadValueAsButton();
+    }
+    private void OnDrawArrow(InputAction.CallbackContext ctx)
+    {
+        _rInput = ctx.ReadValueAsButton();
     }
     private void OnCriticalAttack(InputAction.CallbackContext ctx)
     {

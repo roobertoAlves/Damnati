@@ -205,24 +205,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Qued WeaponArt"",
-                    ""type"": ""Button"",
-                    ""id"": ""f61a41c9-3300-418a-96c5-370939eeaa74"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Qued Dodge"",
-                    ""type"": ""Button"",
-                    ""id"": ""d20e48fd-aa69-435e-b62e-98ca1e03be31"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""LB"",
                     ""type"": ""Button"",
                     ""id"": ""4603bbc8-697a-4cac-b674-66b67d33c146"",
@@ -235,10 +217,10 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""name"": ""Hold LB"",
                     ""type"": ""PassThrough"",
                     ""id"": ""daf40032-7fc2-4d12-9b97-85ffddf99335"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""RB"",
@@ -253,10 +235,19 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""name"": ""Hold RB "",
                     ""type"": ""PassThrough"",
                     ""id"": ""76762242-fad6-4775-a73d-1dc000898dd8"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""711bdb49-4c2d-4e30-bcae-8f2b9893d434"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Dodge"",
@@ -519,17 +510,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""75ae4230-9aec-45c8-9c4e-a47840a184e4"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Qued Dodge"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f809cc41-3aa8-4fb0-bde7-829d646d8dd1"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": ""Hold"",
@@ -552,12 +532,12 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ee6c23f0-66da-4fd6-99b1-301b5e0ce1d1"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""id"": ""660a6adf-727a-499e-ab2e-85be22c8d334"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Qued WeaponArt"",
+                    ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -579,12 +559,11 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_PlayerActions_QuedHoldLB = m_PlayerActions.FindAction("Qued Hold LB", throwIfNotFound: true);
         m_PlayerActions_QuedHoldRB = m_PlayerActions.FindAction("Qued Hold RB", throwIfNotFound: true);
         m_PlayerActions_QuedCritical = m_PlayerActions.FindAction("Qued Critical", throwIfNotFound: true);
-        m_PlayerActions_QuedWeaponArt = m_PlayerActions.FindAction("Qued WeaponArt", throwIfNotFound: true);
-        m_PlayerActions_QuedDodge = m_PlayerActions.FindAction("Qued Dodge", throwIfNotFound: true);
         m_PlayerActions_LB = m_PlayerActions.FindAction("LB", throwIfNotFound: true);
         m_PlayerActions_HoldLB = m_PlayerActions.FindAction("Hold LB", throwIfNotFound: true);
         m_PlayerActions_RB = m_PlayerActions.FindAction("RB", throwIfNotFound: true);
         m_PlayerActions_HoldRB = m_PlayerActions.FindAction("Hold RB ", throwIfNotFound: true);
+        m_PlayerActions_Reload = m_PlayerActions.FindAction("Reload", throwIfNotFound: true);
         m_PlayerActions_Dodge = m_PlayerActions.FindAction("Dodge", throwIfNotFound: true);
         m_PlayerActions_Critical = m_PlayerActions.FindAction("Critical", throwIfNotFound: true);
         m_PlayerActions_WeaponArt = m_PlayerActions.FindAction("WeaponArt", throwIfNotFound: true);
@@ -715,12 +694,11 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_QuedHoldLB;
     private readonly InputAction m_PlayerActions_QuedHoldRB;
     private readonly InputAction m_PlayerActions_QuedCritical;
-    private readonly InputAction m_PlayerActions_QuedWeaponArt;
-    private readonly InputAction m_PlayerActions_QuedDodge;
     private readonly InputAction m_PlayerActions_LB;
     private readonly InputAction m_PlayerActions_HoldLB;
     private readonly InputAction m_PlayerActions_RB;
     private readonly InputAction m_PlayerActions_HoldRB;
+    private readonly InputAction m_PlayerActions_Reload;
     private readonly InputAction m_PlayerActions_Dodge;
     private readonly InputAction m_PlayerActions_Critical;
     private readonly InputAction m_PlayerActions_WeaponArt;
@@ -739,12 +717,11 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         public InputAction @QuedHoldLB => m_Wrapper.m_PlayerActions_QuedHoldLB;
         public InputAction @QuedHoldRB => m_Wrapper.m_PlayerActions_QuedHoldRB;
         public InputAction @QuedCritical => m_Wrapper.m_PlayerActions_QuedCritical;
-        public InputAction @QuedWeaponArt => m_Wrapper.m_PlayerActions_QuedWeaponArt;
-        public InputAction @QuedDodge => m_Wrapper.m_PlayerActions_QuedDodge;
         public InputAction @LB => m_Wrapper.m_PlayerActions_LB;
         public InputAction @HoldLB => m_Wrapper.m_PlayerActions_HoldLB;
         public InputAction @RB => m_Wrapper.m_PlayerActions_RB;
         public InputAction @HoldRB => m_Wrapper.m_PlayerActions_HoldRB;
+        public InputAction @Reload => m_Wrapper.m_PlayerActions_Reload;
         public InputAction @Dodge => m_Wrapper.m_PlayerActions_Dodge;
         public InputAction @Critical => m_Wrapper.m_PlayerActions_Critical;
         public InputAction @WeaponArt => m_Wrapper.m_PlayerActions_WeaponArt;
@@ -778,12 +755,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @QuedCritical.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedCritical;
                 @QuedCritical.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedCritical;
                 @QuedCritical.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedCritical;
-                @QuedWeaponArt.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedWeaponArt;
-                @QuedWeaponArt.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedWeaponArt;
-                @QuedWeaponArt.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedWeaponArt;
-                @QuedDodge.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedDodge;
-                @QuedDodge.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedDodge;
-                @QuedDodge.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuedDodge;
                 @LB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
                 @LB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
                 @LB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLB;
@@ -796,6 +767,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @HoldRB.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
                 @HoldRB.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
                 @HoldRB.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnHoldRB;
+                @Reload.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnReload;
                 @Dodge.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDodge;
                 @Dodge.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDodge;
                 @Dodge.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDodge;
@@ -842,12 +816,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @QuedCritical.started += instance.OnQuedCritical;
                 @QuedCritical.performed += instance.OnQuedCritical;
                 @QuedCritical.canceled += instance.OnQuedCritical;
-                @QuedWeaponArt.started += instance.OnQuedWeaponArt;
-                @QuedWeaponArt.performed += instance.OnQuedWeaponArt;
-                @QuedWeaponArt.canceled += instance.OnQuedWeaponArt;
-                @QuedDodge.started += instance.OnQuedDodge;
-                @QuedDodge.performed += instance.OnQuedDodge;
-                @QuedDodge.canceled += instance.OnQuedDodge;
                 @LB.started += instance.OnLB;
                 @LB.performed += instance.OnLB;
                 @LB.canceled += instance.OnLB;
@@ -860,6 +828,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @HoldRB.started += instance.OnHoldRB;
                 @HoldRB.performed += instance.OnHoldRB;
                 @HoldRB.canceled += instance.OnHoldRB;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
                 @Dodge.started += instance.OnDodge;
                 @Dodge.performed += instance.OnDodge;
                 @Dodge.canceled += instance.OnDodge;
@@ -905,12 +876,11 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         void OnQuedHoldLB(InputAction.CallbackContext context);
         void OnQuedHoldRB(InputAction.CallbackContext context);
         void OnQuedCritical(InputAction.CallbackContext context);
-        void OnQuedWeaponArt(InputAction.CallbackContext context);
-        void OnQuedDodge(InputAction.CallbackContext context);
         void OnLB(InputAction.CallbackContext context);
         void OnHoldLB(InputAction.CallbackContext context);
         void OnRB(InputAction.CallbackContext context);
         void OnHoldRB(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
         void OnCritical(InputAction.CallbackContext context);
         void OnWeaponArt(InputAction.CallbackContext context);
