@@ -16,11 +16,14 @@ public class MenuController : MonoBehaviour
 
     private void Awake()
     {
+        /*
         _musicVolumeSlider.onValueChanged.AddListener(delegate
         {
             GameManager.Instance.AudioManager.UpdateMusicVolume(_musicVolumeSlider.value);
            
         });
+
+        */
     }
     // Start is called before the first frame update
     private void Start()
@@ -80,8 +83,8 @@ public class MenuController : MonoBehaviour
 
     private void LoadSliderValue()
     {
-        _fxVolumeSlider.value = SaveSystem.LocalData.fxVolume;
-        _musicVolumeSlider.value = SaveSystem.LocalData.musicVolume;
+        //_fxVolumeSlider.value = SaveSystem.LocalData.fxVolume;
+        //_musicVolumeSlider.value = SaveSystem.LocalData.musicVolume;
     }
 
     public void aumentaVolume(Slider novoSlider)

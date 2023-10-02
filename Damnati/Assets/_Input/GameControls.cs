@@ -542,6 +542,34 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Actions"",
+            ""id"": ""5e4f6f42-310e-4377-9875-d05919764c5c"",
+            ""actions"": [
+                {
+                    ""name"": ""ESC"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""1bfce42f-740c-4c6e-b4ac-653b457cc06e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1e140560-3103-457d-8b3c-c8a5617cc930"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ESC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -573,6 +601,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_PlayerActions_Run = m_PlayerActions.FindAction("Run", throwIfNotFound: true);
         m_PlayerActions_CameraLockOn = m_PlayerActions.FindAction("CameraLockOn", throwIfNotFound: true);
         m_PlayerActions_Block = m_PlayerActions.FindAction("Block", throwIfNotFound: true);
+        // Actions
+        m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
+        m_Actions_ESC = m_Actions.FindAction("ESC", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -862,6 +893,39 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+
+    // Actions
+    private readonly InputActionMap m_Actions;
+    private IActionsActions m_ActionsActionsCallbackInterface;
+    private readonly InputAction m_Actions_ESC;
+    public struct ActionsActions
+    {
+        private @GameControls m_Wrapper;
+        public ActionsActions(@GameControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ESC => m_Wrapper.m_Actions_ESC;
+        public InputActionMap Get() { return m_Wrapper.m_Actions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ActionsActions set) { return set.Get(); }
+        public void SetCallbacks(IActionsActions instance)
+        {
+            if (m_Wrapper.m_ActionsActionsCallbackInterface != null)
+            {
+                @ESC.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnESC;
+                @ESC.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnESC;
+                @ESC.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnESC;
+            }
+            m_Wrapper.m_ActionsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ESC.started += instance.OnESC;
+                @ESC.performed += instance.OnESC;
+                @ESC.canceled += instance.OnESC;
+            }
+        }
+    }
+    public ActionsActions @Actions => new ActionsActions(this);
     public interface IPlayerMovementActions
     {
         void OnView(InputAction.CallbackContext context);
@@ -890,5 +954,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnCameraLockOn(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
+    }
+    public interface IActionsActions
+    {
+        void OnESC(InputAction.CallbackContext context);
     }
 }

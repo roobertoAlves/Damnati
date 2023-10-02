@@ -46,6 +46,15 @@ public class AttackStateHumanoid : States
 
     private States ProcessSwordAndShieldCombatStyle(AICharacterManager aiCharacterManager)
     {   
+        if (aiCharacterManager.CurrentTarget.IsDead)
+        {
+            ResetStatesFlags();
+            aiCharacterManager.Animator.SetFloat("Vertical", 0);
+            aiCharacterManager.Animator.SetFloat("Horizontal", 0);
+            aiCharacterManager.CurrentTarget = null;
+            return _idleState;
+        }
+        
         RotateTowardsTargetWhilstAttacking(aiCharacterManager);
 
         if (aiCharacterManager.DistanceFromTarget > aiCharacterManager.MaximumAggroRadius)
@@ -64,14 +73,7 @@ public class AttackStateHumanoid : States
             AttackTarget(aiCharacterManager);
             RollForComboChance(aiCharacterManager);
         }
-        if (aiCharacterManager.CurrentTarget.IsDead)
-        {
-            ResetStatesFlags();
-            aiCharacterManager.Animator.SetFloat("Vertical", 0);
-            aiCharacterManager.Animator.SetFloat("Horizontal", 0);
-            aiCharacterManager.CurrentTarget = null;
-            return _idleState;
-        }
+
 
         if (willDoComboOnNextAttack && hasPerformedAttack)
         {

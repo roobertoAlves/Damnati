@@ -39,7 +39,7 @@ public class InputHandler : MonoBehaviour
     private bool _rStickInput;
     private bool _lStickInput;
 
-
+    private bool _escInput;
     #endregion
 
     #region Input Qued Flags
@@ -84,6 +84,7 @@ public class InputHandler : MonoBehaviour
     public bool DogdeFlag { get { return _dodgeInput; } set { _dodgeInput = value; }}
     public bool RunFlag { get { return _runInput; } set { _runInput = value; }}
     public bool RBInput { get { return _rbInput; } set { _rbInput = value; }}
+    public bool ESCInput { get { return _escInput; } set { _escInput = value; }}
     public bool LBInput { get { return _lbInput; } set { _lbInput = value; }}
     public bool THEquipFlag { get { return _thEquipInput; } set { _thEquipInput = value; }}
     public bool ComboFlag { get { return _comboFlag; } set { _comboFlag = value; }}
@@ -128,6 +129,9 @@ public class InputHandler : MonoBehaviour
 
             _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
             _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
+
+            _gameControls.Actions.ESC.performed += OnPause;
+            _gameControls.Actions.ESC.canceled += OnPause;
             
             _gameControls.PlayerActions.Dodge.performed += OnDodge;
             _gameControls.PlayerActions.Dodge.canceled += OnDodge;
@@ -168,9 +172,6 @@ public class InputHandler : MonoBehaviour
 
             _gameControls.PlayerActions.Interact.performed += OnInteract;
             _gameControls.PlayerActions.Interact.canceled += OnInteract;
-
-            _gameControls.PlayerActions.Pause.performed += OnPause;
-            _gameControls.PlayerActions.Pause.canceled += OnPause;
 
             _gameControls.PlayerActions.CameraLockOn.performed += OnCameraLockOn;
 
@@ -650,7 +651,7 @@ public class InputHandler : MonoBehaviour
 
     private void OnPause(InputAction.CallbackContext ctx)
     {
-        _pauseInput = ctx.ReadValueAsButton();
+        _escInput = ctx.ReadValueAsButton();
     }
     private void OnTwoHandEquiped(InputAction.CallbackContext ctx)
     {

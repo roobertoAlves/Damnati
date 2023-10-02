@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4a3263af3cda146b6b291849181b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hasPerformedAttack: 0
+  hasPerformedAttack: 0
 --- !u!114 &4340326967509887697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2091,7 +2091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterName: Nameless
   _teamIDNumber: 1
-  _healthLevel: 5
+  _healthLevel: 25
   _maxHealth: 0
   _currentHealth: 0
   _staminaLevel: 10

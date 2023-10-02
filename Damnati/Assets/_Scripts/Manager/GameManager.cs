@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
 
     } 
 
+    private void Start() 
+    {
+        //Acessando a classe do SceneLoadM para carregar uma cena através do método LoadScene.
+        _sceneLoadManager.LoadScene("Menu");
+    }
     // A classe 'SceneLoadManager' recebe a variável '_sceneLoadManager'.
 
     public SceneLoadManager SceneLoadManager => _sceneLoadManager;      // O símbolo => significa receber algo.

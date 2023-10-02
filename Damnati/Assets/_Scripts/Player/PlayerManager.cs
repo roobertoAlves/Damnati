@@ -34,6 +34,10 @@ public class PlayerManager : CharacterManager
     [SerializeField] private GameObject _interactableUIGameObject;
     [SerializeField] private GameObject _itemInteractableGameObject;
 
+    [Header("Temp Die")]
+    [Space(15)]
+    [SerializeField] public GameObject DiePanel;
+
     #region GET & SET
 
     public GameObject ItemInteractableGameObject {get { return _itemInteractableGameObject; } set { _itemInteractableGameObject = value; }}
@@ -101,6 +105,11 @@ public class PlayerManager : CharacterManager
         if(_inputHandler.IsHitEnemy && !_inputHandler.IsInRage)
         {
             _playerStatsManager.RegenerateRage();
+        }
+
+        if(!IsDead)
+        {
+            DiePanel.SetActive(false);
         }
     }
     protected override void FixedUpdate()

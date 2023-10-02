@@ -85,6 +85,7 @@ public class PlayerStatsManager : CharacterStatsManager
         CurrentHealth = 0;
         _player.IsDead = true;
         _player.PlayerAnimator.PlayTargetAnimation("Death_01", true);
+        _player.DiePanel.SetActive(true);
     }
 
     #endregion

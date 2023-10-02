@@ -21,6 +21,19 @@ MonoBehaviour:
     m_Address: Assets/_Localization/Tables/Menu Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: 44d67ff429943b24398530de257656fd
+    m_Address: Assets/_Localization/Tables/Confirmation Screen/Confirm Screen Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 64a1ff6c1c8ac7341837aead70807f27
+    m_Address: Assets/_Localization/Tables/Pause/Pause Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: e80b241e1767b7c47b3320ac4d456f20
+    m_Address: Assets/_Localization/Tables/End Screen/End Screen Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 21f09651e110e13408274639ffe6b62f, type: 2}
   m_SchemaSet:
