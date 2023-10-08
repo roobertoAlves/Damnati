@@ -549,7 +549,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""ESC"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""1bfce42f-740c-4c6e-b4ac-653b457cc06e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

@@ -4,116 +4,121 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-
 public static class SaveSystem
 {
-    // SISTEMA DE SAVE COM BINÁRIO
-    // Caminho completo para a pasta de save
     private static string SAVE_FOLDER => Path.Combine(Application.persistentDataPath, "Saves");
+    private static string SAVE_FILE_EXTENSION = ".save";
 
-    // Referência da classe que reúne os atributos do sistema de save
     public static SaveData LocalData { get; private set; }
+    public static PlayerProfileSettings PlayerSettings { get; private set; }
 
-    public static void Save()
+    // Adicionado para controlar se os saves podem se sobrepor
+    public static bool CanOverwriteSaves { get; set; } = false;
+
+    public static bool SaveExists(int slot)
     {
-        // Criando o diretório se não existir
-        if (!Directory.Exists(SAVE_FOLDER))
-        {
-            Directory.CreateDirectory(SAVE_FOLDER);
-        }
+        string saveFilePath = GetSaveFilePath(slot);
+        return File.Exists(saveFilePath);
+    }
 
-        // Convertendo o objeto LocalData em formato binário
-        byte[] binaryData;
+    // Função para excluir um save em um slot específico
+    public static void DeleteSave(int slot)
+    {
+        string saveFilePath = GetSaveFilePath(slot);
+        if (File.Exists(saveFilePath))
+        {
+            File.Delete(saveFilePath);
+        }
+        else
+        {
+            Debug.LogWarning($"Save file for slot {slot} does not exist. No deletion performed.");
+        }
+    }
+
+    public static void SaveGame(int slot, SaveData saveData, PlayerProfileSettings playerSettings)
+    {
+        string saveFilePath = GetSaveFilePath(slot);
 
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        using (MemoryStream memoryStream = new MemoryStream())
-
+        using (FileStream fileStream = File.Create(saveFilePath))
         {
-            binaryFormatter.Serialize(memoryStream, LocalData);
-            binaryData = memoryStream.ToArray();
+            // Se CanOverwriteSaves for verdadeira ou o arquivo não existir, permita a sobreposição.
+            if (CanOverwriteSaves || !File.Exists(saveFilePath))
+            {
+                binaryFormatter.Serialize(fileStream, saveData);
+                binaryFormatter.Serialize(fileStream, playerSettings);
+            }
         }
-
-        // Salvando o arquivo binário no sistema do usuário
-        File.WriteAllBytes(Path.Combine(SAVE_FOLDER, "save.bin"), binaryData);
     }
-
-    public static SaveData Load()
+    public static SaveData LoadGame(int slot)
     {
-        // Verificando se o diretório onde o arquivo está localizado existe
-        if (!Directory.Exists(SAVE_FOLDER))
-        {
-            // Criando o diretório
-            Directory.CreateDirectory(SAVE_FOLDER);
-        }
-
-        // Verificando se o arquivo binário com os dados salvos já existe
-        string saveFilePath = Path.Combine(SAVE_FOLDER, "save.bin");
+        string saveFilePath = GetSaveFilePath(slot);
 
         if (File.Exists(saveFilePath))
         {
-            // Lendo os dados do arquivo binário
-            byte[] binaryData = File.ReadAllBytes(saveFilePath);
-
-            // Convertendo os dados binários para a classe SaveData
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-            using (MemoryStream memoryStream = new MemoryStream(binaryData))
+            using (FileStream fileStream = File.Open(saveFilePath, FileMode.Open))
             {
-                LocalData = (SaveData)binaryFormatter.Deserialize(memoryStream);
+                if (fileStream.Length > 0) // Verifique se o arquivo não está vazio
+                {
+                    return (SaveData)binaryFormatter.Deserialize(fileStream);
+                }
+                else
+                {
+                    Debug.LogWarning($"Save file for slot {slot} is empty.");
+                    // Se o arquivo estiver vazio, retorne um novo objeto SaveData
+                    return new SaveData();
+                }
             }
         }
         else
         {
-            // Caso o arquivo binário não exista, criar uma nova instância da classe SaveData
-            LocalData = new SaveData();
-
-            // Salvar os dados criados
-            Save();
+            Debug.LogWarning($"Save file for slot {slot} does not exist.");
+            return null;
         }
-
-        // Retornando o objeto LocalData com os dados carregados
-        return LocalData;
     }
 
 
-    //JASON SAVE CODE
-
-    /*
-    private static readonly string SAVE_FOLDER=(Application.persistentDataPath + "/Saves");
-
-    public static SaveData LocalData{get; private set;}
-
-    public static void Save()
+    public static PlayerProfileSettings LoadPlayerSettings()
     {
-        string json = JsonUtility.ToJson(LocalData);
+        string settingsFilePath = GetPlayerSettingsFilePath();
 
-        File.WriteAllText(SAVE_FOLDER + "/save.json",json);
-    }
-
-    public static SaveData Load()
-    {
-        if(!Directory.Exists(SAVE_FOLDER))
+        if (File.Exists(settingsFilePath))
         {
-            Directory.CreateDirectory(SAVE_FOLDER);
-        }
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        if(File.Exists(SAVE_FOLDER + "/save.json"))
-        {
-            string saveString = File.ReadAllText(SAVE_FOLDER + "/save.json");
-
-            LocalData = JsonUtility.FromJson<SaveData>(saveString);
+            using (FileStream fileStream = File.Open(settingsFilePath, FileMode.Open))
+            {
+                return (PlayerProfileSettings)binaryFormatter.Deserialize(fileStream);
+            }
         }
         else
         {
-            LocalData = new SaveData();
-
-            File.Create(SAVE_FOLDER + "/save.json").Dispose();
-
-            Save();
+            return new PlayerProfileSettings(); // Retorna um novo objeto vazio se não houver configurações salvas
         }
-
-        return LocalData;
     }
-    */
+
+    public static void SavePlayerSettings(PlayerProfileSettings playerSettings)
+    {
+        string settingsFilePath = GetPlayerSettingsFilePath();
+
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+        using (FileStream fileStream = File.Create(settingsFilePath))
+        {
+            binaryFormatter.Serialize(fileStream, playerSettings);
+        }
+    }
+
+    private static string GetSaveFilePath(int slot)
+    {
+        return Path.Combine(SAVE_FOLDER, $"save_{slot}{SAVE_FILE_EXTENSION}");
+    }
+
+    private static string GetPlayerSettingsFilePath()
+    {
+        return Path.Combine(SAVE_FOLDER, $"player_settings{SAVE_FILE_EXTENSION}");
+    }
 }

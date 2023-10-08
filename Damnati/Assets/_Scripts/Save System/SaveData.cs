@@ -2,25 +2,21 @@
 public class SaveData
 {
     // Player Settings Data
-    public int pontos = 0;
-    public Language id_local = Language.PT;
-    public float fxVolume = 0.5f;
-    public float musicVolume = 0.8f;
 
     // Save Slots Informations
-    public int horasJogadas = 0;
-    public string ultimaDataJogo = "";
-    public string currentLevelName = "";
+    public int lastHourPlayed = 0;
+    public string lastDatePlayed = "";
+    public string currentLevelName = "Tutorial";
 
-    // Construtor para inicializar o SaveData
-    public SaveData()
-    {
-        pontos = 0;
-        id_local = Language.PT;
-        fxVolume = 0.5f;
-        musicVolume = 0.8f;
-        horasJogadas = 0;
-        ultimaDataJogo = "";
-        currentLevelName = "";
-    }
 }
+
+[System.Serializable]
+public class PlayerProfileSettings
+{
+    public float fxVolume = 1;
+    public float musicVolume = 1;
+    public int points = 0;
+    public Language id_local = Language.PT;
+    // Outras configurações do jogador
+}
+

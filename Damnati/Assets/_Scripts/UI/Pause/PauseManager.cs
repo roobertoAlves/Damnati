@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class PauseManager : MonoBehaviour
 {
     private PlayerManager _player;
-    private bool isPaused;
-    private bool _pauseMenuOpen;
 
     [Header("Pause")]
     [Space(15)]
@@ -24,44 +22,22 @@ public class PauseManager : MonoBehaviour
     {
         _player = FindObjectOfType<PlayerManager>();
     }
-
-    // Método para lidar com o pressionamento da tecla ESC
-    private void HandlePauseInput()
-    {
-        if (_player.PlayerInput.ESCInput)
-        {
-            if(!_pauseMenuOpen)
-            {
-                isPaused = true;
-                _pauseMenuOpen = true;
-            }
-            else if(_pauseMenuOpen)
-            {
-                isPaused = false;
-                _pauseMenuOpen = false;
-            }
-        }
-    }
-
     // Update is called once per frame
     private void Update()
     {
-        HandlePauseInput();
         PauseScreen();
     }
 
     private void PauseScreen()
     {
-        if (!isPaused)
+        if (!_player.PlayerInput.ESCInput)
         {
-            _pauseMenuOpen = false;
-            isPaused = false;
             Pause_painel.SetActive(false);
             Time.timeScale = 1f;
             //Cursor.lockState = CursorLockMode.Locked;
             //Cursor.visible = false;
             // Verifique a lógica no AudioManager para pausar/despausar a música
-            //GameManager.Instance.AudioManager.PauseAndUnpauseBackgroundMusic();
+            GameManager.Instance.AudioManager.PauseAndUnpauseBackgroundMusic();
         }
         else
         {
@@ -70,7 +46,7 @@ public class PauseManager : MonoBehaviour
             //Cursor.lockState = CursorLockMode.None;
             //Cursor.visible = true;
             // Verifique a lógica no AudioManager para pausar/despausar a música
-            //GameManager.Instance.AudioManager.PauseAndUnpauseBackgroundMusic();
+            GameManager.Instance.AudioManager.PauseAndUnpauseBackgroundMusic();
         }
     }
 
@@ -82,8 +58,6 @@ public class PauseManager : MonoBehaviour
 
     public void Unpaused()
     {
-        _pauseMenuOpen = false;
-        isPaused = false;
         Time.timeScale = 1f;
         // Não defina o Time.timeScale aqui
         Pause_painel.SetActive(false);
@@ -93,13 +67,16 @@ public class PauseManager : MonoBehaviour
 
     public void SaveConfig()
     {
+        // Carregar as configurações do jogador existentes
+        PlayerProfileSettings playerProfile = SaveSystem.LoadPlayerSettings();
+        
         float volFx = _fxVolumeSlider.value;
         float volmusic = _musicVolumeSlider.value;
 
-        SaveSystem.LocalData.fxVolume = volFx;
-        SaveSystem.LocalData.musicVolume = volmusic;
+        SaveSystem.PlayerSettings.fxVolume = volFx;
+        SaveSystem.PlayerSettings.musicVolume = volmusic;
 
-        SaveSystem.Save();
+        SaveSystem.SavePlayerSettings(playerProfile);
     }
 
     public void VolumeUp(Slider newSlide)

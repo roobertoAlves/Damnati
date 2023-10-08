@@ -15,6 +15,6 @@ public class LocalSelector : MonoBehaviour
         yield return LocalizationSettings.InitializationOperation;
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[languageId];
 
-        SaveSystem.LocalData.id_local = (Language)languageId;
+        SaveSystem.PlayerSettings.id_local = (Language)languageId;
     }
 }

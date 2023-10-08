@@ -131,7 +131,6 @@ public class InputHandler : MonoBehaviour
             _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
 
             _gameControls.Actions.ESC.performed += OnPause;
-            _gameControls.Actions.ESC.canceled += OnPause;
             
             _gameControls.PlayerActions.Dodge.performed += OnDodge;
             _gameControls.PlayerActions.Dodge.canceled += OnDodge;
@@ -651,7 +650,7 @@ public class InputHandler : MonoBehaviour
 
     private void OnPause(InputAction.CallbackContext ctx)
     {
-        _escInput = ctx.ReadValueAsButton();
+        _escInput = !_escInput;
     }
     private void OnTwoHandEquiped(InputAction.CallbackContext ctx)
     {

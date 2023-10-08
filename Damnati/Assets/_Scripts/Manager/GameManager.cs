@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.Localization.Settings;
 
 public class GameManager : MonoBehaviour
@@ -11,46 +10,41 @@ public class GameManager : MonoBehaviour
     [Space(5)]
     [SerializeField] private AudioManager _audioManager;
 
-    public static GameManager Instance;    
+    public static GameManager Instance;
 
     private void Awake()
     {
-        // Verifica se já existe uma instância da classe 'GameManager'.
-        if(Instance != null)
+        if (Instance != null)
         {
-            Destroy(this);      // Destrói a instância.
+            Destroy(this);
         }
         else
         {
-            // Se não existir a instância será armazenada na variável.
             Instance = this;
         }
 
-        // Se trocarmos de cena a classe 'GameManager' não será destruída.
         DontDestroyOnLoad(this);
         InitializeSystem();
+    }
 
-    } 
-
-    private void Start() 
+    private void Start()
     {
-        //Acessando a classe do SceneLoadM para carregar uma cena através do método LoadScene.
         _sceneLoadManager.LoadScene("Menu");
     }
-    // A classe 'SceneLoadManager' recebe a variável '_sceneLoadManager'.
 
-    public SceneLoadManager SceneLoadManager => _sceneLoadManager;      // O símbolo => significa receber algo.
+    public SceneLoadManager SceneLoadManager => _sceneLoadManager;
 
     public AudioManager AudioManager => _audioManager;
 
     private void InitializeSystem()
     {
         StartCoroutine(SavedLanguage());
-        SaveSystem.Load();
+        SaveSystem.LoadPlayerSettings();
     }
+
     private IEnumerator SavedLanguage()
     {
         yield return LocalizationSettings.InitializationOperation;
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)SaveSystem.LocalData.id_local];
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)SaveSystem.PlayerSettings.id_local];
     }
 }
