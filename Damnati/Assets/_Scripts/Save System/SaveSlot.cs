@@ -11,6 +11,8 @@ public class SaveSlot : MonoBehaviour
     [SerializeField] private TMP_Text[] _emptyTitle;
     [SerializeField] private Button[] _trashButtons;
     [SerializeField] private GameObject _confirmDeletePanel;
+    [SerializeField] private GameObject _confirmSavePanel;
+    [SerializeField] private GameObject _confirmLoadPanel;
     [SerializeField] private GameObject _saveWindow;
 
     [Header("Save Screen Slots Title")]
@@ -156,7 +158,7 @@ public class SaveSlot : MonoBehaviour
 
                 if (saveData != null)
                 {
-                    Debug.Log("Salvando um save existente");
+                    Debug.Log("Carregando um save existente");
                     // Verificar se a cena atual é uma cena de jogo (não é um menu)
                     if (IsGameScene(saveData.currentLevelName))
                     {
@@ -164,8 +166,30 @@ public class SaveSlot : MonoBehaviour
                         currentGameScene = saveData.currentLevelName;
                     }
 
-                    SceneManager.LoadScene(saveData.currentLevelName);
+                    GameManager.Instance.SceneLoadManager.LoadScene(saveData.currentLevelName);
                 }
+            }
+        }
+    }
+    
+    public void LoadGameInPause()
+    {
+        if(_selectedSlot != -1)
+        {
+             // Slot tem um save, carregar a cena correspondente ao save
+            SaveData saveData = SaveSystem.LoadGame(_selectedSlot);
+
+            if (saveData != null)
+            {
+                Debug.Log("Carregando um save existente");
+                // Verificar se a cena atual é uma cena de jogo (não é um menu)
+                if (IsGameScene(saveData.currentLevelName))
+                {
+                    // Atualizar a variável currentGameScene
+                    currentGameScene = saveData.currentLevelName;
+                }
+
+                GameManager.Instance.SceneLoadManager.LoadScene(saveData.currentLevelName);
             }
         }
     }
@@ -191,11 +215,12 @@ public class SaveSlot : MonoBehaviour
 
     #region Open Confirm Menu's
 
-    public void OpenConfirmDeletePanel()
+    public void OpenConfirmDeleteSavePanel()
     {
         _confirmDeletePanel.SetActive(true);
         _saveWindow.SetActive(false);
     }
+
     public void ConfirmDeleteSave()
     {
         DeleteGame();
@@ -207,26 +232,56 @@ public class SaveSlot : MonoBehaviour
         _confirmDeletePanel.SetActive(false);
         _saveWindow.SetActive(true);
     }
+
+
+    public void OpenConfirmSavePanel()
+    {
+        if(_selectedSlot != -1)
+        {
+            if(SaveSystem.SaveExists(_selectedSlot))
+            {
+                _saveWindow.SetActive(false);
+                _confirmSavePanel.SetActive(true);
+            }
+            else
+            {
+                SaveGame();
+            }
+        }
+    }
     public void ConfirmOverwriteSave()
     {
         SaveGameInPause();
-        _confirmDeletePanel.SetActive(false);
+        _confirmSavePanel.SetActive(false);
         _saveWindow.SetActive(true);
     }  
     public void CancelOverwriteSave()
     {
-        _confirmDeletePanel.SetActive(false);
+        _confirmSavePanel.SetActive(false);
         _saveWindow.SetActive(true);
+    }
+
+
+    public void OpenConfirmLoadSavePanel()
+    {
+        if(_selectedSlot != -1)
+        {
+            if(SaveSystem.SaveExists(_selectedSlot))
+            {
+                _saveWindow.SetActive(false);
+                _confirmLoadPanel.SetActive(true);
+            }
+        }
     }
     public void ConfirmLoadSave()
     {
-        LoadGame();
-        _confirmDeletePanel.SetActive(false);
-        _saveWindow.SetActive(true);
+        _confirmLoadPanel.SetActive(false);
+        _saveWindow.SetActive(false);
+        LoadGameInPause();
     }
     public void CancelLoadSave()
     {
-        _confirmDeletePanel.SetActive(false);
+        _confirmLoadPanel.SetActive(false);
         _saveWindow.SetActive(true);
     }
     #endregion
