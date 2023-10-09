@@ -141,13 +141,13 @@ public class InputHandler : MonoBehaviour
     }
     private void SetupInputActions()
     {
-         _rbAction = _playerInput.actions["RB"];
         _moveAction = _playerInput.actions["Walk"];
 
         _leftLockOnAction = _playerInput.actions["Lock On Target Left"];
         _rightLockOnAction = _playerInput.actions["Lock On Target Right"];
 
         _lbAction = _playerInput.actions["LB"];
+        _rbAction = _playerInput.actions["RB"];
         _holdLBAction = _playerInput.actions["Hold LB"];
         _holdRBAction = _playerInput.actions["Hold RB"];
         _drawArrowAction = _playerInput.actions["Reload"];

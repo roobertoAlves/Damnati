@@ -278,18 +278,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RB",
-                    "type": "Button",
-                    "id": "8a851730-728c-43d5-a69a-cdf00e11bb73",
+                    "name": "Hold RB",
+                    "type": "PassThrough",
+                    "id": "bfbace15-fc28-4609-8ee3-cd4d29b46397",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Hold RB ",
-                    "type": "PassThrough",
-                    "id": "76762242-fad6-4775-a73d-1dc000898dd8",
+                    "name": "RB",
+                    "type": "Button",
+                    "id": "8a851730-728c-43d5-a69a-cdf00e11bb73",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -468,17 +468,6 @@
                 },
                 {
                     "name": "",
-                    "id": "cfa24f79-0817-4c6c-890e-f18b766cf1b2",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": "Mouse/Keyboard",
-                    "action": "Hold RB ",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e262937c-926d-460e-a158-8cf89b4f76c1",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
@@ -575,6 +564,17 @@
                     "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7a49eaa6-9137-462f-b940-a6db01162be8",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "Mouse/Keyboard",
+                    "action": "Hold RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -618,7 +618,7 @@
                     "isOR": false
                 },
                 {
-                    "devicePath": "<VirtualMouse>",
+                    "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
                 }

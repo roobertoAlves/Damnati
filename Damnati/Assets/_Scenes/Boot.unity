@@ -273,8 +273,8 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: f27feaa6-3293-496d-b528-e39532529f70
+  m_DefaultControlScheme: Mouse/Keyboard
+  m_DefaultActionMap: Player Actions
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1674867901

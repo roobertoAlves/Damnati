@@ -16,7 +16,11 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 16123b6ad902d6c449b4f092d83b9cad
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 4f46e2773cc235c49b34cb1fee0c36de
+    m_Address: Assets/_Input/GameControls.inputactions
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 21f09651e110e13408274639ffe6b62f, type: 2}
   m_SchemaSet:
