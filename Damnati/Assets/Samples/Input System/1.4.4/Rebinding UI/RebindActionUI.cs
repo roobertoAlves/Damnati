@@ -9,11 +9,13 @@ using UnityEngine.UI;
 
 namespace UnityEngine.InputSystem.Samples.RebindUI
 {
+    
     /// <summary>
     /// A reusable component with a self-contained UI for rebinding a single action.
     /// </summary>
     public class RebindActionUI : MonoBehaviour
     {
+        
         /// <summary>
         /// Reference to the action that is to be rebound.
         /// </summary>
