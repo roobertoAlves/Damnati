@@ -71,7 +71,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -82,7 +82,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -93,7 +93,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -104,7 +104,62 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
+                    "groups": "Mouse/Keyboard",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Gamepad Analog",
+                    "id": "f1b10ff0-496b-46df-960d-ebe99cafef65",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
                     "groups": "",
+                    "action": "Walk",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "48d21f64-5bfe-4f71-ad79-762706d3b722",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "add9ea95-e0bc-4933-bb32-c1cfc7bb3bc8",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "9c297545-b9d4-41bf-b78d-17ed784db60c",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "402befbd-6bd3-4182-b184-3655334d1431",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -115,7 +170,18 @@
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
+                    "action": "Lock On Target Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ba0b322-345d-45f3-9248-b3837ea36f6f",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Lock On Target Left",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -126,7 +192,18 @@
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
+                    "action": "Lock On Target Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b008074-09f6-4340-8459-01dd73b51762",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Lock On Target Right",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -264,15 +341,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "5ff80b07-f118-4cc4-ab06-b55c61aa5578",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "efadda80-0571-4bec-8942-f50dc32c07e8",
@@ -316,7 +384,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "RB",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -327,19 +395,8 @@
                     "path": "<Keyboard>/h",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "TH",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "980eff9d-b8b9-4c00-8c3a-b78a3a2efc48",
-                    "path": "<Keyboard>/p",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -349,7 +406,7 @@
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -360,7 +417,7 @@
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -371,7 +428,7 @@
                     "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "CameraLockOn",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -382,7 +439,7 @@
                     "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "WeaponArt",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -393,7 +450,7 @@
                     "path": "<Keyboard>/f",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Block",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -404,7 +461,7 @@
                     "path": "<Keyboard>/g",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Critical",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -415,7 +472,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Hold RB ",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -448,7 +505,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "LB",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -459,7 +516,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Hold LB",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -470,7 +527,7 @@
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -514,7 +571,7 @@
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -542,7 +599,7 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mouse/Keyboard",
                     "action": "ESC",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -550,5 +607,33 @@
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "Mouse/Keyboard",
+            "bindingGroup": "Mouse/Keyboard",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<VirtualMouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Gamepad",
+            "bindingGroup": "Gamepad",
+            "devices": [
+                {
+                    "devicePath": "<XInputController>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }

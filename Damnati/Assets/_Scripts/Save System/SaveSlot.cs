@@ -106,7 +106,7 @@ public class SaveSlot : MonoBehaviour
             // Atualizar a interface do usuário após o save
             UpdateSlotButtons();
 
-            Debug.Log("Salvou");
+            //Debug.Log("Salvou");
         }
     }
     public void SaveGameInPause()
@@ -136,7 +136,7 @@ public class SaveSlot : MonoBehaviour
             // Atualizar a interface do usuário após o save
             UpdateSlotButtons();
 
-            Debug.Log("Salvou");
+            //Debug.Log("Salvou");
         }
     }
     public void LoadGame()

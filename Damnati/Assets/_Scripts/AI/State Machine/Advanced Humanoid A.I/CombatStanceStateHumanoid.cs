@@ -43,7 +43,7 @@ public class CombatStanceStateHumanoid : States
     {
         if(aiCharacterManager.CombatStyle == AICombatStyle.SwordAndShield)
         {
-            Debug.Log("Call function");
+            //Debug.Log("Call function");
             return ProcessSwordAndShieldCombatStyle(aiCharacterManager);
         }
         else if(aiCharacterManager.CombatStyle == AICombatStyle.Archer)
@@ -85,19 +85,19 @@ public class CombatStanceStateHumanoid : States
 
         if(aiCharacterManager.AllowAIToPerformBlock)
         {
-            Debug.Log("AI Block");
+            //Debug.Log("AI Block");
             RollForBlockChance(aiCharacterManager);
         }
 
         if(aiCharacterManager.AllowAIToPerformDodge)
         {
-            Debug.Log("AI Dodge");
+            //Debug.Log("AI Dodge");
             RollForDodgeChance(aiCharacterManager);
         }
 
         if(aiCharacterManager.AllowAIToPerformParry)
         {
-            Debug.Log("AI Parry");
+            //Debug.Log("AI Parry");
             RollForParryChance(aiCharacterManager);
         }
         

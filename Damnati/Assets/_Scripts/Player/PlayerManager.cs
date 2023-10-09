@@ -60,6 +60,7 @@ public class PlayerManager : CharacterManager
     protected override void Awake() 
     {
         base.Awake();
+        GameManager.Instance.InputHandler.FindPlayer();
         _cameraHandler = FindObjectOfType<CameraHandler>();
         _uiManager = FindObjectOfType<UIManager>();
         _interactableUI = GetComponent<InteractableUI>();

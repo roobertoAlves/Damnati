@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SceneLoadManager _sceneLoadManager;
     [Space(5)]
     [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private InputHandler _inputHandler;
 
     public static GameManager Instance;
 
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
     public SceneLoadManager SceneLoadManager => _sceneLoadManager;
 
     public AudioManager AudioManager => _audioManager;
+    public InputHandler InputHandler => _inputHandler;
 
     private void InitializeSystem()
     {

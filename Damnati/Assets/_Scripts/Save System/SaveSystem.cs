@@ -31,7 +31,7 @@ public static class SaveSystem
         }
         else
         {
-            Debug.LogWarning($"Save file for slot {slot} does not exist. No deletion performed.");
+            //Debug.LogWarning($"Save file for slot {slot} does not exist. No deletion performed.");
         }
     }
 
@@ -67,7 +67,7 @@ public static class SaveSystem
                 }
                 else
                 {
-                    Debug.LogWarning($"Save file for slot {slot} is empty.");
+                    //Debug.LogWarning($"Save file for slot {slot} is empty.");
                     // Se o arquivo estiver vazio, retorne um novo objeto SaveData
                     return new SaveData();
                 }
@@ -75,7 +75,7 @@ public static class SaveSystem
         }
         else
         {
-            Debug.LogWarning($"Save file for slot {slot} does not exist.");
+            //Debug.LogWarning($"Save file for slot {slot} does not exist.");
             return null;
         }
     }

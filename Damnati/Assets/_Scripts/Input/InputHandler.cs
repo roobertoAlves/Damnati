@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
-    private GameControls _gameControls;
+    private PlayerInput _playerInput;
     private PlayerManager _player;
 
     private float _horizontalMovement;
@@ -20,7 +20,6 @@ public class InputHandler : MonoBehaviour
     private bool _lbInput;
     private bool _lbHoldInput;
     private bool _zInput;
-    private bool _rtInput;
     private bool _rInput;
     
     private bool _runInput;
@@ -31,7 +30,6 @@ public class InputHandler : MonoBehaviour
     private bool _blockInput;
 
     private bool _interactInput;
-    private bool _pauseInput;
 
     private bool _thEquipInput;
     private bool _lockOnInput;
@@ -71,6 +69,30 @@ public class InputHandler : MonoBehaviour
    #endregion
 
 
+    #region Input Actions
+
+    private InputAction _moveAction;
+
+    private InputAction _lbAction;
+    private InputAction _rbAction;
+    private InputAction _holdLBAction;
+    private InputAction _holdRBAction;
+    private InputAction _criticalAttackAction;
+    private InputAction _weaponArtSkillAction;
+    private InputAction _blockAction;
+    private InputAction _drawArrowAction;
+    private InputAction _twoHandWeaponEquipAction;
+    private InputAction _dodgeAction;
+
+    private InputAction _leftLockOnAction;
+    private InputAction _rightLockOnAction;
+
+    private InputAction _sprintAction;
+    private InputAction _cameraLockOnAction;
+    private InputAction _pauseAction;
+    private InputAction _interactAction;
+    #endregion
+
 
    #region GET & SET
 
@@ -89,7 +111,7 @@ public class InputHandler : MonoBehaviour
     public bool THEquipFlag { get { return _thEquipInput; } set { _thEquipInput = value; }}
     public bool ComboFlag { get { return _comboFlag; } set { _comboFlag = value; }}
     public bool InteractInput { get { return _interactInput; } set { _interactInput = value; }}
-    public bool PauseInput { get { return _pauseInput; } set { _pauseInput = value; }}
+    public bool PauseInput { get { return _escInput; } set { _escInput = value; }}
     public bool CriticalAttackFlag { get { return _gHoldInput; } set { _gHoldInput = value; }}
     public bool LockOnFlag { get { return _lockOnFlag; } set { _lockOnFlag = value; }}
    
@@ -109,92 +131,67 @@ public class InputHandler : MonoBehaviour
 
     private void Awake() 
     {
+        _playerInput = GetComponent<PlayerInput>();
+        SetupInputActions();
+    }
+
+    public void FindPlayer()
+    {
         _player = FindObjectOfType<PlayerManager>();
     }
-    
-    #region Input Management
-
-    public GameControls GameControls
+    private void SetupInputActions()
     {
-        get { return _gameControls; }
-    }
+         _rbAction = _playerInput.actions["RB"];
+        _moveAction = _playerInput.actions["Walk"];
 
-    private void OnEnable() 
+        _leftLockOnAction = _playerInput.actions["Lock On Target Left"];
+        _rightLockOnAction = _playerInput.actions["Lock On Target Right"];
+
+        _lbAction = _playerInput.actions["LB"];
+        _holdLBAction = _playerInput.actions["Hold LB"];
+        _holdRBAction = _playerInput.actions["Hold RB"];
+        _drawArrowAction = _playerInput.actions["Reload"];
+        _dodgeAction = _playerInput.actions["Dodge"];
+        _criticalAttackAction = _playerInput.actions["Critical"];
+        _weaponArtSkillAction = _playerInput.actions["WeaponArt"];
+        _twoHandWeaponEquipAction = _playerInput.actions["TH"];
+        _pauseAction = _playerInput.actions["ESC"];
+        _interactAction = _playerInput.actions["Interact"];
+        _sprintAction = _playerInput.actions["Run"];
+        _cameraLockOnAction = _playerInput.actions["CameraLockOn"];
+        _blockAction = _playerInput.actions["Block"];
+    }
+    private void UpdateInputs()
     {
-        if(_gameControls == null)
-        {
-            _gameControls = new GameControls();
-            _gameControls.PlayerMovement.View.performed += CameraView;
-            _gameControls.PlayerMovement.View.canceled += CameraView;
+        _walkMoveInput = _moveAction.ReadValue<Vector2>();
 
-            _gameControls.PlayerMovement.LockOnTargetLeft.performed += ctx => _lStickInput = true;
-            _gameControls.PlayerMovement.LockOnTargetRight.performed += ctx => _rStickInput = true;
+        _lStickInput = _leftLockOnAction.WasPerformedThisFrame();
+        _rStickInput = _rightLockOnAction.WasPerformedThisFrame();
 
-            _gameControls.Actions.ESC.performed += OnPause;
-            
-            _gameControls.PlayerActions.Dodge.performed += OnDodge;
-            _gameControls.PlayerActions.Dodge.canceled += OnDodge;
+        _lbInput = _lbAction.WasPerformedThisFrame();
+        _lbHoldInput = _holdLBAction.WasPerformedThisFrame();
 
-            _gameControls.PlayerActions.HoldRB.performed += OnAiming;
-            _gameControls.PlayerActions.HoldRB.canceled += OnAiming;
-            _gameControls.PlayerActions.HoldRB.canceled += ctx => _fireFlag = true;
+        _rbInput = _rbAction.WasPerformedThisFrame();
+        _rbHoldInput = _holdRBAction.WasPerformedThisFrame();
 
-            _gameControls.PlayerActions.HoldLB.performed += OnChargeAttack;
-            _gameControls.PlayerActions.HoldLB.canceled += OnChargeAttack;
+        _gHoldInput = _criticalAttackAction.WasPerformedThisFrame();
+        _zInput = _weaponArtSkillAction.WasPerformedThisFrame();
+        _blockInput = _blockAction.WasPerformedThisFrame();
+        _rInput = _drawArrowAction.WasPerformedThisFrame();
+        _thEquipInput = _twoHandWeaponEquipAction.WasPerformedThisFrame();
+        _dodgeInput = _dodgeAction.WasPerformedThisFrame();
 
-            _gameControls.PlayerMovement.Walk.performed += OnWalk;
-            _gameControls.PlayerMovement.Walk.canceled += OnWalk;
-
-            _gameControls.PlayerActions.Run.performed += OnRun;
-            _gameControls.PlayerActions.Run.canceled += OnRun;
-
-            _gameControls.PlayerActions.LB.performed += OnLightAttack;
-            _gameControls.PlayerActions.LB.canceled += OnLightAttack;
-
-            _gameControls.PlayerActions.RB.performed += OnHeavyAttack;
-            _gameControls.PlayerActions.RB.canceled += OnHeavyAttack;
-
-            _gameControls.PlayerActions.Reload.performed += OnDrawArrow;
-            _gameControls.PlayerActions.Reload.canceled += OnDrawArrow;
-
-            _gameControls.PlayerActions.WeaponArt.performed += OnWeaponArt;
-            _gameControls.PlayerActions.WeaponArt.canceled += OnWeaponArt;
-
-            _gameControls.PlayerActions.Block.performed += OnDefense;
-            _gameControls.PlayerActions.Block.canceled += OnDefense;
-
-            _gameControls.PlayerActions.Critical.performed += OnCriticalAttack;
-            _gameControls.PlayerActions.Critical.canceled += OnCriticalAttack;
-
-            _gameControls.PlayerActions.TH.performed += OnTwoHandEquiped;
-            _gameControls.PlayerActions.TH.canceled += OnTwoHandEquiped;
-
-            _gameControls.PlayerActions.Interact.performed += OnInteract;
-            _gameControls.PlayerActions.Interact.canceled += OnInteract;
-
-            _gameControls.PlayerActions.CameraLockOn.performed += OnCameraLockOn;
-
-
-            #region Qued Input Actions
-
-            _gameControls.PlayerActions.QuedRB.performed += ctx => QuedInput(ref _quedRBInput);
-            _gameControls.PlayerActions.QuedHoldRB.performed += ctx => QuedInput(ref _quedHoldRBInput);
-            _gameControls.PlayerActions.QuedLB.performed += ctx => QuedInput(ref _quedLBInput);
-            _gameControls.PlayerActions.QuedHoldLB.performed += ctx => QuedInput(ref _quedHoldLBInput);
-            _gameControls.PlayerActions.QuedRB.performed += ctx => QuedInput(ref _quedRBInput);
-            #endregion
-        }
-        _gameControls.Enable();    
+        _runInput = _sprintAction.WasPerformedThisFrame();
+        _lockOnInput = _cameraLockOnAction.WasPerformedThisFrame();
+        _escInput = _pauseAction.WasPerformedThisFrame();
+        _interactInput = _interactAction.WasPerformedThisFrame();
+        
     }
-    private void OnDisable() 
-    {
-        _gameControls.Disable();   
-    }
-
-    #endregion  
     
     public void TickInput()
     {
+        UpdateInputs();
+
         if(_player.IsDead)
         {
             return;
@@ -537,6 +534,8 @@ public class InputHandler : MonoBehaviour
             }
         }
     }
+   
+   
     private void QuedInput(ref bool quedInput)
     {
         _quedRBInput = false;
@@ -552,7 +551,6 @@ public class InputHandler : MonoBehaviour
             _inputHasBeenQued = true;
         }   
     }
-
     private void HandleQuedInput()
     {
         if(_inputHasBeenQued)
@@ -569,7 +567,6 @@ public class InputHandler : MonoBehaviour
             }
         }
     }
-
     private void ProcessQuedInput()
     {
         if(_quedRBInput)
@@ -590,77 +587,4 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-    #region Input Methods
-    public void CameraView(InputAction.CallbackContext ctx)
-    {
-        _cameraMoveInput = ctx.ReadValue<Vector2>();
-    }
-    public void OnCameraLockOn(InputAction.CallbackContext ctx)
-    {
-        _lockOnInput = ctx.ReadValueAsButton();
-    }
-    private void OnWalk(InputAction.CallbackContext ctx)
-    {
-        _walkMoveInput = ctx.ReadValue<Vector2>();
-    }
-    private void OnRun(InputAction.CallbackContext ctx)
-    {
-        _runInput = ctx.ReadValueAsButton();
-    }
-
-    private void OnDodge(InputAction.CallbackContext ctx)
-    {
-       _dodgeInput = ctx.ReadValueAsButton();
-    }
-
-    private void OnInteract(InputAction.CallbackContext ctx)
-    {
-        _interactInput = ctx.ReadValueAsButton();
-    }
-
-    private void OnLightAttack(InputAction.CallbackContext ctx)
-    {
-        _lbInput = ctx.ReadValueAsButton();
-    }
-
-    private void OnHeavyAttack(InputAction.CallbackContext ctx)
-    {
-        _rbInput = ctx.ReadValueAsButton();
-    }
-    private void OnWeaponArt(InputAction.CallbackContext ctx)
-    {
-        _zInput = ctx.ReadValueAsButton();
-    }
-    private void OnAiming(InputAction.CallbackContext ctx)
-    {
-        _rbHoldInput = ctx.ReadValueAsButton();
-    }
-    private void OnDrawArrow(InputAction.CallbackContext ctx)
-    {
-        _rInput = ctx.ReadValueAsButton();
-    }
-    private void OnCriticalAttack(InputAction.CallbackContext ctx)
-    {
-        _gHoldInput = ctx.ReadValueAsButton();
-    }
-    private void OnDefense(InputAction.CallbackContext ctx)
-    {
-        _blockInput = ctx.ReadValueAsButton();
-    }
-
-    private void OnPause(InputAction.CallbackContext ctx)
-    {
-        _escInput = !_escInput;
-    }
-    private void OnTwoHandEquiped(InputAction.CallbackContext ctx)
-    {
-        _thEquipInput = ctx.ReadValueAsButton();
-    }
-    private void OnChargeAttack(InputAction.CallbackContext ctx)
-    {
-        _lbHoldInput = ctx.ReadValueAsButton();
-    }
-
-    #endregion
-  
 }
