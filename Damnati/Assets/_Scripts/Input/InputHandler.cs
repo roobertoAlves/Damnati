@@ -91,6 +91,8 @@ public class InputHandler : MonoBehaviour
     private InputAction _cameraLockOnAction;
     private InputAction _pauseAction;
     private InputAction _interactAction;
+
+    private InputAction _viewAction;
     #endregion
 
 
@@ -143,6 +145,8 @@ public class InputHandler : MonoBehaviour
     {
         _moveAction = _playerInput.actions["Walk"];
 
+        _viewAction = _playerInput.actions["View"];
+
         _leftLockOnAction = _playerInput.actions["Lock On Target Left"];
         _rightLockOnAction = _playerInput.actions["Lock On Target Right"];
 
@@ -164,6 +168,7 @@ public class InputHandler : MonoBehaviour
     private void UpdateInputs()
     {
         _walkMoveInput = _moveAction.ReadValue<Vector2>();
+        _cameraMoveInput = _viewAction.ReadValue<Vector2>();
 
         _lStickInput = _leftLockOnAction.WasPerformedThisFrame();
         _rStickInput = _rightLockOnAction.WasPerformedThisFrame();

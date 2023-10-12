@@ -2,216 +2,7 @@
     "name": "GameControls",
     "maps": [
         {
-            "name": "Player Movement",
-            "id": "16683e9d-636d-4c4e-b25c-e231f5aea2f4",
-            "actions": [
-                {
-                    "name": "View",
-                    "type": "PassThrough",
-                    "id": "e896f2d5-f17e-467f-b014-91c41d8de0e0",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Walk",
-                    "type": "PassThrough",
-                    "id": "1599686a-2c63-4ceb-b7e7-7442402feefa",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Lock On Target Left",
-                    "type": "Button",
-                    "id": "773ec192-738a-4cc7-8f6b-25db640816ed",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Lock On Target Right",
-                    "type": "Button",
-                    "id": "4a62874d-14a0-41a0-973c-bd299e1806b5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "3a317bb1-404c-4d8c-bd42-eeb3546d5cfb",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "View",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "AWSD",
-                    "id": "106aac6d-c63c-4596-9628-8015d8203005",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Walk",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "8f2fcee3-27e8-472e-bed0-1bf23e4356c2",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse/Keyboard",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "aa930f07-c51c-4e6c-820d-9dfcb805b088",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse/Keyboard",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "99da194c-5c77-48f5-bbbb-e944dac80667",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse/Keyboard",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "3f78f178-28f9-4784-96cf-028de6e6d1c5",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse/Keyboard",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Gamepad Analog",
-                    "id": "f1b10ff0-496b-46df-960d-ebe99cafef65",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Walk",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "48d21f64-5bfe-4f71-ad79-762706d3b722",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "add9ea95-e0bc-4933-bb32-c1cfc7bb3bc8",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "9c297545-b9d4-41bf-b78d-17ed784db60c",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "402befbd-6bd3-4182-b184-3655334d1431",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "b132e032-132a-43ac-9c6b-105964c8409f",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse/Keyboard",
-                    "action": "Lock On Target Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1ba0b322-345d-45f3-9248-b3837ea36f6f",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Lock On Target Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2e1774d0-aaae-4b5b-ae5e-ee6fb440a688",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse/Keyboard",
-                    "action": "Lock On Target Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2b008074-09f6-4340-8459-01dd73b51762",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Lock On Target Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Player Actions",
+            "name": "Player Controls",
             "id": "f27feaa6-3293-496d-b528-e39532529f70",
             "actions": [
                 {
@@ -375,6 +166,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "View",
+                    "type": "PassThrough",
+                    "id": "9d2d130d-60b4-4b82-8b92-1a168d8cebc9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Walk",
+                    "type": "PassThrough",
+                    "id": "862d41f1-fab6-46ea-979b-67ec45ee4f09",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Lock On Target Left",
+                    "type": "Button",
+                    "id": "ad71dd96-b858-4646-b384-3eeffd304a3a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Lock On Target Right",
+                    "type": "Button",
+                    "id": "f66d1ae8-fd16-488c-8128-1eb2ce22be55",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -384,7 +211,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "RB",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -395,7 +222,7 @@
                     "path": "<Keyboard>/h",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "TH",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -406,7 +233,7 @@
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -417,7 +244,7 @@
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -428,7 +255,7 @@
                     "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "CameraLockOn",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -439,7 +266,7 @@
                     "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "WeaponArt",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -450,7 +277,7 @@
                     "path": "<Keyboard>/f",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "Block",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -461,7 +288,7 @@
                     "path": "<Keyboard>/g",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "Critical",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -494,7 +321,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "LB",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -505,7 +332,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "Hold LB",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -516,7 +343,7 @@
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -560,7 +387,7 @@
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -571,8 +398,173 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "KM",
                     "action": "Hold RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a699482c-6107-4201-8438-64a18868ef23",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "View",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "AWSD",
+                    "id": "a6c1a8a1-cdf3-460c-bc25-4d4f1f330b8b",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "8fe9555f-3542-4fb1-9684-3eed26163f48",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "b6e9f396-d8e9-477d-9fba-907dae43bcc4",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "4ecb1217-9fb9-42d3-8414-c89e4c7d2d0d",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "9b8c4596-ca2f-4b23-b68f-2d96ce961cce",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Gamepad Analog",
+                    "id": "3028eaf6-e49a-4989-8ee7-2a7998371793",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "777a8072-8e72-4930-8f86-0c69c74e58e9",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "f9abc954-6e12-477c-a2b0-c9621b8e5079",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "18bd333c-fbca-4aaa-9b06-e3e90572091b",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "f55273f6-44dd-4896-848c-353ac1ca79d9",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "404c4972-ec69-43c6-9a3e-4a0056ee2fab",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Lock On Target Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d213a37f-58bd-4c84-a400-5c2cd0063290",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Lock On Target Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7763077-5d8c-4d32-88af-62c1a8ec3a94",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Lock On Target Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "145cfcd4-a1dd-4652-8b83-07287b8b7711",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Lock On Target Right",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -599,7 +591,7 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Mouse/Keyboard",
+                    "groups": "",
                     "action": "ESC",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -609,27 +601,27 @@
     ],
     "controlSchemes": [
         {
-            "name": "Mouse/Keyboard",
-            "bindingGroup": "Mouse/Keyboard",
-            "devices": [
-                {
-                    "devicePath": "<Keyboard>",
-                    "isOptional": false,
-                    "isOR": false
-                },
-                {
-                    "devicePath": "<Mouse>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
             "name": "Gamepad",
             "bindingGroup": "Gamepad",
             "devices": [
                 {
                     "devicePath": "<XInputController>",
+                    "isOptional": true,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "KM",
+            "bindingGroup": "KM",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Keyboard>",
                     "isOptional": false,
                     "isOR": false
                 }
