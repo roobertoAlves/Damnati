@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
 
     private void InitializeSystem()
     {
-        StartCoroutine(SavedLanguage());
         SaveSystem.LoadPlayerSettings();
+        StartCoroutine(SavedLanguage());
     }
 
     private IEnumerator SavedLanguage()

@@ -96,9 +96,11 @@ public static class SaveSystem
         }
         else
         {
-            return new PlayerProfileSettings(); // Retorna um novo objeto vazio se não houver configurações salvas
+            // Retorna um novo objeto vazio se não houver configurações salvas
+            return new PlayerProfileSettings();
         }
     }
+
 
     public static void SavePlayerSettings(PlayerProfileSettings playerSettings)
     {

@@ -10,13 +10,4 @@ public class SaveData
 
 }
 
-[System.Serializable]
-public class PlayerProfileSettings
-{
-    public float fxVolume = 1;
-    public float musicVolume = 1;
-    public int points = 0;
-    public Language id_local = Language.PT;
-    // Outras configurações do jogador
-}
 
