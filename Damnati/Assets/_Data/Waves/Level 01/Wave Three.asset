@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a108b1b63cf16845a740e128c9a9341, type: 3}
-  m_Name: Wave Two
+  m_Name: Wave Three
   m_EditorClassIdentifier: 
   _enemiesInWave:
-  - {fileID: 2893824280968974737, guid: c3a09042db4d0b34e97ee6e46304aaa3, type: 3}
   - {fileID: 8864696111527946474, guid: 4428d7e254e914640b4e5782fad0361d, type: 3}
+  - {fileID: 2893824280968974737, guid: c3a09042db4d0b34e97ee6e46304aaa3, type: 3}
   _timeBeforeThisWave: 4
-  _numberToSpawn: 4
+  _numberToSpawn: 2
   _isBossWave: 0

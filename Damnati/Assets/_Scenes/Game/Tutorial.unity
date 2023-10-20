@@ -4300,7 +4300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &735246612
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7311,6 +7311,7 @@ MonoBehaviour:
   _waves:
   - {fileID: 11400000, guid: e72aee96d78172848a9e01707fd825c1, type: 2}
   - {fileID: 11400000, guid: 3c14233010895ec43a4728f6321436ed, type: 2}
+  - {fileID: 11400000, guid: 1764e70c11f2a5d42971b74c1b5ad729, type: 2}
   - {fileID: 11400000, guid: 7737bc19bcf3f2b489eab2efde059bb3, type: 2}
   _waveParent: {fileID: 904073052}
   _spawnPoints:
