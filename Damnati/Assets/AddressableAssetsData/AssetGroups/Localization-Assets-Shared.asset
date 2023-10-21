@@ -53,6 +53,16 @@ MonoBehaviour:
       Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: 9e3236869953eb64581face114d89cab
+    m_Address: Assets/_Localization/Tables/Confirmation Screen/Overwrite/Overwrite
+      Confirmation Screen Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: b42a8d656c1bc804583195d5aaddf617
+    m_Address: Assets/_Localization/Tables/Confirmation Screen/Load Game/Load Game
+      Confirmation Screen Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 21f09651e110e13408274639ffe6b62f, type: 2}
   m_SchemaSet:

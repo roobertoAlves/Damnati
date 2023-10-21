@@ -30,6 +30,10 @@ MonoBehaviour:
     m_Localized: Idioma
     m_Metadata:
       m_Items: []
+  - m_Id: 14822203293696
+    m_Localized: SALVAR
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

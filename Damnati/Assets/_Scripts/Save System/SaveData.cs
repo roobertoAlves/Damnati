@@ -4,7 +4,7 @@ public class SaveData
     // Player Settings Data
 
     // Save Slots Informations
-    public int lastHourPlayed = 0;
+    public float lastHourPlayed = 0;
     public string lastDatePlayed = "";
     public string currentLevelName = "Tutorial";
 

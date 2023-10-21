@@ -97,7 +97,7 @@ public class SaveSlot : MonoBehaviour
             saveData.currentLevelName = SceneManager.GetActiveScene().name;
 
             // Outros dados do save
-            saveData.lastHourPlayed = 10; // Exemplo: substitua pelas horas jogadas reais
+            saveData.lastHourPlayed = Time.deltaTime; // Exemplo: substitua pelas horas jogadas reais
             saveData.lastDatePlayed = System.DateTime.Now.ToString("dd-MM-yyyy"); // Adicionar data atual
 
             // Salvar o jogo no slot selecionado
