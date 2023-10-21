@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
-  m_Name: Confirm Screen
+  m_Name: Play Game In Menu
   m_EditorClassIdentifier: 
-  m_SharedTableData: {fileID: 11400000, guid: 44d67ff429943b24398530de257656fd, type: 2}
+  m_SharedTableData: {fileID: 11400000, guid: 70714c998cf4c7d4d9dffb0acafd8a76, type: 2}
   m_Tables:
-  - {fileID: 11400000, guid: fb2ed67f35fc27d49886c7ed3d2e35ce, type: 2}
-  - {fileID: 11400000, guid: c05fa9e24f7531d498a9ac5f19a46158, type: 2}
+  - {fileID: 11400000, guid: 30fbb3e969275ca4c905a9d1899012d8, type: 2}
+  - {fileID: 11400000, guid: 5170107b1702994499f083b9e21b650e, type: 2}
   m_Extensions: []
   m_Group: String Table
   references:

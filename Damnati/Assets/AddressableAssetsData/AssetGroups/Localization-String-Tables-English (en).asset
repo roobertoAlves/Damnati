@@ -24,7 +24,7 @@ MonoBehaviour:
     - Locale-en
     - Preload
   - m_GUID: fb2ed67f35fc27d49886c7ed3d2e35ce
-    m_Address: Confirm Screen_en
+    m_Address: Menu Return Confirmation Screen_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en
@@ -43,6 +43,24 @@ MonoBehaviour:
     - Preload
   - m_GUID: b4888921306c08e47bdfad1f57f4daae
     m_Address: Credits_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Preload
+  - m_GUID: 30fbb3e969275ca4c905a9d1899012d8
+    m_Address: Play Game In Menu_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Preload
+  - m_GUID: 810d2179aac52cd4db3c782a71f61fd8
+    m_Address: Delete Save Confirmation Screen_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Preload
+  - m_GUID: 6f1d13f4c9638bc47bb93c272b454655
+    m_Address: Geral Settings Screen_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en

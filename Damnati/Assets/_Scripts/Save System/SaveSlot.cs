@@ -8,7 +8,6 @@ public class SaveSlot : MonoBehaviour
     [Header("Save Slot U.I")]
     [Space(15)]
     [SerializeField] private GameObject[] _slotButtons;
-    [SerializeField] private TMP_Text[] _emptyTitle;
     [SerializeField] private Button[] _trashButtons;
     [SerializeField] private GameObject _confirmDeletePanel;
     [SerializeField] private GameObject _confirmSavePanel;
@@ -17,6 +16,7 @@ public class SaveSlot : MonoBehaviour
 
     [Header("Save Screen Slots Title")]
     [Space(15)]
+    [SerializeField] private GameObject[] _emptyTitle;
     [SerializeField] private GameObject[] _localeTitle;
     [SerializeField] private GameObject[] _hoursPlayedTitle;
     [SerializeField] private GameObject[] _lastPlayedDateTitle;
@@ -57,7 +57,7 @@ public class SaveSlot : MonoBehaviour
                 _hoursPlayed[i].text = $"{saveData.lastHourPlayed}";
                 _lastPlayedDate[i].text = $"{saveData.lastDatePlayed}";
                 _icon[i].gameObject.SetActive(true);
-                _emptyTitle[i].text = "";
+                _emptyTitle[i].gameObject.SetActive(false);
                 _trashButtons[i].interactable = true;
             }
             else
@@ -74,7 +74,7 @@ public class SaveSlot : MonoBehaviour
                 _lastPlayedDate[i].text = "";
                 _icon[i].gameObject.SetActive(false);
 
-                _emptyTitle[i].text = "Empty Save Slot";
+                _emptyTitle[i].gameObject.SetActive(true);
                 _trashButtons[i].interactable = false;
             }
         }

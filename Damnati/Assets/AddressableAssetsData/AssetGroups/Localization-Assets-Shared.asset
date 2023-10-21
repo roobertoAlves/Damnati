@@ -38,6 +38,21 @@ MonoBehaviour:
     m_Address: Assets/_Localization/Tables/Credits/Credits Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: 70714c998cf4c7d4d9dffb0acafd8a76
+    m_Address: Assets/_Localization/Tables/Menu/Load&Save/Play Game In Menu Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 6c2c3e2488022494b8e46da3b2a6ad7b
+    m_Address: Assets/_Localization/Tables/Confirmation Screen/Delete Save/Delete
+      Save Confirmation Screen Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 021470f4eff35914ba172c34a7073284
+    m_Address: Assets/_Localization/Tables/Settings/Geral/Geral Settings Screen Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 21f09651e110e13408274639ffe6b62f, type: 2}
   m_SchemaSet:

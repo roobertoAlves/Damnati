@@ -186,7 +186,7 @@ public class InputHandler : MonoBehaviour
         _thEquipInput = _twoHandWeaponEquipAction.WasPerformedThisFrame();
         _dodgeInput = _dodgeAction.WasPerformedThisFrame();
 
-        _runInput = _sprintActi;
+        _runInput = _sprintAction.WasPerformedThisFrame();
         _lockOnInput = _cameraLockOnAction.WasPerformedThisFrame();
         _escInput = _pauseAction.WasPerformedThisFrame();
         _interactInput = _interactAction.WasPerformedThisFrame();

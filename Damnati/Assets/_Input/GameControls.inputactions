@@ -242,9 +242,9 @@
                     "name": "",
                     "id": "62b315db-faaf-4545-8432-b89d33213c2f",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
-                    "groups": "KM",
+                    "groups": "KM;Mouse/Keyboard",
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -591,7 +591,7 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KM",
                     "action": "ESC",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -10,31 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: Confirm Screen Shared Data
+  m_Name: Play Game In Menu Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: Confirm Screen
-  m_TableCollectionNameGuidString: 44d67ff429943b24398530de257656fd
+  m_TableCollectionName: Play Game In Menu
+  m_TableCollectionNameGuidString: 70714c998cf4c7d4d9dffb0acafd8a76
   m_Entries:
-  - m_Id: 19040665600
-    m_Key: YES
+  - m_Id: 62036475904
+    m_Key: EMPTY SLOT
     m_Metadata:
       m_Items: []
-  - m_Id: 33951416320
-    m_Key: NO
+  - m_Id: 85675573248
+    m_Key: LOCATION
     m_Metadata:
       m_Items: []
-  - m_Id: 54142795776
-    m_Key: TITLE
+  - m_Id: 100447911936
+    m_Key: HOURS PLAYED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116268826624
+    m_Key: LAST TIME PLAYED
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 4465190436685742084
+    rid: 4465190863942451202
   references:
     version: 2
     RefIds:
-    - rid: 4465190436685742084
+    - rid: 4465190863942451202
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1696224971312
+        m_CustomEpoch: 1697857311721

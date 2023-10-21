@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Delete Save Confirmation Screen_pt
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: pt
+  m_SharedData: {fileID: 11400000, guid: 6c2c3e2488022494b8e46da3b2a6ad7b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 126033166336
+    m_Localized: SIM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131443818496
+    m_Localized: "N\xC3O"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113890656256
+    m_Localized: "Voc\xEA tem certeza que deseja deletar esse save?"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
