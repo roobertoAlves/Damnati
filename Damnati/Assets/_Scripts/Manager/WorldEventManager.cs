@@ -15,6 +15,10 @@ public class WorldEventManager : MonoBehaviour
     [SerializeField] private bool _bossFightIsActive;
     [SerializeField] private bool _bossHasBeenAwakened;
     [SerializeField] private bool _bossHasBeenDefeated;
+    
+    [Header("Temp wIN")]
+    [Space(15)]
+    [SerializeField] public GameObject WinPanel;
 
     #region GET & SET
     public bool BossFightIsActive { get { return _bossFightIsActive; } set { _bossFightIsActive = value; }}
@@ -28,10 +32,12 @@ public class WorldEventManager : MonoBehaviour
 
     private void Awake() 
     {
-        _bossHealthBar = FindObjectOfType<UIBossHealthBar>();    
+        _bossHealthBar = FindObjectOfType<UIBossHealthBar>();
+        WinPanel.SetActive(false);    
     }
     public void ActivateBossFight()
     {
+        WinPanel.SetActive(false);
         _bossFightIsActive = true;
         _bossHasBeenAwakened = true;
         _bossHealthBar.SetUIHealthBarToActive();
@@ -40,6 +46,7 @@ public class WorldEventManager : MonoBehaviour
     {
         _bossHasBeenDefeated = true;
         _bossFightIsActive = false;
+        WinPanel.SetActive(true);
     }
 
 }

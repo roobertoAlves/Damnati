@@ -19,7 +19,8 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 8521351168
-    m_Localized: YOU DIED
+    m_Localized: Thank you for playing, the game is still going through the development
+      process and will have improvements and new features
     m_Metadata:
       m_Items: []
   - m_Id: 508268478464

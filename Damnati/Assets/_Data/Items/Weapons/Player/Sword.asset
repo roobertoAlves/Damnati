@@ -40,7 +40,7 @@ MonoBehaviour:
   rageLightAttackMultiplier: 3
   rageHeavyAttackMultiplier: 5
   oh_tap_LB_Action: {fileID: 11400000, guid: 77b3dc1f58d5ec444a76f53e85605264, type: 2}
-  oh_hold_LB_Action: {fileID: 11400000, guid: 6e0a5a110090ccd48801f87c02478420, type: 2}
+  oh_hold_LB_Action: {fileID: 0}
   oh_tap_RB_Action: {fileID: 11400000, guid: 55f88e159b0211a4db2ac5866580e058, type: 2}
   oh_hold_RB_Action: {fileID: 0}
   oh_release_RB_Action: {fileID: 0}
@@ -49,7 +49,7 @@ MonoBehaviour:
   oh_hold_LT_Action: {fileID: 0}
   oh_hold_F_Action: {fileID: 0}
   oh_tap_Z_Action: {fileID: 0}
-  oh_hold_G_Action: {fileID: 11400000, guid: 69957a617eba5ee4091abd7d5aaf0d1d, type: 2}
+  oh_hold_G_Action: {fileID: 0}
   th_tap_LB_Action: {fileID: 0}
   th_hold_LB_Action: {fileID: 0}
   th_tap_RB_Action: {fileID: 0}

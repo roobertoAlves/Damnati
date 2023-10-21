@@ -19,7 +19,8 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 8521351168
-    m_Localized: "VOC\xCA MORREU\n"
+    m_Localized: "Obrigado por jogar, o jogo ainda est\xE1 passando pelo processo
+      de desenvolvimento e ter\xE1 melhorias e novas features"
     m_Metadata:
       m_Items: []
   - m_Id: 508268478464

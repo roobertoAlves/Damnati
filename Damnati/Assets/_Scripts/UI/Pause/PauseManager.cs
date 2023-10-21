@@ -21,6 +21,7 @@ public class PauseManager : MonoBehaviour
     private void Awake()
     {
         _player = FindObjectOfType<PlayerManager>();
+        Time.timeScale = 1f;
     }
     // Update is called once per frame
     private void Update()

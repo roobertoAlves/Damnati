@@ -113,7 +113,6 @@ public class InputHandler : MonoBehaviour
     public bool THEquipFlag { get { return _thEquipInput; } set { _thEquipInput = value; }}
     public bool ComboFlag { get { return _comboFlag; } set { _comboFlag = value; }}
     public bool InteractInput { get { return _interactInput; } set { _interactInput = value; }}
-    public bool PauseInput { get { return _escInput; } set { _escInput = value; }}
     public bool CriticalAttackFlag { get { return _gHoldInput; } set { _gHoldInput = value; }}
     public bool LockOnFlag { get { return _lockOnFlag; } set { _lockOnFlag = value; }}
    
@@ -173,23 +172,59 @@ public class InputHandler : MonoBehaviour
         _lStickInput = _leftLockOnAction.WasPerformedThisFrame();
         _rStickInput = _rightLockOnAction.WasPerformedThisFrame();
 
-        _lbInput = _lbAction.WasPerformedThisFrame();
-        _lbHoldInput = _holdLBAction.WasPerformedThisFrame();
+        _blockAction.performed += ctx => _blockInput = true;
+        _blockAction.canceled += ctx => _blockInput = false;
 
-        _rbInput = _rbAction.WasPerformedThisFrame();
-        _rbHoldInput = _holdRBAction.WasPerformedThisFrame();
+        _sprintAction.performed += ctx => _runInput = true;
+        _sprintAction.canceled += ctx => _runInput = false;
 
-        _gHoldInput = _criticalAttackAction.WasPerformedThisFrame();
-        _zInput = _weaponArtSkillAction.WasPerformedThisFrame();
-        _blockInput = _blockAction.WasPerformedThisFrame();
-        _rInput = _drawArrowAction.WasPerformedThisFrame();
-        _thEquipInput = _twoHandWeaponEquipAction.WasPerformedThisFrame();
-        _dodgeInput = _dodgeAction.WasPerformedThisFrame();
+        //_lbInput = _lbAction.WasPerformedThisFrame();
 
-        _runInput = _sprintAction.WasPerformedThisFrame();
-        _lockOnInput = _cameraLockOnAction.WasPerformedThisFrame();
-        _escInput = _pauseAction.WasPerformedThisFrame();
-        _interactInput = _interactAction.WasPerformedThisFrame();
+        _lbAction.performed += ctx => _lbInput = true;
+        _lbAction.canceled += ctx => _lbInput = false;
+
+        _holdLBAction.performed += ctx => _lbHoldInput = true;
+        _holdLBAction.canceled += ctx => _lbHoldInput = false;
+
+        //_rbInput = _rbAction.WasPerformedThisFrame();
+
+        _rbAction.performed += ctx => _rbInput = true;
+        _rbAction.canceled += ctx => _rbInput = false;
+
+        _holdRBAction.performed += ctx => _rbHoldInput = true;
+        _holdRBAction.canceled += ctx => _rbHoldInput = false;
+        
+        _weaponArtSkillAction.performed += ctx => _zInput = true;
+        _weaponArtSkillAction.canceled += ctx => _zInput = true;
+
+        _drawArrowAction.performed += ctx => _rInput = true;
+        _drawArrowAction.canceled += ctx => _rInput = true;
+        
+        _twoHandWeaponEquipAction.performed += ctx => _thEquipInput = true;
+        _twoHandWeaponEquipAction.canceled += ctx => _thEquipInput = true;
+
+        _dodgeAction.performed += ctx => _dodgeInput = true;
+        _dodgeAction.canceled += ctx => _dodgeInput = true;
+
+        _criticalAttackAction.performed += ctx => _gHoldInput = true;
+        _criticalAttackAction.canceled += ctx => _gHoldInput = true;
+
+        _pauseAction.performed += ctx => _escInput = true;
+
+        //_zInput = _weaponArtSkillAction.WasPerformedThisFrame();
+        //_rInput = _drawArrowAction.WasPerformedThisFrame();
+        //_thEquipInput = _twoHandWeaponEquipAction.WasPerformedThisFrame();
+        //_dodgeInput = _dodgeAction.WasPerformedThisFrame();
+
+        //_lockOnInput = _cameraLockOnAction.WasPerformedThisFrame();
+        //_interactInput = _interactAction.WasPerformedThisFrame();
+        
+        //_gHoldInput = _criticalAttackAction.WasPerformedThisFrame();
+        //_escInput = _pauseAction.WasPerformedThisFrame();
+        //_rbHoldInput = _holdRBAction.WasPerformedThisFrame();
+        //_lbHoldInput = _holdLBAction.WasPerformedThisFrame();
+        //_runInput = _sprintAction.WasPerformedThisFrame();
+        //_blockInput = _blockAction.WasPerformedThisFrame();
         
     }
     

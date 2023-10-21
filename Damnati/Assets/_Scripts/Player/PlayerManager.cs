@@ -36,7 +36,8 @@ public class PlayerManager : CharacterManager
 
     [Header("Temp Die")]
     [Space(15)]
-    [SerializeField] public GameObject DiePanel;
+    [SerializeField] private GameObject _diePanel;
+
 
     #region GET & SET
 
@@ -60,6 +61,7 @@ public class PlayerManager : CharacterManager
     protected override void Awake() 
     {
         base.Awake();
+        _diePanel.SetActive(false);
         GameManager.Instance.InputHandler.FindPlayer();
         _cameraHandler = FindObjectOfType<CameraHandler>();
         _uiManager = FindObjectOfType<UIManager>();
@@ -107,11 +109,6 @@ public class PlayerManager : CharacterManager
         {
             _playerStatsManager.RegenerateRage();
         }
-
-        if(!IsDead)
-        {
-            DiePanel.SetActive(false);
-        }
     }
     protected override void FixedUpdate()
     {
@@ -132,6 +129,12 @@ public class PlayerManager : CharacterManager
         {
             _playerLocomotionManager.InAirTimer = _playerLocomotionManager.InAirTimer + Time.deltaTime;
         } 
+    }
+
+    public void DeathPanelActive()
+    {
+        _diePanel.SetActive(true);
+        Time.timeScale = 0f;
     }
     
     #region Player Interactions

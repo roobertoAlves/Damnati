@@ -110,7 +110,7 @@
                     "id": "4393c9d9-48d4-44a6-8776-01bc7f527209",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -160,7 +160,7 @@
                 },
                 {
                     "name": "Block",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "3adf00dd-63c6-444d-837d-d00b99fe7737",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -332,7 +332,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "KM",
+                    "groups": "KM;Mouse/Keyboard",
                     "action": "Hold LB",
                     "isComposite": false,
                     "isPartOfComposite": false

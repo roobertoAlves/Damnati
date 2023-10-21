@@ -9,6 +9,7 @@ public class EnemyBossManager : MonoBehaviour
 
     private UIBossHealthBar _bossHealthBar;
     private BossCombatStanceState _bossCombatStanceState;
+    private WorldEventManager _worldEventManager;
 
     [Header("Second Phase FX")]
     [Space(15)]
@@ -23,6 +24,7 @@ public class EnemyBossManager : MonoBehaviour
     {
         _bossHealthBar = FindObjectOfType<UIBossHealthBar>();
         _aiCharacterManager = GetComponent<AICharacterManager>();
+        _worldEventManager = FindObjectOfType<WorldEventManager>();
         _bossCombatStanceState = GetComponentInChildren<BossCombatStanceState>();
     }
 
@@ -30,6 +32,11 @@ public class EnemyBossManager : MonoBehaviour
     {
         _bossHealthBar.SetBossName(_bossName);
         _bossHealthBar.SetBossMaxHealth(_aiCharacterManager.AICharacterStatsManager.MaxHealth);    
+    }
+
+    private void Update() 
+    {
+        IsBossDead(_aiCharacterManager.AICharacterStatsManager.CurrentHealth);  
     }
 
     public void UpdateBossHealthBar(int currentHealth, int MaxHealth)
@@ -42,6 +49,13 @@ public class EnemyBossManager : MonoBehaviour
             ShiftToSecondPhase();
         }
 
+    }
+    public void IsBossDead(int currentHealth)
+    {
+        if(currentHealth <= 0 && _aiCharacterManager.IsDead)
+        {
+            _worldEventManager.BossHasBeenDefeated();
+        }
     }
     public void ShiftToSecondPhase()
     {
