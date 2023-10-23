@@ -202,6 +202,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "a07ea85a-62f2-41aa-8643-d9fa2575a075",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -567,32 +576,15 @@
                     "action": "Lock On Target Right",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Actions",
-            "id": "5e4f6f42-310e-4377-9875-d05919764c5c",
-            "actions": [
-                {
-                    "name": "ESC",
-                    "type": "Button",
-                    "id": "1bfce42f-740c-4c6e-b4ac-653b457cc06e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "1e140560-3103-457d-8b3c-c8a5617cc930",
+                    "id": "42a41794-c44a-4afe-8715-dc0167494de8",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "KM",
-                    "action": "ESC",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

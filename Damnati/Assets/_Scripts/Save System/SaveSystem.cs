@@ -31,55 +31,61 @@ public static class SaveSystem
         }
         else
         {
-            //Debug.LogWarning($"Save file for slot {slot} does not exist. No deletion performed.");
+            Debug.Log($"Save file for slot {slot} does not exist. No deletion performed.");
         }
     }
 
     public static void SaveGame(int slot, SaveData saveData, PlayerProfileSettings playerSettings)
     {
         string saveFilePath = GetSaveFilePath(slot);
+        string saveFolder = Path.Combine(Application.persistentDataPath, "Saves");
+
+        // Certifique-se de que a pasta de salvamento existe
+        if (!Directory.Exists(saveFolder))
+        {
+            Directory.CreateDirectory(saveFolder);
+        }
 
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
+        Debug.Log("Antes de criar o arquivo");
+        Debug.Log("Caminho do arquivo de salvamento: " + saveFilePath);
+
         using (FileStream fileStream = File.Create(saveFilePath))
         {
-            // Se CanOverwriteSaves for verdadeira ou o arquivo não existir, permita a sobreposição.
-            if (CanOverwriteSaves || !File.Exists(saveFilePath))
+            Debug.Log("Após criar o arquivo");
+            // Restante do código de serialização
+            SaveGameData saveGameData = new SaveGameData
             {
-                binaryFormatter.Serialize(fileStream, saveData);
-                binaryFormatter.Serialize(fileStream, playerSettings);
-            }
+                saveData = saveData,
+                playerSettings = playerSettings
+            };
+
+            binaryFormatter.Serialize(fileStream, saveGameData);
         }
     }
+
     public static SaveData LoadGame(int slot)
     {
         string saveFilePath = GetSaveFilePath(slot);
-
+        Debug.Log("saveFilePath: " + saveFilePath);
+        
         if (File.Exists(saveFilePath))
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 
             using (FileStream fileStream = File.Open(saveFilePath, FileMode.Open))
             {
-                if (fileStream.Length > 0) // Verifique se o arquivo não está vazio
-                {
-                    return (SaveData)binaryFormatter.Deserialize(fileStream);
-                }
-                else
-                {
-                    //Debug.LogWarning($"Save file for slot {slot} is empty.");
-                    // Se o arquivo estiver vazio, retorne um novo objeto SaveData
-                    return new SaveData();
-                }
+                SaveGameData saveGameData = (SaveGameData)binaryFormatter.Deserialize(fileStream);
+                return saveGameData.saveData;
             }
         }
         else
         {
-            //Debug.LogWarning($"Save file for slot {slot} does not exist.");
+            Debug.Log($"Save file for slot {slot} does not exist.");
             return null;
         }
     }
-
 
     public static PlayerProfileSettings LoadPlayerSettings()
     {
@@ -117,6 +123,7 @@ public static class SaveSystem
     private static string GetSaveFilePath(int slot)
     {
         return Path.Combine(SAVE_FOLDER, $"save_{slot}{SAVE_FILE_EXTENSION}");
+        
     }
 
     private static string GetPlayerSettingsFilePath()

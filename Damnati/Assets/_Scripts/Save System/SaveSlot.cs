@@ -106,7 +106,7 @@ public class SaveSlot : MonoBehaviour
             // Atualizar a interface do usuário após o save
             UpdateSlotButtons();
 
-            //Debug.Log("Salvou");
+            Debug.Log("Salvou");
         }
     }
     public void SaveGameInPause()
@@ -144,17 +144,10 @@ public class SaveSlot : MonoBehaviour
         if (_selectedSlot != -1)
         {
             // Verificar se o slot está vazio
-            if (!SaveSystem.SaveExists(_selectedSlot))
-            {
-                Debug.Log("Salvando e carregando save novo");
-                // Slot vazio, criar um novo save e carregar a cena do tutorial
-                SaveGame();
-                GameManager.Instance.SceneLoadManager.LoadScene("Tutorial"); // Substitua pelo nome da cena do tutorial
-            }
-            else
+            if (SaveSystem.SaveExists(_selectedSlot))
             {
                 // Slot tem um save, carregar a cena correspondente ao save
-                SaveData saveData = SaveSystem.LoadGame(_selectedSlot);
+                    SaveData saveData = SaveSystem.LoadGame(_selectedSlot);
 
                 if (saveData != null)
                 {
@@ -168,6 +161,14 @@ public class SaveSlot : MonoBehaviour
 
                     GameManager.Instance.SceneLoadManager.LoadScene(saveData.currentLevelName);
                 }
+            }
+            else
+            {
+                SaveGame();
+                Debug.Log("Salvando e carregando save novo");
+                // Slot vazio, criar um novo save e carregar a cena do tutorial
+                GameManager.Instance.SceneLoadManager.LoadScene("Tutorial"); // Substitua pelo nome da cena do tutorial
+               
             }
         }
     }
