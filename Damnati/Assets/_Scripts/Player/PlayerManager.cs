@@ -86,6 +86,7 @@ public class PlayerManager : CharacterManager
     }
     private void Update()
     {
+
         IsInteracting = Animator.GetBool("IsInteracting");
         CanDoCombo = Animator.GetBool("CanDoCombo");
         CanRotate = Animator.GetBool("CanRotate");
@@ -96,7 +97,6 @@ public class PlayerManager : CharacterManager
         Animator.SetBool("IsDead", IsDead);
         Animator.SetBool("IsBlocking", IsBlocking);
 
-        _inputHandler.TickInput();
         _playerLocomotionManager.HandleDodge();
         _playerStatsManager.RegenerateStamina();
         _playerLocomotionManager.HandleGroundedMovement();

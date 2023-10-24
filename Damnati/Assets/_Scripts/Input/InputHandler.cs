@@ -139,6 +139,14 @@ public class InputHandler : MonoBehaviour
     public void FindPlayer()
     {
         _player = FindObjectOfType<PlayerManager>();
+        
+    }
+    public void Update()
+    {
+        if(_player != null)
+        {
+            TickInput();
+        }
     }
     private void SetupInputActions()
     {
@@ -232,11 +240,6 @@ public class InputHandler : MonoBehaviour
     {
         UpdateInputs();
 
-        if(_player.IsDead)
-        {
-            return;
-        }
-        
         HandleQuedInput();
         HandleMoveInput();
 
