@@ -62,11 +62,11 @@ public class PlayerManager : CharacterManager
     {
         base.Awake();
         _diePanel.SetActive(false);
+        _inputHandler = FindObjectOfType<InputHandler>();
         GameManager.Instance.InputHandler.FindPlayer();
         _cameraHandler = FindObjectOfType<CameraHandler>();
         _uiManager = FindObjectOfType<UIManager>();
         _interactableUI = GetComponent<InteractableUI>();
-        _inputHandler = FindObjectOfType<InputHandler>();
         Animator = GetComponent<Animator>();
 
         _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
@@ -86,7 +86,7 @@ public class PlayerManager : CharacterManager
     }
     private void Update()
     {
-
+        GameManager.Instance.InputHandler.TickInput();
         IsInteracting = Animator.GetBool("IsInteracting");
         CanDoCombo = Animator.GetBool("CanDoCombo");
         CanRotate = Animator.GetBool("CanRotate");

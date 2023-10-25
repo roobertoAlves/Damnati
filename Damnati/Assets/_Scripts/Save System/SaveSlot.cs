@@ -93,8 +93,11 @@ public class SaveSlot : MonoBehaviour
             SaveData saveData = new SaveData();
             PlayerProfileSettings playerProfile = new PlayerProfileSettings();
 
-            // Obter o nome da cena atual
-            saveData.currentLevelName = SceneManager.GetActiveScene().name;
+            if (IsGameScene(saveData.currentLevelName))
+            {
+                // Atualizar a variável currentGameScene
+                saveData.currentLevelName = SceneManager.GetActiveScene().name;
+            }
 
             // Outros dados do save
             saveData.lastHourPlayed = Time.deltaTime; // Exemplo: substitua pelas horas jogadas reais
@@ -106,7 +109,7 @@ public class SaveSlot : MonoBehaviour
             // Atualizar a interface do usuário após o save
             UpdateSlotButtons();
 
-            Debug.Log("Salvou");
+            //Debug.Log("Salvou");
         }
     }
     public void SaveGameInPause()
@@ -151,7 +154,7 @@ public class SaveSlot : MonoBehaviour
 
                 if (saveData != null)
                 {
-                    Debug.Log("Carregando um save existente");
+                    //Debug.Log("Carregando um save existente");
                     // Verificar se a cena atual é uma cena de jogo (não é um menu)
                     if (IsGameScene(saveData.currentLevelName))
                     {
@@ -165,7 +168,7 @@ public class SaveSlot : MonoBehaviour
             else
             {
                 SaveGame();
-                Debug.Log("Salvando e carregando save novo");
+                //Debug.Log("Salvando e carregando save novo");
                 // Slot vazio, criar um novo save e carregar a cena do tutorial
                 GameManager.Instance.SceneLoadManager.LoadScene("Tutorial"); // Substitua pelo nome da cena do tutorial
                

@@ -141,19 +141,14 @@ public class InputHandler : MonoBehaviour
         _player = FindObjectOfType<PlayerManager>();
         
     }
-    public void Update()
-    {
-        if(_player != null)
-        {
-            TickInput();
-        }
-    }
     private void SetupInputActions()
     {
         _moveAction = _playerInput.actions["Walk"];
+        _sprintAction = _playerInput.actions["Sprint"];
+        _dodgeAction = _playerInput.actions["Dodge"];
 
         _viewAction = _playerInput.actions["View"];
-
+        _cameraLockOnAction = _playerInput.actions["CameraLockOn"];
         _leftLockOnAction = _playerInput.actions["Lock On Target Left"];
         _rightLockOnAction = _playerInput.actions["Lock On Target Right"];
 
@@ -161,30 +156,32 @@ public class InputHandler : MonoBehaviour
         _rbAction = _playerInput.actions["RB"];
         _holdLBAction = _playerInput.actions["Hold LB"];
         _holdRBAction = _playerInput.actions["Hold RB"];
+
         _drawArrowAction = _playerInput.actions["Reload"];
-        _dodgeAction = _playerInput.actions["Dodge"];
+        _blockAction = _playerInput.actions["Block"];
         _criticalAttackAction = _playerInput.actions["Critical"];
         _weaponArtSkillAction = _playerInput.actions["WeaponArt"];
         _twoHandWeaponEquipAction = _playerInput.actions["TH"];
-        _pauseAction = _playerInput.actions["ESC"];
+
+        _pauseAction = _playerInput.actions["Pause"];
         _interactAction = _playerInput.actions["Interact"];
-        _sprintAction = _playerInput.actions["Run"];
-        _cameraLockOnAction = _playerInput.actions["CameraLockOn"];
-        _blockAction = _playerInput.actions["Block"];
+
     }
     private void UpdateInputs()
     {
+        //Debug.Log("Updating Input");
+
         _walkMoveInput = _moveAction.ReadValue<Vector2>();
         _cameraMoveInput = _viewAction.ReadValue<Vector2>();
-
-        _lStickInput = _leftLockOnAction.WasPerformedThisFrame();
-        _rStickInput = _rightLockOnAction.WasPerformedThisFrame();
 
         _blockAction.performed += ctx => _blockInput = true;
         _blockAction.canceled += ctx => _blockInput = false;
 
         _sprintAction.performed += ctx => _runInput = true;
         _sprintAction.canceled += ctx => _runInput = false;
+
+        _leftLockOnAction.performed += ctx => _lStickInput = true;
+        _rightLockOnAction.performed += ctx => _rStickInput = true;
 
         //_lbInput = _lbAction.WasPerformedThisFrame();
 
@@ -203,19 +200,22 @@ public class InputHandler : MonoBehaviour
         _holdRBAction.canceled += ctx => _rbHoldInput = false;
         
         _weaponArtSkillAction.performed += ctx => _zInput = true;
-        _weaponArtSkillAction.canceled += ctx => _zInput = true;
+        _weaponArtSkillAction.canceled += ctx => _zInput = false;
 
         _drawArrowAction.performed += ctx => _rInput = true;
-        _drawArrowAction.canceled += ctx => _rInput = true;
+        _drawArrowAction.canceled += ctx => _rInput = false;
         
         _twoHandWeaponEquipAction.performed += ctx => _thEquipInput = true;
-        _twoHandWeaponEquipAction.canceled += ctx => _thEquipInput = true;
+        _twoHandWeaponEquipAction.canceled += ctx => _thEquipInput = false;
 
         _dodgeAction.performed += ctx => _dodgeInput = true;
-        _dodgeAction.canceled += ctx => _dodgeInput = true;
+        _dodgeAction.canceled += ctx => _dodgeInput = false;
 
         _criticalAttackAction.performed += ctx => _gHoldInput = true;
-        _criticalAttackAction.canceled += ctx => _gHoldInput = true;
+        _criticalAttackAction.canceled += ctx => _gHoldInput = false;
+
+        _sprintAction.performed += ctx => _runInput = true;
+        _sprintAction.performed += ctx => _runInput = false;
 
         _pauseAction.performed += ctx => _escInput = true;
 
@@ -238,8 +238,14 @@ public class InputHandler : MonoBehaviour
     
     public void TickInput()
     {
-        UpdateInputs();
 
+        if(_player == null)
+        {
+            Debug.Log("Player Manager Null");
+            return;
+        }
+
+        UpdateInputs();
         HandleQuedInput();
         HandleMoveInput();
 
