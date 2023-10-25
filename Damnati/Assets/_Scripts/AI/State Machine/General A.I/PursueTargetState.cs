@@ -22,7 +22,7 @@ public class PursueTargetState : States
         }
         if(aiCharacter.DistanceFromTarget > aiCharacter.MaximumAggroRadius)
         {
-            aiCharacter.Animator.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
+            aiCharacter.EnemyNavMeshAgent.destination = aiCharacter.CurrentTarget.transform.position;
         }
 
         if(aiCharacter.DistanceFromTarget <= aiCharacter.MaximumAggroRadius)

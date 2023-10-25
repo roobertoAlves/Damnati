@@ -84,6 +84,11 @@ public class PlayerStatsManager : CharacterStatsManager
     {
         CurrentHealth = 0;
         _player.IsDead = true;
+        _player.IsInteracting = false;
+        _player.IsAiming = false;
+        _player.IsBlocking = false;
+        _player.IsPerformingRiposte = false;
+        _player.CanBeRiposted = false;
         _player.PlayerAnimator.PlayTargetAnimation("Death_01", true);
     }
 
@@ -144,6 +149,9 @@ public class PlayerStatsManager : CharacterStatsManager
             }
         }
     }
+    #endregion
+
+    #region Combat Rage Actions Drain
     public void RageDrain(int drain)
     {
         _currentRage = _currentRage - drain;
