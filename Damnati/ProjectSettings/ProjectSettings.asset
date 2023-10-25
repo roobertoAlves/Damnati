@@ -716,7 +716,8 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Standalone: TMP_PRESENT;USE_NEW_INPUT;USE_TIMELINE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
