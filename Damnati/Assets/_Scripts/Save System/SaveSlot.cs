@@ -54,7 +54,8 @@ public class SaveSlot : MonoBehaviour
 
 
                 _locale[i].text = saveData.currentLevelName;
-                _hoursPlayed[i].text = $"{saveData.lastHourPlayed}";
+                _hoursPlayedTitle[i].gameObject.SetActive(false);
+                _hoursPlayed[i].text = "";
                 _lastPlayedDate[i].text = $"{saveData.lastDatePlayed}";
                 _icon[i].gameObject.SetActive(true);
                 _emptyTitle[i].gameObject.SetActive(false);
@@ -93,11 +94,7 @@ public class SaveSlot : MonoBehaviour
             SaveData saveData = new SaveData();
             PlayerProfileSettings playerProfile = new PlayerProfileSettings();
 
-            if (IsGameScene(saveData.currentLevelName))
-            {
-                // Atualizar a variável currentGameScene
-                saveData.currentLevelName = SceneManager.GetActiveScene().name;
-            }
+            SceneManager.LoadScene(saveData.currentLevelName);
 
             // Outros dados do save
             saveData.lastHourPlayed = Time.deltaTime; // Exemplo: substitua pelas horas jogadas reais
@@ -201,6 +198,7 @@ public class SaveSlot : MonoBehaviour
     // Função para verificar se uma cena é uma cena de jogo (não é um menu)
     private bool IsGameScene(string sceneName)
     {
+        
         return sceneName == "Tutorial";
     }
     public void DeleteGame()
@@ -215,7 +213,6 @@ public class SaveSlot : MonoBehaviour
             }
         }
     }
-
 
     #region Open Confirm Menu's
 

@@ -35,17 +35,17 @@ public class PauseManager : MonoBehaviour
         {
             Pause_painel.SetActive(false);
             Time.timeScale = 1f;
-            //Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
-            // Verifique a lógica no AudioManager para pausar/despausar a música
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
             GameManager.Instance.AudioManager.PauseAndUnpauseBackgroundMusic();
         }
         else
         {
             Pause_painel.SetActive(true);
             Time.timeScale = 0f;
-            //Cursor.lockState = CursorLockMode.None;
-            //Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             // Verifique a lógica no AudioManager para pausar/despausar a música
             GameManager.Instance.AudioManager.PauseAndUnpauseBackgroundMusic();
         }
@@ -55,15 +55,17 @@ public class PauseManager : MonoBehaviour
     {
         GameManager.Instance.SceneLoadManager.LoadScene("Menu");
         Time.timeScale = 1f;
+        Pause_painel.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void Unpaused()
     {
         Time.timeScale = 1f;
-        // Não defina o Time.timeScale aqui
         Pause_painel.SetActive(false);
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void SaveConfig()

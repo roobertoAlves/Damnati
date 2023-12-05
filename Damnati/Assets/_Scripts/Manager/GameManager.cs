@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     public AudioManager AudioManager => _audioManager;
     public InputHandler InputHandler => _inputHandler;
 
+
     private void InitializeSystem()
     {
         SaveSystem.LoadPlayerSettings();

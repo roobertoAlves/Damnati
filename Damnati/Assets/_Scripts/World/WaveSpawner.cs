@@ -23,6 +23,7 @@ public class WaveSpawner : MonoBehaviour
     private void Awake()
     {
         _worldEventManager = FindObjectOfType<WorldEventManager>();
+        _currentWaveIndex = 0;
         _enemiesRemaining = 0;
     }
 

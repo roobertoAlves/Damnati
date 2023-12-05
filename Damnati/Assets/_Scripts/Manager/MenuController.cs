@@ -17,6 +17,7 @@ public class MenuController : MonoBehaviour
 
     private void Awake()
     {
+
         _musicVolumeSlider.onValueChanged.AddListener(delegate
         {
             GameManager.Instance.AudioManager.UpdateMusicVolume(_musicVolumeSlider.value);
