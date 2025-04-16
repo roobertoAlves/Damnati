@@ -67,5 +67,6 @@ Este jogo foi desenvolvido como projeto final do curso técnico, com o objetivo 
 
 ## 📫 Contato
 
-- 📧 Email: contato.JrobertoDamasceno@gmail.com
-- 🌐 Portfólio / GitHub: (https://github.com/roobertoAlves)
+- 📧 Email: jbetodamasceno@gmail.com  
+- 🌐 Portfólio / GitHub: https://github.com/roobertoAlves
+- LinkedIn: https://www.linkedin.com/in/jose-damasceno-034660360/
